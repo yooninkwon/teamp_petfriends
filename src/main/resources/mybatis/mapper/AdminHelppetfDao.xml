@@ -1,0 +1,22 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.tech.petfriends.admin.mapper.AdminPageDao"> 
+	<select id="adminPetteacherList" resultType="com.tech.petfriends.admin.dto.AdminHelpPetfDto">
+		SELECT * FROM HELP_PETTEACHER
+	</select>
+	<select id="adminPetteacherDetail" resultType="com.tech.petfriends.admin.dto.AdminHelpPetfDto">
+		SELECT * FROM HELP_PETTEACHER 
+		WHERE HPT_SEQ = #{hpt_seq}
+	</select>
+	<insert id="adminPetteacherWrite">
+		INSERT INTO HELP_PETTEACHER VALUES
+		(SEQ_HPT.NEXTVAL, #{hpt_yt_url},
+		 #{hpt_yt_videoid}, #{hpt_exp}, #{hpt_title}, #{hpt_content}, 
+		 #{hpt_pettype}, #{hpt_category}, 0, SYSDATE)
+	</insert>
+	<delete id="adminPetteacherDelete">
+		DELETE FROM HELP_PETTEACHER WHERE HPT_SEQ = #{hpt_seq}
+	</delete>
+</mapper>
