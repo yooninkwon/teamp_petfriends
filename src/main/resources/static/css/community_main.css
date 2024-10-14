@@ -23,16 +23,19 @@ main {
 
 .hot-topics ul {
     list-style-type: none;
-    padding: 0; /* ul의 패딩 제거 */
-    margin: 0; /* ul의 마진 제거 */
-    display: flex; /* 플렉스 박스 사용 */
-    justify-content: flex-start; /* 이미지 간격을 최소화 */
+    padding: 0;
+    margin: 0;
+    display: flex;
+	justify-content: flex-start; /* 이미지들을 왼쪽 정렬 */
+	gap: 10px; /* 이미지 사이의 간격을 좁힘 */
+
 }
 .hot-topics ul li p {
-    color: #ff4081; /* 원하는 색상으로 변경 */
-    font-size: 16px; /* 글씨 크기 조정 */
-    margin: 0; /* 여백 제거 */
-    text-align: center; /* 가운데 정렬 */
+    color: #ff4081;
+    font-size: 16px;
+    margin: 0;
+    text-align: center;
+    margin-top: 10px; /* 이미지와 텍스트 간 간격 */
 }
 
 .hot-topics h3 {
@@ -43,12 +46,12 @@ main {
 	margin-bottom: 15px;
 }
 
-.hot-topics ul li{
+.hot-topics ul li {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0; /* 각 li의 여백 제거 */
-    padding: 0; /* 각 li의 패딩 제거 */
+    flex-direction: column; /* 이미지를 수직으로 정렬 */
+    align-items: center; /* 수평 중앙 정렬 */
+    justify-content: center; /* 수직 중앙 정렬 */
+    width: 30%; /* li의 너비 */
 }
 
 .hot-topics ul li {
@@ -57,15 +60,19 @@ main {
 
 
 .hot-topics ul li img {
-    width: calc(100% - 2px); /* 이미지 폭을 최대한 사용 */
-    height: 250px; /* 핫토픽 이미지 크기 */
+    width: calc(100% - 2px); /* 이미지 크기 설정 */
+    height: 250px;
     object-fit: cover; /* 비율 유지하면서 크기 맞추기 */
-    margin: 0; /* 이미지의 여백 제거 */
 }
 
 .categories ul li img {
-    width: 50px; /* 카테고리 아이콘 크기 */
-    height: 50px;
+    width: 100px; /* 이미지 크기 조정 */
+    height: 100px;
+    margin-bottom: 10px; /* 이미지와 텍스트 사이의 간격 */
+    border: 2px solid #ddd; /* 사각형 테두리 추가 */
+    padding: 10px; /* 이미지 안의 여백 */
+    background-color: white; /* 이미지 배경을 흰색으로 설정 */
+    display: block; /* 이미지가 블록으로 표시되도록 설정 */
 }
 
 .categories {
@@ -87,15 +94,39 @@ main {
 .categories ul li {
     width: 18%;
     margin: 0; /* 각 li의 여백 제거 */
+    text-align: center; /* 텍스트를 중앙 정렬 */
 }
 
 .categories ul li img {
-    width: 50px; /* 카테고리 아이콘 크기 */
-    height: 50px;
-    margin: 0; /* 여백 제거 */
+    width: 100px; /* 이미지 크기 */
+    height: 100px;
+    margin-bottom: 10px; /* 이미지와 텍스트 사이의 간격 */
+    border: 2px solid #ffe5ee; /* 사각형 테두리 */
+    padding: 10px; /* 이미지 안의 여백 */
+    background-color: #ffe5ee; /* 이미지 배경 흰색 */
+    border-radius: 15px; /* 테두리를 둥글게 */
+    display: block; /* 이미지를 블록 요소로 설정 */
 }
 
+.categories ul li a {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: #333; /* 텍스트 색상 */
+    display: flex; /* 텍스트와 이미지를 수직으로 정렬 */
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 중앙 정렬 */
+}
 
+.categories ul li a:hover {
+    color: #ff4081; /* 호버 시 텍스트 색상 변경 */
+}
+
+.categories ul li a p {
+    margin: 0; /* 텍스트의 기본 여백 제거 */
+    font-size: 16px; /* 글씨 크기 */
+    font-weight: bold; /* 글씨 두껍게 설정 */
+    line-height: 1.2; /* 텍스트 줄 간격 설정 */
+    margin-top: 5px; /* 텍스트와 이미지 간의 여백 */
+}
 
 .posts {
     grid-column: 1; /* 포스트 섹션을 첫 번째 열에 배치 */
@@ -133,11 +164,11 @@ main {
 
 
 .container-box {
-    background: #e8e8e8; /* 배경색 설정 */
+    background: white; /* 배경색 설정 */
     padding: 0px; /* 내부 여백 설정 */
     margin: 0; /* 상하 여백 설정 */
     border-radius: 5px; /* 모서리 둥글게 설정 */
-    border: 2px solid #ff4081; /* 테두리 색 설정 (원하는 색상으로 변경) */
+    border: 3px solid #ff4081; /* 테두리 색 설정 (원하는 색상으로 변경) */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
 }
 
@@ -156,30 +187,60 @@ main {
 }
 
 
-.container-box p {
-    margin: 10px 0; /* 본문 내용의 상하 여백 설정 */
-   	padding-left:10px; /* 본문 내용의 패딩 설정 (필요시 조정) */
-}
 
 .story-container {
     display: flex;
     overflow-x: auto; 
     gap: 0; /* 이미지 간의 간격을 0으로 설정 */
-    
 }
 
 .story-item {
-    flex-shrink: 0; 
+    display: flex;
+    flex-direction: column; /* 세로로 정렬 */
+    align-items: center; /* 수평 중앙 정렬 */
+    justify-content: center; /* 수직 중앙 정렬 */
+    text-align: center; /* 텍스트를 중앙 정렬 */
+    margin: 10px;
+    width: 90px; /* 컨테이너 크기 설정 */
 }
 
 .story-image {
-    width: 70px; 
-    height: 70px; 
-    border-radius: 50%; 
-    object-fit: cover; 
-    border: 2px solid #ff4081; 
-    display: block; /* display: block으로 설정하여 공백 제거 */
-	margin: 20px;
-	padding: 10px;
+    width: 70px; /* 이미지 너비 */
+    height: 70px; /* 이미지 높이 */
+    border-radius: 50%; /* 원형으로 만들기 */
+    object-fit: cover; /* 이미지를 비율에 맞게 잘라서 꽉 차게 */
+    border: 5px solid #ff4081; /* 테두리 색상 */
+    display: block; /* 블록 요소로 설정 */
+    margin: 0; /* 이미지 주변 여백을 제거 */
+    padding: 0; /* 내부 패딩 제거 */
+}
+
+.story-item a {
+    text-decoration: none; /* 링크 밑줄 제거 */
+	color: #333;
+}
+
+.story-item a:hover {
+    color: #ff4081; /* 호버 시 텍스트 색상 변경 */
+}
+
+.story-item p {
+    margin: 3px; /* 이미지와 텍스트 사이 여백 제거 */
+    font-size: 14px; /* 글씨 크기 조정 */
+    font-weight: bold; /* 글씨 두껍게 */
+    line-height: 1.2; /* 텍스트 줄 간격 */
+    text-align: center; /* 텍스트를 중앙 정렬 */
 	
+}
+
+
+.ad-banner {
+    margin-bottom: 20px; /* 사이드바의 다른 요소와의 간격 */
+    text-align: center; /* 이미지 중앙 정렬 */
+}
+
+.ad-banner img {
+    width: 500px; /* 광고 배너의 너비를 사이드바에 맞추기 */
+    height: auto; /* 비율에 맞게 높이 자동 조절 */
+    border-radius: 5px; /* 모서리 둥글게 설정 */
 }
