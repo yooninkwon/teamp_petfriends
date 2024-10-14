@@ -1,0 +1,185 @@
+@charset "UTF-8";
+
+html, body {
+    height: 100%; /* 전체 높이를 100%로 설정 */
+    margin: 0; /* 기본 여백 제거 */
+}
+
+main {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* 핫토픽과 사이드바의 비율을 2:1로 조정 */
+    grid-template-rows: auto; /* 자동 높이 조정 */
+    gap: 20px; /* 열 사이의 간격 */
+    padding: 20px;
+}
+
+.hot-topics {
+    margin-top: 100px; /* 헤더의 높이에 맞게 조정 */
+    grid-column: 1; /* 첫 번째 열에 핫토픽 섹션 배치 */
+    background: #f9f9f9;
+    padding: 20px;
+}
+
+
+.hot-topics ul {
+    list-style-type: none;
+    padding: 0; /* ul의 패딩 제거 */
+    margin: 0; /* ul의 마진 제거 */
+    display: flex; /* 플렉스 박스 사용 */
+    justify-content: flex-start; /* 이미지 간격을 최소화 */
+}
+.hot-topics ul li p {
+    color: #ff4081; /* 원하는 색상으로 변경 */
+    font-size: 16px; /* 글씨 크기 조정 */
+    margin: 0; /* 여백 제거 */
+    text-align: center; /* 가운데 정렬 */
+}
+
+.hot-topics h3 {
+    color: #ff4081; /* 원하는 색상으로 변경 */
+    font-size: 24px; /* 글씨 크기 조정 */
+    margin: 0; /* 여백 제거 */
+	
+	margin-bottom: 15px;
+}
+
+.hot-topics ul li{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0; /* 각 li의 여백 제거 */
+    padding: 0; /* 각 li의 패딩 제거 */
+}
+
+.hot-topics ul li {
+    width: 30%;
+}
+
+
+.hot-topics ul li img {
+    width: calc(100% - 2px); /* 이미지 폭을 최대한 사용 */
+    height: 250px; /* 핫토픽 이미지 크기 */
+    object-fit: cover; /* 비율 유지하면서 크기 맞추기 */
+    margin: 0; /* 이미지의 여백 제거 */
+}
+
+.categories ul li img {
+    width: 50px; /* 카테고리 아이콘 크기 */
+    height: 50px;
+}
+
+.categories {
+    grid-column: 1; /* 첫 번째 열에 카테고리 섹션 배치 */
+    background: #f9f9f9;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.categories ul {
+    list-style-type: none;
+    padding: 0; /* ul의 패딩 제거 */
+    margin: 0; /* ul의 마진 제거 */
+    display: flex; /* 플렉스 박스 사용 */
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    gap: 5px; /* 이미지 간의 간격을 설정 */
+}
+
+.categories ul li {
+    width: 18%;
+    margin: 0; /* 각 li의 여백 제거 */
+}
+
+.categories ul li img {
+    width: 50px; /* 카테고리 아이콘 크기 */
+    height: 50px;
+    margin: 0; /* 여백 제거 */
+}
+
+
+
+.posts {
+    grid-column: 1; /* 포스트 섹션을 첫 번째 열에 배치 */
+    margin-top: 20px; /* 포스트 섹션과 핫토픽 섹션 간격 */
+}
+
+.posts article {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+
+.posts article img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.posts article h2,
+.posts article .summary a {
+    text-decoration: none;
+    color: blue;
+}
+
+.sidebar {
+  	margin-top: 100px; /* 헤더의 높이에 맞게 조정 */
+	grid-column: 2; /* 두 번째 열에 사이드바 배치 */
+    padding: 20px;
+    background: #f4f4f4;
+    position: sticky; /* 스크롤 시에도 사이드바가 고정되게 함 */
+    top: 0; /* 상단에서 고정 시작 위치 */
+    height: auto; /* 사이드바 높이를 콘텐츠에 맞게 자동 조정 */
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 가능하도록 설정 */
+}
+
+
+.container-box {
+    background: #e8e8e8; /* 배경색 설정 */
+    padding: 0px; /* 내부 여백 설정 */
+    margin: 0; /* 상하 여백 설정 */
+    border-radius: 5px; /* 모서리 둥글게 설정 */
+    border: 2px solid #ff4081; /* 테두리 색 설정 (원하는 색상으로 변경) */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
+}
+
+.container-header {
+    background-color: #ff4081; /* 상단 배경색 (원하는 색상으로 변경) */
+    color: white; /* 글씨 색상 */
+    padding: 0; /* 상단의 여백 */
+    font-size: 18px; /* 글씨 크기 조정 */
+    font-weight: bold; /* 글씨 두껍게 설정 */
+}
+
+
+.header-text {
+    margin: 10px; /* 글씨 주위 여백 설정 */
+    display: inline-block; /* 여백을 적용하기 위해 인라인 블록으로 설정 */
+}
+
+
+.container-box p {
+    margin: 10px 0; /* 본문 내용의 상하 여백 설정 */
+   	padding-left:10px; /* 본문 내용의 패딩 설정 (필요시 조정) */
+}
+
+.story-container {
+    display: flex;
+    overflow-x: auto; 
+    gap: 0; /* 이미지 간의 간격을 0으로 설정 */
+    
+}
+
+.story-item {
+    flex-shrink: 0; 
+}
+
+.story-image {
+    width: 70px; 
+    height: 70px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 2px solid #ff4081; 
+    display: block; /* display: block으로 설정하여 공백 제거 */
+	margin: 20px;
+	padding: 10px;
+	
+}
