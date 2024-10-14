@@ -15,6 +15,8 @@ import com.tech.petfriends.helppetf.service.FindHospitalService;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
 import com.tech.petfriends.helppetf.service.PetteacherDetailService;
 import com.tech.petfriends.helppetf.service.PetteacherService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/helppetf")
@@ -27,6 +29,12 @@ public class HelpPetfController {
 	HelpPetfDao helpDao;
 	
 	HelppetfServiceInter helpServiceInterface;
+	
+	@GetMapping("/aaa/aaa")
+	public String aaa() {
+		return "/helppetf/aaa/aaa";
+	}
+	
 	
 	@GetMapping("/petteacher/petteacher_main")
 	public String petteacherList(Model model) {
@@ -48,7 +56,7 @@ public class HelpPetfController {
 
 	@GetMapping("/find/pet_hospital")
 	public String find_hospital(Model model) {
-		model.addAttribute("apiKey", apikeyConfig.getApikey());
+		model.addAttribute("apiKey", apikeyConfig.getKakaoApikey());
 		helpServiceInterface = new FindHospitalService(helpDao);
 		helpServiceInterface.execute(model);
 		
@@ -57,7 +65,7 @@ public class HelpPetfController {
 
 	@GetMapping("/find/pet_facilities")
 	public String pet_facilities(Model model) {
-		model.addAttribute("apiKey", apikeyConfig.getApikey());
+		model.addAttribute("apiKey", apikeyConfig.getKakaoApikey());
 		helpServiceInterface = new FindFacilitiesService(helpDao);
 		helpServiceInterface.execute(model);
 		
