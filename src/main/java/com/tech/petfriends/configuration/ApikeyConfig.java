@@ -8,12 +8,20 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:com/properties/application-API-KEY.properties")
 public class ApikeyConfig {
 	
-	@Value("${api.key}")
-	private String apiKey;
+	@Value("${kakaoApi.key}")
+	private String kakaoApiKey;
 	
-	public String getApikey() {
+	public String getKakaoApikey() {
 		
-		return apiKey;
+		return kakaoApiKey;
+	}
+	
+	@Value("${openDataApi.key}")
+	private String openDataApiKey;
+	
+	public String getOpenDataApikey() {
+		
+		return openDataApiKey;
 	}
 	
 }
