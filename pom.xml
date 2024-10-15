@@ -85,7 +85,20 @@
 			<version>1.9.6</version>
 			<!-- <scope>runtime</scope> -->
 		</dependency>
-
+		
+		<!-- Tiles -->		
+		<dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-jsp -->
+		    <groupId>org.apache.tiles</groupId>
+		    <artifactId>tiles-jsp</artifactId>
+		    <version>3.0.7</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.tiles</groupId>
+		    <artifactId>tiles-jsp</artifactId>
+		    <version>3.0.7</version>
+		</dependency>
+		
 		<!-- MockMvc -->
 		<dependency>
 			<!--
@@ -113,15 +126,14 @@
 			<version>20231013</version>
 		</dependency>
 
-		<!-- Spring Web -->
+		<!-- Spring Web
 		<dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+		https://mvnrepository.com/artifact/org.springframework/spring-web
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>5.3.24</version>
 		</dependency>
-
-
+		 -->
 	</dependencies>
 
 	<build>
@@ -135,3 +147,6 @@
 	</build>
 
 </project>
+
+
+		

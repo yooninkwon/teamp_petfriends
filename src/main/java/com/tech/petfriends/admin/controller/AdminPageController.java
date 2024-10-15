@@ -68,5 +68,54 @@ public class AdminPageController {
 		return "redirect:/admin/admin_petteacher";
 	}
 	
+	@GetMapping("/order")
+	public String order() {
+		return "admin/order";
+	}
+	
+	@GetMapping("/coupon")
+	public String coupon() {
+		return "admin/coupon";
+	}
+	
+	@GetMapping("/product")
+	public String product() {
+		return "admin/product";
+	}
+	
+	@GetMapping("/customer_status")
+	public String customer_status() {
+		return "admin/customer_status";
+	}
+	
+	@GetMapping("/customer_info")
+	public String customer_info() {
+		return "admin/customer_info";
+	}
+	
+	@GetMapping("/community")
+	public String community() {
+		return "admin/community";
+	}
+	
+	@GetMapping("/petture")
+	public String petture() {
+		return "admin/petture";
+	}
+	
+	@GetMapping("/notice")
+	public String notice() {
+		return "admin/notice";
+	}
+	
+	@GetMapping("/sales")
+	public String sales() {
+		return "admin/sales";
+	}
+	
+	@GetMapping("/customer")
+	public String customer() {
+		return "admin/customer";
+	}
 	
 }

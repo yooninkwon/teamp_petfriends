@@ -48,7 +48,7 @@ public class AdoptionDeserializer extends JsonDeserializer<HelpPetfAdoptionItems
 		// itemNode를 DTO 배열로 변환
 		// List 값을 받으려면 objectMapper.treetoValue()를 활용하여 배열로 받아 .toList() 해주어야 한다.
 		List<AdoptionItemDto> items = Arrays
-				.stream(objectMapper.treeToValue(itemNode, AdoptionItemDto[].class)).collect(Collectors.toList());;
+				.stream(objectMapper.treeToValue(itemNode, AdoptionItemDto[].class)).collect(Collectors.toList());
 
 		return new HelpPetfAdoptionItemsVo(items);
 	}
