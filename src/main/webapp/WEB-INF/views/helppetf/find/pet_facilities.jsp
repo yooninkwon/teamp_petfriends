@@ -14,6 +14,7 @@
 	<h5>주소기반 주변 반려동물 동반시설 찾기</h5>
 	<a href="/helppetf/find/pet_hospital">주변 동물병원 찾기</a> &nbsp;
 	<a href="/helppetf/find/pet_facilities">주변 반려동물 시설 찾기</a> &nbsp;
+	<a href="/helppetf/adoption/adoption_main">입양 센터</a> &nbsp;
 	<a href="/helppetf/petteacher/petteacher_main">펫티쳐</a> &nbsp;
 <!-- RestController로 수정해보기 -->
 	<div class="map_wrap">

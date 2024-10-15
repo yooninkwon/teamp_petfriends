@@ -14,10 +14,11 @@
 
 	<a href="/helppetf/find/pet_hospital">주변 동물병원 찾기</a> &nbsp;
 	<a href="/helppetf/find/pet_facilities">주변 반려동물 시설 찾기</a> &nbsp;
+	<a href="/helppetf/adoption/adoption_main">입양 센터</a> &nbsp;
 	<a href="/helppetf/petteacher/petteacher_main">펫티쳐</a> &nbsp;
 <hr />
 <!-- 임시: admin page 이동 -->
-<a href="/admin/admin_petteacher">펫티쳐 어드민 페이지 이동</a>
+<a href="/admin/admin_petteacher">임시 링크: 펫티쳐 어드민 페이지 이동</a><br />
 <br />
 	<table border="1" width="750">
 		<tr>
@@ -38,7 +39,7 @@
 			</tr>
 		</c:forEach>
 		<tr>
-			<td colspan="5"><a href="/youtubeWrite">글쓰기</a></td>
+			<td colspan="5"><a href="/admin/admin_petteacher_form">글작성</a></td>
 		</tr>
 	</table>
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
