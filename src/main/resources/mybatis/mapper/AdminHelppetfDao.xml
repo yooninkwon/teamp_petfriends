@@ -5,6 +5,7 @@
 <mapper namespace="com.tech.petfriends.admin.mapper.AdminPageDao"> 
 	<select id="adminPetteacherList" resultType="com.tech.petfriends.admin.dto.AdminHelpPetfDto">
 		SELECT * FROM HELP_PETTEACHER
+		ORDER BY HPT_SEQ DESC
 	</select>
 	<select id="adminPetteacherDetail" resultType="com.tech.petfriends.admin.dto.AdminHelpPetfDto">
 		SELECT * FROM HELP_PETTEACHER 
