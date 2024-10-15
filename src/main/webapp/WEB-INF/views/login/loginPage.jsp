@@ -17,11 +17,11 @@
     <div id="login">
         <div id="login1">
             <img src="<c:url value='/static/Images/LoginImg/login_text.PNG'/>" id="login_text" alt=""> <br>
-            <form action="login">
+            <form action="loginService" method="post">
 	            <label for="#">EMAIL</label> <br>
-	            <input type="email" id="email" placeholder="이메일"> <br>
+	            <input type="email" id="email" name="email" placeholder="이메일"> <br>
 	            <label for="#">PASSWORD</label> <br>
-	            <input type="password" id="password" placeholder="비밀번호"> <br>
+	            <input type="password" id="password" name="password" placeholder="비밀번호"> <br>
 	            <input type="checkbox" id="remember"> Remember Me
 	            <a href="#">Forgot Password</a>
 	            <input type="submit" id="signin" value="Sign In"> <br>
