@@ -8,7 +8,7 @@
 	<jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="/static/js/loginPage.js"></script>
-    <link rel="stylesheet" href="/static/css/login.css" />
+    <link rel="stylesheet" href="/static/css/login/login.css" />
 </head>
 <body>
     <!-- 헤더 인클루드 -->
@@ -18,14 +18,17 @@
         <div id="login1">
             <img src="<c:url value='/static/Images/LoginImg/login_text.PNG'/>" id="login_text" alt=""> <br>
             <form action="loginService" method="post">
-	            <label for="#">EMAIL</label> <br>
-	            <input type="email" id="email" name="email" placeholder="이메일"> <br>
-	            <label for="#">PASSWORD</label> <br>
-	            <input type="password" id="password" name="password" placeholder="비밀번호"> <br>
-	            <input type="checkbox" id="remember"> Remember Me
-	            <a href="#">Forgot Password</a>
-	            <input type="submit" id="signin" value="Sign In"> <br>
-            </form>
+			    <label for="email">EMAIL</label> <br>
+			    <input type="email" id="email" name="email" placeholder="이메일" value="${cookie.email != null ? cookie.email.value : ''}"> <br>
+			    
+			    <label for="password">PASSWORD</label> <br>
+			    <input type="password" id="password" name="password" placeholder="비밀번호"> <br>
+			
+			    <input type="checkbox" id="remember" name="remember" ${cookie.email != null ? 'checked' : ''}> Remember Me
+			    
+			    <a href="findId">Forgot Password</a>
+			    <input type="submit" id="signin" value="Sign In"> <br>
+			</form>
             <div id="login1_bottom">
                 <h4>아직 펫프렌즈 회원이 아니신가요?
                 <a href="#">여기를 눌러 회원가입</a></h4> 
