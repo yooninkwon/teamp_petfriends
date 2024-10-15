@@ -15,4 +15,6 @@ public class ProductController {
 		
 		return "/product/productlist";
 	}
+	
+	
 }

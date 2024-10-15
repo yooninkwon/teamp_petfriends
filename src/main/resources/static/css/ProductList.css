@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+.category{
+	margin-top: 80px;
+	margin-left: 53px;
+}
+.category2{
+	margin-left: 53px;
+	margin-top: 5px;
+}
+
+.filter1{
+	background-color: transparent;
+	border: 0;
+	padding: 5px 10px 5px 10px;
+}
+
+.separator{
+	margin: 0 20px 0 20px;
+	color: #f4eded;
+}
+
+.filter2{
+	background-color: transparent;
+	border: 0;
+	padding: 5px 10px 5px 10px;
+}
+
+.filter3{
+	background-color: transparent;
+	border: 0;
+	margin-right: 10px;
+	padding: 5px 10px 5px 10px;
+}
+
+.clicked{
+	background-color: #ff4081 !important;
+	color: white !important;
+	border-radius: 10px; /* 모서리를 둥글게 만듦 */
+}
+
+.reset{
+	margin: 10px 0 0 53px;
+}
+
+.resetbtn{
+	background-color: transparent;
+	border: 0;
+	color: #8c8c8c;
