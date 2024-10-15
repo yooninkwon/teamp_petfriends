@@ -28,7 +28,7 @@ html, body {
     margin-left: auto;
     text-align: center;
 }
-#search_icon, #user_icon{
+#search_icon, #user_icon, #admin_icon{
     width: 35px;
     height: 35px;
     margin-top: 7px;
@@ -40,6 +40,11 @@ html, body {
     border-radius: 50%; /* 동그랗게 */
 }
 #search_icon:hover {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* 부드러운 그림자 */
+    transition: box-shadow 0.3s ease; /* 부드러운 전환 */
+    border-radius: 50%; /* 동그랗게 */
+}
+#admin_icon:hover {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* 부드러운 그림자 */
     transition: box-shadow 0.3s ease; /* 부드러운 전환 */
     border-radius: 50%; /* 동그랗게 */
