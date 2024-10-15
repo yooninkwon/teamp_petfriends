@@ -6,7 +6,7 @@
     <div class="menu_icons">
         <img src="<c:url value='/static/Images/MainImg/search_icon.png'/>" id="search_icon" alt="">
         <img src="<c:url value='/static/Images/MainImg/user_icon.png'/>" id="user_icon" alt="">
-        <a href="admin/home"><img src="<c:url value='/static/Images/MainImg/admin_icon.png'/>" id="admin_icon" alt=""></a>
+        <a href="<c:url value='/admin/home' />"><img src="<c:url value='/static/Images/MainImg/admin_icon.png'/>" id="admin_icon" alt=""></a>
     </div>
 </div><br>
 <div id="main_nav">
