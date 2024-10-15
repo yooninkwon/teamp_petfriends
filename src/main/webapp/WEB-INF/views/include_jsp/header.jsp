@@ -6,9 +6,8 @@
     <div class="menu_icons">
         <img src="<c:url value='/static/Images/MainImg/search_icon.png'/>" id="search_icon" alt="">
         <img src="<c:url value='/static/Images/MainImg/user_icon.png'/>" id="user_icon" alt="">
-        <a href="<c:url value='/admin/home' />"><img src="<c:url value='/static/Images/MainImg/admin_icon.png'/>" id="admin_icon" alt=""></a>
         <c:if test="${sessionScope.name == '이창재'}">
-    		<a href="/admin/home">
+    		<a href="<c:url value='/admin/home' />"></a>
         	<img src="<c:url value='/static/Images/MainImg/admin_icon.png'/>" id="admin_icon" alt="관리자 아이콘">
    			</a>
 		</c:if>
