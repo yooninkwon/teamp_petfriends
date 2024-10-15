@@ -9,7 +9,12 @@
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 </head>
 <body>
+	<!-- 헤더 인클루드 -->
     <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+    
+    
+    <!-- 메인구성 시작--> 
+    <!-- 이벤트 -->
     <div class="slider">
         <div class="slides">
             <!-- 각 슬라이드 -->
@@ -22,8 +27,7 @@
         <button class="next" onclick="moveSlide(1)">&#10095;</button>
     </div><br>
     
-    
-    <!-- 메인구성 시작-->
+    <!-- 메인 구성 샘플  -->
     <h1 id="best_product">BEST</h1>
     <table id="best_product_table">
     	<c:forEach var="i" begin="1" end="3">
@@ -40,7 +44,9 @@
         	</tr>
 		</c:forEach>
     </table>
-    <!-- 메인구성 끝 -->
+    <!-- 메인 구성 끝 -->
+    
+    <!-- 푸터 인클루드 -->
     <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>

@@ -13,11 +13,11 @@ $(function(){
 });   
 
 // 상단 우측 유저 아이콘 클릭시 로그인 화면 이동
-$(function(){
+$(document).ready(function() {
     $("#user_icon").click(function(){
-        window.location.href = "/login";
+        window.location.href = "/login/loginPage";
     });
-});     
+});   
 
 
 
