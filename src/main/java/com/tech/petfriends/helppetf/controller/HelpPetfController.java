@@ -30,9 +30,9 @@ public class HelpPetfController {
 	
 	HelppetfServiceInter helpServiceInterface;
 	
-	@GetMapping("/aaa/aaa")
+	@GetMapping("/adoption/adoption_main")
 	public String aaa() {
-		return "/helppetf/aaa/aaa";
+		return "/helppetf/adoption/adoption_main";
 	}
 	
 	
