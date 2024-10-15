@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tech.petfriends.login.mapper.MemberMapper">
+
+    <!-- 이메일과 비밀번호로 회원을 조회 -->
+    <select id="getMemberByEmailAndPassword" parameterType="map" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
+	    SELECT email, pw, name 
+	    FROM MEMBERTEST 
+	    WHERE EMAIL = #{email} 
+	    AND PW = #{password}
+	</select>
+
+</mapper>
