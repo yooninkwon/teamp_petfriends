@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>
-	body
+	admin_body
 </title>
 </head>
 <body>

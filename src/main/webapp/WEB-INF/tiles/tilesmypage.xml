@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="mypage_baselayout" template="/WEB-INF/views/mypage/common/layout.jsp">
+		<put-attribute name="mypage_title" value="펫프렌즈 : 마이페이지" />
+		<put-attribute name="mypage_side" value="/WEB-INF/views/mypage/common/side.jsp" />
+		<put-attribute name="mypage_body" value="" />
+	</definition>
+	
+	<definition name="mypage/mypet" extends="mypage_baselayout">
+		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/mypet.jsp" />
+	</definition>
+	<definition name="mypage/grade" extends="mypage_baselayout">
+		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/grade.jsp" />
+	</definition>
+	<definition name="mypage/point" extends="mypage_baselayout">
+		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/point.jsp" />
+	</definition>
+	<definition name="mypage/coupon" extends="mypage_baselayout">
+		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/coupon.jsp" />
+	</definition>
+	<definition name="mypage/setting" extends="mypage_baselayout">
+		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/setting.jsp" />
+	</definition>
+	<definition name="mypage/cart" extends="mypage_baselayout">
+		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/cart.jsp" />
+	</definition>
+	<definition name="mypage/order" extends="mypage_baselayout">
+		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/order.jsp" />
+	</definition>
+	<definition name="mypage/review" extends="mypage_baselayout">
+		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/review.jsp" />
+	</definition>
+	<definition name="mypage/wish" extends="mypage_baselayout">
+		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/wish.jsp" />
+	</definition>
+</tiles-definitions>

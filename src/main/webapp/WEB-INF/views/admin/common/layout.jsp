@@ -8,19 +8,19 @@
 <script src="https://kit.fontawesome.com/6c32a5aaaa.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/static/css/admin.css">
 <title>
-	<tiles:insertAttribute name="title" />
+	<tiles:insertAttribute name="admin_title" />
 </title>
 </head>
 <body>
 <div id="container">
 	<div>
-		<tiles:insertAttribute name="header" />
+		<tiles:insertAttribute name="admin_header" />
 	</div>
 	<div>
-		<tiles:insertAttribute name="side" />
+		<tiles:insertAttribute name="admin_side" />
 	</div>
 	<div id="content">
-		<tiles:insertAttribute name="body" />
+		<tiles:insertAttribute name="admin_body" />
 	</div>
 </div>
 </body>
