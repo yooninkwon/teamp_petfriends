@@ -101,12 +101,39 @@
 		
 		<!-- MockMvc -->
 		<dependency>
-			<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
+			<!--
+			https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<version>2.5.4</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Webflux (Web Client) -->
+		<dependency>
+			<!--
+			https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+			<version>3.2.5</version>
+		</dependency>
+
+		<!-- JSON in java -->
+		<dependency>
+			<!-- https://mvnrepository.com/artifact/org.json/json -->
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20231013</version>
+		</dependency>
+
+		<!-- Spring Web
+		<dependency>
+		https://mvnrepository.com/artifact/org.springframework/spring-web
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>5.3.24</version>
+		</dependency>
+		 -->
 	</dependencies>
 
 	<build>
