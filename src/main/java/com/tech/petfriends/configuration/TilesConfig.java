@@ -31,14 +31,4 @@ public class TilesConfig implements WebMvcConfigurer {
        
        return resolver;
     }
-	
-	@Bean
-    public InternalResourceViewResolver jspViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/views/");
-        resolver.setSuffix(".jsp");
-        resolver.setOrder(2); // TilesViewResolver보다 우선순위가 낮도록 설정
-        
-        return resolver;
-    }
 }

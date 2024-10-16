@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%><div id="footer">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<div id="footer">
     <div id="footer1">
         <img src="<c:url value='/static/Images/MainImg/LOGO_white.png'/>" width="150px" alt="">
         <p>펫프렌즈(PETFRIENDS Co., Ltd.) <br>
