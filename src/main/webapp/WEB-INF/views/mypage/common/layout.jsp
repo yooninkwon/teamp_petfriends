@@ -17,13 +17,13 @@
 
 <div id="container">
 	<div id="main">
-           <aside id="sidebar-left">
-               <tiles:insertAttribute name="mypage_side" />
-           </aside>
-           <section id="content">
-               <tiles:insertAttribute name="mypage_body" />
-           </section>
-       </div>
+        <aside id="sidebar-left">
+            <tiles:insertAttribute name="mypage_side" />
+        </aside>
+        <section id="content">
+            <tiles:insertAttribute name="mypage_body" />
+        </section>
+    </div>
 </div>
 	
 <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
