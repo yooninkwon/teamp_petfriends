@@ -15,9 +15,16 @@ $(function(){
 // 상단 우측 유저 아이콘 클릭시 로그인 화면 이동
 $(document).ready(function() {
     $("#user_icon").click(function(){
-        window.location.href = "/login/loginPage";
+        // 전역 변수 userName을 사용
+        if (userName === "null" || userName === "") {
+            // 로그인 페이지로 이동
+            window.location.href = "/login/loginPage";
+        } else {
+            // 마이페이지로 이동
+            window.location.href = "/mypage/mypet";
+        }
     });
-});   
+});
 
 
 
