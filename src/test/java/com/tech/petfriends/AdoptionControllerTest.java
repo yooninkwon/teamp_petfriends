@@ -26,7 +26,8 @@ public class AdoptionControllerTest {
 		 * request.setAttribute("dataType", dataType); request.setAttribute("pageNo",
 		 * pageNo);
 		 */
-        this.mvc.perform(get("/helppetf/adoption/getJson"))
+    	System.out.println("test class");
+        this.mvc.perform(get("/helppetf/adoption/getJson_test"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

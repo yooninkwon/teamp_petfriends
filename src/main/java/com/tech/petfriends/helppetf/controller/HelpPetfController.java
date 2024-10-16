@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
+import com.tech.petfriends.helppetf.service.AdoptionService;
 import com.tech.petfriends.helppetf.service.FindFacilitiesService;
 import com.tech.petfriends.helppetf.service.FindHospitalService;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
 import com.tech.petfriends.helppetf.service.PetteacherDetailService;
 import com.tech.petfriends.helppetf.service.PetteacherService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -31,7 +31,9 @@ public class HelpPetfController {
 	HelppetfServiceInter helpServiceInterface;
 	
 	@GetMapping("/adoption/adoption_main")
-	public String aaa() {
+	public String adoptionMain(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
+		helpServiceInterface = new AdoptionService();
 		return "/helppetf/adoption/adoption_main";
 	}
 	
