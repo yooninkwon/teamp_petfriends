@@ -16,7 +16,6 @@ import com.tech.petfriends.admin.service.AdminPetteacherService;
 import com.tech.petfriends.admin.service.AdminPetteacherWriteService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
 
-
 @Controller
 @RequestMapping("/mypage")
 public class MyPageController {
@@ -64,6 +63,11 @@ public class MyPageController {
 	@GetMapping("/wish")
 	public String wish() {
 		return "mypage/wish";
+	}
+	
+	@GetMapping("/mypet/register")
+	public String mypetRegister() {
+		return "mypage/mypet/register";
 	}
 	
 }

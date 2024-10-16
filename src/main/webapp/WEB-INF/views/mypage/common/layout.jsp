@@ -5,27 +5,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="https://kit.fontawesome.com/6c32a5aaaa.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="/static/css/mypage.css">
 <title>
 	<tiles:insertAttribute name="mypage_title" />
 </title>
+<script src="https://kit.fontawesome.com/6c32a5aaaa.js" crossorigin="anonymous"></script>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
+<link rel="stylesheet" href="/static/css/mypage.css">
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
-
 <div id="container">
+    <section id="header">
+        <tiles:insertAttribute name="mypage_header" />
+    </section>
 	<div id="main">
-           <aside id="sidebar-left">
-               <tiles:insertAttribute name="mypage_side" />
-           </aside>
-           <section id="content">
-               <tiles:insertAttribute name="mypage_body" />
-           </section>
-       </div>
+        <aside id="sidebar-left">
+            <tiles:insertAttribute name="mypage_side" />
+        </aside>
+        <section id="content">
+            <tiles:insertAttribute name="mypage_body" />
+        </section>
+    </div>
+    <section id="footer">
+        <tiles:insertAttribute name="mypage_footer" />
+    </section>
 </div>
-	
-<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>

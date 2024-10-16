@@ -5,8 +5,10 @@
 <tiles-definitions>
 	<definition name="mypage_baselayout" template="/WEB-INF/views/mypage/common/layout.jsp">
 		<put-attribute name="mypage_title" value="펫프렌즈 : 마이페이지" />
+		<put-attribute name="mypage_header" value="/WEB-INF/views/include_jsp/header.jsp" />
 		<put-attribute name="mypage_side" value="/WEB-INF/views/mypage/common/side.jsp" />
 		<put-attribute name="mypage_body" value="" />
+		<put-attribute name="mypage_footer" value="/WEB-INF/views/include_jsp/footer.jsp" />
 	</definition>
 	
 	<definition name="mypage/mypet" extends="mypage_baselayout">
@@ -35,5 +37,9 @@
 	</definition>
 	<definition name="mypage/wish" extends="mypage_baselayout">
 		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/wish.jsp" />
+	</definition>
+	
+	<definition name="mypage/mypet/register" extends="mypage_baselayout">
+		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/mypetRegister.jsp" />
 	</definition>
 </tiles-definitions>

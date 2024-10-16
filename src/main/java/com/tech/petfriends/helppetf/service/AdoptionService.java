@@ -37,7 +37,8 @@ public class AdoptionService {
 		// api serviceKey
 		String apikey = apikeyConfig.getOpenDataApikey();
 		// parameter
-		String addParameter = "&pageNo=1&numOfRows=10&_type=json";
+		String addParameter = "&pageNo=1&numOfRows=100&_type=json";
+//		String addParameter = "&_type=json";
 
 		
 		// 비동기적으로 JSON 데이터를 API로부터 받아옴
