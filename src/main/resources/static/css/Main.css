@@ -181,6 +181,13 @@ html, body {
     float: left;
     margin-top: -15px;
 }
+
+#welcome {
+	float: right;
+	margin-top: -10px;
+	margin-right: 20px;
+}
+
 #footer{
     background-color: #ff4081;
     width: 100%;
