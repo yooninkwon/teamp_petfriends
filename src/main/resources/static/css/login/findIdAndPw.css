@@ -27,7 +27,7 @@ body {
     margin-bottom: 30px;
 }
 
-.find-tabs button {
+.find-tabs a {
     width: 50%;
     padding: 10px;
     border: none;
@@ -36,6 +36,8 @@ body {
     font-weight: bold;
     color: #aaa;
     cursor: pointer;
+    text-decoration: none;
+    text-align: center;
 }
 
 .find-tabs .active {
@@ -44,7 +46,7 @@ body {
 }
 
 .find-form .form-group {
-    margin-bottom: 70px;
+    margin-bottom: 50px;
     position: relative;
 }
 
@@ -67,6 +69,16 @@ body {
     border-color: #ff3366;
 }
 
+h4{
+	text-decoration: none;
+	float: right;
+	color: black;
+}
+
+h4:hover{
+	text-decoration: underline;
+}
+
 .send-code-btn {
     position: absolute;
     right: 10px;
@@ -82,17 +94,32 @@ body {
     margin-right: -10px;
 }
 
-.submit-btn {
+.submit-btn-Id {
     width: 100%;
     padding: 12px;
-    background-color: #ff3366;
+    background-color: #ff4081;
     color: white;
     border: none;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
+    margin-top: 101px;
 }
 
-.submit-btn:hover {
+.submit-btn-Pw {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff4081;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: -60px;
+}
+
+.submit-btn-Id:hover, .submit-btn-Pw:hover {
     background-color: #e62e59;
 }
+
+
