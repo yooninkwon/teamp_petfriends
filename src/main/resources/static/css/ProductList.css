@@ -47,3 +47,35 @@
 	background-color: transparent;
 	border: 0;
 	color: #8c8c8c;
+}
+
+#filteroption {
+    display: flex;
+    flex-direction: row; /* 각 필터 카테고리를 세로로 정렬 */
+    margin-left: 53px;
+    margin-top: 10px;
+}
+
+.filter-category {
+    margin-bottom: 15px; /* 각 필터 카테고리 사이의 간격 */
+    margin-right: 50px;
+}
+
+.filter-button {
+    display: inline-block; /* 버튼을 가로로 배치 */
+    margin-bottom: 5px; /* 버튼과 체크박스/라디오 간격 */
+    padding: 0 20px 0 20px;
+}
+
+.filter-options {
+    display: flex; /* 체크박스 및 라디오 버튼을 가로로 정렬 */
+    flex-direction: column; /* 체크박스 및 라디오 버튼을 세로로 정렬 */
+    
+}
+
+.filter-options label {
+    display: flex; /* 체크박스 및 라디오 버튼과 레이블을 가로로 정렬 */
+    align-items: center; /* 수직 정렬 */
+    margin-bottom: 5px; /* 각 옵션 사이의 간격 */
+    font-size: 10px;
+}

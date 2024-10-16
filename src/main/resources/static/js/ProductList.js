@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	
+
 
 	$('.filter1').click(function() {
 		// 선택된 버튼의 클래스에 clicked 추가
@@ -20,12 +20,11 @@ $(document).ready(function() {
 
 	});
 
-	$('.filter3').click(function() {
-		// 선택된 버튼의 클래스에 clicked 추가
+	// 동적으로 생성된 filter3 버튼에 이벤트 바인딩
+	$(document).on('click', '.filter3', function() {
 		$(this).addClass('clicked');
-		// 다른 filter3 클래스 버튼들은 clicked 해제
 		$('.filter3').not(this).removeClass('clicked');
-
+		updateFilterButtons();
 	});
 
 	const subtypeButtons = {
@@ -79,6 +78,19 @@ $(document).ready(function() {
 		buttons.forEach(buttonText => {
 			$('#category2').append(`<button type="button" class="filter3" id="${buttonText}">${buttonText}</button>`);
 		});
+	}
+
+
+	// 필터 버튼 클릭 시 체크박스 또는 라디오 버튼 토글
+	$('.filter-button').click(function() {
+		$(this).next('.filter-options').toggle(); // 다음 요소(체크박스 또는 라디오 버튼)를 토글
+	});
+
+	// 페이지 로드 시 체크박스 및 라디오 버튼 숨기기
+	$('.filter-options').hide(); // 모든 필터 옵션 숨기기
+	
+	function updateFilter(){
+		
 	}
 
 });
