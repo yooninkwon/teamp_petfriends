@@ -100,7 +100,7 @@ public class AdoptionService {
         try {
             ObjectMapper mapper = new ObjectMapper();
             T result = mapper.readValue(json, valueType);
-            System.out.println("제너릭 클래스~");
+//            System.out.println("제너릭 클래스~");
             return result;
         } catch (ValueInstantiationException e) {
             throw new Exception("Failed to instantiate the class: " + valueType.getName(), e);

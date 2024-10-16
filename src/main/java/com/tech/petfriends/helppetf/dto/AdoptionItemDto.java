@@ -99,7 +99,7 @@ public class AdoptionItemDto {
 	@JsonProperty("careTel")
 	private String careTel;
 
-//	보호장소
+//	보호소 주소
 	@JsonProperty("careAddr")
 	private String careAddr;
 
