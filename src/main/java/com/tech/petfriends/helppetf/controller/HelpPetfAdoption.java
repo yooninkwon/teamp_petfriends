@@ -21,7 +21,7 @@ public class HelpPetfAdoption {
         this.adoptionService = adoptionService;
     }
     
-	@GetMapping("/adoptionaaa")
+	@GetMapping("/adoption/getJson")
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson() throws Exception {
 
 		return adoptionService.fetchAdoptionData();
