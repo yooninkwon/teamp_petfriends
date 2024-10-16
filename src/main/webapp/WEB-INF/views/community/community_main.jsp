@@ -18,7 +18,7 @@
     <!-- 핫토픽 섹션 -->
     <section class="hot-topics">
         <h3>오늘의 핫이슈!</h3>
-        <ul>
+       
 <ul>
     <li>
         <a href="#">
@@ -54,17 +54,64 @@
     </section>
 
 	    <!-- 사이드바 -->
-    <aside class="sidebar">
-       
-		<div class="ad-banner">
+   
+   
+   <div class="sidebar">
+   		<div class="ad-banner">
 		   <a href=""> <img src="/static/Images/community_img/ad1.jpg" alt="광고 배너" /> </a>
 		</div>
+   
+   <div class="post-header">
+    <div class="profile-info">
+        <img src="/static/Images/community_img/story1.jpeg" alt="Profile Image" class="profile-image">
+        <span class="user-name">살구엄마</span>
+   	<a href="#" class="login-button">로그아웃</a>
+    </div>
+</div>
+   
+   
+  
+  
+    <ul class="sidebar-menu">
+        <li><a href="#">내 피드</a></li>
+        <li><a href="#">글쓰기</a></li>
+        <li><a href="#">내 소식</a></li>
+        <li><a href="#">내 활동</a></li>
+        <li><a href="#">이웃 목록</a></li>
+    </ul>
+    <div class="sidebar-notice">
+        <h3>소식상자</h3>
+        <p>새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다
+        새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다.
+        새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다
+        새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다
+        새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다</p>
+    </div>
+    <div class="sidebar-from">
+        <h4>From. 블로그씨</h4>
+        <p>블로그씨는 최근 다녀온 몽골여행 기록으로 브이로그를 만들었어요.</p>
+        <p>나의 특별한 여행지에서의 영상도 보여드릴게요!</p>
+    </div>
+    <div class="ad-banner">
+        <a href=""> <img src="/static/Images/community_img/ad1.jpg" alt="광고 배너" /> </a>
+    </div>
+</div>
 	
-    </aside>
+
+   
+	
 	<!-- 펫프렌즈는 지금 뭐할까? -->
 <div class="container-box">
-    <div class="container-header"><span class="header-text">펫프렌즈는 지금 뭐할까?</span></div>
+    <div class="container-header"><span class="header-text">펫프렌즈는 지금 뭐할까?</span>
+	 <form class="search-form" action="/search" method="GET">
+        <input type="text" name="query" placeholder="검색어를 입력하세요" class="search-input">
+        <button type="submit" class="search-button">🔍</button>
+    </form>
+    </div>
+	
+	
 	<div class="story-container">
+		
 		    <li class="story-item">
 		            <a href="#">
 		                <img src="/static/Images/community_img/story1.jpeg" alt="스토리 이미지 1" class="story-image"/>
@@ -89,7 +136,7 @@
 		                <p>토리누나</p>
 		            </a>
 		        </li>
-		    </ul>
+		  
 		</div>
 </div>
 
@@ -141,48 +188,96 @@
 			</li>		
 			
 		 </ul>
-	</section>
+	
 
 
-<!-- 포스트 섹션 -->
-<section class="posts">
+<!-- 포스트 -->
+
     <article class="post-card">
         <div class="post-header">
-            <img src="/static/Images/community_img/story1.jpeg" alt="프로필 이미지 1" class="profile-image"/>
-            <h2 class="post-title"><a href="#">이 장난감 너무 좋네요~^^</a></h2>
+             <a href="#" class="profile-link">
+           		<div class="profile-info"> 
+           		  <img src="/static/Images/community_img/story1.jpeg" alt="프로필 이미지 1" class="profile-image"/>               
+           		  <span class="user-name">살구언니</span>
+       		 </a>
+           	<span class="post-time">2 시간 전</span>
+            </div>
+            <h2 class="post-title"><a href="#">이 장난감 너무 좋네요~^^ 아이들이 너무 좋아해 (내돈내산)</h2>
+            <p class="summary post-content">우리 강아지는 어렸을때 부터 이걸 좋아했어요!
+            이제 진짜 너무 좋아서 우리 강아지들이 너무 사랑하고 아끼는거랍니다 아무한테나 정말 안알려주는데
+            특별히 우리 펫프렌즈 분들에게 알려드릴게요! 자이게 뭐냐면 </a></p>
         </div>
-        <p class="summary post-content"><a href="#">우리 강아지는 어렸을때 부터 이걸 좋아했...</a></p>
         <img src="/static/Images/community_img/hot_issue1.jpg" alt="포스트 1 이미지" class="post-image"/>
         <div class="post-footer">
             <span class="like-button">❤️ 20</span>
             <span class="comment-button">💬 5</span>
         </div>
     </article>
+    
     <article class="post-card">
         <div class="post-header">
-            <img src="/static/Images/community_img/story2.jpeg" alt="프로필 이미지 2" class="profile-image"/>
-            <h2 class="post-title"><a href="#">포스트 제목 2</a></h2>
+             <a href="#" class="profile-link">
+           		<div class="profile-info"> 
+           		  <img src="/static/Images/community_img/story2.jpeg" alt="프로필 이미지 1" class="profile-image"/>               
+           		  <span class="user-name">살구언니</span>
+       		 </a>
+           	<span class="post-time">2 시간 전</span>
+            </div>
+            <h2 class="post-title"><a href="#">이 장난감 너무 좋네요~^^ 아이들이 너무 좋아해 (내돈내산)</h2>
+            <p class="summary post-content">우리 강아지는 어렸을때 부터 이걸 좋아했어요!
+            이제 진짜 너무 좋아서 우리 강아지들이 너무 사랑하고 아끼는거랍니다 아무한테나 정말 안알려주는데
+            특별히 우리 펫프렌즈 분들에게 알려드릴게요! 자이게 뭐냐면 </a></p>
         </div>
-        <p class="summary post-content"><a href="#">포스트 내용 2의 요약...</a></p>
-        <img src="/static/Images/community_img/post_image2.jpg" alt="포스트 2 이미지" class="post-image"/>
+        <img src="/static/Images/community_img/hot_issue2.jpg" alt="포스트 1 이미지" class="post-image"/>
         <div class="post-footer">
-            <span class="like-button">❤️ 15</span>
-            <span class="comment-button">💬 2</span>
+            <span class="like-button">❤️ 20</span>
+            <span class="comment-button">💬 5</span>
         </div>
     </article>
-    <!-- 추가 포스트 -->
+    
     <article class="post-card">
         <div class="post-header">
-            <img src="/static/Images/community_img/story3.jpeg" alt="프로필 이미지 3" class="profile-image"/>
-            <h2 class="post-title"><a href="#">포스트 제목 3</a></h2>
+             <a href="#" class="profile-link">
+           		<div class="profile-info"> 
+           		  <img src="/static/Images/community_img/story3.jpeg" alt="프로필 이미지 1" class="profile-image"/>               
+           		  <span class="user-name">살구언니</span>
+       		 </a>
+           	<span class="post-time">2 시간 전</span>
+            </div>
+            <h2 class="post-title"><a href="#">이 장난감 너무 좋네요~^^ 아이들이 너무 좋아해 (내돈내산)</h2>
+            <p class="summary post-content">우리 강아지는 어렸을때 부터 이걸 좋아했어요!
+            이제 진짜 너무 좋아서 우리 강아지들이 너무 사랑하고 아끼는거랍니다 아무한테나 정말 안알려주는데
+            특별히 우리 펫프렌즈 분들에게 알려드릴게요! 자이게 뭐냐면 </a></p>
         </div>
-        <p class="summary post-content"><a href="#">포스트 내용 3의 요약...</a></p>
-        <img src="/static/Images/community_img/post_image3.jpg" alt="포스트 3 이미지" class="post-image"/>
+        <img src="/static/Images/community_img/hot_issue3.jpg" alt="포스트 1 이미지" class="post-image"/>
         <div class="post-footer">
-            <span class="like-button">❤️ 30</span>
-            <span class="comment-button">💬 8</span>
+            <span class="like-button">❤️ 20</span>
+            <span class="comment-button">💬 5</span>
         </div>
     </article>
+
+
+ <article class="post-card">
+        <div class="post-header">
+             <a href="#" class="profile-link">
+           		<div class="profile-info"> 
+           		  <img src="/static/Images/community_img/story1.jpeg" alt="프로필 이미지 1" class="profile-image"/>               
+           		  <span class="user-name">살구언니</span>
+       		 </a>
+           	<span class="post-time">2 시간 전</span>
+            </div>
+            <h2 class="post-title"><a href="#">이 장난감 너무 좋네요~^^ 아이들이 너무 좋아해 (내돈내산)</h2>
+            <p class="summary post-content">우리 강아지는 어렸을때 부터 이걸 좋아했어요!
+            이제 진짜 너무 좋아서 우리 강아지들이 너무 사랑하고 아끼는거랍니다 아무한테나 정말 안알려주는데
+            특별히 우리 펫프렌즈 분들에게 알려드릴게요! 자이게 뭐냐면 </a></p>
+        </div>
+        <img src="/static/Images/community_img/hot_issue1.jpg" alt="포스트 1 이미지" class="post-image"/>
+        <div class="post-footer">
+            <span class="like-button">❤️ 20</span>
+            <span class="comment-button">💬 5</span>
+        </div>
+    </article>
+
 </section>
 
 </main>
