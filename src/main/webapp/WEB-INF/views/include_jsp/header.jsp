@@ -28,7 +28,7 @@
     <ul>
         <li><a href="/product/productlist">PRODUCT</a></li>
         <li><a href="">NOTICE</a></li>
-        <li><a href="/community_main">COMMUNITY</a></li>
+        <li><a href="/community/main">COMMUNITY</a></li>
         <li><a href="/helppetf/find/pet_hospital">HELP PETF!</a></li>
         
         <c:if test="${sessionScope.name ne null }">

@@ -1,15 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insert title here</title>
-    <link rel="stylesheet" href="/static/css/community_main.css">
+    <link rel="stylesheet" href="/static/css/community/community_main.css">
     <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 </head>
 
 <body>
+  <div class="container">
     <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
  <main>
@@ -74,7 +77,7 @@
   
     <ul class="sidebar-menu">
         <li><a href="#">내 피드</a></li>
-        <li><a href="#">글쓰기</a></li>
+        <li><a href="/community/write">글쓰기</a></li>
         <li><a href="#">내 소식</a></li>
         <li><a href="#">내 활동</a></li>
         <li><a href="#">이웃 목록</a></li>
@@ -282,6 +285,7 @@
 
 </main>
 
-    <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
+</div>
 </body>
+    <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </html>
