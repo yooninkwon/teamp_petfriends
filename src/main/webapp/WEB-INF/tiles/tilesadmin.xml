@@ -3,44 +3,44 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
-	<definition name="baselayout" template="/WEB-INF/views/admin/common/layout.jsp">
-		<put-attribute name="title" value="펫프렌즈 : 관리자 페이지" />
-		<put-attribute name="header" value="/WEB-INF/views/admin/common/header.jsp" />
-		<put-attribute name="side" value="/WEB-INF/views/admin/common/side.jsp" />
-		<put-attribute name="body" value="" />
+	<definition name="admin_baselayout" template="/WEB-INF/views/admin/common/layout.jsp">
+		<put-attribute name="admin_title" value="펫프렌즈 : 관리자 페이지" />
+		<put-attribute name="admin_header" value="/WEB-INF/views/admin/common/header.jsp" />
+		<put-attribute name="admin_side" value="/WEB-INF/views/admin/common/side.jsp" />
+		<put-attribute name="admin_body" value="" />
 	</definition>
 	
-	<definition name="admin/home" extends="baselayout">
-		<put-attribute name="body" value="/WEB-INF/views/admin/body/home.jsp" />
+	<definition name="admin/home" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/home.jsp" />
 	</definition>
-	<definition name="admin/order" extends="baselayout">
-		<put-attribute name="body" value="/WEB-INF/views/admin/body/order.jsp" />
+	<definition name="admin/order" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/order.jsp" />
 	</definition>
-	<definition name="admin/coupon" extends="baselayout">
-		<put-attribute name="body" value="/WEB-INF/views/admin/body/coupon.jsp" />
+	<definition name="admin/coupon" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/coupon.jsp" />
 	</definition>
-	<definition name="admin/product" extends="baselayout">
-		<put-attribute name="body" value="/WEB-INF/views/admin/body/product.jsp" />
+	<definition name="admin/product" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/product.jsp" />
 	</definition>
-	<definition name="admin/customer_status" extends="baselayout">
-		<put-attribute name="body" value="/WEB-INF/views/admin/body/customer-status.jsp" />
+	<definition name="admin/customer_status" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/customer-status.jsp" />
 	</definition>
-	<definition name="admin/customer_info" extends="baselayout">
-		<put-attribute name="body" value="/WEB-INF/views/admin/body/customer-info.jsp" />
+	<definition name="admin/customer_info" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/customer-info.jsp" />
 	</definition>
-	<definition name="admin/community" extends="baselayout">
-		<put-attribute name="body" value="/WEB-INF/views/admin/body/community.jsp" />
+	<definition name="admin/community" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/community.jsp" />
 	</definition>
-	<definition name="admin/petture" extends="baselayout">
-		<put-attribute name="body" value="/WEB-INF/views/admin/body/petture.jsp" />
+	<definition name="admin/petture" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/petture.jsp" />
 	</definition>
-	<definition name="admin/notice" extends="baselayout">
-		<put-attribute name="body" value="/WEB-INF/views/admin/body/notice.jsp" />
+	<definition name="admin/notice" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/notice.jsp" />
 	</definition>
-	<definition name="admin/sales" extends="baselayout">
-		<put-attribute name="body" value="/WEB-INF/views/admin/body/sales.jsp" />
+	<definition name="admin/sales" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/sales.jsp" />
 	</definition>
-	<definition name="admin/customer" extends="baselayout">
-		<put-attribute name="body" value="/WEB-INF/views/admin/body/customer.jsp" />
+	<definition name="admin/customer" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/customer.jsp" />
 	</definition>
 </tiles-definitions>

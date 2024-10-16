@@ -6,10 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>
-	admin_body
+	mypage_body
 </title>
 </head>
 <body>
-통계 등등
+내 새꾸
 </body>
 </html>

@@ -3,7 +3,9 @@ package com.tech.petfriends.login.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +26,17 @@ public class LoginController {
 	    private MemberMapper memberMapper;
 	
 	@GetMapping("/loginPage")
-	public String loginPage() {
+	public String LoginPage() {
 		System.out.println("로그인 페이지 이동");
 		return "login/loginPage";
 	}
 	
 	@PostMapping("/loginService")
-    public String loginService(HttpServletRequest request, Model model, HttpSession session) {
+    public String LoginService(HttpServletRequest request, HttpServletResponse response,
+    		Model model, HttpSession session) {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String remember = request.getParameter("remember");
 
         System.out.println("email : " + email);
         System.out.println("password : " + password);
@@ -51,6 +55,21 @@ public class LoginController {
             session.setAttribute("name", member.getName());
             System.out.println(member.getName() + " 님 환영합니다.");
             
+         // 아이디 저장 체크박스가 선택된 경우
+            if ("on".equals(remember)) {
+                Cookie emailCookie = new Cookie("email", email);
+                emailCookie.setMaxAge(60 * 60 * 24 * 30); // 쿠키 유효 기간 30일
+                emailCookie.setPath("/"); // 모든 경로에서 쿠키 접근 가능
+                response.addCookie(emailCookie);
+                System.out.println("쿠키 저장됨 / 저장된 이메일 : " + email);
+            } else {
+                // 아이디 저장 체크박스가 선택되지 않은 경우 쿠키 삭제
+                Cookie emailCookie = new Cookie("email", null);
+                emailCookie.setMaxAge(0); // 쿠키 삭제
+                emailCookie.setPath("/"); 
+                response.addCookie(emailCookie);
+                System.out.println("쿠키 삭제됨 / 삭제된 이메일 : " + email);
+            }      
             return "redirect:/";  // 로그인 성공 시 애플리케이션 루트 경로의 index 페이지로 이동
         } else {
             System.out.println("로그인 실패");
@@ -58,5 +77,18 @@ public class LoginController {
             return "login/loginPage";  // 로그인 실패 시 로그인 페이지로 다시 이동
         }
     }
+	
+	@GetMapping("/findId")
+	public String FindId() {
+		System.out.println("아이디 찾기 이동");
+		return "login/findId";
+	}
+	
+	@GetMapping("/findPw")
+	public String FindPw() {
+		System.out.println("비밀번호 찾기 이동");
+		return "login/findPw";
+	}
+	
 	
 }

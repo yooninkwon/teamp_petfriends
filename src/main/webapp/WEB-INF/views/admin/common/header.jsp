@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>
-	header
+	admin_header
 </title>
 </head>
 <body>
