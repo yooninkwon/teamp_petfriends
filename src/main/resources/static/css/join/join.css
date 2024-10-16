@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+h1 {
+	font-size: 50px;
+	margin-left: -500px;
+	text-align: center;
+	margin-top: 100px;
+	margin-bottom: 30px;
+}
+
+.signup-form {
+	border: 2px solid black;
+	border-radius: 20px;
+    width: 70%;
+    margin: 0px auto; /* 가로 방향 중앙 정렬 */
+    height: 600px;
+    overflow: hidden; /* 자식 요소가 부모를 벗어나지 않도록 설정 */
+    text-align: center;
+    padding-top: 30px;
+}
+
+.left-column {
+    width: 50%;
+    height: 500px;
+    float: left; /* 왼쪽에 배치 */
+    text-align: center;
+}
+
+.right-column {
+    width: 50%;
+    height: 500px;
+    float: right; /* 오른쪽에 배치 */
+    text-align: center;
+}
+
+label {
+	width: 500px;
+	height: 50px;
+	
+}
+
+input {
+	width: 500px;
+	height: 50px;
+	margin-bottom: 20px;
+	margin-top: 10px;
+}
+
+.submit-btn{
+	margin-top: 50px;	
+}
+
+
+

@@ -31,7 +31,7 @@
 			</form>
             <div id="login1_bottom">
                 <h4>아직 펫프렌즈 회원이 아니신가요?
-                <a href="#">여기를 눌러 회원가입</a></h4> 
+                <a href="/join/joinPage">여기를 눌러 회원가입</a></h4> 
             </div>
         </div>
         <div class="login_slider">
