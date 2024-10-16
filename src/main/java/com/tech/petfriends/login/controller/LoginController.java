@@ -84,5 +84,11 @@ public class LoginController {
 		return "login/findId";
 	}
 	
+	@GetMapping("/findPw")
+	public String FindPw() {
+		System.out.println("비밀번호 찾기 이동");
+		return "login/findPw";
+	}
+	
 	
 }
