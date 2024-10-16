@@ -29,7 +29,7 @@ public class AdoptionItemDto {
 
 //	유기번호
 	@JsonProperty("desertionNo")
-	private int desertionNo;
+	private String desertionNo;
 
 //	Thumbnail Image
 	@JsonProperty("filename")
@@ -65,11 +65,11 @@ public class AdoptionItemDto {
 
 //	공고시작일
 	@JsonProperty("noticeSdt")
-	private Date noticeSdt;
+	private String noticeSdt;
 
 //	공고종료일
 	@JsonProperty("noticeEdt")
-	private Date noticeEdt;
+	private String noticeEdt;
 
 //	Image
 	@JsonProperty("popfile")
