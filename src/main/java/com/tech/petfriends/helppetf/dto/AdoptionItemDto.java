@@ -37,7 +37,7 @@ public class AdoptionItemDto {
 
 //	접수일
 	@JsonProperty("happenDt")
-	private Date happenDt;
+	private String happenDt;
 
 //	발견장소
 	@JsonProperty("happenPlace")
