@@ -11,13 +11,13 @@ body, html {
 #container {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    min-height: 100vh;
 }
 
 #main {
     display: flex;
     flex-grow: 1;
+    margin-top: 130px;
+    flex-direction: row;
 }
 
 #sidebar-left {
@@ -29,11 +29,11 @@ body, html {
     border: 1px solid #e0e0e0;
     border-radius: 10px;
     
-    position: fixed;
-    top: 140px;
+    position: sticky;
+    top: 160px;
     left: 60px;
-    overflow-y: auto;
-    z-index: 1000;
+    z-index: 8;
+    margin-bottom: 20px;
 }
 #sidebar-left ul {
     list-style: none;
@@ -68,16 +68,19 @@ body, html {
 #content {
     flex-grow: 1;
     padding: 20px;
-    margin-top: 130px;
-    margin-left: 270px;
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 100vh;
 }
 h2 {
     text-align: center;
     margin-bottom: 40px;
+}
+
+#footer {
+    margin-top: auto;
 }
 
 /* 내 새꾸 */
