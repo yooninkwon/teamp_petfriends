@@ -1,54 +1,103 @@
 @charset "UTF-8";
 
-h1 {
-	font-size: 50px;
-	margin-left: -500px;
-	text-align: center;
-	margin-top: 100px;
-	margin-bottom: 30px;
-}
-
-.signup-form {
-	border: 2px solid black;
-	border-radius: 20px;
-    width: 70%;
-    margin: 0px auto; /* 가로 방향 중앙 정렬 */
-    height: 600px;
-    overflow: hidden; /* 자식 요소가 부모를 벗어나지 않도록 설정 */
-    text-align: center;
-    padding-top: 30px;
-}
-
-.left-column {
-    width: 50%;
-    height: 500px;
-    float: left; /* 왼쪽에 배치 */
-    text-align: center;
-}
-
-.right-column {
-    width: 50%;
-    height: 500px;
-    float: right; /* 오른쪽에 배치 */
-    text-align: center;
-}
-
-label {
-	width: 500px;
-	height: 50px;
+body{
+	background-color: #f8f8f8;
 	
 }
 
-input {
-	width: 500px;
-	height: 50px;
-	margin-bottom: 20px;
+h1 {
+    font-size: 40px;
+    color: #ff4081;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+.signup-form {
+    border-radius: 20px;
+    width: 60%;
+    margin: 0px auto; /* 가로 방향 중앙 정렬 */
+	margin-top: 100px;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+    box-shadow: 8px 10px 20px gray;
+    background-color: white;
+}
+
+.left-column, .right-column {
+    width: 45%;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 20px;
+}
+
+.phone-group, .address-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+label {
+	float: left;
+	margin-left: 50px;
+}
+
+.phone-group button, .address-group button {
+    margin-left: 10px;
+    margin-top: 8px;
+    background-color: #ff4081;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#email, #password ,#confirmPassword, #nickname,
+#name, #birth, #inviteCode, #detailAddress {
 	margin-top: 10px;
+    width: 400px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
-.submit-btn{
-	margin-top: 50px;	
+#verificationCode {
+	margin-top: 10px;
+    width: 400px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
+#phoneNumber, #address{
+	margin-top: 10px;
+	width: 310px;
+    padding: 10px;
+    margin-bottom: 0px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 48px;
+}
 
+.submit-btn {
+    width: 60%;
+	background-color: #ff4081;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+.phone-group button:hover, .address-group button:hover, .submit-btn:hover {
+	background-color: #e62e59;
+	
+}
 
