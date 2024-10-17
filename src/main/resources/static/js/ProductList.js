@@ -1,96 +1,99 @@
 $(document).ready(function() {
+	// 라디오 버튼이 변경될 때마다 실행
+	$('input[type="radio"]').change(function() {
+		// 선택된 petType과 proType 값 확인
+		var petType = $('input[name="petType"]:checked').val();
+		var proType = $('input[name="proType"]:checked').val();
+		var df = $('input[name="dfoodType"]:checked').val();
+		var ds = $('input[name="dsnackType"]:checked').val();
+		var dg = $('input[name="dgoodsType"]:checked').val();
+		var cf = $('input[name="cfoodType"]:checked').val();
+		var cs = $('input[name="csnackType"]:checked').val();
+		var cg = $('input[name="cgoodsType"]:checked').val();
 
-
-
-	$('.filter1').click(function() {
-		// 선택된 버튼의 클래스에 clicked 추가
-		$(this).addClass('clicked');
-		// 다른 filter1 클래스 버튼들은 clicked 해제
-		$('.filter1').not(this).removeClass('clicked');
-		updateSubtypeButtons();
-
-	});
-
-	$('.filter2').click(function() {
-		// 선택된 버튼의 클래스에 clicked 추가
-		$(this).addClass('clicked');
-		// 다른 filter2 클래스 버튼들은 clicked 해제
-		$('.filter2').not(this).removeClass('clicked');
-		updateSubtypeButtons();
-
-	});
-
-	// 동적으로 생성된 filter3 버튼에 이벤트 바인딩
-	$(document).on('click', '.filter3', function() {
-		$(this).addClass('clicked');
-		$('.filter3').not(this).removeClass('clicked');
-		updateFilterButtons();
-	});
-
-	const subtypeButtons = {
-		dog: {
-			food: ['전체', '습식사료', '소프트사료', '건식사료'],
-			snack: ['전체', '수제간식', '껌', '사시미/육포'],
-			item: ['전체', '배변용품', '장난감']
-		},
-		cat: {
-			food: ['전체', '주식캔', '파우치', '건식사료'],
-			snack: ['전체', '간식캔', '동결건조', '스낵'],
-			item: ['전체', '낚시대/레이져', '스크래쳐/박스']
+		// 모든 그룹 숨기기
+		$("#df, #ds, #dg, #cf, #cs, #cg, .filter > div").hide();
+		// 강아지와 사료가 선택된 경우 df 표시
+		if (petType === "dog" && proType === "food") {
+			$("#df").show();
+			// df 외의 나머지 그룹 체크 해제
+			$("#ds input[type='radio'], #dg input[type='radio'], #cf input[type='radio'], #cs input[type='radio'], #cg input[type='radio']").prop('checked', false);
 		}
-	};
-
-	function updateSubtypeButtons() {
-		// 현재 선택된 버튼 확인
-		const isDogActive = $('#강아지').hasClass('clicked');
-		const isCatActive = $('#고양이').hasClass('clicked');
-		const isFoodActive = $('#사료').hasClass('clicked');
-		const isSnackActive = $('#간식').hasClass('clicked');
-		const isItemActive = $('#용품').hasClass('clicked');
-
-		// 세부 버튼 초기화
-		$('#category2').empty();
-
-		// 조건에 따라 세부 버튼 추가
-		if (isDogActive) {
-			if (isFoodActive) {
-				addSubtypeButtons(subtypeButtons.dog.food);
-			} else if (isSnackActive) {
-				addSubtypeButtons(subtypeButtons.dog.snack);
-			} else if (isItemActive) {
-				addSubtypeButtons(subtypeButtons.dog.item);
-			}
-		} else if (isCatActive) {
-			if (isFoodActive) {
-				addSubtypeButtons(subtypeButtons.cat.food);
-			} else if (isSnackActive) {
-				addSubtypeButtons(subtypeButtons.cat.snack);
-			} else if (isItemActive) {
-				addSubtypeButtons(subtypeButtons.cat.item);
-			}
+		// 강아지와 간식이 선택된 경우 ds 표시
+		else if (petType === "dog" && proType === "snack") {
+			$("#ds").show();
+			// ds 외의 나머지 그룹 체크 해제
+			$("#df input[type='radio'], #dg input[type='radio'], #cf input[type='radio'], #cs input[type='radio'], #cg input[type='radio']").prop('checked', false);
+		}
+		// 강아지와 용품이 선택된 경우 dg 표시
+		else if (petType === "dog" && proType === "goods") {
+			$("#dg").show();
+			// dg 외의 나머지 그룹 체크 해제
+			$("#df input[type='radio'], #ds input[type='radio'], #cf input[type='radio'], #cs input[type='radio'], #cg input[type='radio']").prop('checked', false);
+		}
+		// 고양이와 사료가 선택된 경우 cf 표시
+		else if (petType === "cat" && proType === "food") {
+			$("#cf").show();
+			// cf 외의 나머지 그룹 체크 해제
+			$("#df input[type='radio'], #ds input[type='radio'], #dg input[type='radio'], #cs input[type='radio'], #cg input[type='radio']").prop('checked', false);
+		}
+		// 고양이와 간식이 선택된 경우 cs 표시
+		else if (petType === "cat" && proType === "snack") {
+			$("#cs").show();
+			// cs 외의 나머지 그룹 체크 해제
+			$("#df input[type='radio'], #ds input[type='radio'], #dg input[type='radio'], #cf input[type='radio'], #cg input[type='radio']").prop('checked', false);
+		}
+		// 고양이와 용품이 선택된 경우 cg 표시
+		else if (petType === "cat" && proType === "goods") {
+			$("#cg").show();
+			// cg 외의 나머지 그룹 체크 해제
+			$("#df input[type='radio'], #ds input[type='radio'], #dg input[type='radio'], #cf input[type='radio'], #cs input[type='radio']").prop('checked', false);
 		}
 
-		// 첫 번째 버튼 ('전체')을 기본으로 활성화
-		$('#category2 button').first().addClass('clicked');
-	}
+		//강아지 고양이 / 사료 간식 용품 조합에 다른 라디오버튼 생성(상세타입)
+		if (petType === "dog") {
+			if (proType === "food" || proType === "snack") {
+				if (df || ds) {
+					$("#option_dfs1").show();
+					$("#option_dfs2").show();
+				}
+			} else if (proType === "goods") {
+				if (dg === "dgoodstype1") {
+					$("#option_dg1").show();
+				} else if (dg === "dgoodstype2")
+					$("#option_dg2").show();
 
-	function addSubtypeButtons(buttons) {
-		buttons.forEach(buttonText => {
-			$('#category2').append(`<button type="button" class="filter3" id="${buttonText}">${buttonText}</button>`);
-		});
-	}
+			}
 
+		} else if (petType === "cat") {
+			if (proType === "food" || proType === "snack") {
+				if (cf || cs) {
 
-	// 필터 버튼 클릭 시 체크박스 또는 라디오 버튼 토글
-	$('.filter-button').click(function() {
-		$(this).next('.filter-options').toggle(); // 다음 요소(체크박스 또는 라디오 버튼)를 토글
+					$("#option_cfs1").show();
+					$("#option_cfs2").show();
+				}
+			} else if (proType === "goods") {
+				if (cg === "cgoodstype1") {
+					$("#option_cg1").show();
+				} else if (cg === "cgoodstype2") {
+					$("#option_cg2").show();
+				}
+			}
+		}
+		$("#option_price").show();
+		$("#option_rank").show();
 	});
 
-	// 페이지 로드 시 체크박스 및 라디오 버튼 숨기기
-	$('.filter-options').hide(); // 모든 필터 옵션 숨기기
+	// 펫타입, 상품종류, 상품타입 체크변경시 필터옵션 체크 해제
+	$('.firsttype, .thirdtype  input[type="radio"]').change(function() {
+		$(".filter > div input[type='radio'], .filter > div input[type='checkbox']").prop('checked', false);
+	});
 	
-	function updateFilter(){
-		
-	}
+	
+	
+	// 페이지 로드 시 초기 상태 설정
+	$('input[type="radio"]:checked').trigger('change');
+
+
 
 });
