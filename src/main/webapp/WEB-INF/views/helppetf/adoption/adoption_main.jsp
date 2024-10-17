@@ -6,94 +6,14 @@
 <head>
 <meta charset="UTF-8">
 <title>입양 센터</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
+<link rel="stylesheet" href="/static/css/helppetf/adoption_main.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<style>
-body {
-	font-family: Arial, sans-serif;
-}
-
-a {
-	text-decoration: none;
-}
-
-.adoption-container {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	max-width: 1200px;
-	margin: 0 auto;
-}
-
-.adoption-card {
-	border: 1px solid #e0e0e0;
-	border-radius: 10px;
-	overflow: hidden;
-	margin: 10px;
-	width: calc(25% - 40px);
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	transition: transform 0.3s ease;
-}
-
-.adoption-card:hover {
-	transform: scale(1.05);
-}
-
-.adoption-card img {
-	width: 100%;
-	height: 200px;
-	object-fit: cover;
-}
-
-.adoption-card .content {
-	padding: 15px;
-}
-
-.adoption-card h3 {
-	margin: 0;
-	font-size: 18px;
-	color: #333;
-}
-
-.adoption-card p {
-	margin: 8px 0;
-	font-size: 14px;
-	color: #666;
-}
-
-.adoption-card .info {
-	font-weight: bold;
-	font-size: 12px;
-	color: #888;
-}
-
-/* Pagination styles */
-.pagination {
-	display: flex;
-	justify-content: center;
-	margin: 20px 0;
-}
-
-.pagination a {
-	padding: 8px 16px;
-	margin: 0 4px;
-	background-color: #f1f1f1;
-	border-radius: 4px;
-	text-decoration: none;
-	color: #333;
-}
-
-.pagination a.active {
-	background-color: #FF4081;
-	color: white;
-}
-</style>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
-	<br /><
+	<br />
 	<br />
 	<br />
 	<h1>입양 센터</h1>
@@ -123,7 +43,6 @@ a {
 // JSON 요청
         $(document).ready(function() {
             fetchData(currentPage); // <- 페이지가 로드되면 호출: fetchData(currentPage);
-            var i = 0;
             function fetchData(page) {
                 $.ajax({
                     url: '/helppetf/adoption/getJson', // api 불러오는 mapping
@@ -142,19 +61,14 @@ a {
                 });
             }
             
-			/* // 테스트:: test_result에 adoptionItems(오브젝트)중 desertionNo가 "어쩌구"인 오브젝트를 반환
-			const test_result = adoptionItems.find(obj => obj.desertionNo === "447513202401236");
-        	console.log(test_result); */
-        	
             function displayItems(page) {
                 const start = (page - 1) * itemsPerPage;
                 const end = start + itemsPerPage;
                 const visibleItems = adoptionItems.slice(start, end);
-                                                // console.log(start+'123'+index)
+                
 // item 객체의 정보를 테이블로 출력
                 let cards = '';
                 $.each(visibleItems, function(index, item) {
-/* 오브젝트를 직접 전달? */ 
 			 		cards += '<div class="adoption-card"><a href="#" class="adoption-link" data-index="'+ (start + index) +'">';
                     cards += '<img src="' + item.popfile + '" alt="Pet Image" />';
                     cards += '<div class="content">';
@@ -167,46 +81,13 @@ a {
                     cards += '</div>';
                     cards += '</a></div>';
                     
-        			/* 테스트:: test_result에 adoptionItems(오브젝트)중 desertionNo가 "어쩌3구"인 오브젝트를 반환
-        			const test_result = adoptionItems.find(obj => obj.desertionNo === "447513202401236");
-                	console.log(test_result); */
-                	
-                    i++;
                 });
 
                 $('#adoptionContainer').html(cards);
             }
-            
-            
-           // 테스트: Object를 Json으로 변환해서 자바로 보내기 
-          
-			$(document).on('click', '.adoption-link', function(event) {
-			    event.preventDefault();
-			    const index = $(this).data('index'); // 클릭한 요소의 인덱스 값을 가져옴
-			    const selectedItem = adoptionItems[index]; // adoptionItems 배열에서 해당하는 객체 가져오기
-				    $.ajax({
-			        url: '/helppetf/adoption/adoption_data', // 전송할 URL
-			        method: 'POST',
-			        contentType: 'application/json',
-			        data: JSON.stringify(selectedItem), // 객체를 JSON으로 변환하여 전송
-			        success: function(response) {
-			            console.log('Success:', response);
-			            // 서버 응답에 따라 페이지 이동 또는 다른 작업 수행
-			            window.location.href = '/helppetf/adoption/adoption_content_view'; // 페이지 이동 예시
-			        },
-			        error: function(xhr, status, error) {
-			            window.location.href = '/helppetf/adoption/adoption_content_view'; // 페이지 이동 예시
-			            console.error('Error:', error);
-			        }
-			    }); 
-			}); 
-            /* 
-			 document.addEventListener('DOMContentLoaded', function() {
-			    // .adoption-link 클릭 이벤트 리스너 추가
-			    document.querySelectorAll('.adoption-link').forEach(function(link, index) {
-			        link.addEventListener('click', function(event) {
+		        	$(document).on('click', '.adoption-link', function(event) {
 			            event.preventDefault(); // 기본 링크 클릭 동작 방지
-			            
+			            const index = $(this).data('index'); // 클릭한 요소의 인덱스 값을 가져옴
 			            // 선택된 항목 가져오기
 			            const selectedItem = adoptionItems[index]; // adoptionItems 배열에서 선택된 객체
 			            
@@ -226,16 +107,13 @@ a {
 			            })
 			            .then(data => {
 			                console.log('Success:', data);
-			                // 서버 응답에 따라 추가 작업 수행
-			                window.location.href = '/helppetf/adoption/adoption_content_view'; // 리다이렉트
+			                window.location.href = '/helppetf/adoption/adoption_detail'; // 리다이렉트
 			            })
 			            .catch(error => {
 			                console.error('Error:', error);
-			            }); //여기까지
+			            });
 			        });
-			    });
-			});
-			  */
+			  
             
 			// 페이징 은 자바로 다시 할 예정
             function setupPagination() {
@@ -262,5 +140,8 @@ a {
     </script>
 
 	<!-- @ TODO: 페이징, 필터링, 상세 페이지 등 -->
+	
+	
+    <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>
