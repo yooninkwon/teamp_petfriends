@@ -52,8 +52,10 @@ public class LoginController {
         if (member != null) {
             System.out.println("로그인 성공");
             // 세션에 사용자 닉네임 저장
-            session.setAttribute("name", member.getName());
-            System.out.println(member.getName() + " 님 환영합니다.");
+            session.setAttribute("name", member.getMem_name());
+            // 세션에 사용자 회원번호 저장
+            session.setAttribute("mem_code", member.getMem_code());
+            System.out.println(member.getMem_name() + " 님 환영합니다.");
             
          // 아이디 저장 체크박스가 선택된 경우
             if ("on".equals(remember)) {
