@@ -7,10 +7,10 @@
 
     <!-- 이메일과 비밀번호로 회원을 조회 -->
     <select id="getMemberByEmailAndPassword" parameterType="map" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
-	    SELECT email, pw, name 
-	    FROM MEMBERTEST 
-	    WHERE EMAIL = #{email} 
-	    AND PW = #{password}
+	    SELECT * 
+	    FROM MEMBER 
+	    WHERE MEM_EMAIL = #{email} 
+	    AND MEM_PW = #{password}
 	</select>
 
 </mapper>
