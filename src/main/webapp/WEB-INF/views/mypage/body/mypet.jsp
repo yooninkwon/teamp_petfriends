@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,29 @@
 <body>
 <h2>내 새꾸</h2>
 <div class="mypet-container">
+    <c:forEach items="${pets }" var="pets">
+    	<div class="mypet-card">
+		    <div class="pet-radio">
+		        <input type="radio" id="select-pet" name="pet" />
+		        <label for="select-pet">이 아이로 활동하기</label>
+		    </div>
+		    <div class="pet-image">
+		        <img src="<c:url value='/static/Images/Icons/pet_icon_placeholder.png' />" />
+		    </div>
+		    ${pets.pet_gender}
+		    <div class="pet-info">
+		        <h2>${pets.pet_name}</h2>
+		        <p>[${pets.pet_breed}]</p>
+		        <p>${pets.pet_birth} | ${pets.pet_weight}</p>
+		    </div>
+		    <div class="pet-status">
+		        <span class="status-pill">${pets.pet_care}</span>
+		        <span class="status-text">에 신경을 쓰고 있어요.</span>
+		    </div>
+		    <a href="/mypage/mypet/modify" class="edit-button">수정하기</a>
+		</div>
+	</c:forEach>
+	
     <div class="mypet-card">
         <a href="/mypage/mypet/register" class="mypet-card-link">
             <div class="mypet-card-content">
