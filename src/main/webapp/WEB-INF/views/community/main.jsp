@@ -1,15 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insert title here</title>
-    <link rel="stylesheet" href="/static/css/community_main.css">
+    <link rel="stylesheet" href="/static/css/community/community_main.css">
     <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 </head>
 
 <body>
+  <div class="container">
     <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
  <main>
@@ -74,7 +77,7 @@
   
     <ul class="sidebar-menu">
         <li><a href="#">내 피드</a></li>
-        <li><a href="#">글쓰기</a></li>
+        <li><a href="/community/writeView">글쓰기</a></li>
         <li><a href="#">내 소식</a></li>
         <li><a href="#">내 활동</a></li>
         <li><a href="#">이웃 목록</a></li>
@@ -193,95 +196,33 @@
 
 <!-- 포스트 -->
 
+   <c:forEach items="${postList }" var="post" >
     <article class="post-card">
         <div class="post-header">
              <a href="#" class="profile-link">
            		<div class="profile-info"> 
            		  <img src="/static/Images/community_img/story1.jpeg" alt="프로필 이미지 1" class="profile-image"/>               
-           		  <span class="user-name">살구언니</span>
+           		  <span class="user-name">${post.user_id }</span>
        		 </a>
-           	<span class="post-time">2 시간 전</span>
+           	<span class="post-time">${post.board_created}</span>
             </div>
-            <h2 class="post-title"><a href="#">이 장난감 너무 좋네요~^^ 아이들이 너무 좋아해 (내돈내산)</h2>
-            <p class="summary post-content">우리 강아지는 어렸을때 부터 이걸 좋아했어요!
-            이제 진짜 너무 좋아서 우리 강아지들이 너무 사랑하고 아끼는거랍니다 아무한테나 정말 안알려주는데
-            특별히 우리 펫프렌즈 분들에게 알려드릴게요! 자이게 뭐냐면 </a></p>
+            <h2 class="post-title"><a href="#">${post.board_title}</h2>
+            <p class="summary post-content">${post.board_content}</a></p>
         </div>
-        <img src="/static/Images/community_img/hot_issue1.jpg" alt="포스트 1 이미지" class="post-image"/>
+        <img src="/static/Images/community_img/${post.cchgfile}" alt="포스트 1 이미지" class="post-image"/>
         <div class="post-footer">
-            <span class="like-button">❤️ 20</span>
-            <span class="comment-button">💬 5</span>
+            <span class="like-button">❤️ ${post.board_likes}</span>
+            <span class="comment-button">💬 ${post.board_comment_count}</span>
         </div>
     </article>
+   </c:forEach>
     
-    <article class="post-card">
-        <div class="post-header">
-             <a href="#" class="profile-link">
-           		<div class="profile-info"> 
-           		  <img src="/static/Images/community_img/story2.jpeg" alt="프로필 이미지 1" class="profile-image"/>               
-           		  <span class="user-name">살구언니</span>
-       		 </a>
-           	<span class="post-time">2 시간 전</span>
-            </div>
-            <h2 class="post-title"><a href="#">이 장난감 너무 좋네요~^^ 아이들이 너무 좋아해 (내돈내산)</h2>
-            <p class="summary post-content">우리 강아지는 어렸을때 부터 이걸 좋아했어요!
-            이제 진짜 너무 좋아서 우리 강아지들이 너무 사랑하고 아끼는거랍니다 아무한테나 정말 안알려주는데
-            특별히 우리 펫프렌즈 분들에게 알려드릴게요! 자이게 뭐냐면 </a></p>
-        </div>
-        <img src="/static/Images/community_img/hot_issue2.jpg" alt="포스트 1 이미지" class="post-image"/>
-        <div class="post-footer">
-            <span class="like-button">❤️ 20</span>
-            <span class="comment-button">💬 5</span>
-        </div>
-    </article>
-    
-    <article class="post-card">
-        <div class="post-header">
-             <a href="#" class="profile-link">
-           		<div class="profile-info"> 
-           		  <img src="/static/Images/community_img/story3.jpeg" alt="프로필 이미지 1" class="profile-image"/>               
-           		  <span class="user-name">살구언니</span>
-       		 </a>
-           	<span class="post-time">2 시간 전</span>
-            </div>
-            <h2 class="post-title"><a href="#">이 장난감 너무 좋네요~^^ 아이들이 너무 좋아해 (내돈내산)</h2>
-            <p class="summary post-content">우리 강아지는 어렸을때 부터 이걸 좋아했어요!
-            이제 진짜 너무 좋아서 우리 강아지들이 너무 사랑하고 아끼는거랍니다 아무한테나 정말 안알려주는데
-            특별히 우리 펫프렌즈 분들에게 알려드릴게요! 자이게 뭐냐면 </a></p>
-        </div>
-        <img src="/static/Images/community_img/hot_issue3.jpg" alt="포스트 1 이미지" class="post-image"/>
-        <div class="post-footer">
-            <span class="like-button">❤️ 20</span>
-            <span class="comment-button">💬 5</span>
-        </div>
-    </article>
-
-
- <article class="post-card">
-        <div class="post-header">
-             <a href="#" class="profile-link">
-           		<div class="profile-info"> 
-           		  <img src="/static/Images/community_img/story1.jpeg" alt="프로필 이미지 1" class="profile-image"/>               
-           		  <span class="user-name">살구언니</span>
-       		 </a>
-           	<span class="post-time">2 시간 전</span>
-            </div>
-            <h2 class="post-title"><a href="#">이 장난감 너무 좋네요~^^ 아이들이 너무 좋아해 (내돈내산)</h2>
-            <p class="summary post-content">우리 강아지는 어렸을때 부터 이걸 좋아했어요!
-            이제 진짜 너무 좋아서 우리 강아지들이 너무 사랑하고 아끼는거랍니다 아무한테나 정말 안알려주는데
-            특별히 우리 펫프렌즈 분들에게 알려드릴게요! 자이게 뭐냐면 </a></p>
-        </div>
-        <img src="/static/Images/community_img/hot_issue1.jpg" alt="포스트 1 이미지" class="post-image"/>
-        <div class="post-footer">
-            <span class="like-button">❤️ 20</span>
-            <span class="comment-button">💬 5</span>
-        </div>
-    </article>
 
 </section>
 
 </main>
 
-    <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
+</div>
 </body>
+    <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </html>

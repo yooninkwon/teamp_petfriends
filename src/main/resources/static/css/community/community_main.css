@@ -13,7 +13,21 @@ main {
     padding: 20px;
 	
 }
+body {
+    margin: 0; /* 기본 마진 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+}
 
+.container {
+    width: 80%; /* 전체 화면의 50%를 사용 */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+@media (min-width: 1200px) { /* 화면이 1200px 이상일 때 */
+    .container {
+        width: 80%; /* 50% 너비 */
+    }
+}
 
 /* 핫이슈 */
 .hot-topics {
@@ -390,7 +404,7 @@ main {
 .sidebar {
     position: absolute; /* 절대 위치 설정 */
     top: 100px; /* 헤더의 높이에 따라 조정 */
-    right: 70px; /* 오른쪽 정렬 */
+    right: 160px; /* 오른쪽 정렬 */
     width: 350px; /* 화면 비율에 따라 사이드바 너비를 설정 */
     background-color: #fff; /* 배경색 */
     padding: 20px; /* 내부 여백 */
