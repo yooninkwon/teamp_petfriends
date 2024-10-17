@@ -15,7 +15,7 @@ import com.tech.petfriends.mypage.dto.MyPetDto;
 
 @Controller
 @RequestMapping("/mypage")
-public class MypageController {
+public class MyPageController {
 	
 	@Autowired
 	private MypageDao mypageDao;
