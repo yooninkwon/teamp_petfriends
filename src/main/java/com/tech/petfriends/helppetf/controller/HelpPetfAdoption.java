@@ -20,7 +20,6 @@ public class HelpPetfAdoption {
     }
     
 	@GetMapping("/helppetf/adoption/getJson")
-//	@GetMapping("/helppetf/adoption/getJson_test")
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson() throws Exception {
 
 		return adoptionService.fetchAdoptionData();
