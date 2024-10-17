@@ -1,27 +1,32 @@
 package com.tech.petfriends.mypage.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.tech.petfriends.admin.mapper.AdminPageDao;
-import com.tech.petfriends.admin.service.AdminPetteacherDelete;
-import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
-import com.tech.petfriends.admin.service.AdminPetteacherService;
-import com.tech.petfriends.admin.service.AdminPetteacherWriteService;
-import com.tech.petfriends.admin.service.AdminServiceInterface;
+import com.tech.petfriends.mypage.dao.MypageDao;
+import com.tech.petfriends.mypage.dto.MyPetDto;
 
 @Controller
 @RequestMapping("/mypage")
-public class MyPageController {
+public class MypageController {
+	
+	@Autowired
+	private MypageDao mypageDao;
 	
 	@GetMapping("/mypet")
-	public String mypet() {
+	public String mypet(Model model, HttpSession session) {
+		String memCode = (String) session.getAttribute("mem_code");
+		
+        ArrayList<MyPetDto> pets = mypageDao.getPetsByMemberCode(memCode);
+		model.addAttribute("pets",pets);
+		
 		return "mypage/mypet";
 	}
 	
