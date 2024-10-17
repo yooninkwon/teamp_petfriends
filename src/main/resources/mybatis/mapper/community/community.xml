@@ -2,9 +2,31 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
-<mapper namespace="com.tech.petfriends.community.mapper.CDao"> 
-    <select id="postlist" resultType="com.tech.petfriends.community.dto.CDto">
-        SELECT * FROM COMMUNITY_BOARD
-        ORDER BY BOARD_NO DESC
+<!-- 게시글 목록 가져오기 -->
+<mapper namespace="com.tech.petfriends.community.mapper.IDao"> 
+    <select id="getPostList" resultType="com.tech.petfriends.community.dto.CDto">
+        SELECT * FROM COMMUNITY_BOARD CD
+        JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
     </select>
+	
+	<insert id="write">
+		INSERT INTO COMMUNITY_BOARD (BOARD_NO, B_CATE_NO, U_NO, USER_ID, 
+		BOARD_TITLE, BOARD_PASSWORD, BOARD_CONTENT, BOARD_CREATED, BOARD_MODIFIED, BOARD_VIEWS, 
+		BOARD_TAG,  BOARD_LIKES, BOARD_COMMENT_COUNT) 
+		VALUES
+		(COMMUNITY_BOARD_SEQ.NEXTVAL, 2, 3, #{param1}, #{param2}, 1234, #{param3}, SYSTIMESTAMP, SYSTIMESTAMP, 
+		0, 'tag1', 10,3)
+	</insert>
+
+	<select id="selBid" resultType="_int">
+		SELECT MAX(BOARD_NO) FROM COMMUNITY_BOARD
+	</select>
+
+	<insert id="imgWrite">
+		INSERT INTO RE_CBOARD_IMAGE(REBNO, BOARD_NO, CORGFILE, CCHGFILE) VALUES
+		(RE_CBOARD_IMAGE_SEQ.NEXTVAL,
+		#{param1}, #{param2}, #{param3})
+	</insert>
+
+
 </mapper>
