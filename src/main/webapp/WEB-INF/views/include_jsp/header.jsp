@@ -26,8 +26,13 @@
 	        <li><a href="/community/main">COMMUNITY</a></li>
 	        <li><a href="/helppetf/find/pet_hospital">HELP PETF!</a></li>
 	        
+<<<<<<< HEAD
 	        <c:if test="${sessionScope.loginUser.mem_name ne null }">
 	        	<h3 id="welcome">${sessionScope.loginUser.mem_name}님 환영합니다.</h3>
+=======
+	        <c:if test="${sessionScope.name ne null }">
+	        	<h3 id="welcome">${sessionScope.loginUser.mem_name} }님 환영합니다.</h3>
+>>>>>>> aba4deda6098ccb3388b8e9f604e5cbb68dbe451
 	        </c:if>
 	        
 	    </ul>
