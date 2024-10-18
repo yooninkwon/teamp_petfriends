@@ -13,7 +13,7 @@
     <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
     <div class="signup-form">
-        <form action="/signup" method="post">
+        <form action="joinService" method="post">
     	<h1>펫프렌즈에 오신걸 환영합니다!</h1>
             <div class="left-column">
                 <label for="email">이메일</label> <br />
@@ -41,7 +41,13 @@
                 <label for="name">이름</label> <br />
                 <input type="text" id="name" name="name" placeholder="김펫프"> <br />
 
-                <label for="birth">생년월일/성별</label> <br />
+                <label for="birth">생년월일/성별</label>
+                
+                <div id="genderRadioGroup">
+	                <input type="radio" id="gender" name="gender" value="M" checked /> 남성
+	                <input type="radio" id="gender" name="gender" value="F" /> 여성
+                </div>
+                
                 <input type="text" id="birth" name="birth" placeholder="20000922"> <br />
 
                 <label for="inviteCode">초대코드 입력 (선택)</label> <br />
@@ -49,7 +55,7 @@
 
                 <label for="address">주소</label> <br />
                 <div class="address-group">
-                    <input type="text" id="address" name="address" placeholder="주소 입력" disabled>
+                    <input type="text" id="address" name="address" placeholder="주소 입력" >
                     <button type="button">주소 검색</button> <br />
                 </div>
                 <label for="detailAddress">상세주소</label> <br />

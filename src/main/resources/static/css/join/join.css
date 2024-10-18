@@ -84,6 +84,10 @@ label {
     margin-left: 48px;
 }
 
+#genderRadioGroup{
+	margin-left: 300px;
+}
+
 .submit-btn {
     width: 60%;
 	background-color: #ff4081;
