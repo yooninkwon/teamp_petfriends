@@ -17,7 +17,7 @@
 <div class="container">
     <h3>글쓰기</h3>
 
-    <form action="${pageContext.request.contextPath}/community/write" method="post" enctype="multipart/form-data" class="write-form">
+    <form id="postForm" action="${pageContext.request.contextPath}/community/write" method="post" enctype="multipart/form-data" class="write-form" onsubmit="return validateForm()">
         <label for="user_id">이름</label>
         <input type="text" id="user_id" name="user_id" placeholder="이름을 입력하세요" required>
 
@@ -48,10 +48,7 @@
     // CKEditor 초기화
     CKEDITOR.replace('board_content', {
         
-    	filebrowserUploadUrl: '/community/upload',
-        filebrowserUploadMethod: 'form',
-        filebrowserImageUploadUrl: '/community/upload',
-        filebrowserFlashUploadUrl: '/community/upload',
+
         height: 700,
         on: {
             instanceReady: function() {
@@ -68,14 +65,14 @@
         }
     });
 
-    // 파일 업로드 이벤트 리스너 추가
+ // 파일 업로드 이벤트 리스너 추가
     document.getElementById('file').addEventListener('change', function(event) {
         for (let i = 0; i < event.target.files.length; i++) {
             const file = event.target.files[i];
             const reader = new FileReader();
 
             reader.onload = function(e) {
-                const img = '<img src="' + e.target.result + '" style="max-width: 100%;">';
+                const img = '<img src="' + e.target.result + '" style="max-width:100%; max-height:400px; width:auto; height:auto;">';
                 CKEDITOR.instances.board_content.insertHtml(img); // CKEditor의 내용에 이미지 삽입
             };
 
@@ -94,7 +91,19 @@
     document.getElementById('closePreview').addEventListener('click', function() {
         document.getElementById('previewPopup').style.display = 'none'; // 팝업 닫기
     });
-</script>
+
+    // 폼 유효성 검사 함수
+    function validateForm() {
+        var imageInput = document.getElementById("file").value;
+        if (imageInput === "") {
+            alert("이미지를 넣으시오");
+            return false; // 폼 제출 방지
+        }
+        return true; // 폼 제출 허용
+    }
+    
+    
+    </script>
 
 <footer>
 <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />

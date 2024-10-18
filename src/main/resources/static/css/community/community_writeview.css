@@ -140,6 +140,3 @@ input[type="file"] {
     color: #333; /* 글자 색상 */
 }
 
-.cke_editable {
-    text-align: center; /* CKEditor의 내용 영역 가운데 정렬 */
-}

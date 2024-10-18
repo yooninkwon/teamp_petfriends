@@ -28,12 +28,16 @@ public class CWriteService implements CServiceInterface{
         String cname = mtfRequest.getParameter("user_id");
         String ctitle = mtfRequest.getParameter("board_title");
         String ccontent = mtfRequest.getParameter("board_content");
+       
+        //게시글 작성
         iDao.write(cname, ctitle, ccontent);
         
+        // 방금 작성한 게시글의 id 가져오기
         int board_no = iDao.selBid();
         String workPath = System.getProperty("user.dir");
         String root = workPath + "\\src\\main\\resources\\static\\images\\community_img";
 
+        // 파일 업로드 처리
         List<MultipartFile> fileList = mtfRequest.getFiles("file");
         for (MultipartFile mf : fileList) {
             String originalFile = mf.getOriginalFilename();

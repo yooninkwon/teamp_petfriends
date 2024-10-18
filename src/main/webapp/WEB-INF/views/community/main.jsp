@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -205,11 +206,15 @@
            		  <span class="user-name">${post.user_id }</span>
        		 </a>
            	<span class="post-time">${post.board_created}</span>
-            </div>
+            </div >
+            
             <h2 class="post-title"><a href="#">${post.board_title}</h2>
-            <p class="summary post-content">${post.board_content}</a></p>
+           <div class="post-content">  
+            ${fn:substringBefore(post.board_content, '<img') }      
+       		</div>
         </div>
-        <img src="/static/Images/community_img/${post.cchgfile}" alt="포스트 1 이미지" class="post-image"/>
+       
+        <img src="${pageContext.request.contextPath}/static/images/community_img/${post.cchgfile}" alt="포스트 1 이미지" class="post-image"/>
         <div class="post-footer">
             <span class="like-button">❤️ ${post.board_likes}</span>
             <span class="comment-button">💬 ${post.board_comment_count}</span>
