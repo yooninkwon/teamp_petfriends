@@ -99,6 +99,87 @@ h2 {
     border-radius: 10px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+.pet-radio {
+    font-size: 13px;
+    font-weight: bold;
+    position: relative; /* 카드의 좌측 상단에 고정 */
+    top: 10px;
+    right: 80px;
+}
+.pet-radio input[type="radio"] {
+    margin-right: 5px;
+}
+.pet-image {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    margin: 20px 0 5px 0;
+    display: flex;
+	justify-content: center;
+    align-items: center;
+    background-color: #f2f2f2;
+}
+.pet-image img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+}
+.pet-info {
+    margin: 5px 0;
+}
+.pet-info h3,h5,p {
+    margin: 0;
+}
+.pet-info p {
+    font-size: 13px;
+    color: #666;
+}
+.pet-status {
+    width: 80%;
+    height: auto;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #ffc9dc;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+.status-pill {
+    background-color: #ff4081;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-right: 5px;
+}
+.status-none {
+    padding: 5px 10px;
+}
+.edit-button {
+    width: 100%;
+    text-decoration: none;
+    color: #666;
+    cursor: pointer;
+    border-top: solid 1px #e0e0e0;
+}
+.edit-button h4 {
+    font-size: 14px;
+}
+.resist-card {
+    width: 320px;
+    height: 450px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -106,64 +187,8 @@ h2 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
 }
-.mypet-card:hover {
+.resist-card:hover {
     transform: scale(1.05);
-}
-.pet-radio {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 12px;
-}
-.pet-radio input[type="radio"] {
-    margin-right: 5px;
-}
-.pet-image img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-}
-.pet-info h2 {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-.pet-info p {
-    font-size: 14px;
-    color: #666;
-}
-.pet-status {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 0;
-}
-.status-pill {
-    background-color: #ff80ab;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    margin-right: 5px;
-}
-.status-text {
-    font-size: 14px;
-    color: #666;
-}
-.edit-button {
-    width: 100%;
-    padding: 10px 0;
-    background-color: #ffc9dc;
-    color: black;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-}
-.edit-button:hover {
-    background-color: #ff80ab;
-    color: white;
 }
 .mypet-card-link {
     text-decoration: none;
@@ -172,23 +197,6 @@ h2 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-.mypet-card-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.mypet-card-icon img {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-}
-.mypet-card-text h2 {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
 }
 .mypet-card-text p {
     font-size: 14px;
@@ -226,7 +234,91 @@ h2 {
     font-weight: bold;
     color: #9ea3ac;
 }
+
+/* 우리아이 정보 수정 */
+.pet-edit-container {
+    width: 60%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pet-image-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.pet-image-preview {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.pet-image-input {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.pet-details-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.pet-details-section label {
+    margin: 10px 0 5px 0;
+    font-weight: bold;
+}
+
+.pet-details-section input,
+.pet-details-section select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.pet-gender-select {
+    display: flex;
+    align-items: center;
+}
+
+.pet-gender-select input {
+    margin-right: 5px;
+}
+
+.pet-care-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.pet-care-checkboxes input {
+    margin-right: 5px;
+}
+
+.submit-section {
+    text-align: center;
+    width: 100%;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    background-color: #ff4081;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #ff80ab;
+}
 #gradeText {
-    margin: 20px 0;
+    margin-top: 5px;
+    margin-bottom: 20px;
     width: 500px;
 }
