@@ -9,12 +9,13 @@ body {
     height: 100vh;
 }
 
+
 .find-container {
 	margin-top: 50px;
     background-color: white;
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 8px 10px 20px gray;
     width: 500px;
     height: 600px;
     text-align: left;
@@ -41,8 +42,8 @@ body {
 }
 
 .find-tabs .active {
-    color: #ff3366;
-    border-bottom: 2px solid #ff3366;
+    color: #ff4081;
+    border-bottom: 2px solid #ff4081;
 }
 
 .find-form .form-group {
@@ -66,7 +67,7 @@ body {
 }
 
 .find-form input:focus {
-    border-color: #ff3366;
+    border-color: #ff4081;
 }
 
 h4{
@@ -97,7 +98,7 @@ h4:hover{
 .submit-btn-Id {
     width: 100%;
     padding: 12px;
-    background-color: #ff4081;
+    background-color:  #ff4081;
     color: white;
     border: none;
     border-radius: 5px;
@@ -117,6 +118,7 @@ h4:hover{
     cursor: pointer;
     margin-top: -60px;
 }
+
 
 .submit-btn-Id:hover, .submit-btn-Pw:hover {
     background-color: #e62e59;
