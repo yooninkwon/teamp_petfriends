@@ -1,0 +1,145 @@
+@charset "UTF-8";
+
+  body {
+        font-family: 'Nanum Gothic', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+   		margin-top: 100px;
+    }
+    .container {
+        width: 60%;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+    }
+    h3 {
+        font-size: 24px;
+        color: #333;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #eee;
+    }
+    .write-form {
+        width: 100%;
+        margin: 20px 0;
+    }
+    .write-form input[type="text"], .write-form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .write-form textarea {
+        height: 1000px;
+  		
+    }
+    .write-form input[type="file"] {
+        display: block;
+        margin-bottom: 20px;
+    }
+    .write-form input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .write-form input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+    
+    .board_content{
+   		text-align: center;
+    }
+    
+    .preview-area {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 10px;
+        height: 1200px;
+        overflow-y: auto;     
+        background-color: #f9f9f9;
+    	text-align: center;
+    }
+
+            /* 팝업 스타일 */
+    #previewPopup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: black;
+        display: none; /* 기본적으로 숨김 */
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+    .popup-content {
+        background: #333;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-height: 80%;
+        overflow-y: auto;
+    }    
+    
+.btn {
+    padding: 12px 24px; /* 버튼 안쪽 여백 크기 조정 */
+    border: none; /* 기본 테두리 제거 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer; /* 마우스 포인터 변경 */
+    font-size: 16px; /* 글자 크기 조정 */
+    transition: background-color 0.3s; /* 배경색 변화 애니메이션 */
+    margin-top: 10px; /* 버튼 간격 조정 */
+}
+
+/* 내용 미리보기 버튼 스타일 */
+.submit-btn {
+    background-color: #ff4081; 
+    color: white; /* 글자 색상 */
+}
+
+.submit-btn:hover {
+    background-color: #ffe5ee; 
+}
+
+/* 작성 완료 버튼 스타일 */
+#submit-btn {
+    background-color: #ff4081; 
+    color: white; /* 글자 색상 */
+}
+
+#submit-btn:hover {
+    background-color: #ffe5ee; 
+}
+
+/* 닫기 버튼 스타일 */
+#closePreview {
+    background-color: #ff4081;
+    color: white; /* 글자 색상 */
+}
+
+#closePreview:hover {
+    background-color: #ffe5ee; 
+}
+
+/* 파일 선택 버튼 스타일 */
+input[type="file"] {
+    padding: 10px; /* 여백 조정 */
+    border: 1px solid #ddd; /* 테두리 추가 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    cursor: pointer; /* 마우스 포인터 변경 */
+    background-color: #ffe5ee; /* 배경 색상 */
+    color: #333; /* 글자 색상 */
+}
+
+.cke_editable {
+    text-align: center; /* CKEditor의 내용 영역 가운데 정렬 */
+}

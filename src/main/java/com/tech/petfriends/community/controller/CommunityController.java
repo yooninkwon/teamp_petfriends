@@ -1,5 +1,7 @@
 package com.tech.petfriends.community.controller;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tech.petfriends.community.mapper.IDao;
@@ -68,4 +72,29 @@ public class CommunityController {
 	}
 
 
+    @PostMapping("/community/upload")
+    public String uploadImage(MultipartHttpServletRequest request, @RequestParam("upload") MultipartFile file, Model model) {
+        String originalFile = file.getOriginalFilename();
+        String workPath = System.getProperty("user.dir");
+        String root = workPath + "\\src\\main\\resources\\static\\images\\community_img";
+
+        // 파일 이름 및 저장 경로 설정
+        long currentTimeMillis = System.currentTimeMillis();
+        String changeFile = currentTimeMillis + "_" + originalFile;
+        String pathFile = root + "\\" + changeFile;
+
+        try {
+            if (!originalFile.isEmpty()) {
+                file.transferTo(new File(pathFile));
+                String imageUrl = "/static/images/community_img/" + changeFile;
+
+                // 업로드된 이미지 URL을 JSON 형식으로 반환
+                return "{\"uploaded\": 1, \"url\": \"" + imageUrl + "\"}";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "{\"uploaded\": 0, \"error\": {\"message\": \"파일 업로드에 실패했습니다.\"}}";
+    }
 }
