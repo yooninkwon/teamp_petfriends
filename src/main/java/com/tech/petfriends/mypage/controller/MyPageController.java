@@ -2,15 +2,20 @@ package com.tech.petfriends.mypage.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dao.MypageDao;
+import com.tech.petfriends.mypage.dto.GradeDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 
 @Controller
@@ -22,6 +27,7 @@ public class MyPageController {
 	
 	@GetMapping("/mypet")
 	public String mypet(Model model, HttpSession session) {
+		
 		String memCode = (String) session.getAttribute("mem_code");
 		
         ArrayList<MyPetDto> pets = mypageDao.getPetsByMemberCode(memCode);
@@ -30,8 +36,30 @@ public class MyPageController {
 		return "mypage/mypet";
 	}
 	
+	@Transactional
+	@PostMapping("/mypet/setMainPet")
+	public String setMainPet(Model model, HttpServletRequest request) {
+        
+		String newlyChecked = request.getParameter("newlyChecked");
+		String previousChecked = request.getParameter("previousChecked");
+		
+		mypageDao.removeMainPet(previousChecked);
+		mypageDao.setMainPet(newlyChecked);
+		
+		return "redirect:/mypage/mypet";
+	}
+	
 	@GetMapping("/grade")
-	public String grade() {
+	public String grade(Model model, HttpSession session) {
+		
+		String memCode = (String) session.getAttribute("mem_code");
+		
+        MemberLoginDto info = mypageDao.getInfoByMemberCode(memCode);
+        GradeDto grade = mypageDao.getGradeByMemberCode(memCode);
+        
+		model.addAttribute("info",info);
+		model.addAttribute("grade",grade);
+		
 		return "mypage/grade";
 	}
 	
@@ -73,6 +101,18 @@ public class MyPageController {
 	@GetMapping("/mypet/register")
 	public String mypetRegister() {
 		return "mypage/mypet/register";
+	}
+	
+	@GetMapping("/mypet/modify")
+	public String mypetModify(HttpServletRequest request, Model model) {
+		
+		String petCode = request.getParameter("petCode");
+		
+        MyPetDto info = mypageDao.getInfoByPetCode(petCode);
+        
+		model.addAttribute("info",info);
+        
+		return "mypage/mypet/modify";
 	}
 	
 }

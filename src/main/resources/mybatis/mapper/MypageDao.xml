@@ -4,10 +4,43 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.tech.petfriends.mypage.dao.MypageDao">
+
     <select id="getPetsByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyPetDto">
 		SELECT *
 		FROM MEMBER_PET p
 		JOIN MEMBER m ON p.mem_code = m.mem_code
 		WHERE m.mem_code=#{param1}
 	</select>
+	
+    <select id="getInfoByMemberCode" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
+		SELECT *
+		FROM MEMBER
+		WHERE mem_code=#{param1}
+	</select>
+	
+    <select id="getGradeByMemberCode" resultType="com.tech.petfriends.mypage.dto.GradeDto">
+		SELECT g.g_no,g_name,g_condition,g_rate
+		FROM GRADE g
+		JOIN MEMBER m ON g.g_no = m.g_no
+		WHERE m.mem_code=#{param1}
+	</select>
+	
+	<update id="removeMainPet">
+		UPDATE MEMBER_PET
+		SET pet_main='N'
+		WHERE pet_code=#{param1}
+	</update>
+	
+	<update id="setMainPet">
+		UPDATE MEMBER_PET
+		SET pet_main='Y'
+		WHERE pet_code=#{param1}
+	</update>
+	
+	<select id="getInfoByPetCode" resultType="com.tech.petfriends.mypage.dto.MyPetDto">
+		SELECT *
+		FROM MEMBER_PET
+		WHERE pet_code=#{param1}
+	</select>
+	
 </mapper>
