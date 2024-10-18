@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dao.MypageDao;
+import com.tech.petfriends.mypage.dto.CouponDto;
 import com.tech.petfriends.mypage.dto.GradeDto;
+import com.tech.petfriends.mypage.dto.MyCouponDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 
 @Controller
@@ -28,9 +30,9 @@ public class MyPageController {
 	@GetMapping("/mypet")
 	public String mypet(Model model, HttpSession session) {
 		
-		String memCode = (String) session.getAttribute("mem_code");
-		
-        ArrayList<MyPetDto> pets = mypageDao.getPetsByMemberCode(memCode);
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+        ArrayList<MyPetDto> pets = mypageDao.getPetsByMemberCode(loginUser.getMem_code());
+        
 		model.addAttribute("pets",pets);
 		
 		return "mypage/mypet";
@@ -51,14 +53,12 @@ public class MyPageController {
 	
 	@GetMapping("/grade")
 	public String grade(Model model, HttpSession session) {
-		
-		String memCode = (String) session.getAttribute("mem_code");
-		
-        MemberLoginDto info = mypageDao.getInfoByMemberCode(memCode);
-        GradeDto grade = mypageDao.getGradeByMemberCode(memCode);
+
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+        GradeDto userGrade = mypageDao.getGradeByMemberCode(loginUser.getMem_code());
         
-		model.addAttribute("info",info);
-		model.addAttribute("grade",grade);
+        model.addAttribute("loginUser",loginUser);
+        model.addAttribute("userGrade",userGrade);
 		
 		return "mypage/grade";
 	}
@@ -69,7 +69,16 @@ public class MyPageController {
 	}
 	
 	@GetMapping("/coupon")
-	public String coupon() {
+	public String coupon(Model model, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		
+		ArrayList<CouponDto> coupons = mypageDao.getAllCoupon();
+		ArrayList<MyCouponDto> mycoupons = mypageDao.getCouponByMemberCode(loginUser.getMem_code());
+		
+        model.addAttribute("coupons",coupons);
+        model.addAttribute("mycoupons",mycoupons);
+		
 		return "mypage/coupon";
 	}
 	
