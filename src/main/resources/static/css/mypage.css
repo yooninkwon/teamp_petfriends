@@ -98,6 +98,7 @@ h2 {
     border: 1px solid #e0e0e0;
     border-radius: 10px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -106,7 +107,63 @@ h2 {
     transition: transform 0.2s ease-in-out;
 }
 .mypet-card:hover {
-    transform: scale(1.05); /* 호버 시 확대 효과 */
+    transform: scale(1.05);
+}
+.pet-radio {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 12px;
+}
+.pet-radio input[type="radio"] {
+    margin-right: 5px;
+}
+.pet-image img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.pet-info h2 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.pet-info p {
+    font-size: 14px;
+    color: #666;
+}
+.pet-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+.status-pill {
+    background-color: #ff80ab;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-right: 5px;
+}
+.status-text {
+    font-size: 14px;
+    color: #666;
+}
+.edit-button {
+    width: 100%;
+    padding: 10px 0;
+    background-color: #ffc9dc;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.edit-button:hover {
+    background-color: #ff80ab;
+    color: white;
 }
 .mypet-card-link {
     text-decoration: none;

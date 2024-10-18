@@ -18,7 +18,7 @@ import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
 import reactor.core.publisher.Mono;
 
 @Service
-public class AdoptionService {
+public class AdoptionGetJson {
     
 	// WebClient는 비동기적으로 HTTP 요청을 보내기 위해 사용되는 스프링 WebFlux의 클라이언트이다.
 	private final WebClient webClient;
@@ -26,7 +26,7 @@ public class AdoptionService {
 	@Autowired // api key 주입
 	ApikeyConfig apikeyConfig;
 	
-	public AdoptionService(final WebClient webClient) {
+	public AdoptionGetJson(final WebClient webClient) {
 		this.webClient = webClient;
 	}
 	
@@ -37,7 +37,7 @@ public class AdoptionService {
 		// api serviceKey
 		String apikey = apikeyConfig.getOpenDataApikey();
 		// parameter
-		String addParameter = "&pageNo=1&numOfRows=100&_type=json";
+		String addParameter = "&pageNo=1&numOfRows=8&_type=json";
 //		String addParameter = "&_type=json";
 
 		
@@ -101,7 +101,6 @@ public class AdoptionService {
         try {
             ObjectMapper mapper = new ObjectMapper();
             T result = mapper.readValue(json, valueType);
-//            System.out.println("제너릭 클래스~");
             return result;
         } catch (ValueInstantiationException e) {
             throw new Exception("Failed to instantiate the class: " + valueType.getName(), e);

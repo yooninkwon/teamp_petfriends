@@ -1,0 +1,81 @@
+@charset "UTF-8";
+
+
+body {
+	font-family: Arial, sans-serif;
+}
+
+a {
+	text-decoration: none;
+}
+
+.adoption-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.adoption-card {
+	border: 1px solid #e0e0e0;
+	border-radius: 10px;
+	overflow: hidden;
+	margin: 10px;
+	width: calc(25% - 40px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s ease;
+}
+
+.adoption-card:hover {
+	transform: scale(1.05);
+}
+
+.adoption-card img {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+}
+
+.adoption-card .content {
+	padding: 15px;
+}
+
+.adoption-card h3 {
+	margin: 0;
+	font-size: 18px;
+	color: #333;
+}
+
+.adoption-card p {
+	margin: 8px 0;
+	font-size: 14px;
+	color: #666;
+}
+
+.adoption-card .info {
+	font-weight: bold;
+	font-size: 12px;
+	color: #888;
+}
+
+/* Pagination styles */
+.pagination {
+	display: flex;
+	justify-content: center;
+	margin: 20px 0;
+}
+
+.pagination a {
+	padding: 8px 16px;
+	margin: 0 4px;
+	background-color: #f1f1f1;
+	border-radius: 4px;
+	text-decoration: none;
+	color: #333;
+}
+
+.pagination a.active {
+	background-color: #FF4081;
+	color: white;
+}
