@@ -10,6 +10,6 @@
 </title>
 </head>
 <body>
-내 새꾸
+<h2>현재 심쿵포인트</h2>
 </body>
 </html>
