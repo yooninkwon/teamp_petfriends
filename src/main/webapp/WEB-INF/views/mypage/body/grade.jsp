@@ -12,7 +12,7 @@
 <body>
 	<h2>하트시그널</h2>
 	
-	<h3><strong>${user_name }</strong>님과 펫프의 하트시그널은 <strong>${user_grade }</strong>입니다.</h3>
+	<h3><strong>${loginUser.mem_name}</strong>님과 펫프의 하트시그널은 <strong>${userGrade.g_name}</strong>입니다.</h3>
     <div class="heart-signal-container">
         <div class="heart-signal-bar">
             <div class="heart-signal-fill" id="heartSignalFill"></div>
@@ -26,13 +26,13 @@
             <span>평생연분</span>
         </div>
     </div>
-    <h3 id="gradeText"></h3>
+    <h4 id="gradeText"></h4>
     <img src="/static/Images/mypage/grade_info.png" alt="등급 안내" style="width: 500px;" />
     
     <script>
 	    document.addEventListener('DOMContentLoaded', function() {
 	        // DB에서 가져온 user_grade 값 (예: '설렘시작')
-	        var userGrade = "몽글몽글"; // 서버에서 값을 채워넣음
+	        var userGrade = "${userGrade.g_name}"; // 서버에서 값을 채워넣음
 	        
 	        // 게이지의 채워질 정도를 결정 (각 등급에 따라 %)
 	        var gradePercent = {

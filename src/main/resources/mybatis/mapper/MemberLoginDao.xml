@@ -6,11 +6,16 @@
 <mapper namespace="com.tech.petfriends.login.mapper.MemberMapper">
 
     <!-- 이메일과 비밀번호로 회원을 조회 -->
-    <select id="getMemberByEmailAndPassword" parameterType="map" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
+    <select id="getMemberByEmail" parameterType="String" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
 	    SELECT * 
 	    FROM MEMBER 
 	    WHERE MEM_EMAIL = #{email} 
-	    AND MEM_PW = #{password}
 	</select>
+	
+	<!-- 회원 정보를 DB에 저장 -->
+    <insert id="insertMember" parameterType="com.tech.petfriends.login.dto.MemberLoginDto">
+        INSERT INTO MEMBER (mem_code, mem_email, mem_pw, mem_nick, mem_tell, mem_name, mem_birth, mem_gender, mem_invite, mem_regdate, mem_logdate)
+        VALUES (#{mem_code}, #{mem_email}, #{mem_pw}, #{mem_nick}, #{mem_tell}, #{mem_name}, #{mem_birth}, #{mem_gender}, #{mem_invite}, #{mem_regdate}, #{mem_logdate})
+    </insert>
 
 </mapper>

@@ -134,6 +134,14 @@
 			<version>5.3.24</version>
 		</dependency>
 		 -->
+		 
+		 <!--비밀번호 암호화 (아르곤2)-->
+		<dependency>
+    		<groupId>de.mkammerer</groupId>
+    		<artifactId>argon2-jvm</artifactId>
+    		<version>2.11</version>
+		</dependency>
+		 			 
 	</dependencies>
 
 	<build>

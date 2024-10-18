@@ -50,7 +50,7 @@ $(document).ready(function() {
 			$("#df input[type='radio'], #ds input[type='radio'], #dg input[type='radio'], #cf input[type='radio'], #cs input[type='radio']").prop('checked', false);
 		}
 
-		//강아지 고양이 / 사료 간식 용품 조합에 다른 라디오버튼 생성(상세타입)
+		//강아지 고양이 / 사료 간식 용품 조합에 따른 라디오버튼 생성(상세타입)
 		if (petType === "dog") {
 			if (proType === "food" || proType === "snack") {
 				if (df || ds) {
@@ -82,18 +82,63 @@ $(document).ready(function() {
 		}
 		$("#option_price").show();
 		$("#option_rank").show();
+		// 랭크 옵션의 기본값을 '기본'으로 설정
+
+
+
+
+
+
+
 	});
 
 	// 펫타입, 상품종류, 상품타입 체크변경시 필터옵션 체크 해제
 	$('.firsttype, .thirdtype  input[type="radio"]').change(function() {
 		$(".filter > div input[type='radio'], .filter > div input[type='checkbox']").prop('checked', false);
+		$('input[name="rankOption"][value="rankopt0All"]').prop('checked', true);
 	});
-	
-	
-	
+
+
+
 	// 페이지 로드 시 초기 상태 설정
 	$('input[type="radio"]:checked').trigger('change');
 
 
 
+	// 라디오,체크박스 체크된 데이터 ajax 이용하여 값보내기
+	// 라디오 버튼이 변경될 때마다 실행
+	$('input[type="radio"], input[type="checkbox"]').change(function() {
+		// 선택된 petType과 proType 값 확인
+		let petType = $('input[name="petType"]:checked').val();
+		let proType = $('input[name="proType"]:checked').val();
+
+
+		console.log('petType:', petType);
+		console.log('proType:', proType);
+
+		// AJAX 요청 보내기
+		$.ajax({
+			url: '/product/productlistview',  // 서버의 엔드포인트 URL
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify({
+				petType,
+				proType
+			}),  // JSON 형식으로 데이터 전송
+			success: function(response) {
+				// 성공적으로 데이터를 전송받았을 때 실행할 코드
+				console.log(response);
+				// 여기서 서버로부터 받은 데이터를 바탕으로 UI를 업데이트할 수 있습니다.
+			},
+			error: function(xhr, status, error) {
+				// 에러 발생 시 실행할 코드
+				console.error("Error:", error);
+			}
+		});
+	});
+
 });
+
+
+
+
