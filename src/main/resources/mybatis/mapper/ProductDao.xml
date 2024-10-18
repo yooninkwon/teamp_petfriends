@@ -3,8 +3,57 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!-- <mapper namespace="com.tech.petfriends.product.dao.ProductDao"> <select 
+	id="productList" resultType="com.tech.petfriends.product.dto.ProductDto"> 
+	SELECT * FROM PRODUCT </select> </mapper> -->
+
+
 <mapper namespace="com.tech.petfriends.product.dao.ProductDao">
-    <select id="productList" resultType="com.tech.petfriends.product.dto.ProductDto">
-		SELECT * FROM PRODUCT
+	<select id="productListView"
+		resultType="com.tech.petfriends.product.dto.ProductListViewDto">
+		SELECT
+			PRO.PRO_CODE,
+			PRO.PRO_NAME,
+			PROIMG.MAIN_IMG1,
+			MIN(PROOPT.PROOPT_FINALPRICE) PROOPT_FINALPRICE
+		FROM
+			PRODUCT PRO
+		INNER JOIN
+			PRODUCT_IMAGE PROIMG ON PRO.PRO_CODE = PROIMG.PRO_CODE
+		INNER JOIN
+			PRODUCT_OPTION PROOPT ON PRO.PRO_CODE = PROOPT.PRO_CODE
+		WHERE
+			PRO.PRO_PETS = #{petType}
+		AND
+			PRO.PRO_TYPE = #{proType}
+			GROUP BY
+			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1 
+		
+		<!-- <if test="dfoodType != null or dsnackType != null or dgoodsType != null or cfoodType != null or csnackType != null or cgoodsType != null">	
+		AND
+			PRO.PRO_CATEGORY IN ( #{dfoodType} #{dsnackType} #{dgoodsType} #{cfoodType} #{csnackType} #{cgoodsType} )
+		</if>
+		
+		<if test="dfs1optionString != null or dg1optionString != null or cfs1optionString != null or cg1optionString != null or cg2optionString != null">
+		AND
+			PRO.PRO_FILTER1 IN ( #{dfs1optionString} #{dg1optionString} #{cfs1optionString} #{cg1optionString} #{cg2optionString} )
+		</if>	
+			
+		<if test="dfs2optionString">	
+		AND
+			PRO.PRO_FILTER2 IN ( #{dfs2optionString} #{dg2optionString} #{cfs2optionString} )
+		</if>
+			
+			가격 옵션을 동적으로 처리
+   <if test="priceOptionString != null and priceOptionString.length() > 0">
+	        AND
+	        <foreach collection="priceOptionString" item="price" separator=" OR ">
+	            ${price}
+	        </foreach>
+	    </if>  
+		GROUP BY
+			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1 
+		ORDER BY
+			#{rankOption} -->
 	</select>
 </mapper>

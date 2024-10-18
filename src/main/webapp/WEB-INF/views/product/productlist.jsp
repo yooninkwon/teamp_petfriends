@@ -129,17 +129,13 @@
 			</div>
 		</div>
 
-		
+		<img src="" alt="" />
 		
 	</form>
 
-	<!-- 상품리스트 -->
-	<c:forEach var="list" items="${list }">
-		<tr>
-			<td>${list.pro_name }</td>
-		</tr>
-	</c:forEach>
-
+	 <h1>상품 목록</h1>
+    <div id="product-list"></div> <!-- AJAX로 데이터가 표시될 부분 -->
+	<img src="/static/images/ProductImg/MainImg/6_1.png"/>6_1.png
 	<!-- 푸터 -->
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
