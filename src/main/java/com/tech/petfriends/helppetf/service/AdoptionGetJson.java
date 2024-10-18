@@ -56,8 +56,6 @@ public class AdoptionGetJson {
 		 *  예외 발생시 - 빈 리스트를 가진 HelpPetfAdoptionItemsVo를 생성하고, 내부 서버 오류 상태로 반환
 		 *  
 		 *  .onErrorReturn(...) : 요청 중 에러가 발생할 경우, INTERNAL_SERVER_ERROR 상태와 함께 에러 메시지를 반환
-		 * 
-		 *  
 		 *  */
 		return webClient.get().uri(baseUrl + "?serviceKey=" + apikey + addParameter).retrieve()
 				.onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Client Error")))

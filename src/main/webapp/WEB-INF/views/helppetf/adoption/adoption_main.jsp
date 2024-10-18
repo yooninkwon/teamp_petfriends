@@ -91,7 +91,7 @@
 			            // 선택된 항목 가져오기
 			            const selectedItem = adoptionItems[index]; // adoptionItems 배열에서 선택된 객체
 			            
-			            //여기부터@ POST 요청 보내기
+			            //POST 요청 보내기
 			            fetch('/helppetf/adoption/adoption_data', {
 			                method: 'POST',
 			                headers: {
