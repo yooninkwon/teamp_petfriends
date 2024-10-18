@@ -74,6 +74,7 @@
 			</div>
 			<div id="option_rank">
 			<span>펫프랭킹순</span>
+			<label> <input type="radio" name="rankOption" value="rankopt0All" checked>기본</label>
 			<label> <input type="radio" name="rankOption" value="rankopt1">최신순</label>
 			<label> <input type="radio" name="rankOption" value="rankopt2">리뷰많은순</label>
 			<label> <input type="radio" name="rankOption" value="rankopt3">낮은가격순</label>
@@ -105,8 +106,8 @@
 			<div id="option_cfs1">
 			<span>주원료</span>
 			<label> <input type="checkbox" name="cfs1option" value="cfsopt11">연어</label>
-			<label> <input type="checkbox" name="cfs1option" value="cfsopt11">닭</label>
-			<label> <input type="checkbox" name="cfs1option" value="cfsopt11">돼지</label>
+			<label> <input type="checkbox" name="cfs1option" value="cfsopt12">닭</label>
+			<label> <input type="checkbox" name="cfs1option" value="cfsopt13">돼지</label>
 			</div>
 			<div id="option_cfs2">
 			<span>기능</span>
@@ -118,7 +119,7 @@
 			<span>타입</span>
 			<label> <input type="checkbox" name="cg1option" value="cg1opt1">스틱형</label>
 			<label> <input type="checkbox" name="cg1option" value="cg1opt2">낚시줄형</label>
-			<label> <input type="checkbox" name="cg1option" value="cg1opt2">와이어형</label>
+			<label> <input type="checkbox" name="cg1option" value="cg1opt3">와이어형</label>
 			</div>
 			<div id="option_cg2">
 			<span>타입</span>

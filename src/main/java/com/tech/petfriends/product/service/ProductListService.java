@@ -20,7 +20,7 @@ public class ProductListService implements ProductService{
 	
 	@Override
 	public void execute(Model model) {
-		ArrayList<ProductDto> list = productDao.list();
+		ArrayList<ProductDto> list = productDao.productList();
 		
 		
 		model.addAttribute("list",list);

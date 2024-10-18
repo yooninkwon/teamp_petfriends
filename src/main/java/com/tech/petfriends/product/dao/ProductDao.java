@@ -9,5 +9,5 @@ import com.tech.petfriends.product.dto.ProductDto;
 @Mapper
 public interface ProductDao {
 	
-	public ArrayList<ProductDto> list ();
+	public ArrayList<ProductDto> productList ();
 }
