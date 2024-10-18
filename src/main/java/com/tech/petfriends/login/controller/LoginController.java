@@ -25,11 +25,11 @@ public class LoginController {
 	 @Autowired
 	    private MemberMapper memberMapper;
 	
-	@GetMapping("/loginPage")
-	public String LoginPage() {
-		System.out.println("로그인 페이지 이동");
-		return "login/loginPage";
-	}
+	 @GetMapping("/loginPage")
+	 public String LoginPage(HttpServletRequest request) {
+	     System.out.println("로그인 페이지 이동: " + request.getRequestURI());
+	     return "login/loginPage";
+	 }
 	
 	@PostMapping("/loginService")
     public String LoginService(HttpServletRequest request, HttpServletResponse response,
