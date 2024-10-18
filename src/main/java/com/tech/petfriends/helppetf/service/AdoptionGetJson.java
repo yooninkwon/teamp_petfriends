@@ -34,8 +34,13 @@ public class AdoptionGetJson {
 		this.webClient = webClient;
 	}
 	
+	/**
+	 * 이 메서드는 API로부터 데이터를 비동기적으로 가져옴
+	 * 
+	 * @return ResponseEntity<HelpPetfAdoptionItemsVo> JSON 응답을 포함한 ResponseEntity
+	 * @throws Exception 예외 발생 시
+	 */
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionDataMain() throws Exception {
-
 		// api 요청주소 End point
 		String baseUrl = "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
 		
@@ -46,10 +51,13 @@ public class AdoptionGetJson {
 		String _type = "&_type=" + "json";
 		String addParameters = apikey + pageNo + numOfRows + _type;	
 		
-		// 비동기적으로 JSON 데이터를 API로부터 받아옴
-		// Mono 객체를 리턴
-		// 리액티브 프로그래밍에서 비동기적으로 반환되는 하나의 데이터 스트림을 의미함
-		/* 설명:
+
+		/**
+		 * 비동기적으로 JSON 데이터를 API로부터 받아옴
+		 * Mono 객체를 리턴
+		 * 리액티브 프로그래밍에서 비동기적으로 반환되는 하나의 데이터 스트림을 의미함
+		 * 
+		 * 설명:
 		 * .get() : http get 요청 보냄
 		 * .retrieve() : 서버로부터 응답 받아옴
 		 * .onStatus() : 4xx, 5xx 오류일 시 예외 발생
@@ -61,7 +69,7 @@ public class AdoptionGetJson {
 		 *  예외 발생시 - 빈 리스트를 가진 HelpPetfAdoptionItemsVo를 생성하고, 내부 서버 오류 상태로 반환
 		 *  
 		 *  .onErrorReturn(...) : 요청 중 에러가 발생할 경우, INTERNAL_SERVER_ERROR 상태와 함께 에러 메시지를 반환
-		 *  */
+		 */
 		return webClient.get().uri(baseUrl + addParameters).retrieve()
 				.onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Client Error")))
 	            .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new Exception("Server Error")))
@@ -84,13 +92,13 @@ public class AdoptionGetJson {
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionDataFilter(Model model) {
 		Map<String, Object> map = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
-		/* * 요청 변수
+		/** 요청 변수
 		* serviceKey = API key
 		* upr_cd = 시도코드 (시도 조회 OPEN API 참조)
 		* org_cd = 시군구코드 (시군구 조회 OPEN API 참조)
 		* upkind = 축종코드 (개 : 417000, 고양이 : 422400, 기타 : 429900)
 		* kind = 품종코드 (품종 조회 OPEN API 참조)
-		* */
+		*/
 		// api 요청주소 End point
 		String baseUrl = "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
 		
@@ -149,7 +157,7 @@ public class AdoptionGetJson {
 	 * 
 	 */
 	<T> T parsingJsonObject(String json, Class<T> valueType) throws Exception {
-		// HelpPetfAdoptionItemsVo에 json value의 Object 형식을 매핑해 return
+		// 예시) HelpPetfAdoptionItemsVo에 json value의 Object 형식을 매핑해 return
         try {
             ObjectMapper mapper = new ObjectMapper();
             T result = mapper.readValue(json, valueType);
