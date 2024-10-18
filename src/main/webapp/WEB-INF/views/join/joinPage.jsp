@@ -23,21 +23,29 @@
 				margin-right:45px; margin-top:-10px; display:none;">올바른 양식으로 입력해 주세요</span> <br />
 
                 <label for="password">비밀번호</label> <br />
-				<input type="password" id="password" name="password" placeholder="영문/숫자/특수문자 혼합 8~20자" onkeyup="validatePassword()">
+				<input type="password" id="password" name="password" placeholder="영문/숫자/특수문자 혼합 8~20자" oninput="validatePassword()">
 				<p id="passwordError" style="font-size:15px; color:red; float:right;
-				margin-right:45px; margin-top:-10px; display:none;">영문, 숫자, 특수문자 포함 8~20자</p>
+				margin-right:45px; margin-top:-10px; display:none;">영문, 숫자, 특수문자 포함 8~20자</p> <br />
 
                 <label for="confirmPassword">비밀번호 확인</label> <br />
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 한번 더 입력해주세요"> <br />
+				<input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 한번 더 입력해주세요" oninput="checkPasswordMatch()">
+				<p id="confirmPasswordError" style="font-size:15px; color:red; float:right;
+				margin-right:45px; margin-top:-10px; display:none;">비밀번호가 일치하지 않습니다.</p> <br />
+
 
                 <label for="nickname">닉네임</label> <br />
-                <input type="text" id="nickname" name="nickname" placeholder="2~16자 이내로 입력해주세요"> <br />
+				<input type="text" id="nickname" name="nickname" placeholder="2~16자 이내로 입력해주세요" oninput="checkNickname()">
+				<p id="nicknameError" style="font-size:15px; color:red; float:right;
+				margin-right:45px; margin-top:-10px; display:none;">중복된 닉네임입니다.</p>
 
-                <label for="phoneNumber">휴대폰 번호</label> <br />
-                <div class="phone-group">
-                    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="'-'를 제외한 숫자만 입력해주세요"> 
-                    <button type="button" id="requestCodeBtn">인증 요청</button> <br />
-                </div>
+				<label for="phoneNumber">휴대폰 번호</label> <br />
+				<div class="phone-group">
+				    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="'-'를 제외한 숫자만 입력해주세요" maxlength="11" onblur="formatPhoneNumber()">
+				    <button type="button" id="requestCodeBtn">인증 요청</button> <br />
+				</div>
+				<p id="phoneNumberError" style="font-size:15px; color:red; float:right;
+				margin-right:45px; margin-top:-10px; display:none;">올바른 번호를 입력해주세요.</p>
+				
                 <label for="verificationCode">인증 번호</label> <br />
                 <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호 입력">
             </div>

@@ -44,9 +44,20 @@ label {
 	margin-left: 50px;
 }
 
-.phone-group button, .address-group button {
+.address-group button {
     margin-left: 10px;
     margin-top: 8px;
+    background-color: #ff4081;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.phone-group button {
+	margin-left: 10px;
+    margin-top: 29px;
     background-color: #ff4081;
     color: white;
     border: none;
@@ -74,7 +85,7 @@ label {
     border-radius: 5px;
 }
 
-#phoneNumber, #address{
+#address{
 	margin-top: 10px;
 	width: 310px;
     padding: 10px;
@@ -82,6 +93,16 @@ label {
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-left: 48px;
+}
+
+#phoneNumber {
+	margin-top: 32px;
+	width: 310px;
+    padding: 10px;
+    margin-bottom: 0px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: -87px;
 }
 
 #genderRadioGroup{
@@ -105,7 +126,7 @@ label {
 	
 }
 
-#emailError, #passwordError{
+#emailError, #passwordError, #confirmPasswordError, #nicknameError, #phoneNumberError{
     margin-bottom: 0px;
     height: 5px;
 }
