@@ -30,7 +30,7 @@ h1 {
     width: 45%;
     display: inline-block;
     vertical-align: top;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .phone-group, .address-group {
@@ -103,5 +103,10 @@ label {
 .phone-group button:hover, .address-group button:hover, .submit-btn:hover {
 	background-color: #e62e59;
 	
+}
+
+#emailError, #passwordError{
+    margin-bottom: 0px;
+    height: 5px;
 }
 

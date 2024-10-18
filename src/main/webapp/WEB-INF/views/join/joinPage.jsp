@@ -8,6 +8,7 @@
     <title>회원가입</title>
     <link rel="stylesheet" href="/static/css/join/join.css">
     <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
+    <script src="/static/js/join.js"></script>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
@@ -17,10 +18,14 @@
     	<h1>펫프렌즈에 오신걸 환영합니다!</h1>
             <div class="left-column">
                 <label for="email">이메일</label> <br />
-                <input type="email" id="email" name="email" placeholder="example@example.com"> <br />
+				<input type="email" id="email" name="email" placeholder="example@example.com" oninput="validateEmail()">
+				<span id="emailError" style="font-size:15px; color:red; float:right;
+				margin-right:45px; margin-top:-10px; display:none;">올바른 양식으로 입력해 주세요</span> <br />
 
                 <label for="password">비밀번호</label> <br />
-                <input type="password" id="password" name="password" placeholder="영문/숫자/특수문자 혼합 8~20자"> <br />
+				<input type="password" id="password" name="password" placeholder="영문/숫자/특수문자 혼합 8~20자" onkeyup="validatePassword()">
+				<p id="passwordError" style="font-size:15px; color:red; float:right;
+				margin-right:45px; margin-top:-10px; display:none;">영문, 숫자, 특수문자 포함 8~20자</p>
 
                 <label for="confirmPassword">비밀번호 확인</label> <br />
                 <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 한번 더 입력해주세요"> <br />
