@@ -1,11 +1,15 @@
 package com.tech.petfriends.helppetf.service;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -30,16 +34,17 @@ public class AdoptionGetJson {
 		this.webClient = webClient;
 	}
 	
-	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionData() throws Exception {
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionDataMain() throws Exception {
 
 		// api 요청주소 End point
 		String baseUrl = "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
+		
 		// api serviceKey
-		String apikey = apikeyConfig.getOpenDataApikey();
-		// parameter
-		String addParameter = "&pageNo=1&numOfRows=8&_type=json";
-//		String addParameter = "&_type=json";
-
+		String apikey = "?serviceKey=" + apikeyConfig.getOpenDataApikey();
+		String pageNo = "&pageNo=" + "1";
+		String numOfRows = "&numOfRows=" + "8";
+		String _type = "&_type=" + "json";
+		String addParameters = apikey + pageNo + numOfRows + _type;	
 		
 		// 비동기적으로 JSON 데이터를 API로부터 받아옴
 		// Mono 객체를 리턴
@@ -50,17 +55,18 @@ public class AdoptionGetJson {
 		 * .onStatus() : 4xx, 5xx 오류일 시 예외 발생
 		 * .bodyToMono(String.class) : 응답 본문을 String으로 받음
 		 * 
-		 *** 파싱 -> .map(json -> ... )}  
+		 * * 파싱 -> .map(json -> ... )}  
 		 * 		: parsingJsonObject() 메서드 호출하여 json을 HelpPetfAdoptionItemsVo타입으로 변환
 		 *  변환 성공 - ResponseEntity 객체를 생성하여 성공 상태(HttpStatus.OK)와 함께 반환
 		 *  예외 발생시 - 빈 리스트를 가진 HelpPetfAdoptionItemsVo를 생성하고, 내부 서버 오류 상태로 반환
 		 *  
 		 *  .onErrorReturn(...) : 요청 중 에러가 발생할 경우, INTERNAL_SERVER_ERROR 상태와 함께 에러 메시지를 반환
 		 *  */
-		return webClient.get().uri(baseUrl + "?serviceKey=" + apikey + addParameter).retrieve()
+		return webClient.get().uri(baseUrl + addParameters).retrieve()
 				.onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Client Error")))
 	            .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new Exception("Server Error")))
 	            .bodyToMono(String.class)  // JSON 데이터를 문자열로 받음
+	            .retry(3)
 	            .map(json -> {
 	            	HelpPetfAdoptionItemsVo adoptionItems;
 					try { // try: json 파싱
@@ -70,9 +76,57 @@ public class AdoptionGetJson {
 						e.printStackTrace();
 						return new ResponseEntity<>(new HelpPetfAdoptionItemsVo(List.of()), HttpStatus.INTERNAL_SERVER_ERROR);
 					}
-	            	
 	            })
 	            .onErrorReturn(new ResponseEntity<>(new HelpPetfAdoptionItemsVo(List.of()), HttpStatus.INTERNAL_SERVER_ERROR));
+	}
+	
+	// 필터링시의 데이터
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionDataFilter(Model model) {
+		Map<String, Object> map = model.asMap();
+		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		/* * 요청 변수
+		* serviceKey = API key
+		* upr_cd = 시도코드 (시도 조회 OPEN API 참조)
+		* org_cd = 시군구코드 (시군구 조회 OPEN API 참조)
+		* upkind = 축종코드 (개 : 417000, 고양이 : 422400, 기타 : 429900)
+		* kind = 품종코드 (품종 조회 OPEN API 참조)
+		* */
+		// api 요청주소 End point
+		String baseUrl = "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
+		
+		// api serviceKey
+		String apikey = "?serviceKey=" + apikeyConfig.getOpenDataApikey();
+		
+		// parameter 값
+		String upr_cd = setValueOfParam(request, "upr_cd");
+		String org_cd = setValueOfParam(request, "org_cd");
+		String upKind = setValueOfParam(request, "upKind");
+		String kind = setValueOfParam(request, "kind");  
+		
+		// 값이 다 있다면 addParameter는 "?serviceKey=APIKEY&upr_cd=00&org_cd=00&upKind=00&kind=00 와 같은 형식이다.
+		String addParameters = apikey + upr_cd + org_cd + upKind + kind + "&pageNo=1&numOfRows=8&_type=json";
+		return webClient.get().uri(baseUrl + addParameters).retrieve()
+				.onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Client Error")))
+	            .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new Exception("Server Error")))
+	            .bodyToMono(String.class)  // JSON 데이터를 문자열로 받음
+	            .retry(3)
+	            .map(json -> {
+	            	HelpPetfAdoptionItemsVo adoptionItems;
+					try { // try: json 파싱
+						adoptionItems = parsingJsonObject(json, HelpPetfAdoptionItemsVo.class);
+						return new ResponseEntity<>(adoptionItems, HttpStatus.OK);
+					} catch (Exception e) {
+						e.printStackTrace();
+						return new ResponseEntity<>(new HelpPetfAdoptionItemsVo(List.of()), HttpStatus.INTERNAL_SERVER_ERROR);
+					}
+	            })
+	            .onErrorReturn(new ResponseEntity<>(new HelpPetfAdoptionItemsVo(List.of()), HttpStatus.INTERNAL_SERVER_ERROR));
+	}
+	
+	private String setValueOfParam(HttpServletRequest request, String paramName) {
+		// request.getParameter("")가 "any"가 아니라면 get 메소드의 파라미터 형식으로 설정 - any라면 공백설정
+	    String paramValue = request.getParameter(paramName);
+	    return (paramValue != null && !paramValue.equals("any")) ? "&" + paramName + "=" + paramValue : "";
 	}
 	
 	// 제너릭 메서드 선언: <T>
@@ -111,4 +165,6 @@ public class AdoptionGetJson {
         }
     
 	}
+
+	
 }
