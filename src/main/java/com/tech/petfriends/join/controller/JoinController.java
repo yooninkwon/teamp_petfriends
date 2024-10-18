@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.util.PasswordEncryptionService;
 import com.tech.petfriends.member.service.MemberService;
 
 @Controller
@@ -34,12 +35,14 @@ public class JoinController {
 	@PostMapping("/joinService")
 	public String joinService(HttpServletRequest request, HttpSession session) {
         MemberLoginDto member = new MemberLoginDto();
+        // 비밀번호 암호화 아르곤2
+        PasswordEncryptionService passencrypt = new PasswordEncryptionService(); 
         
         // UUID로 mem_code 생성
         String uniqueID = UUID.randomUUID().toString();
         member.setMem_code(uniqueID); 
         member.setMem_email(request.getParameter("email"));
-        member.setMem_pw(request.getParameter("password"));
+        member.setMem_pw(passencrypt.encryptPassword(request.getParameter("password")));
         member.setMem_nick(request.getParameter("nickname"));
         member.setMem_tell(Integer.parseInt(request.getParameter("phoneNumber")));
         member.setMem_name(request.getParameter("name"));
