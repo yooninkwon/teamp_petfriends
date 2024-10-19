@@ -88,6 +88,8 @@ $(document).ready(function() {
 	$('.firsttype, .thirdtype  input[type="radio"]').change(function() {
 		$(".filter > div input[type='radio'], .filter > div input[type='checkbox']").prop('checked', false);
 		$('input[name="rankOption"][value="rankopt0All"]').prop('checked', true);
+//		sendAjaxRequest();
+		
 	});
 
 	// 페이지 로드 시 초기 상태 설정
@@ -218,9 +220,10 @@ $(document).ready(function() {
 	    productList.forEach(product => {
 	        const productItem = `
 	            <div class="product-item">
-	                <img src="/static/images/ProductImg/MainImg/${product.main_img1}"/>${product.main_img1}
+	                <img src="/static/images/ProductImg/MainImg/${product.main_img1}"/>
 	                <h3>${product.pro_name}</h3>
-	                <p>가격: ${product.proopt_finalprice} 원</p>
+					<p>${product.proopt_price}</p>
+	                <p>${product.pro_discount}% ${product.proopt_finalprice} 원</p>
 	                <!-- 추가 정보 필요 시 더 작성 -->
 	            </div>
 	        `;

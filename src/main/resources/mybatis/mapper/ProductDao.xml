@@ -15,7 +15,9 @@
 			PRO.PRO_CODE,
 			PRO.PRO_NAME,
 			PROIMG.MAIN_IMG1,
-			MIN(PROOPT.PROOPT_FINALPRICE) PROOPT_FINALPRICE
+			MIN(PROOPT.PROOPT_FINALPRICE) PROOPT_FINALPRICE,
+			MIN(PROOPT.PROOPT_PRICE) PROOPT_PRICE,
+			PRO.PRO_DISCOUNT
 		FROM
 			PRODUCT PRO
 		INNER JOIN
@@ -26,14 +28,15 @@
 			PRO.PRO_PETS = #{petType}
 		AND
 			PRO.PRO_TYPE = #{proType}
-			GROUP BY
-			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1 
-		
-		<!-- <if test="dfoodType != null or dsnackType != null or dgoodsType != null or cfoodType != null or csnackType != null or cgoodsType != null">	
+	<!--  	 <if test="dfoodType != null or dsnackType != null or dgoodsType != null or cfoodType != null or csnackType != null or cgoodsType != null">	
 		AND
 			PRO.PRO_CATEGORY IN ( #{dfoodType} #{dsnackType} #{dgoodsType} #{cfoodType} #{csnackType} #{cgoodsType} )
-		</if>
-		
+		</if>-->
+		GROUP BY
+			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT
+		ORDER BY
+			${rankOption}
+		<!--
 		<if test="dfs1optionString != null or dg1optionString != null or cfs1optionString != null or cg1optionString != null or cg2optionString != null">
 		AND
 			PRO.PRO_FILTER1 IN ( #{dfs1optionString} #{dg1optionString} #{cfs1optionString} #{cg1optionString} #{cg2optionString} )
@@ -53,7 +56,6 @@
 	    </if>  
 		GROUP BY
 			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1 
-		ORDER BY
-			#{rankOption} -->
+		 -->
 	</select>
 </mapper>
