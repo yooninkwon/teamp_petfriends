@@ -74,9 +74,7 @@ public class ProductListViewService implements ProductService {
 				dsnackType = "껌";
 			} else if (dsnackType.equals("dsnacktype3")) {
 				dsnackType = "사시미/육포";
-			} else {
-				dsnackType = "";
-			}
+			} 
 		}
 
 		if (dgoodsType != null) {
@@ -256,7 +254,7 @@ public class ProductListViewService implements ProductService {
 		String cg1optionString = (cg1option != null) ? String.join(",", cg1option) : "";
 		String cg2optionString = (cg2option != null) ? String.join(",", cg2option) : "";
 
-		System.out.println(petType+" : "+proType);
+		System.out.println(petType+" : "+proType+" : " +dfoodType+dsnackType+dgoodsType);
 		
 		
 		ArrayList<ProductListViewDto> list = productDao.productListView(petType, proType, dfoodType, dsnackType,

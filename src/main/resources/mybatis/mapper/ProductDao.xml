@@ -28,12 +28,18 @@
 			PRO.PRO_PETS = #{petType}
 		AND
 			PRO.PRO_TYPE = #{proType}
-	<!--  	 <if test="dfoodType != null or dsnackType != null or dgoodsType != null or cfoodType != null or csnackType != null or cgoodsType != null">	
+	<!--    <if test="dfoodType != null or dsnackType != null or dgoodsType != null or cfoodType != null or csnackType != null or cgoodsType != null">	
 		AND
 			PRO.PRO_CATEGORY IN ( #{dfoodType} #{dsnackType} #{dgoodsType} #{cfoodType} #{csnackType} #{cgoodsType} )
-		</if>-->
+		</if> -->
+		
+		<if test="dfoodType != null">
+		AND
+			PRO.PRO_CATEGORY = #{dfoodType}
+		</if>
+		
 		GROUP BY
-			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT
+			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, PRO.PRO_DATE
 		ORDER BY
 			${rankOption}
 		<!--
