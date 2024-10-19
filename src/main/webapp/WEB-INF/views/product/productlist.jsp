@@ -41,26 +41,26 @@
 			<label> <input type="radio" name="dfoodType" value="dfoodtype3">건식사료</label>
 			</div>
 			<div id="ds">
-			<label> <input type="radio" name="dsnackType" value="dsnacktype1">수제간식</label>
+			<label> <input type="radio" name="dsnackType" value="dsnacktype1" >수제간식</label>
 			<label> <input type="radio" name="dsnackType" value="dsnacktype2">껌</label>
 			<label> <input type="radio" name="dsnackType" value="dsnacktype3">사시미/육포</label>
 			</div>
 			<div id="dg">
-			<label> <input type="radio" name="dgoodsType" value="dgoodstype1">배변용품</label>
+			<label> <input type="radio" name="dgoodsType" value="dgoodstype1" >배변용품</label>
 			<label> <input type="radio" name="dgoodsType" value="dgoodstype2">장난감</label>
 			</div>
 			<div id="cf">
-			<label> <input type="radio" name="cfoodType" value="cfoodtype1">주식캔</label>
+			<label> <input type="radio" name="cfoodType" value="cfoodtype1" >주식캔</label>
 			<label> <input type="radio" name="cfoodType" value="cfoodtype2">파우치</label>
 			<label> <input type="radio" name="cfoodType" value="cfoodtype3">건식사료</label>
 			</div>
 			<div id="cs">
-			<label> <input type="radio" name="csnackType" value="csnacktype1">간식캔</label>
+			<label> <input type="radio" name="csnackType" value="csnacktype1" >간식캔</label>
 			<label> <input type="radio" name="csnackType" value="csnacktype2">동결건조</label>
 			<label> <input type="radio" name="csnackType" value="csnacktype3">스낵</label>
 			</div>
 			<div id="cg">
-			<label> <input type="radio" name="cgoodsType" value="cgoodstype1">낚시대/레이져</label>
+			<label> <input type="radio" name="cgoodsType" value="cgoodstype1" >낚시대/레이져</label>
 			<label> <input type="radio" name="cgoodsType" value="cgoodstype2">스크래쳐/박스</label>
 			</div>
 		</div>
@@ -130,16 +130,12 @@
 		</div>
 
 		
-		
 	</form>
 
-	<!-- 상품리스트 -->
-	<c:forEach var="list" items="${list }">
-		<tr>
-			<td>${list.pro_name }</td>
-		</tr>
-	</c:forEach>
-
+	 <div id="product-Count">상품 목록</div>
+    <div id="product-List"></div> <!-- AJAX로 데이터가 표시될 부분 -->
+    
+    
 	<!-- 푸터 -->
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>

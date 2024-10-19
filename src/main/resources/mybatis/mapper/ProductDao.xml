@@ -3,8 +3,84 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+
+<!-- product list 쿼리문 -->
 <mapper namespace="com.tech.petfriends.product.dao.ProductDao">
-    <select id="productList" resultType="com.tech.petfriends.product.dto.ProductDto">
-		SELECT * FROM PRODUCT
+	<select id="productListView"
+		resultType="com.tech.petfriends.product.dto.ProductListViewDto">
+		SELECT
+			PRO.PRO_CODE,
+			PRO.PRO_NAME,
+			PROIMG.MAIN_IMG1,
+			MIN(PROOPT.PROOPT_FINALPRICE) PROOPT_FINALPRICE,
+			MIN(PROOPT.PROOPT_PRICE) PROOPT_PRICE,
+			PRO.PRO_DISCOUNT
+		FROM
+			PRODUCT PRO
+		INNER JOIN
+			PRODUCT_IMAGE PROIMG ON PRO.PRO_CODE = PROIMG.PRO_CODE
+		INNER JOIN
+			PRODUCT_OPTION PROOPT ON PRO.PRO_CODE = PROOPT.PRO_CODE
+		WHERE
+			PRO.PRO_PETS = #{petType}
+		AND
+			PRO.PRO_TYPE = #{proType}	
+		<if test="dfoodType != null or dsnackType != null or dgoodsType != null
+		or cfoodType != null or csnackType != null or cgoodsType != null">
+		AND 
+		PRO.PRO_CATEGORY IN (
+			<if test="dfoodType != null">#{dfoodType}</if>
+    	    <if test="dsnackType != null">#{dsnackType}</if>
+        	<if test="dgoodsType != null">#{dgoodsType}</if>
+        	<if test="cfoodType != null">#{cfoodType}</if>
+        	<if test="csnackType != null">#{csnackType}</if>
+        	<if test="cgoodsType != null">#{cgoodsType}</if>
+  		)
+		</if>
+		<if test="dfs1option != null and dfs1option.size() > 0 or dg1option != null and dg1option.size() > 0 or cfs1option != null and cfs1option.size() > 0 or cg1option != null and cg1option.size() > 0 or cg2option != null and cg2option.size() > 0">
+		AND
+		PRO.PRO_FILTER1 IN (
+			<foreach item="option" collection="dfs1option" open="" separator="," close="">
+				#{option}
+			</foreach>
+			<foreach item="option" collection="dg1option" open="" separator="," close="">
+				#{option}
+			</foreach>
+			<foreach item="option" collection="cfs1option" open="" separator="," close="">
+				#{option}
+			</foreach>
+			<foreach item="option" collection="cg1option" open="" separator="," close="">
+				#{option}
+			</foreach>
+			<foreach item="option" collection="cg2option" open="" separator="," close="">
+				#{option}
+			</foreach>
+		)
+		</if>
+		<if test="dfs2option != null and dfs2option.size() > 0 or dg2option != null and dg2option.size() > 0 or cfs2option != null and cfs2option.size() > 0 ">
+		AND
+		PRO.PRO_FILTER2 IN (
+			<foreach item="option" collection="dfs2option" open="" separator="," close="">
+				#{option}
+			</foreach>
+			<foreach item="option" collection="dg2option" open="" separator="," close="">
+				#{option}
+			</foreach>
+			<foreach item="option" collection="cfs2option" open="" separator="," close="">
+				#{option}
+			</foreach>
+		)
+		</if>
+		<if test="priceOption != null and priceOption.size() > 0">
+		AND
+			  <foreach item="option" collection="priceOption" separator=" OR " open="(" close=")" >
+			  	${option}
+			  </foreach>
+		</if>
+		
+		GROUP BY
+			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, PRO.PRO_DATE
+		ORDER BY
+			${rankOption}
 	</select>
 </mapper>
