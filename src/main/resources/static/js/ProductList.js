@@ -21,6 +21,8 @@ $(document).ready(function() {
 			if (!$("#df input[type='radio']:checked").length) {
 				$("#df input[type='radio']").first().prop('checked', true);
 			}
+			$("#option_dfs1, #option_dfs2").show();
+
 		}
 		// 강아지와 간식이 선택된 경우 ds 표시
 		else if (petType === "dog" && proType === "snack") {
@@ -31,6 +33,7 @@ $(document).ready(function() {
 			if (!$("#ds input[type='radio']:checked").length) {
 				$("#ds input[type='radio']").first().prop('checked', true);
 			}
+			$("#option_dfs1, #option_dfs2").show();
 		}
 		// 강아지와 용품이 선택된 경우 dg 표시
 		else if (petType === "dog" && proType === "goods") {
@@ -39,6 +42,11 @@ $(document).ready(function() {
 			$("#df input[type='radio'], #ds input[type='radio'], #cf input[type='radio'], #cs input[type='radio'], #cg input[type='radio']").prop('checked', false);
 			if (!$("#dg input[type='radio']:checked").length) {
 				$("#dg input[type='radio']").first().prop('checked', true);
+			}
+			if (dg === "dgoodstype2") {
+				$("#option_dg2").show();
+			} else {
+				$("#option_dg1").show();
 			}
 		}
 		// 고양이와 사료가 선택된 경우 cf 표시
@@ -49,6 +57,7 @@ $(document).ready(function() {
 			if (!$("#cf input[type='radio']:checked").length) {
 				$("#cf input[type='radio']").first().prop('checked', true);
 			}
+			$("#option_cfs1, #option_cfs2").show();
 		}
 		// 고양이와 간식이 선택된 경우 cs 표시
 		else if (petType === "cat" && proType === "snack") {
@@ -56,8 +65,9 @@ $(document).ready(function() {
 			// cs 외의 나머지 그룹 체크 해제
 			$("#df input[type='radio'], #ds input[type='radio'], #dg input[type='radio'], #cf input[type='radio'], #cg input[type='radio']").prop('checked', false);
 			if (!$("#cs input[type='radio']:checked").length) {
-						        $("#cs input[type='radio']").first().prop('checked', true);
-						    }		
+				$("#cs input[type='radio']").first().prop('checked', true);
+			}
+			$("#option_cfs1, #option_cfs2").show();
 		}
 		// 고양이와 용품이 선택된 경우 cg 표시
 		else if (petType === "cat" && proType === "goods") {
@@ -65,38 +75,12 @@ $(document).ready(function() {
 			// cg 외의 나머지 그룹 체크 해제
 			$("#df input[type='radio'], #ds input[type='radio'], #dg input[type='radio'], #cf input[type='radio'], #cs input[type='radio']").prop('checked', false);
 			if (!$("#cg input[type='radio']:checked").length) {
-						        $("#cg input[type='radio']").first().prop('checked', true);
-						    }
-		}
-
-		//강아지 고양이 / 사료 간식 용품 조합에 따른 라디오버튼 생성(상세타입)
-		if (petType === "dog") {
-			if (proType === "food" || proType === "snack") {
-				if (df || ds) {
-					$("#option_dfs1").show();
-					$("#option_dfs2").show();
-				}
-			} else if (proType === "goods") {
-				if (dg === "dgoodstype1") {
-					$("#option_dg1").show();
-				} else if (dg === "dgoodstype2")
-					$("#option_dg2").show();
-
+				$("#cg input[type='radio']").first().prop('checked', true);
 			}
-
-		} else if (petType === "cat") {
-			if (proType === "food" || proType === "snack") {
-				if (cf || cs) {
-
-					$("#option_cfs1").show();
-					$("#option_cfs2").show();
-				}
-			} else if (proType === "goods") {
-				if (cg === "cgoodstype1") {
-					$("#option_cg1").show();
-				} else if (cg === "cgoodstype2") {
-					$("#option_cg2").show();
-				}
+			if (cg === "cgoodstype2") {
+				$("#option_cg2").show();
+			} else {
+				$("#option_cg1").show();
 			}
 		}
 		$("#option_price").show();
@@ -104,16 +88,12 @@ $(document).ready(function() {
 	});
 
 
-
+	
 
 	// 펫타입, 상품종류, 상품타입 체크변경시 필터옵션 체크 해제
 	$('.firsttype input[type="radio"], .thirdtype  input[type="radio"]').change(function() {
 		$(".filter > div input[type='radio'], .filter > div input[type='checkbox']").prop('checked', false);
 		$('input[name="rankOption"][value="rankopt0All"]').prop('checked', true);
-
-
-		sendAjaxRequest();
-
 	});
 
 	// 페이지 로드 시 초기 상태 설정
@@ -235,19 +215,23 @@ $(document).ready(function() {
 
 	function updateProductList(productList) {
 		// 상품 목록을 표시할 HTML 요소 선택 (예: <div id="product-list"></div>)
-		const productListContainer = $('#product-list');
+		const productListContainer = $('#product-List');
 
 		// 기존의 내용을 지웁니다.
 		productListContainer.empty();
 
+		// 상품 개수 업데이트 (예: <div id="product-count"></div>)
+			const productCountContainer = $('#product-Count');
+			productCountContainer.text(`${productList.length}개의 상품`);
+		
 		// 제품 목록을 반복하며 HTML 요소를 생성
 		productList.forEach(product => {
 			const productItem = `
-	            <div class="product-item">
+	            <div class="product-Item">
 	                <img src="/static/images/ProductImg/MainImg/${product.main_img1}"/>
 	                <h3>${product.pro_name}</h3>
-					<p>${product.proopt_price}</p>
-	                <p>${product.pro_discount}% ${product.proopt_finalprice} 원</p>
+					<p>${product.proopt_price}원</p>
+	                <p>${product.pro_discount}% ${product.proopt_finalprice}원</p>
 	                <!-- 추가 정보 필요 시 더 작성 -->
 	            </div>
 	        `;

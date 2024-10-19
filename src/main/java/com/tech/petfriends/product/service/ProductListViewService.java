@@ -130,7 +130,7 @@ public class ProductListViewService implements ProductService {
 			for (int i = 0; i < priceOption.size(); i++) {
 				String type = priceOption.get(i);
 				if (type.equals("priceopt1")) {
-					priceOption.set(i, "PROOPT.PROOPT_FINALPRICE BETWEEN 0 AND 10000");
+					priceOption.set(i, "PROOPT.PROOPT_FINALPRICE BETWEEN 0 AND 9999");
 				} else if (type.equals("priceopt2")) {
 					priceOption.set(i, "PROOPT.PROOPT_FINALPRICE BETWEEN 10000 AND 20000");
 				} else if (type.equals("priceopt3")) {
@@ -242,25 +242,11 @@ public class ProductListViewService implements ProductService {
 				}
 			}
 		}
-
-		// 리스트에서 문자열로 반환
-		String priceOptionString = (priceOption != null) ? String.join(" OR ", priceOption):"";
-		String dfs1optionString = (dfs1option != null) ? String.join(",", dfs1option) : "";
-		String dfs2optionString = (dfs2option != null) ? String.join(",", dfs2option) : "";
-		String dg1optionString = (dg1option != null) ? String.join(",", dg1option) : "";
-		String dg2optionString = (dg2option != null) ? String.join(",", dg2option) : "";
-		String cfs1optionString = (cfs1option != null) ? String.join(",", cfs1option) : "";
-		String cfs2optionString = (cfs2option != null) ? String.join(",", cfs2option) : "";
-		String cg1optionString = (cg1option != null) ? String.join(",", cg1option) : "";
-		String cg2optionString = (cg2option != null) ? String.join(",", cg2option) : "";
-
-		System.out.println(petType+" : "+proType+" : " +dfoodType+dsnackType+dgoodsType);
-		
 		
 		ArrayList<ProductListViewDto> list = productDao.productListView(petType, proType, dfoodType, dsnackType,
-				dgoodsType, cfoodType, csnackType, cgoodsType, rankOption, priceOptionString, dfs1optionString,
-				dfs2optionString, dg1optionString, dg2optionString, cfs1optionString, cfs2optionString, cg1optionString,
-				cg2optionString);
+				dgoodsType, cfoodType, csnackType, cgoodsType, rankOption, priceOption, dfs1option,
+				dfs2option, dg1option, dg2option, cfs1option, cfs2option, cg1option,
+				cg2option);
 
 		model.addAttribute("list", list);
 	}

@@ -2,3 +2,23 @@
 	margin: 80px 0 0 50px; /* 헤더에 가려서 내림 */
 }
 
+#product-List {
+    display: grid;
+    grid-template-columns: repeat(4, 240px); /* 4개씩 나열 */
+    grid-gap: 20px; /* 각 아이템 간의 간격 */
+    justify-content: center; /* 가운데 정렬 */
+    margin: 0 auto; /* 중앙 정렬을 위한 마진 */
+}
+
+.product-Item {
+    width: 240px; /* 고정된 너비 */
+    height: auto; /* 높이는 콘텐츠에 따라 자동으로 조정 */
+    text-align: center;
+    overflow: hidden; /* 내용이 넘치지 않도록 설정 */
+}
+
+.product-Item img {
+    width: 100%; /* 이미지가 아이템의 너비에 맞게 조정 */
+    height: auto; /* 이미지 비율 유지 */
+    display: block; /* 이미지 아래 여백 제거 */
+}

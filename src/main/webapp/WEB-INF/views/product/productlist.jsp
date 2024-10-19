@@ -129,12 +129,11 @@
 			</div>
 		</div>
 
-		<img src="" alt="" />
 		
 	</form>
 
-	 <h1>상품 목록</h1>
-    <div id="product-list"></div> <!-- AJAX로 데이터가 표시될 부분 -->
+	 <div id="product-Count">상품 목록</div>
+    <div id="product-List"></div> <!-- AJAX로 데이터가 표시될 부분 -->
     
     
 	<!-- 푸터 -->

@@ -35,6 +35,7 @@ public class ProductController {
 		return "/product/productlist";
 	}
 	
+	//제품리스트 불러오기 ajax용
 	@PostMapping("/productlistview")
 	@ResponseBody
 	public ResponseEntity<List<ProductListViewDto>> productlistview(@RequestBody Map<String, Object> param, Model model){
