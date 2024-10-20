@@ -4,8 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-<!-- product list 쿼리문 -->
 <mapper namespace="com.tech.petfriends.product.dao.ProductDao">
+	<!-- product list 쿼리문 -->
 	<select id="productListView"
 		resultType="com.tech.petfriends.product.dto.ProductListViewDto">
 		SELECT
@@ -14,7 +14,8 @@
 			PROIMG.MAIN_IMG1,
 			MIN(PROOPT.PROOPT_FINALPRICE) PROOPT_FINALPRICE,
 			MIN(PROOPT.PROOPT_PRICE) PROOPT_PRICE,
-			PRO.PRO_DISCOUNT
+			PRO.PRO_DISCOUNT,
+			PRO.PRO_ONOFF
 		FROM
 			PRODUCT PRO
 		INNER JOIN
@@ -25,6 +26,8 @@
 			PRO.PRO_PETS = #{petType}
 		AND
 			PRO.PRO_TYPE = #{proType}	
+		AND
+			PRO.PRO_ONOFF IN ('판매', '품절')	
 		<if test="dfoodType != null or dsnackType != null or dgoodsType != null
 		or cfoodType != null or csnackType != null or cgoodsType != null">
 		AND 
@@ -79,8 +82,26 @@
 		</if>
 		
 		GROUP BY
-			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, PRO.PRO_DATE
+			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, 
+			PRO.PRO_DATE, PRO.PRO_ONOFF
 		ORDER BY
 			${rankOption}
+	</select>
+	
+	<select id="productDetail"
+		resultType="com.tech.petfriends.product.dto.ProductDetailDto">
+		
+		SELECT 
+			PRO.PRO_CODE, PRO.PRO_NAME, PRO.PRO_PETS, PRO.PRO_TYPE, PRO.PRO_CATEGORY, PRO.PRO_FILTER1, PRO.PRO_FILTER2, PRO.PRO_DISCOUNT, PRO.PRO_ONOFF,
+			PROIMG.MAIN_IMG1, PROIMG.MAIN_IMG2, PROIMG.MAIN_IMG3, PROIMG.MAIN_IMG4, PROIMG.MAIN_IMG5, PROIMG.CHECK_IMG,
+			PROIMG.DES_IMG1, PROIMG.DES_IMG2, PROIMG.DES_IMG3, PROIMG.DES_IMG4, PROIMG.DES_IMG5,
+			PROIMG.DES_IMG6, PROIMG.DES_IMG7, PROIMG.DES_IMG8, PROIMG.DES_IMG9, PROIMG.DES_IMG10
+		FROM 
+    		PRODUCT PRO
+		INNER JOIN
+    		PRODUCT_IMAGE PROIMG ON PRO.PRO_CODE = PROIMG.PRO_CODE
+		WHERE 
+    		PRO.PRO_CODE = #{pro_code}
+		
 	</select>
 </mapper>

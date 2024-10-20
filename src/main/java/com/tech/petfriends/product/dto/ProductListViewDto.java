@@ -14,6 +14,7 @@ public class ProductListViewDto {
 	private int proopt_finalprice;
 	private int proopt_price;
 	private int pro_discount;
+	private String pro_onoff;
 	
 	//private int 리뷰갯수
 	//private int 평균별점
