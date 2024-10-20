@@ -29,8 +29,9 @@ public class HelpPetfRestController {
     }
     
 	@GetMapping("/adoption/getJson")
-	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson() throws Exception {
-		return adoptionService.fetchAdoptionDataMain();
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson(HttpServletRequest request, Model model) throws Exception {
+		model.addAttribute("request", request);
+		return adoptionService.fetchAdoptionDataMain(model);
 	}
 	
 	@GetMapping("/adoption/getFilterJson")

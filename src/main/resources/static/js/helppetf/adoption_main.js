@@ -1,63 +1,75 @@
 /**
+ * 이 스크립트는 입양센터 메인 페이지를 로드하면 공공데이터포털에 데이터를 요청하여,
+ * 필터링이 설정되지 않은 Json 데이터를 서버(Java)로 전송하는 Ajax 코드와,
+ * 필터링 선택 후 버튼 클릭 시 설정된 필터 기준으로 데이터를 다시 요청하는 코드로 구성되어 있다.
  * 
+ * 데이터가 정상적으로 수신되면, 해당 데이터를 테이블 형식으로 화면에 출력한다.
+ * 
+ * 또한, 각 도시 코드에 대한 시/군/구 코드와 각 동물 종류에 따른 품종 코드를 
+ * Object 형태로 저장한다. 사용자가 필터에서 대분류(도시, 동물 종류)를 선택하면,
+ * 선택된 대분류 값에 맞춰 소분류(시/군/구, 동물 품종)가 동적으로 업데이트된다.
  */
 
-const itemsPerPage = 8; // 페이지 당 item 수 = 8
-let currentPage = 1; // 페이지 기본값 = 1
-let totalItems = 0; // 총 item 수 초기화
-let adoptionItems = []; // item들을 담을 배열
 $(document).ready(function() {
-	// 입양센터 메인의 Api 호출
-	fetchData(currentPage); // <- 페이지가 로드되면 호출: fetchData(currentPage);
-	function fetchData(page) {
+
+	const itemsPerPage = 8; // 페이지 당 item 수 = 8
+	let currentPage = 1; // 현재 표시되는 페이지
+	let totalItems = 0; // 총 item 수 초기화
+	let totalPages = 0; // 총 페이지 수
+	let adoptionItems = []; // item들을 담을 배열
+	let currentPageNo = 1; // API 요청을 위한 페이지 번호
+	let currPageGroup = 1; // 현재 페이지 그룹
+
+	fetchData(currentPage, currPageGroup); // 페이지 로드 시 기본 페이지 호출
+
+	function fetchData(page, currPageGroup) {
 		$.ajax({
-			url: '/helppetf/adoption/getJson', // api 불러오는 mapping
-			//  url: '/helppetf/adoption/getJson_test', // api 불러오는 mapping (test)
+			url: '/helppetf/adoption/getJson?pageNo=' + currPageGroup, // pageNo에 맞는 데이터 요청
 			method: 'GET',
 			dataType: 'json',
 			headers: {
-		        'Cache-Control': 'no-cache'
-		    },
+				'Cache-Control': 'no-cache'
+			},
 			success: function(data) {
 				adoptionItems = data.item;
-				totalItems = adoptionItems.length; // adoptionItems의 길이로 total갯수 계산
-				displayItems(page); // displayItems함수 호출 
-				setupPagination(); // 성공시 페이징도 설정
+				totalItems = adoptionItems.length; // 받아온 데이터에서 총 item 수 계산
+				totalPages = Math.ceil(totalItems / itemsPerPage); // 총 페이지 수 계산
+				displayItems(page); // 아이템 표시
+				setupPagination(); // 페이지네이션 설정
 			},
 			error: function(xhr, status, error) {
 				console.error('Error fetching data:', error);
 			}
 		});
 	}
-	
-	// 필터링후 검색 버튼을 누를 때의 Api 호출
+
+	// 필터링 후 검색 버튼을 누를 때의 API 호출
 	$('#filterSubmit').on('click', function() {
-		
-		// 폼 전체 데이터를 시리얼라이즈
-		const formParam = $('#filter_form form').serialize(); 
-		
-		filterData(currentPage)
+		const formParam = $('#filter_form form').serialize();
+		filterData(currentPage);
+
 		function filterData(page) {
 			$.ajax({
-				url: '/helppetf/adoption/getFilterJson?' + formParam, // 필터링한 api 불러오는 mapping + 시리얼라이즈된 데이터
+				url: '/helppetf/adoption/getFilterJson?pageNo=' + currPageGroup + '&' + formParam, // 필터링된 API 호출
 				method: 'GET',
 				dataType: 'json',
 				headers: {
-				        'Cache-Control': 'no-cache'
-				    },
+					'Cache-Control': 'no-cache',
+				},
 				success: function(data) {
 					adoptionItems = data.item;
-					totalItems = adoptionItems.length; // adoptionItems의 길이로 total갯수 계산
-					displayItems(page); // displayItems함수 호출 
-					setupPagination(); // 성공시 페이징도 설정
+					totalItems = adoptionItems.length;
+					displayItems(page);
+					setupPagination();
 				},
 				error: function(xhr, status, error) {
 					console.error('Error fetching data:', error);
-				}
+				},
 			});
 		}
 	});
 
+	// 아이템을 페이지에 맞게 출력
 	function displayItems(page) {
 		const start = (page - 1) * itemsPerPage;
 		const end = start + itemsPerPage;
@@ -81,13 +93,14 @@ $(document).ready(function() {
 
 		$('#adoptionContainer').html(cards);
 	}
+
+	// 클릭한 곳의 동물 상세페이지
 	$(document).on('click', '.adoption-link', function(event) {
 		event.preventDefault(); // 기본 링크 클릭 동작 방지
 		const index = $(this).data('index'); // 클릭한 요소의 인덱스 값을 가져옴
-		// 선택된 항목 가져오기
-		const selectedItem = adoptionItems[index]; // adoptionItems 배열에서 선택된 객체
+		const selectedItem = adoptionItems[index]; // 선택된 항목 가져오기
 
-		//POST 요청 보내기
+		// POST 요청 보내기
 		fetch('/helppetf/adoption/adoption_data', {
 			method: 'POST',
 			headers: {
@@ -110,31 +123,57 @@ $(document).ready(function() {
 			});
 	});
 
-
-	// 페이징 은 자바로 다시 할 예정
+	// 페이지네이션 설정
 	function setupPagination() {
-		const totalPages = Math.ceil(totalItems / itemsPerPage); // 총 페이지 수 계산 -> 총 아이템 갯수 / 페이지당 출력 수
+		const maxPagesToShow = 10; // 한 번에 보여줄 페이지 수
+		const startPage = (currPageGroup - 1) * maxPagesToShow + 1; // 현재 그룹의 첫 페이지 계산
+		const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages); // 마지막 페이지 계산
+
 		let paginationHtml = '';
 
-		for (let i = 1; i <= totalPages; i++) {
+		// 이전 버튼 추가 (현재 페이지 그룹이 1보다 크면 표시)
+		if (currPageGroup > 1) {
+			paginationHtml += '<a href="#" id="prev-group" data-page="' + (currPageGroup - 1) + '">&laquo; 이전</a>';
+		}
+
+		// 페이지 번호 생성
+		for (let i = startPage; i <= endPage; i++) {
 			paginationHtml += '<a href="#" class="' + (i === currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</a>';
-		} // "현재 페이지"일 때 class="active" 부여, page 번호, 링크는 i로 대입
+		}
+
+		// 다음 버튼 추가 (전체 페이지 수가 현재 페이지 그룹의 마지막 페이지보다 클 경우 표시)
+		//if (endPage < totalPages) {
+			paginationHtml += '<a href="#" id="next-group" data-page="' + (currPageGroup + 1) + '">다음 &raquo;</a>';
+		//}
 
 		$('#pagination').html(paginationHtml);
 
-		$('#pagination a').on('click', function(event) { // a태그가 클릭되었을 시 이벤트
+		// 페이지 클릭 이벤트 핸들러
+		$('#pagination a').on('click', function(event) {
 			event.preventDefault();
-			const page = $(this).data('page');
-			if (page !== currentPage) { // 현재페이지와 클릭한 페이지가 같지 않을 때
-				currentPage = page; // 현재 페이지에 클릭한 페이지를 대입
-				displayItems(currentPage); // displayItems(page)에 대입한 페이지 넣어 호출
-				setupPagination();
+
+			const selectedPage = $(this).data('page'); // 선택한 페이지 번호 가져오기
+
+			// 이전 또는 다음 그룹으로 이동할 때
+			if ($(this).attr('id') === 'prev-group') {
+				currPageGroup--;
+			} else if ($(this).attr('id') === 'next-group') {
+				currPageGroup++;
 			}
+
+			// 선택한 페이지를 업데이트
+			currentPage = selectedPage;
+
+			// 새로운 데이터 요청
+			fetchData(currentPage, currPageGroup);
 		});
 	}
-	// 필터링
-	// 오브젝트 : 지역, 품종
-	// 데이터 배열
+
+	/** @ 필터링
+	 * 오브젝트 : 지역, 품종 데이터 저장
+	 * */
+
+	// 동물
 	const kindOptions = {
 		417000: [ // 강아지
 			{ value: "any", text: "강아지" },
@@ -332,8 +371,14 @@ $(document).ready(function() {
 			{ value: "000134", text: "화이트테리어" },
 			{ value: "000111", text: "휘펫" }],
 		422400: [ // 고양이
-			{ value: "000201", text: "고양이" },
+			// 동물 종류는 422400(고양이), any(품종에 대한 파라피터 전송 없음)으로
+			// 데이터 요청을 보내면 이상하게 강아지에 대한 데이터가 섞여 들어온다.
+			// (동물종류 "강아지" 선택시에는 문제없음)
+			// 왜인지는 모르겠으나 문제가 있으니 "any"를 주석처리 해두고
+			// 기본 선택값을 "한국 고양이"로 만들어 두었다.
+			// { value: "any", text: "고양이" }, 
 			{ value: "000200", text: "한국 고양이" },
+			{ value: "000201", text: "고양이" },
 			{ value: "000201", text: "기타" },
 			{ value: "000170", text: "노르웨이 숲" },
 			{ value: "000218", text: "니벨룽" },
@@ -371,11 +416,13 @@ $(document).ready(function() {
 			{ value: "000198", text: "하바나 브라운" },
 			{ value: "000199", text: "하일랜드 폴드" }],
 		429900: [ // 기타
-			//{ value: "any", text: "기타 동물" },
+			//{ value: "any", text: "기타 동물" }, 
+			// 기타 동물에서 기타 동물이라는 분류가 존재하지만, 하나뿐이라 
+			// 기존의 기본 선택(any)를 주석 처리 하고 value가 "000117"인 "기타 동물"을 자동적으로 선택되게 만들었다.
 			{ value: "000117", text: "기타 동물" }
 		]
 	};
-
+	// 지역
 	const orgCdOptions = {
 		6110000: [ // 서울
 			{ value: "any", text: "시, 군, 구" },
@@ -702,6 +749,7 @@ $(document).ready(function() {
 				/* * 람다식 설명 :
 				* forEach: 배열의 각 요소를 순차적으로 처리하는 메서드
 				* option => {} : 배열의 각 항목(객체)을 option이라는 변수로 전달
+				* (option은 배열의 각 요소를 참조하는 변수이다.)
 				* 배열의 첫 번째 요소부터 마지막 요소까지 차례로 진행 (forEach)
 				* option 객체의 구조는 { value: "어쩌구", text: "저쩌구" } 형태로 각 항목을 처리
 				* #org_cd 요소에 .append()로 <option> 태그를 동적으로 추가
@@ -709,7 +757,7 @@ $(document).ready(function() {
 				*/
 			});
 		} else {
-			// orgCdOptions[selectedUprVal] 가 아닌 경우: 는 아무래도 오류가 났을 경우인 듯 하다.
+			// orgCdOptions[selectedUprVal] 가 아닌 경우: 는 아무래도 오류가 났을 경우이다.
 			$('#org_cd').append('<option value="any" selected>시, 군, 구</option>');
 		}
 
