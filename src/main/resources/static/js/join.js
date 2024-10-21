@@ -1,3 +1,5 @@
+
+// 이메일 형식 확인 함수
 function validateEmail() {
     var email = document.getElementById("email").value;
     var emailError = document.getElementById("emailError");
@@ -10,6 +12,7 @@ function validateEmail() {
     }
 }
 
+// 비밀번호 형식 확인 함수
 function validatePassword() {
     const passwordInput = document.getElementById("password").value;
     const passwordError = document.getElementById("passwordError");
@@ -24,6 +27,7 @@ function validatePassword() {
     }
 }
 
+// 비밀번호 확인 일치 확인 함수
 function checkPasswordMatch() {
     const passwordInput = document.getElementById("password").value;
     const confirmPasswordInput = document.getElementById("confirmPassword").value;
@@ -36,6 +40,7 @@ function checkPasswordMatch() {
     }
 }
 
+// 닉네임 형식 확인, 중복검사 확인 함수
 function checkNickname() {
     const nickname = document.getElementById("nickname").value;
     const nicknameError = document.getElementById("nicknameError");
@@ -64,23 +69,44 @@ function checkNickname() {
     xhr.send();
 }
 
+// 휴대폰 번호 형식, 하이폰 추가 함수
 // 포커스를 벗어났을 때 번호 형식을 010-XXXX-XXXX로 변경
-    function formatPhoneNumber() {
-        const phoneNumberInput = document.getElementById("phoneNumber");
-        let phoneNumber = phoneNumberInput.value;
+function formatPhoneNumber() {
+    const phoneNumberInput = document.getElementById("phoneNumber");
+    let phoneNumber = phoneNumberInput.value;
 
-        // 숫자만 남기기
-        phoneNumber = phoneNumber.replace(/\D/g, "");
+    // 숫자만 남기기
+    phoneNumber = phoneNumber.replace(/\D/g, "");
 
-        // 휴대폰 번호가 11자리인 경우에만 하이픈 추가
-        if (phoneNumber.length === 11) {
-            phoneNumber = phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
-            document.getElementById("phoneNumberError").style.display = "none";
-        } else {
-            document.getElementById("phoneNumberError").style.display = "block"; // 잘못된 형식 경고
-        }
-
-        phoneNumberInput.value = phoneNumber;
+    // 휴대폰 번호가 11자리인 경우에만 하이픈 추가
+    if (phoneNumber.length === 11) {
+        phoneNumber = phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+        document.getElementById("phoneNumberError").style.display = "none";
+    } else {
+        document.getElementById("phoneNumberError").style.display = "block"; // 잘못된 형식 경고
     }
 
+    phoneNumberInput.value = phoneNumber;
+}
 
+// 생년 월일 확인 함수	
+function validateBirthDate() {
+    let birthInput = document.getElementById("birth").value;  // 'let'으로 변경
+    const birthError = document.getElementById("birthError");
+    
+    birthInput = birthInput.replace(/\D/g, "");  // 숫자만 남기기
+    
+    // 생년월일이 8자리인 경우에만 정규식 체크
+    if (birthInput.length === 8) {
+        const birthPattern = /^\d{8}$/;
+        if (!birthPattern.test(birthInput)) {
+            birthError.style.display = "block"; // 정규식에 맞지 않으면 오류 메시지 표시
+        } else {
+            birthError.style.display = "none"; // 정규식에 맞으면 오류 메시지 숨김
+        }
+    } else {
+        birthError.style.display = "block"; // 입력한 숫자가 8자리가 아닐 때 오류 메시지 표시
+    }
+}
+	
+	

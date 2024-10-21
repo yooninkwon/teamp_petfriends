@@ -61,7 +61,9 @@
 	                <input type="radio" id="gender" name="gender" value="F" /> 여성
                 </div>
                 
-                <input type="text" id="birth" name="birth" placeholder="20000922"> <br />
+				<input type="text" id="birth" name="birth" placeholder="20000922" maxlength="11" oninput="validateBirthDate()">
+				<p id="birthError" style="font-size:15px; color:red; float:right;
+				margin-right:45px; margin-top:-10px; display:none;">8자리의 숫자로 입력해 주세요.</p>
 
                 <label for="inviteCode">초대코드 입력 (선택)</label> <br />
                 <input type="text" id="inviteCode" name="inviteCode" placeholder="초대코드 입력하고 5천원 받기"> <br />
