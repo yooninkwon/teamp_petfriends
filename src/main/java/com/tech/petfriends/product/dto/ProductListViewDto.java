@@ -7,15 +7,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductDto {
+public class ProductListViewDto {
 	private String pro_code;
 	private String pro_name;
-	private String pro_pets;
-	private String pro_type;
-	private String pro_category;
-	private String pro_filter1;
-	private String pro_filter2;
+	private String main_img1;
+	private int proopt_finalprice;
+	private int proopt_price;
 	private int pro_discount;
-	private Date pro_date;
 	private String pro_onoff;
+	
+	//private int 리뷰갯수
+	//private int 평균별점
 }
