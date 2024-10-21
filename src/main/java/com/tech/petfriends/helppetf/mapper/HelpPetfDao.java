@@ -14,4 +14,6 @@ public interface HelpPetfDao {
 	public ArrayList<HelpPetfDto> petteacherList();
 
 	public String findUserAddr(String userId);
+
+	public void upViews(String hpt_seq);
 }

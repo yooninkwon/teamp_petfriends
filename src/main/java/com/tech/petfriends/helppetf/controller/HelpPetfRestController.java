@@ -31,15 +31,9 @@ public class HelpPetfRestController {
 	@GetMapping("/adoption/getJson")
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson(HttpServletRequest request, Model model) throws Exception {
 		model.addAttribute("request", request);
-		return adoptionService.fetchAdoptionDataMain(model);
+		return adoptionService.fetchAdoptionData(model);
 	}
 	
-	@GetMapping("/adoption/getFilterJson")
-	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetFilterJson(HttpServletRequest request, Model model) throws Exception {
-		model.addAttribute("request", request);
-		return adoptionService.fetchAdoptionDataFilter(model);
-	}
-
 	@PostMapping("/adoption/adoption_data")
 	public String adoptionData(@RequestBody AdoptionSelectedAnimalDto adoptionSelectedDto, HttpServletRequest request) {
 		// adoption_main에서 호출한 함수로 인해 작동
