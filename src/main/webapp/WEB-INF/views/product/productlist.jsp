@@ -11,9 +11,9 @@
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 
 <!-- 상품카테고리+필터메뉴바 css,sc -->
-<link rel="stylesheet" href="/static/css/ProductList.css" />
+<link rel="stylesheet" href="/static/css/product/ProductList.css" />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="/static/js/ProductList.js"></script>
+<script src="/static/js/product/ProductList.js"></script>
 
 </head>
 
@@ -132,7 +132,7 @@
 		
 	</form>
 
-	 <div id="product-Count">상품 목록</div>
+	 <div id="product-Count">상품 목록 갯수</div>
     <div id="product-List"></div> <!-- AJAX로 데이터가 표시될 부분 -->
     
     

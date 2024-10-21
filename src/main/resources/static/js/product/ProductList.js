@@ -88,7 +88,7 @@ $(document).ready(function() {
 	});
 
 
-	
+
 
 	// 펫타입, 상품종류, 상품타입 체크변경시 필터옵션 체크 해제
 	$('.firsttype input[type="radio"], .thirdtype  input[type="radio"]').change(function() {
@@ -221,14 +221,20 @@ $(document).ready(function() {
 		productListContainer.empty();
 
 		// 상품 개수 업데이트 (예: <div id="product-count"></div>)
-			const productCountContainer = $('#product-Count');
-			productCountContainer.text(`${productList.length}개의 상품`);
-		
+		const productCountContainer = $('#product-Count');
+		productCountContainer.text(`${productList.length}개의 상품`);
+
 		// 제품 목록을 반복하며 HTML 요소를 생성
 		productList.forEach(product => {
+
+			const soldOutOverlay = product.pro_onoff === '품절' ? '<div class="sold-out-overlay">품절</div>' : '';
+
 			const productItem = `
-	            <div class="product-Item">
-	                <img src="/static/images/ProductImg/MainImg/${product.main_img1}"/>
+	            <div class="product-Item" data-product-code="${product.pro_code}">
+					<div class="product-image-wrapper">
+	   	    	        <img src="/static/images/ProductImg/MainImg/${product.main_img1}"/>
+						${soldOutOverlay} <!-- 품절 표시 -->
+	                </div>
 	                <h3>${product.pro_name}</h3>
 					<p>${product.proopt_price}원</p>
 	                <p>${product.pro_discount}% ${product.proopt_finalprice}원</p>
@@ -239,6 +245,12 @@ $(document).ready(function() {
 			productListContainer.append(productItem);
 		});
 	}
+	
+	$(document).on('click', '.product-Item', function() {
+	    const productCode = $(this).data('product-code'); // data-product-code 값을 가져옴
+	    // productCode를 사용하여 작업 수행
+	    window.location.href = `/product/productDetail?code=${productCode}`;
+	});
 
 });
 
