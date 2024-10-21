@@ -126,8 +126,8 @@ label {
 	
 }
 
-#emailError, #passwordError, #confirmPasswordError, #nicknameError, #phoneNumberError{
+#emailError, #passwordError, #confirmPasswordError, #nicknameError, #phoneNumberError, #birthError{
     margin-bottom: 0px;
-    height: 5px;
+    height: 1px;
 }
 
