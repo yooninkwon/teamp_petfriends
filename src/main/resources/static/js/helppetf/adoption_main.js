@@ -17,7 +17,6 @@ $(document).ready(function() {
 	let totalItems = 0; // 총 item 수 초기화
 	let totalPages = 0; // 총 페이지 수
 	let adoptionItems = []; // item들을 담을 배열
-	let currentPageNo = 1; // API 요청을 위한 페이지 번호
 	let currPageGroup = 1; // 현재 페이지 그룹
 
 	fetchData(currentPage, currPageGroup); // 페이지 로드 시 기본 페이지 호출
@@ -122,52 +121,54 @@ $(document).ready(function() {
 				console.error('Error:', error);
 			});
 	});
-
+	
 	// 페이지네이션 설정
 	function setupPagination() {
-		const maxPagesToShow = 10; // 한 번에 보여줄 페이지 수
-		const startPage = (currPageGroup - 1) * maxPagesToShow + 1; // 현재 그룹의 첫 페이지 계산
-		const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages); // 마지막 페이지 계산
+	    const maxPagesToShow = 10; // 한 번에 보여줄 페이지 수
+	    const startPage = (currPageGroup - 1) * maxPagesToShow + 1; // 현재 그룹의 첫 페이지 계산
+	    const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages); // 마지막 페이지 계산
 
-		let paginationHtml = '';
+	    let paginationHtml = '';
 
-		// 이전 버튼 추가 (현재 페이지 그룹이 1보다 크면 표시)
-		if (currPageGroup > 1) {
-			paginationHtml += '<a href="#" id="prev-group" data-page="' + (currPageGroup - 1) + '">&laquo; 이전</a>';
-		}
+	    // 이전 버튼 추가 (현재 페이지 그룹이 1보다 크면 표시)
+	    if (currPageGroup > 1) {
+	        paginationHtml += '<a href="#" id="prev-group">&laquo; 이전</a>';
+	    }
 
-		// 페이지 번호 생성
-		for (let i = startPage; i <= endPage; i++) {
-			paginationHtml += '<a href="#" class="' + (i === currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</a>';
-		}
+	    // 페이지 번호 생성
+	    for (let i = startPage; i <= endPage; i++) {
+	        paginationHtml += '<a href="#" class="' + (i === currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</a>';
+	    }
 
-		// 다음 버튼 추가 (전체 페이지 수가 현재 페이지 그룹의 마지막 페이지보다 클 경우 표시)
-		//if (endPage < totalPages) {
-			paginationHtml += '<a href="#" id="next-group" data-page="' + (currPageGroup + 1) + '">다음 &raquo;</a>';
-		//}
+	    // 다음 버튼 추가 (전체 페이지 수가 현재 페이지 그룹의 마지막 페이지보다 클 경우 표시)
+	    //if (endPage < totalPages) {
+	        paginationHtml += '<a href="#" id="next-group">다음 &raquo;</a>';
+	    //}
 
-		$('#pagination').html(paginationHtml);
+	    $('#pagination').html(paginationHtml);
 
-		// 페이지 클릭 이벤트 핸들러
-		$('#pagination a').on('click', function(event) {
-			event.preventDefault();
+	    // 페이지 클릭 이벤트 핸들러
+	    $('#pagination a').on('click', function(event) {
+	        event.preventDefault();
 
-			const selectedPage = $(this).data('page'); // 선택한 페이지 번호 가져오기
+	        if ($(this).attr('id') === 'prev-group') {
+	            // 이전 그룹으로 이동
+	            currPageGroup--;
+	            currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 이전 그룹의 첫 페이지
+	        } else if ($(this).attr('id') === 'next-group') {
+	            // 다음 그룹으로 이동
+	            currPageGroup++;
+	            currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 다음 그룹의 첫 페이지
+	        } else {
+	            // 클릭한 페이지로 이동
+	            currentPage = $(this).data('page');
+	        }
 
-			// 이전 또는 다음 그룹으로 이동할 때
-			if ($(this).attr('id') === 'prev-group') {
-				currPageGroup--;
-			} else if ($(this).attr('id') === 'next-group') {
-				currPageGroup++;
-			}
-
-			// 선택한 페이지를 업데이트
-			currentPage = selectedPage;
-
-			// 새로운 데이터 요청
-			fetchData(currentPage, currPageGroup);
-		});
+	        // 페이지 번호와 그룹에 맞게 데이터 다시 로드
+	        fetchData(currentPage, currPageGroup);
+	    });
 	}
+	
 
 	/** @ 필터링
 	 * 오브젝트 : 지역, 품종 데이터 저장
