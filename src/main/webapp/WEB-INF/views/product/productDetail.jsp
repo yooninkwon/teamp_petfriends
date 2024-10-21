@@ -77,7 +77,15 @@
 		        </option>
 		    </c:forEach>
 		</select>
+		
 		<div class="data-line"></div>
+		
+		<div class="putBtn">
+		<button id="wishListBtn" data-product-code="${product.pro_code }" data-mem-code="${session.Scope(mem_code) }">
+			<img src="/static/Images/ProductImg/WishListImg/nowish.png" id="wishListImg" /><br />
+			<span id="wishWord"></span>
+		</button>
+		</div>
 		</div>
 	</div>
 	
