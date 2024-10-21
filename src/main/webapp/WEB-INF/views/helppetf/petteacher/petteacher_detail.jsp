@@ -34,10 +34,6 @@
 			<td>${dto.hpt_content }</td>
 		</tr>
 		<tr>
-			<td>URL</td>
-			<td>${dto.hpt_yt_url }</td>
-		</tr>
-		<tr>
 			<td>Video ID</td>
 			<td>${dto.hpt_yt_videoid }</td>
 		</tr>

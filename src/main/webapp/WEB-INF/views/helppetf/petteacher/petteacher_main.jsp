@@ -25,6 +25,7 @@
 			<th>번호</th>
 			<th>이름</th>
 			<th>제목</th>
+			<th>썸네일</th>
 			<th>설명</th>
 			<th>히트</th>
 		</tr>
@@ -34,6 +35,7 @@
 				<td>${y.hpt_exp }</td>
 				<td><a href="/helppetf/petteacher/petteacher_detail?hpt_seq=${y.hpt_seq }">
 						${y.hpt_title } </a></td>
+				<td><img src="https://i.ytimg.com/vi/${y.hpt_yt_videoid }/mqdefault.jpg" alt="썸네일" /></td>
 				<td>${y.hpt_rgedate }</td>
 				<td>${y.hpt_hit }</td>
 			</tr>

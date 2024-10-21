@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 public class AdminHelpPetfDto {
 	private int hpt_seq;
-	private String hpt_yt_url;
 	private String hpt_yt_videoid;
 	private String hpt_exp;
 	private String hpt_title;
