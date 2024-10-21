@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tech.petfriends.community.mapper.IDao;
+import com.tech.petfriends.community.service.CCategoryService;
+import com.tech.petfriends.community.service.CContentVieWService;
 import com.tech.petfriends.community.service.CDownloadService;
 import com.tech.petfriends.community.service.CPostListService;
 import com.tech.petfriends.community.service.CServiceInterface;
@@ -42,14 +44,22 @@ public class CommunityController {
 	}
 	
 	@GetMapping("/writeView")
-	public String writeView() {
+	public String writeView(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("request",request);
+		serviceInterface = new CCategoryService(iDao);
+		serviceInterface.execute(model);
+		
+		
 		return "/community/writeView";
 	}
+	
 	
 	@PostMapping("/write")
 	public String communityWrite(MultipartHttpServletRequest mtfRequest, Model model) {
 		System.out.println("community_write");
 		model.addAttribute("request", mtfRequest);
+		 
 		serviceInterface = new CWriteService(iDao);
 		serviceInterface.execute(model);
 		
@@ -97,4 +107,28 @@ public class CommunityController {
 
         return "{\"uploaded\": 0, \"error\": {\"message\": \"파일 업로드에 실패했습니다.\"}}";
     }
+
+
+
+
+@GetMapping("/contentView")
+public String contentView(HttpServletRequest request, Model model) {
+	System.out.println("contentView() ctr");
+	model.addAttribute("request",request);
+	serviceInterface = new CContentVieWService(iDao);
+	serviceInterface.execute(model); 
+
+	return "/community/contentView";
+	
+	}
+
+
+
+
+
 }
+
+
+
+
+

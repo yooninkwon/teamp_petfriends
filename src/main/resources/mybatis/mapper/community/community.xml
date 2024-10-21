@@ -6,7 +6,7 @@
 <mapper namespace="com.tech.petfriends.community.mapper.IDao"> 
     <select id="getPostList" resultType="com.tech.petfriends.community.dto.CDto">
         SELECT * FROM COMMUNITY_BOARD CD
-        JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
+        JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO ORDER BY CD.BOARD_NO DESC
     </select>
 	
 	<insert id="write">
@@ -14,7 +14,7 @@
 		BOARD_TITLE, BOARD_PASSWORD, BOARD_CONTENT, BOARD_CREATED, BOARD_MODIFIED, BOARD_VIEWS, 
 		BOARD_TAG,  BOARD_LIKES, BOARD_COMMENT_COUNT) 
 		VALUES
-		(COMMUNITY_BOARD_SEQ.NEXTVAL, 2, 3, #{param1}, #{param2}, 1234, #{param3}, SYSTIMESTAMP, SYSTIMESTAMP, 
+		(COMMUNITY_BOARD_SEQ.NEXTVAL, #{b_cate_no}, 3, #{param1}, #{param2}, 1234, #{param3}, SYSTIMESTAMP, SYSTIMESTAMP, 
 		0, 'tag1', 10,3)
 	</insert>
 
@@ -27,6 +27,23 @@
 		(RE_CBOARD_IMAGE_SEQ.NEXTVAL,
 		#{param1}, #{param2}, #{param3})
 	</insert>
+
+
+	<select id="contentView" resultType="com.tech.petfriends.community.dto.CDto">
+		SELECT * FROM COMMUNITY_BOARD CD
+		JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
+		WHERE CD.BOARD_NO = #{param1}
+	</select>
+
+
+<!-- 	<select id="selectImg" resultType="com.tech.petfriends.community.dto.CDto">
+        SELECT * FROM RE_CBOARD_IMAGE WHERE BOARD_NO = #{board_no}
+    </select> -->
+
+	<select id="getCategoryList" resultType="com.tech.petfriends.community.dto.CCategoryDto">
+	SELECT B_CATE_NO, B_CATE_NAME FROM BOARD_CATEGORY
+	</select>
+
 
 
 </mapper>

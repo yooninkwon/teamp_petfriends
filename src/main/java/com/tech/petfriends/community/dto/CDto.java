@@ -15,7 +15,7 @@ public class CDto {
 	
 
     private int board_no;
-    private int b_cate_no2;
+    private int b_cate_no;
     private int u_no;
     private String user_id;
     private String board_title;

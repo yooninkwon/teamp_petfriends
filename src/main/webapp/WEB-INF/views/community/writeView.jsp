@@ -21,6 +21,16 @@
         <label for="user_id">이름</label>
         <input type="text" id="user_id" name="user_id" placeholder="이름을 입력하세요" required>
 
+        <label for="b_cate_no">카테고리</label>
+        <select id="b_cate_no" name="b_cate_no" required>
+            <option value="">카테고리를 선택하세요</option> <!-- 기본 선택지 -->
+            <c:forEach var="category" items="${category}">
+                <option value="${category.b_cate_no}">${category.b_cate_name}</option>
+            </c:forEach>
+        </select>
+        
+       
+        
         <label for="board_title">제목</label>
         <input type="text" id="board_title" name="board_title" placeholder="제목을 입력하세요" required>
 

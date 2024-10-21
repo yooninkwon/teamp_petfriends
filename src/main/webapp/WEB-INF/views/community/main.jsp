@@ -25,7 +25,7 @@
        
 <ul>
     <li>
-        <a href="#">
+        <a href="/community/contentView">
             <div class="image-container">
                 <img src="/static/Images/community_img/hot_issue1.jpg" alt="핫토픽 1 이미지" />
                 <div class="overlay">
@@ -67,8 +67,8 @@
    
    <div class="post-header">
     <div class="profile-info">
-        <img src="/static/Images/community_img/story1.jpeg" alt="Profile Image" class="profile-image">
-        <span class="user-name">살구엄마</span>
+       <img src="<c:url value='/static/Images/pet/${pets.pet_img }' />" alt="Profile Image" class="profile-image">
+        <span class="user-name">${sessionScope.loginUser.mem_nick}</span>
    	<a href="#" class="login-button">로그아웃</a>
     </div>
 </div>
@@ -148,6 +148,14 @@
 	<section class="categories">
 	    
 	    <ul>
+	        
+	        <li>
+	            <a href="#">
+	                <img src="/static/Images/community_img/category0.png" alt="" />
+	                <p>전체</p>
+	            </a>
+	        </li>      
+	        
 	        <li>
 	            <a href="#">
 	                <img src="/static/Images/community_img/category1.png" alt="" />
@@ -193,6 +201,8 @@
 			
 		 </ul>
 	
+	<script type="text/javascript"></script>
+	
 
 
 <!-- 포스트 -->
@@ -200,7 +210,7 @@
    <c:forEach items="${postList }" var="post" >
     <article class="post-card">
         <div class="post-header">
-             <a href="#" class="profile-link">
+             <a href="/community/contentView?board_no=${post.board_no}" class="profile-link">
            		<div class="profile-info"> 
            		  <img src="/static/Images/community_img/story1.jpeg" alt="프로필 이미지 1" class="profile-image"/>               
            		  <span class="user-name">${post.user_id }</span>
@@ -208,13 +218,15 @@
            	<span class="post-time">${post.board_created}</span>
             </div >
             
-            <h2 class="post-title"><a href="#">${post.board_title}</h2>
+            <h2 class="post-title">
+            <a href="/community/contentView?board_no=${post.board_no}">${post.board_title}</h2>
            <div class="post-content">  
             ${fn:substringBefore(post.board_content, '<img') }      
        		</div>
         </div>
        
         <img src="${pageContext.request.contextPath}/static/images/community_img/${post.cchgfile}" alt="포스트 1 이미지" class="post-image"/>
+      		</a>
         <div class="post-footer">
             <span class="like-button">❤️ ${post.board_likes}</span>
             <span class="comment-button">💬 ${post.board_comment_count}</span>
