@@ -24,12 +24,11 @@ public class AdminPetteacherWriteService implements AdminServiceInterface {
 		String hpt_exp = request.getParameter("hpt_exp");
 		String hpt_content = request.getParameter("hpt_content");
 		String hpt_yt_videoid = request.getParameter("hpt_yt_videoid");
-		String hpt_yt_url = "https://www.youtube.com/embed/" + hpt_yt_videoid;
 		String hpt_pettype = request.getParameter("hpt_pettype");
 		String hpt_category = request.getParameter("hpt_category");
 
 		adminDao.adminPetteacherWrite(hpt_title, hpt_exp, hpt_content, 
-				hpt_yt_url, hpt_yt_videoid, hpt_pettype, hpt_category);
+				hpt_yt_videoid, hpt_pettype, hpt_category);
 	}
 
 }
