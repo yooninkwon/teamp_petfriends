@@ -93,11 +93,6 @@
 		    <artifactId>tiles-jsp</artifactId>
 		    <version>3.0.7</version>
 		</dependency>
-		<dependency>
-		    <groupId>org.apache.tiles</groupId>
-		    <artifactId>tiles-jsp</artifactId>
-		    <version>3.0.7</version>
-		</dependency>
 		
 		<!-- MockMvc -->
 		<dependency>
@@ -125,16 +120,7 @@
 			<artifactId>json</artifactId>
 			<version>20231013</version>
 		</dependency>
-
-		<!-- Spring Web
-		<dependency>
-		https://mvnrepository.com/artifact/org.springframework/spring-web
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>5.3.24</version>
-		</dependency>
-		 -->
-		 
+		
 		 <!--비밀번호 암호화 (아르곤2)-->
 		<dependency>
     		<groupId>de.mkammerer</groupId>
