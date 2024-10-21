@@ -30,6 +30,7 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -93,11 +94,6 @@
 		    <artifactId>tiles-jsp</artifactId>
 		    <version>3.0.7</version>
 		</dependency>
-		<dependency>
-		    <groupId>org.apache.tiles</groupId>
-		    <artifactId>tiles-jsp</artifactId>
-		    <version>3.0.7</version>
-		</dependency>
 		
 		<!-- MockMvc -->
 		<dependency>
@@ -125,15 +121,22 @@
 			<artifactId>json</artifactId>
 			<version>20231013</version>
 		</dependency>
-
-		<!-- Spring Web
+		
+		 <!--비밀번호 암호화 (아르곤2)-->
 		<dependency>
-		https://mvnrepository.com/artifact/org.springframework/spring-web
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>5.3.24</version>
+    		<groupId>de.mkammerer</groupId>
+    		<artifactId>argon2-jvm</artifactId>
+    		<version>2.11</version>
 		</dependency>
-		 -->
+		
+		<!--SMS 인증 (coolsms)-->
+		<!-- https://mvnrepository.com/artifact/net.nurigo/javaSDK -->
+		<dependency>
+			<groupId>net.nurigo</groupId>
+			<artifactId>sdk</artifactId>
+			<version>4.2.7</version>
+		</dependency>
+		 			 
 	</dependencies>
 
 	<build>

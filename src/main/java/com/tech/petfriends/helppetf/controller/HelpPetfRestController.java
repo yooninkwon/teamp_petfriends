@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,8 +29,9 @@ public class HelpPetfRestController {
     }
     
 	@GetMapping("/adoption/getJson")
-	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson() throws Exception {
-		return adoptionService.fetchAdoptionData();
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson(HttpServletRequest request, Model model) throws Exception {
+		model.addAttribute("request", request);
+		return adoptionService.fetchAdoptionData(model);
 	}
 	
 	@PostMapping("/adoption/adoption_data")
@@ -42,5 +44,4 @@ public class HelpPetfRestController {
 		// redirect는 jsp의 스크립트에서 하기 때문에 반복하지 않음
 		return "{\"status\": \"success\"}"; // 성공 메세지를 반환
 	}
-	
 }

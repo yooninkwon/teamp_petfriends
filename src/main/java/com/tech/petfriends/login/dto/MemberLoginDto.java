@@ -16,7 +16,7 @@ public class MemberLoginDto {
     private String mem_nick;
     private Date mem_birth;
     private String mem_gender;
-    private int mem_tell;
+    private String mem_tell;
     private String mem_invite;
     private int mem_point;
     private int mem_pay_amount;

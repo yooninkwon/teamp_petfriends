@@ -6,9 +6,14 @@
 	<select id="petteacherList" resultType="com.tech.petfriends.helppetf.dto.HelpPetfDto">
 		SELECT * FROM HELP_PETTEACHER
 	</select>
+	<update id="upViews">
+		UPDATE HELP_PETTEACHER 
+		SET HPT_HIT = HPT_HIT + 1 
+		WHERE HPT_SEQ = #{hpt_seq}
+	</update>
 	<select id="petteacherDetail" resultType="com.tech.petfriends.helppetf.dto.HelpPetfDto">
 		SELECT * FROM HELP_PETTEACHER 
-		WHERE HPT_SEQ = #{param1}
+		WHERE HPT_SEQ = #{hpt_seq}
 	</select>
 	<select id="findUserAddr" resultType="String">
 		SELECT TEMP_ADDR 

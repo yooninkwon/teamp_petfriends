@@ -13,9 +13,9 @@
 	</select>
 	<insert id="adminPetteacherWrite">
 		INSERT INTO HELP_PETTEACHER VALUES
-		(SEQ_HPT.NEXTVAL, #{hpt_yt_url},
-		 #{hpt_yt_videoid}, #{hpt_exp}, #{hpt_title}, #{hpt_content}, 
-		 #{hpt_pettype}, #{hpt_category}, 0, SYSDATE)
+		(SEQ_HPT.NEXTVAL, #{hpt_yt_videoid}, 
+		#{hpt_exp}, #{hpt_title}, #{hpt_content}, 
+		#{hpt_pettype}, #{hpt_category}, 0, SYSDATE)
 	</insert>
 	<delete id="adminPetteacherDelete">
 		DELETE FROM HELP_PETTEACHER WHERE HPT_SEQ = #{hpt_seq}

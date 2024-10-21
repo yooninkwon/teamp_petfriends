@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+ /* 전체적인 스타일 */
+    body {
+        font-family: '맑은 고딕', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+        margin: 20px 0;
+    }
+
+    /* 상단 안내문 */
+    #infoText {
+        text-align: center;
+        font-size: 16px;
+        margin: 20px;
+        background-color: #f3f3f3;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    /* 이미지 섹션 스타일 */
+    #animalImages {
+        text-align: center;
+        margin: 20px auto;
+    }
+
+    #animalImages img {
+        max-width: 300px;
+        margin: 10px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 표 스타일 */
+    table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    td {
+        font-size: 14px;
+        color: #555;
+    }
+
+    /* 버튼 스타일 */
+    #goMain {
+        display: block;
+        width: 100px;
+        margin: 20px auto;
+        padding: 10px;
+        background-color: #FF4081;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    #goMain:hover {
+        background-color: #FF2672;
+    }

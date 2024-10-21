@@ -4,10 +4,49 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.tech.petfriends.mypage.dao.MypageDao">
+
     <select id="getPetsByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyPetDto">
 		SELECT *
-		FROM MEMBER_PET p
-		JOIN MEMBER m ON p.mem_code = m.mem_code
-		WHERE m.mem_code=#{param1}
+		FROM MEMBER_PET P
+		JOIN MEMBER M ON P.MEM_CODE = M.MEM_CODE
+		WHERE M.MEM_CODE=#{param1}
 	</select>
+	
+    <select id="getGradeByMemberCode" resultType="com.tech.petfriends.mypage.dto.GradeDto">
+		SELECT G.G_NO,G_NAME,G_CONDITION,G_RATE
+		FROM GRADE G
+		JOIN MEMBER M ON G.G_NO = M.G_NO
+		WHERE M.MEM_CODE=#{param1}
+	</select>
+	
+	<update id="removeMainPet">
+		UPDATE MEMBER_PET
+		SET PET_MAIN='N'
+		WHERE PET_CODE=#{param1}
+	</update>
+	
+	<update id="setMainPet">
+		UPDATE MEMBER_PET
+		SET PET_MAIN='Y'
+		WHERE PET_CODE=#{param1}
+	</update>
+	
+	<select id="getInfoByPetCode" resultType="com.tech.petfriends.mypage.dto.MyPetDto">
+		SELECT *
+		FROM MEMBER_PET
+		WHERE PET_CODE=#{param1}
+	</select>
+	
+	<select id="getAllCoupon" resultType="com.tech.petfriends.mypage.dto.CouponDto">
+		SELECT *
+		FROM COUPON
+		WHERE SYSDATE BETWEEN CP_START AND CP_END
+	</select>
+	
+	<select id="getCouponByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyCouponDto">
+		SELECT *
+		FROM MEMBER_COUPON_BRIDGE
+		WHERE MEM_CODE=#{param1}
+	</select>
+	
 </mapper>
