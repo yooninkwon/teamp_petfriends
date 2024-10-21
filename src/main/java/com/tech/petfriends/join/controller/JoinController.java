@@ -44,7 +44,7 @@ public class JoinController {
         member.setMem_email(request.getParameter("email"));
         member.setMem_pw(passencrypt.encryptPassword(request.getParameter("password")));
         member.setMem_nick(request.getParameter("nickname"));
-        member.setMem_tell(Integer.parseInt(request.getParameter("phoneNumber")));
+        member.setMem_tell(request.getParameter("phoneNumber"));     
         member.setMem_name(request.getParameter("name"));
 
         // 날짜 형식 변환

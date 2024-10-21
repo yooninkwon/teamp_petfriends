@@ -33,6 +33,7 @@ $(document).ready(function() {
 				adoptionItems = data.item;
 				totalItems = adoptionItems.length; // 받아온 데이터에서 총 item 수 계산
 				totalPages = Math.ceil(totalItems / itemsPerPage); // 총 페이지 수 계산
+				console.log(data);
 				console.log(currentPage, currPageGroup);
 				displayItems(currentPage); // 아이템 표시
 				setupPagination(currentPage, currPageGroup); // 페이지네이션 설정
