@@ -104,4 +104,33 @@
     		PRO.PRO_CODE = #{pro_code}
 		
 	</select>
+	
+	<select id="productReviewRank"
+		resultType="com.tech.petfriends.product.dto.ProductDetailReviewRankDto">
+		SELECT
+			COUNT(*) AS TOTAL_REVIEWS,                                    
+ 		    TO_CHAR(ROUND(AVG(REVIEW_RATING), 1), '9.0') AS AVERAGE_RATING,
+ 		    SUM(CASE WHEN REVIEW_RATING = 1 THEN 1 ELSE 0 END) AS RATING_1,
+ 		    SUM(CASE WHEN REVIEW_RATING = 2 THEN 1 ELSE 0 END) AS RATING_2,
+ 		    SUM(CASE WHEN REVIEW_RATING = 3 THEN 1 ELSE 0 END) AS RATING_3,
+    		SUM(CASE WHEN REVIEW_RATING = 4 THEN 1 ELSE 0 END) AS RATING_4,
+    		SUM(CASE WHEN REVIEW_RATING = 5 THEN 1 ELSE 0 END) AS RATING_5
+		FROM
+    		PRODUCT_REVIEW
+		WHERE
+    		PRO_CODE = #{pro_code}
+		
+	</select>
+	
+	<select id="productOption"
+		resultType="com.tech.petfriends.product.dto.ProductDetailOptionDto">
+		SELECT
+			*
+		FROM
+			PRODUCT_OPTION
+		WHERE
+			PRO_CODE = #{pro_code}	
+		ORDER BY
+			PROOPT_CODE ASC
+	</select>
 </mapper>

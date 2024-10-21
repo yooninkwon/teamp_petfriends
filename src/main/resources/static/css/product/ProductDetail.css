@@ -1,6 +1,23 @@
+body {
+    display: grid;
+    place-items: center; /* 가로 및 세로 중앙 정렬 */
+    min-height: 100vh; /* 화면 전체 높이를 차지 */
+    margin: 0; /* 기본 여백 제거 */
+}
+
+.productData {
+    display: flex; 
+    width: 100%; /* 너비를 설정하거나 제거 가능 */
+    justify-content: center; /* 자식 요소들을 중앙에 배치 */
+    align-items: center; /* 자식 요소들을 수직 중앙에 배치 */
+}
+
+
+
 .image-container {
     position: relative;
     display: inline-block; /* 이미지가 자신의 크기만큼 공간을 차지하게 함 */
+    margin-right: 100px;
 }
 
 #productImage {
@@ -25,4 +42,11 @@ button {
 
 #nextButton {
     right: 10px; /* 오른쪽 버튼의 위치 */
+}
+
+
+.data-line { /* 옵션 밑 라인 */
+    border-bottom: 1px solid black; /* 원하시는 색상과 두께로 조정 */
+    width: 100%; /* 원하는 너비로 설정 */
+    margin: 10px 0; /* 위아래 여백을 조정할 수 있음 */
 }
