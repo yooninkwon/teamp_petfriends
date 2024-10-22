@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-
 body {
 	font-family: Arial, sans-serif;
 }
@@ -59,7 +58,6 @@ a {
 	color: #888;
 }
 
-/* Pagination styles */
 .pagination {
 	display: flex;
 	justify-content: center;
@@ -78,4 +76,69 @@ a {
 .pagination a.active {
 	background-color: #FF4081;
 	color: white;
+}
+
+/* 필터바 전체 스타일 */
+#filter_form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px; /* 필터 사이의 간격 */
+	margin-bottom: 20px;
+}
+
+/* 공통 Select 스타일 */
+#filter_form select {
+	padding: 10px 20px; /* 내부 여백을 더 줌 */
+	border-radius: 25px; /* 둥글게 설정 */
+	border: 1px solid #ddd;
+	background-color: #fff;
+	color: #333;
+	font-size: 14px;
+	font-weight: 500;
+	appearance: none; /* 기본 드롭다운 화살표 제거 */
+	background-image:
+		url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23333%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 class=%22feather feather-chevron-down%22%3E%3Cpolyline points=%226 9 12 15 18 9%22/%3E%3C/svg%3E');
+	background-repeat: no-repeat;
+	background-position: right 15px center; /* 화살표 위치 조정 */
+	background-size: 14px; /* 화살표 크기 */
+	cursor: pointer;
+	width: 160px; /* 선택 박스의 기본 크기 */
+	transition: border-color 0.3s ease;
+}
+
+/* 선택박스 포커스 시 효과 */
+#filter_form select:focus {
+	outline: none;
+	border-color: #aaa;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 화살표 제거 */
+#filter_form select::-ms-expand {
+	display: none;
+}
+
+/* 검색 버튼 스타일 */
+#filter_form button {
+	padding: 10px 20px;
+	border-radius: 25px;
+	border: 1px solid #ddd;
+	background-color: #FF4081;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+#filter_form button:hover {
+	background-color: #FF2972;
+}
+
+/* 선택박스 전체 높이와 정렬 */
+#filter_form select, .filter-bar button {
+	height: 40px;
+	display: inline-block;
+	vertical-align: middle;
 }

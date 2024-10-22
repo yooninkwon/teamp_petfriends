@@ -11,6 +11,7 @@
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet" href="/static/css/helppetf/adoption_main.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
@@ -28,7 +29,7 @@
 		  동물 종류가 아무것도 안눌려있으면 전체 품종
  	-->
 	<div id="filter_form">
-		필터로 인연 찾아보기 
+		<span>필터로 인연 찾아보기 </span> <br />
 		<form action="/helppetf/adoption/sendFilterFormParam">
 			<!-- 도시 -->
 			<select name="upr_cd" id="upr_cd">
@@ -87,7 +88,7 @@
 		</c:forEach> --%>
 
 	</div>
-	<script src="/static/js/helppetf/adoption_main.js"></script>
+	<script type="module" src="/static/js/helppetf/adoption_main.js"></script>
 	
 	<!-- @ TODO: 페이징, 필터링, 상세 페이지 등 -->
 
