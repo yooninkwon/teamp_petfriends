@@ -22,7 +22,9 @@
 	<a href="/admin/admin_petteacher">임시 링크: 펫티쳐 어드민 페이지 이동</a>
 	<br />
 	<br />
+	<!-- 필터 div -->
 	<div id="filter_form">
+	<span>필터로 영상 찾아보기 </span> <br />
 		<form action="#">
 			<select id="petType" name="petType">
 				<option disabled selected>동물종류</option>
@@ -49,7 +51,7 @@
 	<div id="pagination">
 		<!-- 페이징 -->
 	</div>
-	<script type="module" src="/static/js/helppetf/petteacher_main.js"></script>
+	<script src="/static/js/helppetf/petteacher_main.js"></script>
 
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
