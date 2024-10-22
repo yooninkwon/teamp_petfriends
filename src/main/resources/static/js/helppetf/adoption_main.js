@@ -49,8 +49,11 @@ $(document).ready(function() {
 
 	// 아이템을 페이지에 맞게 출력
 	function displayItems(currentPage) {
-
-		window.scrollTo({ top: 0, behavior: 'smooth' });
+		// 화면 로드시 설정한 Y좌표로 스크롤
+		const element = document.getElementById("filter_form");
+		const yOffset = -110;
+		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+		window.scrollTo({ top: y, behavior: 'smooth' });
 
 		if (currentPage <= 10) {
 			// 현재 페이지가 10이하인 경우 == 페이지그룹이 1인 경우

@@ -26,7 +26,7 @@ public class PetteacherService implements HelppetfServiceInter {
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		String petType = request.getParameter("petType");
 		String category = request.getParameter("category");
-		System.out.println(petType+" / "+category);
+
 		ArrayList<HelpPetfDto> ylist = helpDao.petteacherList(petType, category);
 
 		model.addAttribute("ylist", ylist);

@@ -62,7 +62,10 @@ public class HelpPetfRestController {
 		model.addAttribute("request", request);
 		helpServiceInterface = new PetteacherService(helpDao);
 		helpServiceInterface.execute(model);
+		
+		@SuppressWarnings("unchecked")
 		ArrayList<HelpPetfDto> ylist = (ArrayList<HelpPetfDto>) model.getAttribute("ylist");
+		
 		return ylist;
 	}
 	

@@ -41,9 +41,11 @@ $(document).ready(function() {
 
 	// 아이템을 페이지에 맞게 출력
 	function displayItems(currentPage) {
-
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-
+		// 화면 로드시 설정한 Y좌표로 스크롤
+		const element = document.getElementById("filter_form");
+		const yOffset = -110;
+		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+		window.scrollTo({ top: y, behavior: 'smooth' });
 		if (currentPage <= 10) {
 			// 현재 페이지가 10이하인 경우 == 페이지그룹이 1인 경우
 			var start = (currentPage - 1) * itemsPerPage;
@@ -63,7 +65,7 @@ $(document).ready(function() {
 		let cards = '';
 		$.each(sliceList, function(index, ylist) {
 			// 인덱스가 0~5 고정이 아니므로 페이지가 넘어가도 인덱스 번호가 정상적으로 불러와지도록 현재 페이지의 시작 인덱스 번호를 더해준다
-			cards += '<div class="video-card" ><a href="/helppetf/petteacher/petteacher_detail?hpt_seq='+ylist.hpt_seq+'" class="video-link" data-index="' + (start + index) + '">';
+			cards += '<div class="video-card" ><a href="/helppetf/petteacher/petteacher_detail?hpt_seq=' + ylist.hpt_seq + '" class="video-link" data-index="' + (start + index) + '">';
 			cards += '<img src="https://i.ytimg.com/vi/' + ylist.hpt_yt_videoid + '/hqdefault.jpg" alt="비디오 썸네일" class="video-thumbnail">';
 			cards += '<div class="content">';
 			cards += '<h3 class="info">' + ylist.hpt_title + '</h3>';
@@ -124,7 +126,7 @@ $(document).ready(function() {
 			setupPagination();
 		});
 	}
-	
+
 	// 필터 선택 후 filterSubmit 클릭 시 호출
 	$('#filterSubmit').on('click', function(event) {
 		event.preventDefault(); // 기본 form 제출 동작 방지 (기본 링크를 이것으로 대체함)
