@@ -11,15 +11,18 @@
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet" href="/static/css/helppetf/adoption_main.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />.
 	<h1>입양 센터</h1>
+	
 
 	<a href="/helppetf/find/pet_hospital">주변 동물병원 찾기</a> &nbsp;
 	<a href="/helppetf/find/pet_facilities">주변 반려동물 시설 찾기</a> &nbsp;
 	<a href="/helppetf/adoption/adoption_main">입양 센터</a> &nbsp;
 	<a href="/helppetf/petteacher/petteacher_main">펫티쳐</a> &nbsp;
+	<hr />
 	<!--
 	누른 값을 전송할 때 해당하는 값의 필터링 제공
 	눌렀던 값을 페이지를 다시 불러왔을때 유지시키면 좋을 듯
@@ -28,8 +31,8 @@
 		  동물 종류가 아무것도 안눌려있으면 전체 품종
  	-->
 	<div id="filter_form">
-		필터로 인연 찾아보기 
-		<form action="/helppetf/adoption/sendFilterFormParam">
+		<span>필터로 인연 찾아보기 </span> <br />
+		<form action="#">
 			<!-- 도시 -->
 			<select name="upr_cd" id="upr_cd">
 				<option value='any' selected>시, 도</option>
@@ -73,21 +76,18 @@
 
 			<!-- 검색 버튼 -->
 			<button type="button" id="filterSubmit">검색</button>
+			<button type="button" id="filterReset">선택 초기화</button>
 		</form>
 	</div>
 	<div class="adoption-container" id="adoptionContainer">
-		<!-- 데이터가 채워지는 곳 -->
+		<!-- 데이터 테이블 -->
 	</div>
 
 	<div class="pagination" id="pagination">
-		<!-- 페이지네이션 -->
-
-		<%-- 		<c:forEach begin="1" end="10" var="i">
-
-		</c:forEach> --%>
-
+		<!-- 페이징 -->
 	</div>
-	<script src="/static/js/helppetf/adoption_main.js"></script>
+	
+	<script type="module" src="/static/js/helppetf/adoption_main.js"></script>
 	
 	<!-- @ TODO: 페이징, 필터링, 상세 페이지 등 -->
 
