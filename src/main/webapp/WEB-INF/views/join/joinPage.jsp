@@ -83,6 +83,7 @@
             </div>
             
 			<input type="hidden" id="hiddenPhoneNumber" name="phoneNumber" value="">
+			<input type="text" id="postcode" name="postcode" placeholder="우편번호 입력">
             <button type="submit" class="submit-btn" id="submitBtn" oninput="validateForm()" onclick="syncPhoneNumber()">동의하고 가입하기</button>
         </form>
     </div>

@@ -32,24 +32,26 @@
         });
 
         var address = new URLSearchParams(window.location.search).get('address'); // 전달된 주소
+        var postcode = new URLSearchParams(window.location.search).get('postcode'); // 전달된 우편번호
 
-        // 전달된 주소로 좌표를 검색
-        geocoder.addressSearch(address, function(result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                map.setCenter(coords); // 지도 중심을 검색된 좌표로 이동
-                marker.setPosition(coords); // 마커 위치 설정
-            }
-        });
-        
-     	// '이 주소가 확실해요!' 버튼 클릭 이벤트
-        document.getElementById('submitBtn').addEventListener('click', function() {
-            // 부모 창에 선택된 주소를 전달
-            window.opener.document.getElementById('address').value = address;
-
-            // 팝업 창 닫기
-            window.close();
-        });
+	     // 전달된 주소로 좌표를 검색
+	     geocoder.addressSearch(address, function(result, status) {
+	         if (status === kakao.maps.services.Status.OK) {
+	             var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	             map.setCenter(coords); // 지도 중심을 검색된 좌표로 이동
+	             marker.setPosition(coords); // 마커 위치 설정
+	         }
+	     });
+	
+	     // '이 주소가 확실해요!' 버튼 클릭 이벤트
+	     document.getElementById('submitBtn').addEventListener('click', function() {
+	         // 부모 창에 선택된 주소와 우편번호를 전달
+	         window.opener.document.getElementById('address').value = address;
+	         window.opener.document.getElementById('postcode').value = postcode;
+			 console.log(postcode);
+	         // 팝업 창 닫기
+	         window.close();
+	     });
         
     </script>
 </body>
