@@ -58,7 +58,7 @@
 
 	<update id="modify">
 	    UPDATE COMMUNITY_BOARD
-	    SET BOARD_TITLE = #{param2}, BOARD_CONTENT = #{param3}, BOARD_MODIFIED = SYSTIMESTAMP
-	    WHERE BOARD_NO = #{param1}
+	    SET BOARD_TITLE = #{param2}, BOARD_CONTENT = #{param3}, BOARD_MODIFIED = CURRENT_TIMESTAMP,
+	    B_CATE_NO = #{param4} WHERE BOARD_NO = #{param1}
 	</update>
 </mapper>

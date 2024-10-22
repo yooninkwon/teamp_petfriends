@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.tech.petfriends.community.dto.CCategoryDto;
 import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.mapper.IDao;
 import com.tech.petfriends.community.service.CCategoryService;
@@ -145,6 +145,7 @@ public String modify(HttpServletRequest request, Model model) {
 	serviceInterface = new CModifyService(iDao);
 	serviceInterface.execute(model);
 	
+	
 	return "redirect:/community/contentView?board_no=" + request.getParameter("board_no");
 	
 }
@@ -155,6 +156,11 @@ public String modifyView(@RequestParam("board_no") int board_no, Model model) {
     CDto content = iDao.contentView(Integer.toString(board_no)); // 게시글 정보를 가져옴
     model.addAttribute("contentView", content); // 게시글 정보를 모델에 담아서 JSP로 전달
 
+    
+    CCategoryService categoryService = new CCategoryService(iDao);
+    List<CCategoryDto> categoryList = iDao.getCategoryList();
+    model.addAttribute("categoryList", categoryList);
+    
 	return "/community/modifyView";
 	
 	}

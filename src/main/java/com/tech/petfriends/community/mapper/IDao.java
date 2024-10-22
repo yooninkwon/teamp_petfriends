@@ -31,7 +31,7 @@ public interface IDao {
 
 //	public List<CDto> getAllPosts(); // 모든 게시물 조회 메서드 추가
 	
-	 public void modify(int board_no, String board_title, String board_content, Timestamp board_modified);
+	public void modify(int board_no, String board_title, String board_content, Timestamp board_modified, int b_cate_no);
 
 	
 	

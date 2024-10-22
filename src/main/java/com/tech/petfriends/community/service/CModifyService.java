@@ -1,12 +1,14 @@
 package com.tech.petfriends.community.service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
 
+import com.tech.petfriends.community.dto.CCategoryDto;
 import com.tech.petfriends.community.mapper.IDao;
 
 public class CModifyService implements CServiceInterface{
@@ -19,12 +21,15 @@ public class CModifyService implements CServiceInterface{
 	
 	@Override
 	public void execute(Model model) {
+		
+		
 		Map<String, Object> m = model.asMap();
 		
 		HttpServletRequest request = (HttpServletRequest) m.get("request");
 		
 	    int board_no = Integer.parseInt(request.getParameter("board_no"));
-//	    int b_cate_no = Integer.parseInt(request.getParameter("b_cate_no"));
+	    int b_cate_no = Integer.parseInt(request.getParameter("b_cate_no"));
+	  
 	    String user_id = request.getParameter("user_id");
 	    String board_title = request.getParameter("board_title");
 	    String board_content = request.getParameter("board_content");
@@ -41,7 +46,8 @@ public class CModifyService implements CServiceInterface{
 //		String corgfile = request.getParameter("corgfile");
 		String cchgfile = request.getParameter("cchgfile");	
 	
-		iDao.modify(board_no, board_title, board_content, board_modified);
+		iDao.modify(board_no, board_title, board_content, board_modified,b_cate_no);
+		
 		
 	}
 	

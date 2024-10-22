@@ -20,7 +20,7 @@
     <form id="postForm" action="${pageContext.request.contextPath}/community/modify" method="post" enctype="multipart/form-data" class="write-form" onsubmit="return validateForm()">
         <input type="hidden" name="board_no" value="${contentView.board_no}"> <!-- 게시글 번호 -->
         <input type="hidden" name="u_no" value="${contentView.u_no}"> <!-- 사용자 번호 -->
-        <input type="hidden" name="b_cate_no" value="${contentView.b_cate_no}"> <!-- 카테고리 번호 -->
+        
 
       	       <!-- 추가된 부분: 게시글 생성 및 수정 시간 -->
         <input type="hidden" name="board_created" value="${contentView.board_created}">
@@ -29,7 +29,15 @@
       
         <label for="user_id">이름</label>
         <input type="text" id="user_id" name="user_id" value="${contentView.user_id}" readonly required>
-
+		
+		<label for="b_cate_no">카테고리</label>
+		<select id="b_cate_no" name="b_cate_no" required>
+		    <option value="">카테고리를 선택하세요</option> <!-- 기본 선택지 -->
+		    <c:forEach var="category" items="${categoryList}">
+		        <option value="${category.b_cate_no}" <c:if test="${category.b_cate_no == contentView.b_cate_no}">selected</c:if>>${category.b_cate_name}</option>
+		    </c:forEach>
+		</select>
+		
         <label for="board_title">제목</label>
         <input type="text" id="board_title" name="board_title" value="${contentView.board_title}" placeholder="제목을 입력하세요" required>
 
