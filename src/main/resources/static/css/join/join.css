@@ -95,14 +95,14 @@ label {
     margin-left: 48px;
 }
 
-#phoneNumber {
+#phoneNumberDisabled {
 	margin-top: 32px;
 	width: 310px;
     padding: 10px;
     margin-bottom: 0px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-left: -87px;
+    margin-left: -93px;
 }
 
 #genderRadioGroup{

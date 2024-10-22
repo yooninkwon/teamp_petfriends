@@ -29,6 +29,22 @@ public class ApikeyConfig {
 		return openDataApiKey;
 	}
 	
+	@Value("${coolApi.key}")
+	private String coolApiKey;
+	
+	public String getCoolApikey() {
+		
+		return coolApiKey;
+	}
+	
+	@Value("${coolSecret.key}")
+	private String coolSecretKey;
+	
+	public String getCoolSecretkey() {
+		
+		return coolSecretKey;
+	}
+	
     @Bean
     public DefaultUriBuilderFactory builderFactory(){
         DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory();
