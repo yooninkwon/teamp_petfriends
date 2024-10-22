@@ -44,16 +44,16 @@
 	</select>
 	
 	<select id="getCouponByMemberCode" resultType="com.tech.petfriends.mypage.dto.CouponDto">
-		SELECT CP_NAME,CP_DEAD,CP_TYPE,CP_AMOUNT
-		FROM COUPON C
-		JOIN MEMBER_COUPON_BRIDGE MC ON C.CP_NO=MC.CP_NO
-		WHERE MEM_CODE=#{param1}
+		SELECT CP.CP_NO,CP_NAME,CP_KEYWORD,CP_START,CP_END,CP_DEAD,CP_TYPE,CP_AMOUNT
+		FROM COUPON CP
+		JOIN MEMBER_COUPON_BRIDGE MC ON CP.CP_NO=MC.CP_NO
+		WHERE MEM_CODE=#{param1} AND MC_USE IS NULL AND MC_DEAD IS NULL
 	</select>
 	
 	<select id="searchCouponByKeyword" resultType="com.tech.petfriends.mypage.dto.CouponDto">
 		SELECT *
 		FROM COUPON
-		WHERE CP_KEYWORD=#{param1} AND SYSDATE BETWEEN CP_START AND CP_END
+		WHERE CP_KEYWORD=#{param1}
 	</select>
 	
 	<select id="checkIssued" resultType="int">
@@ -62,7 +62,7 @@
 		WHERE MEM_CODE=#{param1} AND CP_NO=#{param2}
 	</select>
 	
-	<insert id="insertCouponByKeyword">
+	<insert id="insertCouponByCouponNo">
 		INSERT INTO MEMBER_COUPON_BRIDGE
 		VALUES(#{param1},#{param2},#{param3},SYSDATE,NULL,NULL)
 	</insert>

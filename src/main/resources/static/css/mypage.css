@@ -333,7 +333,14 @@ h2 {
 	font-size: 18px;
 	cursor: pointer;
 }
-.info-text h5 {
+#error-message {
+	display: none;
+	text-align: left;
+	margin-left: 255px;
+	margin-bottom: 5px;
+	color: #ff4081;
+}
+.info-text {
 	display: flex;
 	text-align: left;
 	margin-left: 255px;
@@ -356,7 +363,6 @@ h2 {
 	border-bottom: 1px solid #ddd;
 	cursor: pointer;
 }
-
 .tab-btn.active {
 	color: black;
 	font-weight: bold;
@@ -374,12 +380,9 @@ h2 {
   gap: 15px;
 }
 .coupon-card {
-    border: 1px solid #227878;
-    border-radius: 10px;
-    background-color: #eaf4f4;
     width: 100%;
     height: auto;
-    transition: transform 0.2s ease-in-out;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -387,35 +390,23 @@ h2 {
 .coupon-info {
     padding: 20px;
 }
-.coupon-info h4 {
-    font-size: 16px;
+.coupon-name {
+    font-size: 17px;
     font-weight: bold;
-    color: #333;
     margin: 10px 0;
 }
 .coupon-discount {
-    font-size: 30px;
-    font-weight: bold;
     color: #227878;
+    font-size: 40px;
+    font-weight: bold;
     margin: 10px 0;
 }
-.coupon-discount span {
-    font-size: 40px;
-    color: #666;
-}
-.coupon-info p {
-    font-size: 14px;
-    color: #666;
-    margin: 5px 0;
-}
-.receive-btn {
+.coupon-btn {
     width: 100%;
     padding: 10px 0;
-    background-color: #227878;
     color: white;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
     font-size: 16px;
     font-weight: bold;
     display: flex;
@@ -423,9 +414,33 @@ h2 {
     justify-content: center;
     align-items: center;
 }
-.receive-btn i {
+.coupon-btn i {
     margin-left: 5px;
 }
-.receive-btn:hover {
+.able-btn:hover {
+    cursor: pointer;
     background-color: #1b6262;
+}
+.able-card {
+    border: 1px solid #227878;
+    background-color: #eaf4f4;
+}
+.able-name {
+    color: #333;
+}
+.able-discount {
+    color: #227878;
+}
+.able-btn {
+    background-color: #227878;
+}
+.unable-card {
+    border: 1px solid #d3d3d3;
+    background-color: #f4f4f4;
+}
+.unable-name {
+    color: #777777;
+}
+.unable-btn {
+    background-color: #d3d3d3;
 }

@@ -20,12 +20,8 @@
         <input type="text" id="coupon-keyword" placeholder="쿠폰 키워드를 입력해주세요" />
         <button id="coupon-search-btn">쿠폰 받기</button>
    	</div>
-   	<div class="info-text" id="error-message" style="display: none;">
-        <h5 style="color: #ff4081; margin-bottom: 5px;">키워드를 다시 한번 확인해 주세요.</h5>
-    </div>
-    <div class="info-text">
-    	<h5>해당 이벤트 기간이 지났거나, 유효하지 않은 키워드를 입력한 경우 쿠폰 발급이 불가합니다.</h5>
-    </div>
+    <h5 id="error-message"></h5>
+    <h5 class="info-text">해당 이벤트 기간이 지났거나, 유효하지 않은 키워드를 입력한 경우 쿠폰 발급이 불가합니다.</h5>
 	
     <!-- 탭 메뉴 -->
     <div class="coupon-tab-section">
@@ -36,12 +32,12 @@
     <!-- 탭별 내용 -->
     <div id="downloadable" class="tab-content active">
       <div class="coupon-grid">
-        <!-- 쿠폰 카드 반복문 -->
+        <!-- 다운 가능 쿠폰 카드 반복문 -->
         <c:forEach items="${coupons }" var="coupons">
-          <div class="coupon-card">
+          <div class="coupon-card able-card">
             <div class="coupon-info">
-		        <h4>${coupons.cp_name}</h4>
-		        <p class="coupon-discount">
+		        <h4 class="coupon-name able-name">${coupons.cp_name}</h4>
+		        <div class="coupon-discount able-discount">
 		            <c:choose>
 		                <c:when test="${coupons.cp_type == 'A'}">
 		                    <span><fmt:formatNumber value="${coupons.cp_amount}"  type="number" groupingUsed="true" />원</span>
@@ -50,11 +46,33 @@
 		                    <span>${coupons.cp_amount}%</span>
 		                </c:when>
 		            </c:choose>
-		        </p>
+		        </div>
 		        <p>사용기간: ${coupons.cp_dead} 까지</p>
 		        <p>발급기간: ${coupons.cp_start} ~ ${coupons.cp_end}</p>
 		    </div>
-		    <button class="receive-btn" value="${coupons.cp_no}" >쿠폰 받기<i class="fa-solid fa-download"></i></button>
+		    <button class="coupon-btn able-btn" data-coupon-no="${coupons.cp_no}" >쿠폰 받기<i class="fa-solid fa-download"></i></button>
+          </div>
+        </c:forEach>
+        
+        <!-- 다운 받은 쿠폰 카드 반복문 -->
+        <c:forEach items="${issuedCoupons }" var="coupons">
+          <div class="coupon-card unable-card">
+            <div class="coupon-info">
+		        <h4 class="coupon-name unable-name">${coupons.cp_name}</h4>
+		        <div class="coupon-discount unable-name">
+		            <c:choose>
+		                <c:when test="${coupons.cp_type == 'A'}">
+		                    <span><fmt:formatNumber value="${coupons.cp_amount}"  type="number" groupingUsed="true" />원</span>
+		                </c:when>
+		                <c:when test="${coupons.cp_type == 'R'}">
+		                    <span>${coupons.cp_amount}%</span>
+		                </c:when>
+		            </c:choose>
+		        </div>
+		        <p>사용기간: ${coupons.cp_dead} 까지</p>
+		        <p>발급기간: ${coupons.cp_start} ~ ${coupons.cp_end}</p>
+		    </div>
+		    <button class="coupon-btn unable-btn" >받기 완료<i class="fa-solid fa-check"></i></button>
           </div>
         </c:forEach>
       </div>
@@ -63,27 +81,27 @@
     <div id="usable" class="tab-content">
       <div class="coupon-grid">
         <!-- 쿠폰 카드 반복문 -->
-        <c:forEach items="${mycoupons }" var="mycoupons">
-          <div class="coupon-card">
+        <c:forEach items="${mycoupons }" var="coupons">
+          <div class="coupon-card able-card">
             <div class="coupon-info">
-		        <h4>${mycoupons.cp_name}</h4>
-		        <p class="coupon-discount">
+		        <h4 class="coupon-name able-name">${coupons.cp_name}</h4>
+		        <div class="coupon-discount able-discount">
 		            <c:choose>
-		                <c:when test="${mycoupons.cp_type == 'A'}">
-		                    <span><fmt:formatNumber value="${mycoupons.cp_amount}"  type="number" groupingUsed="true" />원</span>
+		                <c:when test="${coupons.cp_type == 'A'}">
+		                    <span><fmt:formatNumber value="${coupons.cp_amount}"  type="number" groupingUsed="true" />원</span>
 		                </c:when>
-		                <c:when test="${mycoupons.cp_type == 'R'}">
-		                    <span>${mycoupons.cp_amount}%</span>
+		                <c:when test="${coupons.cp_type == 'R'}">
+		                    <span>${coupons.cp_amount}%</span>
 		                </c:when>
 		            </c:choose>
-		        </p>
-		        <p>사용기간: ${mycoupons.cp_dead} 까지</p>
+		        </div>
+		        <p>사용기간: ${coupons.cp_dead} 까지</p>
 		    </div>
-		    <a href="" style="text-decoration: none;"><button class="receive-btn">적용가능 상품보기<i class="fa-solid fa-magnifying-glass-plus"></i></button></a>
+		    <a href="<c:url value='/product/productlist'/>" style="text-decoration: none;">
+		    	<button class="coupon-btn able-btn">적용가능 상품보기<i class="fa-solid fa-magnifying-glass-plus"></i></button>
+		    </a>
           </div>
         </c:forEach>
-        
-        
       </div>
     </div>
 </div>
@@ -120,13 +138,17 @@
                     // 페이지 새로고침
                     location.reload();
                 } else {
-                    $('#error-message').show(); // 키워드 오류 메시지 표시
+                    // 실패 시 서버로부터 받은 message를 에러 메시지 영역에 출력
+                    $('#error-message').text(response.message).show();
                 }
+            },
+            error: function() {
+                $('#error-message').text(response.message).show();
             }
         });
     });
  	
-    // 쿠폰 받기 버튼 클릭 시 AJAX
+    // 쿠폰 받기 AJAX
     document.querySelectorAll('.receive-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
         var couponNo = this.dataset.couponNo;
@@ -136,7 +158,11 @@
           data: { couponNo: couponNo },
           success: function() {
             alert('쿠폰을 받았습니다.');
+            localStorage.setItem('activeTab', 'usable');
             location.reload();
+          },
+          error: function() {
+              alert('쿠폰 받기에 실패했습니다.');
           }
         });
       });

@@ -31,6 +31,6 @@ public interface MypageDao {
 	
 	int checkIssued(String mem_code, int cp_no);
 
-	void insertCouponByKeyword(String mc_code, String mem_code, int cp_no);
+	void insertCouponByCouponNo(String mc_code, String mem_code, int cp_no);
 	
 }
