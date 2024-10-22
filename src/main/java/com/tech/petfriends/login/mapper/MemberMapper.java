@@ -15,4 +15,5 @@ public interface MemberMapper {
     // 닉네임 중복 체크
     int isNicknameDuplicate(String nickname);
     
+    
 }

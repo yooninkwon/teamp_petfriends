@@ -76,7 +76,7 @@ function checkNickname() {
 // 휴대폰 번호 형식, 하이폰 추가 함수
 // 포커스를 벗어났을 때 번호 형식을 010-XXXX-XXXX로 변경
 function formatPhoneNumber() {
-    const phoneNumberInput = document.getElementById("phoneNumber");
+    const phoneNumberInput = document.getElementById("phoneNumberDisabled");
     let phoneNumber = phoneNumberInput.value;
 
     // 숫자만 남기기
@@ -120,12 +120,12 @@ document.addEventListener("DOMContentLoaded", function() {
     let authCode = ""; // 서버에서 받은 인증번호를 저장할 변수
 
     // 인증 요청 버튼 클릭 이벤트
-    document.getElementById("requestCodeBtn").addEventListener("click", function() {
-        const phoneNumber = document.getElementById("phoneNumber").value;
+    document.getElementById("requestCodeBtn").addEventListener("click", function(event) {
+        event.preventDefault(); // 폼 제출 방지
 
-		document.getElementById("codelabel").hidden = false; // 숨기기 취소
-		document.getElementById("verificationCode").hidden = false; // 숨기기 취소
-		
+        const phoneNumber = document.getElementById("phoneNumberDisabled").value;
+        console.log("입력된 휴대폰 번호:", phoneNumber);  // 디버깅용 로그
+
         if (phoneNumber.length !== 11) {
             document.getElementById("phoneNumberError").style.display = "block";
             return;
@@ -147,12 +147,13 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
             authCode = data.authCode; // 인증번호 저장
             alert("인증번호가 발송되었습니다.");
-            document.getElementById("phoneNumber").disabled = true; // 번호 입력 수정 불가능하게 설정
+            document.getElementById("phoneNumberDisabled").disabled = true; // 번호 입력 수정 불가능하게 설정
+            document.getElementById("codelabel").hidden = false; // 숨기기 취소
+            document.getElementById("verificationCode").hidden = false; // 숨기기 취소
         })
         .catch(error => {
             console.error("Error:", error);
         });
-		validateForm();
     });
 
     // 인증번호 확인 버튼 클릭 이벤트
@@ -160,14 +161,53 @@ document.addEventListener("DOMContentLoaded", function() {
         const enteredCode = document.getElementById("verificationCode").value;
 
         if (enteredCode === authCode) {
-            alert("인증 완료되었습니다.");
             document.getElementById("verificationCode").disabled = true; // 인증번호 입력 수정 불가능하게 설정
+			validateForm()
+            alert("인증 완료되었습니다.");
+			
         } else if (enteredCode.length === authCode.length && enteredCode !== authCode) {
             alert("인증번호가 일치하지 않습니다.");
         }
-	validateForm();
     });
+	validateForm()	
 });
+
+// 휴대폰 번호 히든으로 복사
+function syncPhoneNumber() {
+            // disabled 필드의 값을 hidden 필드에 복사
+            var phoneNumber = document.getElementById("phoneNumberDisabled").value;
+            document.getElementById("hiddenPhoneNumber").value = phoneNumber;
+}
+
+
+
+// 주소 검색
+function openAddressSearch() {
+    const popupWidth = 600;
+    const popupHeight = 700;
+    const popupX = (window.screen.width / 2) - (popupWidth / 2); // 화면 중앙에 위치
+    const popupY = (window.screen.height / 2.5) - (popupHeight / 2); // 화면 중앙에 위치
+
+    new daum.Postcode({
+        width: popupWidth,  // 팝업 가로 크기
+        height: popupHeight, // 팝업 세로 크기
+		top: popupY,
+		left: popupX,
+        oncomplete: function(data) {
+            // 선택한 주소 값을 새 창에 전달하여 새 팝업 창을 엽니다.
+            const addr = data.address; // 선택한 주소
+            const extraAddr = data.extraAddress ? ` (${data.extraAddress})` : ""; // 상세 주소
+
+            // 주소 정보를 새로운 팝업에 전달
+            window.open(`/join/addressMap?address=${encodeURIComponent(addr + extraAddr)}`, "주소 상세 정보", 
+                        `width=${popupWidth},height=${popupHeight},left=${popupX},top=${popupY},resizable=no`);
+			
+						
+        }
+    }).open({
+        popupName: 'postcodePopup' // 팝업 이름 지정 (팝업이 여러 번 뜨지 않도록 제어 가능)
+    });
+}
 
 
 // 동의하고 가입하기 버튼
@@ -188,7 +228,7 @@ function validateForm() {
     const passwordValue = document.getElementById("password").value !== "";
     const confirmPasswordValue = document.getElementById("confirmPassword").value !== "";
     const nicknameValue = document.getElementById("nickname").value !== "";
-    const phoneNumberValue = document.getElementById("phoneNumber").value !== "";
+    const phoneNumberValue = document.getElementById("phoneNumberDisabled").value !== "";
     const birthValue = document.getElementById("birth").value !== "";
 
     // 폼의 모든 필드가 유효한지 확인
