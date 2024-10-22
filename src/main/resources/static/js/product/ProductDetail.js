@@ -1,28 +1,28 @@
 $(document).ready(function() {
-      let currentIndex = 0; // 현재 이미지 인덱스
+    let currentIndex = 0; // 현재 이미지 인덱스
 
-      // JSP에서 product 객체의 main_img1 ~ main_img5 값을 가져와서 JavaScript 배열로 저장
-      const images = [
-          `/static/images/ProductImg/MainImg/${product.main_img1}`,
-          `/static/images/ProductImg/MainImg/${product.main_img2}`,
-          `/static/images/ProductImg/MainImg/${product.main_img3}`,
-          `/static/images/ProductImg/MainImg/${product.main_img4}`,
-          `/static/images/ProductImg/MainImg/${product.main_img5}`
-      ];
+    // 만약 이미지가 하나 이하라면 버튼을 숨김
+    if (productImages.length <= 1) {
+        $('#prevButton, #nextButton').hide();
+    }
 
-      function showImage(index) {
-          $('#productImage').attr('src', images[index]);
-      }
+    // 이미지를 보여주는 함수
+    function showImage(index) {
+        $('#productImage').attr('src', `/static/images/ProductImg/MainImg/${productImages[index]}`);
+    }
 
-      $('#nextButton').click(function() {
-          currentIndex = (currentIndex + 1) % images.length; // 다음 이미지로 변경
-          showImage(currentIndex);
-      });
+    // 다음 버튼 클릭 시
+    $('#nextButton').click(function() {
+        currentIndex = (currentIndex + 1) % productImages.length; // 다음 이미지로 변경
+        showImage(currentIndex);
+    });
 
-      $('#prevButton').click(function() {
-          currentIndex = (currentIndex - 1 + images.length) % images.length; // 이전 이미지로 변경
-          showImage(currentIndex);
-      });
+    // 이전 버튼 클릭 시
+    $('#prevButton').click(function() {
+        currentIndex = (currentIndex - 1 + productImages.length) % productImages.length; // 이전 이미지로 변경
+        showImage(currentIndex);
+    });
 
-      showImage(currentIndex); // 초기 이미지 표시
-  });
+    // 초기 이미지 표시
+    showImage(currentIndex);
+});

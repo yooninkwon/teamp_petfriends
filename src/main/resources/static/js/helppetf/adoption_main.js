@@ -15,26 +15,26 @@ $(document).ready(function() {
 	const itemsPerPage = 8; // 페이지 당 item 수 = 8
 	let currentPage = 1; // 현재 표시되는 페이지
 	let totalItems = 0; // 총 item 수 초기화
-	let totalPages = 0; // 총 페이지 수
 	let adoptionItems = []; // item들을 담을 배열
 	let currPageGroup = 1; // 현재 페이지 그룹
+	let preEndPage = 0; // 이전 페이지의 마지막 페이지 번호
+	let formParam = ''; // form (필터) 의 파라미터값
+	fetchData(currentPage, currPageGroup, formParam); // 페이지 로드 시 호출 (formParam은 공백: 필터가 없으므로)
 
-	fetchData(currentPage, currPageGroup); // 페이지 로드 시 기본 페이지 호출
-
-	function fetchData(page, currPageGroup) {
+	function fetchData(currentPage, currPageGroup, formParam) {
 		$.ajax({
-			url: '/helppetf/adoption/getJson?pageNo=' + currPageGroup, // pageNo에 맞는 데이터 요청
+			url: '/helppetf/adoption/getJson?pageNo=' + currPageGroup + '&' + formParam, // pageNo에 맞는 데이터 요청-필터링된 API 호출 
 			method: 'GET',
 			dataType: 'json',
 			headers: {
-				'Cache-Control': 'no-cache'
+				'Cache-Control': 'no-cache' // 캐시 없음 설정
 			},
 			success: function(data) {
-				adoptionItems = data.item;
+				adoptionItems = data.item; // 배열에 아이템 대입
 				totalItems = adoptionItems.length; // 받아온 데이터에서 총 item 수 계산
 				totalPages = Math.ceil(totalItems / itemsPerPage); // 총 페이지 수 계산
-				displayItems(page); // 아이템 표시
-				setupPagination(); // 페이지네이션 설정
+				displayItems(currentPage); // 아이템 표시
+				setupPagination(currentPage, currPageGroup); // 페이지네이션 설정
 			},
 			error: function(xhr, status, error) {
 				console.error('Error fetching data:', error);
@@ -42,42 +42,35 @@ $(document).ready(function() {
 		});
 	}
 
-	// 필터링 후 검색 버튼을 누를 때의 API 호출
-	$('#filterSubmit').on('click', function() {
-		const formParam = $('#filter_form form').serialize();
-		filterData(currentPage);
-
-		function filterData(page) {
-			$.ajax({
-				url: '/helppetf/adoption/getFilterJson?pageNo=' + currPageGroup + '&' + formParam, // 필터링된 API 호출
-				method: 'GET',
-				dataType: 'json',
-				headers: {
-					'Cache-Control': 'no-cache',
-				},
-				success: function(data) {
-					adoptionItems = data.item;
-					totalItems = adoptionItems.length;
-					displayItems(page);
-					setupPagination();
-				},
-				error: function(xhr, status, error) {
-					console.error('Error fetching data:', error);
-				},
-			});
-		}
+	// 필터 선택 후 filterSubmit 클릭 시 호출
+	$('#filterSubmit').on('click', function(event) {
+		event.preventDefault(); // 기본 form 제출 동작 방지 (기본 링크를 이것으로 대체함)
+		formParam = $('#filter_form form').serialize(); // form 데이터 시리얼라이즈
+		currentPage = 1; // 필터링 시 페이지를 1로 리셋
+		fetchData(currentPage, currPageGroup, formParam); // 필터 데이터를 포함해서 fetchData 호출
 	});
 
 	// 아이템을 페이지에 맞게 출력
-	function displayItems(page) {
-		const start = (page - 1) * itemsPerPage;
+	function displayItems(currentPage) {
+		if (currentPage <= 10) {
+			// 현재 페이지가 10이하인 경우 == 페이지그룹이 1인 경우
+			var start = (currentPage - 1) * itemsPerPage;
+		} else { 
+			// 그 외 == 페이지그룹이 2이상인 경우
+			// start = (현재페이지 - 이전마지막페이지 - 1) * itemsPerPage(8)
+			var start = ((currentPage - preEndPage) - 1) * itemsPerPage;
+		}
+		
+		// end = 시작 인덱스번호 + itemsPerPage(8)
 		const end = start + itemsPerPage;
+		// .slice(start, end)는 배열에서 start부터 end 이전까지의 아이템들을 추출
+		// start가 0이고 end가 8이라면 인덱스 [0] ~ [7] 을 출력
 		const visibleItems = adoptionItems.slice(start, end);
-
 		// item 객체의 정보를 테이블로 출력
 		let cards = '';
 		$.each(visibleItems, function(index, item) {
-			cards += '<div class="adoption-card"><a href="#" class="adoption-link" data-index="' + (start + index) + '">';
+			// 인덱스가 0~79 이므로 페이지가 넘어가도 인덱스 번호가 정상적으로 불러와지도록 현재 페이지의 시작 인덱스 번호를 더해준다
+			cards += '<div class="adoption-card"><a href="#" class="adoption-link" data-index="' + (start + index) + '">'; 
 			cards += '<img src="' + item.popfile + '" alt="Pet Image" />';
 			cards += '<div class="content">';
 			cards += '<h3>' + item.kindCd + '</h3>';
@@ -99,19 +92,20 @@ $(document).ready(function() {
 		const index = $(this).data('index'); // 클릭한 요소의 인덱스 값을 가져옴
 		const selectedItem = adoptionItems[index]; // 선택된 항목 가져오기
 
-		// POST 요청 보내기
+		// API 요청이 아니라 이미 불러와진 데이터중 
+		// 클릭한 곳에 해당하는 데이터를 세션에 저장하여 데이터를 불러옴
 		fetch('/helppetf/adoption/adoption_data', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(selectedItem) // 선택된 객체를 JSON으로 변환
+			body: JSON.stringify(selectedItem) // 선택된 객체를 Json으로 변환
 		})
 			.then(response => {
 				if (!response.ok) {
-					throw new Error('Network response was not ok');
+					throw new Error('ERROR');
 				}
-				return response.json(); // 응답을 JSON으로 변환
+				return response.json(); // 응답을 Json으로 변환
 			})
 			.then(data => {
 				console.log('Success:', data);
@@ -121,54 +115,59 @@ $(document).ready(function() {
 				console.error('Error:', error);
 			});
 	});
-	
+
+
 	// 페이지네이션 설정
-	function setupPagination() {
-	    const maxPagesToShow = 10; // 한 번에 보여줄 페이지 수
-	    const startPage = (currPageGroup - 1) * maxPagesToShow + 1; // 현재 그룹의 첫 페이지 계산
-	    const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages); // 마지막 페이지 계산
+	function setupPagination(currentPage, currPageGroup) {
+		const maxPagesToShow = 10; // 한 번에 보여줄 페이지 수
+		const startPage = (currPageGroup - 1) * maxPagesToShow + 1; // 현재 그룹의 첫 페이지 계산
+		const endPage = startPage + maxPagesToShow - 1; // 마지막 페이지 계산
 
-	    let paginationHtml = '';
+		let paginationHtml = '';
 
-	    // 이전 버튼 추가 (현재 페이지 그룹이 1보다 크면 표시)
-	    if (currPageGroup > 1) {
-	        paginationHtml += '<a href="#" id="prev-group">&laquo; 이전</a>';
-	    }
+		// 이전 버튼 추가 (현재 페이지 그룹이 1보다 크면 표시)
+		if (currPageGroup > 1) {
+			paginationHtml += '<a href="#" id="prev-group">&laquo; 이전</a>';
+		}
 
-	    // 페이지 번호 생성
-	    for (let i = startPage; i <= endPage; i++) {
-	        paginationHtml += '<a href="#" class="' + (i === currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</a>';
-	    }
+		// 페이지 번호 생성
+		for (let i = startPage; i <= endPage; i++) {
+			paginationHtml += '<a href="#" id="i" class="' + (i === currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</a>';
+		}
 
-	    // 다음 버튼 추가 (전체 페이지 수가 현재 페이지 그룹의 마지막 페이지보다 클 경우 표시)
-	    //if (endPage < totalPages) {
-	        paginationHtml += '<a href="#" id="next-group">다음 &raquo;</a>';
-	    //}
+		// 다음 버튼 추가
+		paginationHtml += '<a href="#" id="next-group">다음 &raquo;</a>';
 
-	    $('#pagination').html(paginationHtml);
+		$('#pagination').html(paginationHtml);
 
-	    // 페이지 클릭 이벤트 핸들러
-	    $('#pagination a').on('click', function(event) {
-	        event.preventDefault();
+		// 페이지 클릭 이벤트 핸들러
+		$('#pagination a').on('click', function(event) {
+			event.preventDefault();
 
-	        if ($(this).attr('id') === 'prev-group') {
-	            // 이전 그룹으로 이동
-	            currPageGroup--;
-	            currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 이전 그룹의 첫 페이지
-	        } else if ($(this).attr('id') === 'next-group') {
-	            // 다음 그룹으로 이동
-	            currPageGroup++;
-	            currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 다음 그룹의 첫 페이지
-	        } else {
-	            // 클릭한 페이지로 이동
-	            currentPage = $(this).data('page');
-	        }
-
-	        // 페이지 번호와 그룹에 맞게 데이터 다시 로드
-	        fetchData(currentPage, currPageGroup);
-	    });
+			if ($(this).attr('id') === 'prev-group') {
+				// 이전 그룹으로 이동
+				currPageGroup--;
+				currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 이전 그룹의 첫 페이지
+				preEndPage = endPage - 20;
+				fetchData(currentPage, currPageGroup, formParam);
+				displayItems(currentPage)
+			} else if ($(this).attr('id') === 'next-group') {
+				// 다음 그룹으로 이동
+				currPageGroup++;
+				currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 다음 그룹의 첫 페이지
+				preEndPage = endPage;
+				fetchData(currentPage, currPageGroup, formParam);
+				displayItems(currentPage)
+			} else /* if ($(this).attr('id') === $(this).data('page')) */ {
+				// 클릭한 페이지로 이동
+				currentPage = $(this).data('page');
+				displayItems(currentPage)
+				setupPagination(currentPage, currPageGroup)
+			}
+		});
 	}
-	
+
+
 
 	/** @ 필터링
 	 * 오브젝트 : 지역, 품종 데이터 저장

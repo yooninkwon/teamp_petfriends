@@ -30,6 +30,7 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -126,6 +127,14 @@
     		<groupId>de.mkammerer</groupId>
     		<artifactId>argon2-jvm</artifactId>
     		<version>2.11</version>
+		</dependency>
+		
+		<!--SMS 인증 (coolsms)-->
+		<!-- https://mvnrepository.com/artifact/net.nurigo/javaSDK -->
+		<dependency>
+			<groupId>net.nurigo</groupId>
+			<artifactId>sdk</artifactId>
+			<version>4.2.7</version>
 		</dependency>
 		 			 
 	</dependencies>
