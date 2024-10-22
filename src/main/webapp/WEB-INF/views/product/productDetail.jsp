@@ -61,7 +61,13 @@
 		<span class="data-proDiscount">${product.pro_discount}%</span>
 		<span class="data-proPrice">${productOption.proopt_price }원</span> <br />
 		<span class="data-proFinalPrice">${productOption.proopt_finalprice }원</span> <br />
-		<span class="data-memGrade">예상 적립금 ${  (productOption.proopt_finalprice * point.g_rate / 100).intValue() }원</span> <br />
+		
+		<!-- 비로그인 시 예상 적립금 0.5% 적용 -->
+		<c:set var="effectiveRate" value="${point.g_rate != null ? point.g_rate : 0.5}" />
+		<c:set var="finalPrice" value="${productOption.proopt_finalprice != null ? productOption.proopt_finalprice : 0}" />
+		<c:set var="estimatedReward" value="${(finalPrice * effectiveRate / 100).intValue()}" />
+		<span class="data-memGrade">예상 적립금 ${estimatedReward}원</span> <br />
+		
 		<!-- 상품 옵션 선택창  -->
 		<label for="productOptions">상품 옵션 </label>
 		<select id="productOptions" name="proOption">
