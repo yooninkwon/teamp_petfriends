@@ -31,11 +31,24 @@
 		</tr>
 		<tr>
 			<td>펫 타입</td>
-			<td><input type="text" name="hpt_pettype" /></td>
+			<td><select id="petType" name="petType">
+				<option disabled selected>동물종류</option>
+				<option value="cat">고양이</option>
+				<option value="dog">강아지</option>
+				<option value="etc">기타 동물</option>
+			</select></td>
 		</tr>
 		<tr>
 			<td>카테고리</td>
-			<td><input type="text" name="hpt_category" /></td>
+			<td><select id="category" name="category">
+				<option disabled selected>카테고리</option>
+				<option value="1">훈련</option>
+				<option value="2">건강</option>
+				<option value="3">습관</option>
+				<option value="4">관찰</option>
+				<option value="5">케어</option>
+				<option value="6">생활</option>
+			</select></td>
 		</tr>
 		<tr>
 			<td colspan="2">

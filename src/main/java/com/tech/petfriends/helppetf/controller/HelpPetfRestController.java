@@ -58,11 +58,11 @@ public class HelpPetfRestController {
 	}
 	
 	@GetMapping("/petteacher/petteacher_data")
-	public ArrayList<HelpPetfDto> petteacherData(Model model) {
+	public ArrayList<HelpPetfDto> petteacherData(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
 		helpServiceInterface = new PetteacherService(helpDao);
 		helpServiceInterface.execute(model);
 		ArrayList<HelpPetfDto> ylist = (ArrayList<HelpPetfDto>) model.getAttribute("ylist");
-		System.out.println(ylist);
 		return ylist;
 	}
 	

@@ -47,17 +47,9 @@ $(document).ready(function() {
 		});
 	}
 
-	// 필터 선택 후 filterSubmit 클릭 시 호출
-	$('#filterSubmit').on('click', function(event) {
-		event.preventDefault(); // 기본 form 제출 동작 방지 (기본 링크를 이것으로 대체함)
-		formParam = $('#filter_form form').serialize(); // form 데이터 시리얼라이즈
-		currentPage = 1; // 필터링 시 페이지를 1로 리셋
-		fetchData(currentPage, currPageGroup, formParam); // 필터 데이터를 포함해서 fetchData 호출
-	});
-
 	// 아이템을 페이지에 맞게 출력
 	function displayItems(currentPage) {
-		
+
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 
 		if (currentPage <= 10) {
@@ -228,4 +220,33 @@ $(document).ready(function() {
 		}
 
 	});
+
+	// 필터 선택 후 filterSubmit 클릭 시 호출
+	$('#filterSubmit').on('click', function(event) {
+		event.preventDefault(); // 기본 form 제출 동작 방지 (기본 링크를 이것으로 대체함)
+		formParam = $('#filter_form form').serialize(); // form 데이터 시리얼라이즈
+		currentPage = 1; // 필터링 시 페이지를 1로 리셋
+		fetchData(currentPage, currPageGroup, formParam); // 필터 데이터를 포함해서 fetchData 호출
+	});
+
+	// 필터 선택 후 filterSubmit 클릭 시 호출 - 필터 선택 리셋
+	$('#filterReset').on('click', function() {
+	// 동적으로 바뀐 select 태그 비우고 초기값으로 재설정
+		$('#org_cd').empty();
+		$('#org_cd').append(`<option value="any" selected>시, 군, 구</option>`);
+		$('#org_cd').append(`<option value="any" selected>지역을 먼저 골라주세요</option>`);
+		
+		$('#kind').empty();
+		$('#kind').append(`<option value="any" selected>품종</option>`);
+		$('#kind').append(`<option value="any" selected>동물종류를 먼저 골라주세요</option>`);
+				
+		// option 태그의 선택값을 인덱스넘버 0으로 바꾸기
+		$("#upr_cd option:eq(0)").prop("selected", true);
+		$("#upKind option:eq(0)").prop("selected", true);
+		$("#org_cd option:eq(0)").prop("selected", true);
+		$("#kind option:eq(0)").prop("selected", true);
+		
+		fetchData(currentPage, currPageGroup, formParam); // 필터 데이터 초기화한 뒤 fetchData 재호출
+	});
+
 });

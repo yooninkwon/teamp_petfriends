@@ -15,7 +15,6 @@ import com.tech.petfriends.helppetf.service.FindFacilitiesService;
 import com.tech.petfriends.helppetf.service.FindHospitalService;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
 import com.tech.petfriends.helppetf.service.PetteacherDetailService;
-import com.tech.petfriends.helppetf.service.PetteacherService;
 
 
 @Controller
