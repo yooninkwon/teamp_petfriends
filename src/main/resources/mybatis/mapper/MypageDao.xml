@@ -40,13 +40,31 @@
 	<select id="getAllCoupon" resultType="com.tech.petfriends.mypage.dto.CouponDto">
 		SELECT *
 		FROM COUPON
-		WHERE SYSDATE BETWEEN CP_START AND CP_END
+		WHERE SYSDATE BETWEEN CP_START AND CP_END AND CP_KEYWORD IS NULL
 	</select>
 	
-	<select id="getCouponByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyCouponDto">
-		SELECT *
-		FROM MEMBER_COUPON_BRIDGE
+	<select id="getCouponByMemberCode" resultType="com.tech.petfriends.mypage.dto.CouponDto">
+		SELECT CP_NAME,CP_DEAD,CP_TYPE,CP_AMOUNT
+		FROM COUPON C
+		JOIN MEMBER_COUPON_BRIDGE MC ON C.CP_NO=MC.CP_NO
 		WHERE MEM_CODE=#{param1}
 	</select>
+	
+	<select id="searchCouponByKeyword" resultType="com.tech.petfriends.mypage.dto.CouponDto">
+		SELECT *
+		FROM COUPON
+		WHERE CP_KEYWORD=#{param1} AND SYSDATE BETWEEN CP_START AND CP_END
+	</select>
+	
+	<select id="checkIssued" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER_COUPON_BRIDGE
+		WHERE MEM_CODE=#{param1} AND CP_NO=#{param2}
+	</select>
+	
+	<insert id="insertCouponByKeyword">
+		INSERT INTO MEMBER_COUPON_BRIDGE
+		VALUES(#{param1},#{param2},#{param3},SYSDATE,NULL,NULL)
+	</insert>
 	
 </mapper>
