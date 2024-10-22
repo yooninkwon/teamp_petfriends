@@ -97,6 +97,19 @@ public class ProductController {
 		    return resultWish; // 클라이언트에 응답
 		}
  
-	
+	//장바구니 담기
+	@PostMapping("/productDetailCart")
+	public String productDetailCart( @RequestParam("mem_code") String mem_code,
+	        @RequestParam("pro_code") String pro_code,
+	        @RequestParam("opt_code") String opt_code,
+	        @RequestParam("quantity") int cart_cnt ) {
+		
+		System.out.println(mem_code);
+		System.out.println(pro_code);
+		System.out.println(opt_code);
+		System.out.println(cart_cnt);
+		
+		return "redirect:/product/productDetail?code="+pro_code;
+	}
 
 }

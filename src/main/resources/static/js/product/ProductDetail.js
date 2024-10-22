@@ -129,40 +129,6 @@ $(document).ready(function() {
 		});
 	});
 
-	// 상품 옵션 선택 변경 시 장바구니 팝업에 해당상품, 옵션, 가격 기입 및 수정
-	const selectedOption = $(this).find('option:selected');
-	const productName = selectedOption.text().split(' +')[0].trim(); // 선택된 옵션의 텍스트 가져오기
-	const productPrice = selectedOption.data('price'); // 선택된 옵션의 가격 가져오기
-	$('#selectedOptionText').text(productName); // 장바구니 팝업에 표시
-	$('#selectedOptionPrice').text(`1개 (${productPrice}원)`); // 가격 표시
-	
-	// 상품 옵션 선택 변경 시 장바구니 팝업에 해당상품, 옵션, 가격 기입 및 수정
-	const selectedOptionCode = selectedOption.val(); // 선택된 옵션 코드
-	$('#optionCodeInput').val(selectedOptionCode); // 숨겨진 필드 업데이트
-	$('#productOptions').change(function() {
-		const productPrice = selectedOption.data('price'); // 선택된 옵션의 가격 가져오기
-		const selectedOption = $(this).find('option:selected');
-		const productName = selectedOption.text().split(' +')[0].trim(); // 선택된 옵션의 텍스트 가져오기
-		$('#selectedOptionText').text(productName); // 장바구니 팝업에 표시
-		$('#selectedOptionPrice').text(`1개 (${productPrice}원)`); // 가격 표시
-		// 선택된 옵션 코드 업데이트
-		const selectedOptionCode = selectedOption.val(); // 선택된 옵션 코드
-		$('#optionCodeInput').val(selectedOptionCode); // 숨겨진 필드 업데이트
-	});
-
-
-	// 수량 입력 필드의 변경 이벤트 리스너 추가
-	document.getElementById('quantityInput').addEventListener('input', function() {
-	    const quantity = parseInt(this.value); // 현재 수량을 가져옵니다.
-	    const totalPrice = basePrice * quantity; // 총 가격 계산
-	    document.getElementById('finalPrice').textContent = `총 가격: ${totalPrice}원`; // 총 가격을 표시
-	});
-
-	// 초기 상태에서 가격 표시
-	document.getElementById('selectedOptionPrice').textContent = `가격: ${basePrice}원`; // 기본 가격 표시
-	document.getElementById('finalPrice').textContent = `총 가격: ${basePrice}원`; // 초기 총 가격 표시
-	
-	
 	//장바구니 담기 버튼
 	$('#cartBtn').click(function() {
 		const button = $(this);
@@ -197,11 +163,47 @@ $(document).ready(function() {
 			cartPopup.style.display = "flex";
 
 		};
-		closeCartBtn.addEventListener("click", function() {
-			cartPopup.style.display = "none"; // 팝업 닫기
-		});
+			addCartBtn.addEventListener("click", function() {
+				cartPopup.style.display = "none"; // 팝업 닫기
+			});
+
+			closeCartBtn.addEventListener("click", function() {
+				cartPopup.style.display = "none"; // 팝업 닫기
+			});
+		$('#quantityInput').val(1); // 수량 초기화
+		const selectedOption = $('#productOptions').find('option:selected');
+		const selectedPrice = selectedOption.data('price');
+		const selectedCode = selectedOption.val();
+		const selectedOptionName = selectedOption.data('name');
+		const selectedOptionCode = selectedOption.data('code');
+
+		$('#selectedOptionPrice').text(`1개 (${selectedPrice}원)`);
+		$('#optionCodeInput').val(selectedCode);
+		$('#selectedOptionText').text(selectedOptionName); // 옵션 이름 업데이트
+		opt_code.value = selectedOptionCode;
+
+		updateFinalPrice(selectedPrice);
 
 	});
+
+
+	// 수량 변경 시 최종 가격 업데이트
+	$('#quantityInput').on('input', function() {
+		const selectedOption = $('#productOptions').find('option:selected');
+		const selectedPrice = selectedOption.data('price');
+		updateFinalPrice(selectedPrice);
+	});
+
+	// 최종 가격 계산 함수
+	function updateFinalPrice(selectedPrice) {
+		const quantity = $('#quantityInput').val();
+		const finalPrice = selectedPrice * quantity;
+		$('#finalPrice').text(`총 가격: ${finalPrice}원`);
+	}
+
+
+
+
 
 });
 

@@ -27,11 +27,9 @@
  // 평균 별점과 리뷰 수를 가져오기
     const averageRating = ${reviewRank.average_rating};
     const totalReviews = ${reviewRank.total_reviews};
- // 페이지 시작시 찜된 상품인지 데이터 전달
+ // 페이지 시작시 찜된 상품 데이터 전달
     const wishResult = ${whishCheck.wishListResult };
     
- // 초기 가격을 가져옵니다.
-    const basePrice = ${productOptionList[0].proopt_finalprice}; // JSP에서 가격 값을 가져옵니다.
 </script>
 <script src="/static/js/product/ProductDetail.js"></script>
 
@@ -67,9 +65,9 @@
 		<!-- 상품 옵션 선택창  -->
 		<label for="productOptions">상품 옵션 </label>
 		<select id="productOptions" name="proOption">
-		 
 		    <c:forEach var="option" items="${productOptionList}" varStatus="status">
-		        <option value="${option.proopt_code}" data-price="${option.proopt_finalprice}">
+		        <option value="${option.proopt_code}" data-price="${option.proopt_finalprice}" data-name="${option.proopt_name }"
+		        data-code="${option.proopt_code }">
 		            ${product.pro_name} ${option.proopt_name}
 		            <c:if test="${status.index > 0}">
 		                <c:set var="basePrice" value="${productOptionList[0].proopt_finalprice}" />
@@ -114,13 +112,15 @@
         <button id="closeBtn" class="popup-btn">닫기</button>
     </div>
 </div>
- <!-- 로그인이 필요합니다 팝업 -->
-<form action="product/productDetailCart">
+
+ <!-- 장바구니 담는 팝업 -->
+<form action="/product/productDetailCart" method="post">
 <div id="cartPopup" class="popup-overlay">
     <div class="popup-content-cart">
-        <p id="selectedOptionText">${product.pro_name} </p>
+        <span>${product.pro_name}</span>
+        <span id="selectedOptionText"> </span>
         <p id="selectedOptionPrice"></p> <!-- 가격을 표시할 요소 추가 -->
-        <input type="number" id="quantityInput" name="quantity" min="1" max="99" value="1" /> 최대 99개 
+        <input type="number" id="quantityInput" name="quantity" min="1" max="99" value="1" onkeydown="return false;" /> 최대 99개 
         <span id="finalPrice"></span> <br /> 
         <button type="submit" id="addCartBtn" class="popup-btn">장바구니 담기</button>
         <button type="button" id="closeCartBtn" class="popup-btn">닫기</button>
@@ -128,7 +128,7 @@
         <!-- 유저의 고유 코드, 상품 코드, 옵션 코드 추가 -->
         <input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}" />
         <input type="hidden" name="pro_code" value="${product.pro_code}" />
-        <input type="hidden" name="opt_code" id="optionCodeInput" value="${productOptionList[0].proopt_code}" /> <!-- 기본 값 설정 -->
+        <input type="hidden" id="opt_code" name="opt_code" value="" /> 
         
     </div>
 </div>
