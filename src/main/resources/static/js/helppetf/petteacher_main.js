@@ -1,5 +1,11 @@
 /**
+ * 이 스크립트는 펫티쳐 메인 페이지를 로드하면 데이터베이스에 데이터를 요청하여,
+ * 필터링이 설정되지 않은 데이터를 서버(Java)에서 JSP로 불러오는 Ajax 코드와,
+ * 필터링 선택 후 버튼 클릭 시 설정된 필터 기준으로 데이터를 다시 요청하는 코드로 구성되어 있다.
  * 
+ * 데이터가 정상적으로 수신되면, 해당 데이터를 테이블 형식으로 화면에 출력한다.
+ * 
+ * 동물 종류와 카테고리 필터링이 존재한다.
  */
 
 $(document).ready(function() {
@@ -7,7 +13,7 @@ $(document).ready(function() {
 	const itemsPerPage = 6; // 페이지 당 item 수 = 6
 	let currentPage = 1; // 현재 표시되는 페이지
 	let totalItems = 0; // 총 item 수 초기화
-	let petteacherList; // ArrayList를 담을 배열
+	let petteacherList; // ArrayList를 담을 변수
 	let currPageGroup = 1; // 현재 페이지 그룹
 	let totalPages = 0; // 총 페이지 수
 	let preEndPage = 0; // 이전 페이지의 마지막 페이지 번호
@@ -16,7 +22,6 @@ $(document).ready(function() {
 	fetchData(currentPage, currPageGroup, formParam); // 페이지 로드 시 호출 (formParam은 공백: 필터가 없으므로)
 
 	function fetchData(currentPage, currPageGroup, formParam) {
-		console.log('formParam:', formParam);
 		$.ajax({
 			url: '/helppetf/petteacher/petteacher_data?' + formParam, // pageNo에 맞는 데이터 요청-필터링된 API 호출 
 			method: 'GET',
@@ -25,9 +30,8 @@ $(document).ready(function() {
 				'Cache-Control': 'no-cache' // 캐시 없음 설정
 			},
 			success: function(data) {
-				petteacherList = data; // 함수에 데이터 대입
-				totalItems = petteacherList.length; // 받아온 데이터에서 총 item 수 계산
-				console.log('totalItems: ', totalItems);
+				petteacherList = data; // 변수에 데이터 대입
+				totalItems = petteacherList.length; // 받아온 데이터 총 갯수 계산
 				totalPages = Math.ceil(totalItems / itemsPerPage); // 총 페이지 수 계산
 
 				displayItems(currentPage); // 아이템 표시
@@ -142,8 +146,4 @@ $(document).ready(function() {
 		$("#category option:eq(0)").prop("selected", true);
 		fetchData(currentPage, currPageGroup, formParam); // 필터 데이터를 포함해서 fetchData 호출
 	});
-
-
-
-
 });
