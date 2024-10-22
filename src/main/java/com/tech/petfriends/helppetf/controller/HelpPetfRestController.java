@@ -1,8 +1,11 @@
 package com.tech.petfriends.helppetf.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tech.petfriends.helppetf.dto.AdoptionSelectedAnimalDto;
+import com.tech.petfriends.helppetf.dto.HelpPetfDto;
+import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.AdoptionGetJson;
+import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
+import com.tech.petfriends.helppetf.service.PetteacherService;
 import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
 
 import reactor.core.publisher.Mono;
@@ -27,6 +34,11 @@ public class HelpPetfRestController {
     public HelpPetfRestController(AdoptionGetJson adoptionService) {
         this.adoptionService = adoptionService;
     }
+    
+	@Autowired
+	HelpPetfDao helpDao;
+	
+	HelppetfServiceInter helpServiceInterface;
     
 	@GetMapping("/adoption/getJson")
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson(HttpServletRequest request, Model model) throws Exception {
@@ -44,4 +56,15 @@ public class HelpPetfRestController {
 		// redirect는 jsp의 스크립트에서 하기 때문에 반복하지 않음
 		return "{\"status\": \"success\"}"; // 성공 메세지를 반환
 	}
+	
+	@GetMapping("/petteacher/petteacher_data")
+	public ArrayList<HelpPetfDto> petteacherData(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
+		helpServiceInterface = new PetteacherService(helpDao);
+		helpServiceInterface.execute(model);
+		ArrayList<HelpPetfDto> ylist = (ArrayList<HelpPetfDto>) model.getAttribute("ylist");
+		return ylist;
+	}
+	
+	
 }

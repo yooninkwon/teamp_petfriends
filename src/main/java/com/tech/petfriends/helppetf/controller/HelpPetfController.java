@@ -15,7 +15,6 @@ import com.tech.petfriends.helppetf.service.FindFacilitiesService;
 import com.tech.petfriends.helppetf.service.FindHospitalService;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
 import com.tech.petfriends.helppetf.service.PetteacherDetailService;
-import com.tech.petfriends.helppetf.service.PetteacherService;
 
 
 @Controller
@@ -44,10 +43,7 @@ public class HelpPetfController {
 	}
 		
 	@GetMapping("/petteacher/petteacher_main") // 펫티쳐 메인
-	public String petteacherList(Model model) {
-		helpServiceInterface = new PetteacherService(helpDao);
-		helpServiceInterface.execute(model);
-		
+	public String petteacherList() {
 		return "/helppetf/petteacher/petteacher_main";
 	}
 

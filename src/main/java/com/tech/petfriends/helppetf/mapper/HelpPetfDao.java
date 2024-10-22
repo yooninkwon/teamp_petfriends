@@ -11,7 +11,7 @@ public interface HelpPetfDao {
 	
 	public HelpPetfDto petteacherDetail(String hpt_seq);
 
-	public ArrayList<HelpPetfDto> petteacherList();
+	public ArrayList<HelpPetfDto> petteacherList(String petType, String category);
 
 	public String findUserAddr(String userId);
 
