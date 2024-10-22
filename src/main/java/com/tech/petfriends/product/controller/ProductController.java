@@ -1,6 +1,5 @@
 package com.tech.petfriends.product.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.product.dao.ProductDao;
+import com.tech.petfriends.product.dto.ProductDetailWishListDto;
 import com.tech.petfriends.product.dto.ProductListViewDto;
 import com.tech.petfriends.product.service.ProductDetailService;
 import com.tech.petfriends.product.service.ProductListViewService;
 import com.tech.petfriends.product.service.ProductService;
+import com.tech.petfriends.product.service.ProductWishListService;
 
 @Controller
 @RequestMapping("/product")
@@ -58,10 +60,18 @@ public class ProductController {
 	
 	//제품상세페이지
 	@GetMapping("/productDetail")
-	public String productDetail(@RequestParam("code") String productCode, Model model ) {
+	public String productDetail(@RequestParam("code") String productCode,HttpSession session, Model model ) {
+		
+		// 세션에서 loginUser 객체를 가져오기
+	    MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+	    
+	    // mem_code 추출
+	    String mem_code = loginUser != null ? loginUser.getMem_code() : null;
+
+		
 		
 		model.addAttribute("productCode",productCode);
-		
+		model.addAttribute("memberCode",mem_code);
 		productService = new ProductDetailService(productDao);
 		productService.execute(model);
 		
@@ -69,28 +79,23 @@ public class ProductController {
 		return "product/productDetail";
 	}
 	
-//	@PostMapping("/productWishList")
-//	@ResponseBody
-//	public ResponseEntity<Map<String, Object>> productWishlist(
-//            @RequestParam String productId, HttpSession session) {
-//
-//        String userCode = (String) session.getAttribute("mem_code"); // 세션에서 사용자 ID 가져오기
-//
-//        if (userCode == null || userCode.isEmpty()) {
-//            Map<String, Object> response = new HashMap<>();
-//            response.put("success", false);
-//            response.put("error", "unauthorized"); // 사용자 인증 실패
-//            return ResponseEntity.ok(response);
-//        }
-//
-//        boolean isAdded = wishlistService.toggleWishlist(userCode, productId);
-//
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("success", true);
-//        response.put("action", isAdded ? "added" : "removed");
-//
-//        return ResponseEntity.ok(response);
-//    }
+	//찜버튼 클릭시 ajax용
+	@PostMapping("/productWishList")
+	@ResponseBody
+	public int productWishlist(
+            @RequestBody Map<String, Object> wishlist, Model model) {
+		
+		model.addAllAttributes(wishlist);
+		
+		productService = new ProductWishListService(productDao);
+		productService.execute(model);
+		
+		// model에서 result 값을 꺼내오기
+	    ProductDetailWishListDto result = (ProductDetailWishListDto) model.getAttribute("result");
+		int resultWish = result.getWishListResult();
+
+		    return resultWish; // 클라이언트에 응답
+		}
  
 	
 

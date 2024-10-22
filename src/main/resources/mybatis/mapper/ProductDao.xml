@@ -15,13 +15,18 @@
 			MIN(PROOPT.PROOPT_FINALPRICE) PROOPT_FINALPRICE,
 			MIN(PROOPT.PROOPT_PRICE) PROOPT_PRICE,
 			PRO.PRO_DISCOUNT,
-			PRO.PRO_ONOFF
+			PRO.PRO_ONOFF,
+			NVL(COUNT(PROREV.PRO_CODE), 0) AS TOTAL_REVIEWS, 
+		    COALESCE(ROUND(AVG(PROREV.REVIEW_RATING), 1), 0.0) AS AVERAGE_RATING  
+			
 		FROM
 			PRODUCT PRO
 		INNER JOIN
 			PRODUCT_IMAGE PROIMG ON PRO.PRO_CODE = PROIMG.PRO_CODE
 		INNER JOIN
 			PRODUCT_OPTION PROOPT ON PRO.PRO_CODE = PROOPT.PRO_CODE
+		LEFT JOIN
+			PRODUCT_REVIEW PROREV ON PRO.PRO_CODE = PROREV.PRO_CODE
 		WHERE
 			PRO.PRO_PETS = #{petType}
 		AND
@@ -132,5 +137,46 @@
 			PRO_CODE = #{pro_code}	
 		ORDER BY
 			PROOPT_CODE ASC
+	</select>
+	
+	<select id="productWishList"
+		resultType="com.tech.petfriends.product.dto.ProductDetailWishListDto">
+		SELECT
+			COUNT(*) wishListResult
+		FROM
+			MEMBER_WISHLIST
+		WHERE
+			PRO_CODE = #{pro_code}
+		AND
+			MEM_CODE = #{mem_code}
+	</select>
+	
+	<insert id="productWishListInsert">
+		INSERT INTO 
+			MEMBER_WISHLIST(MEM_CODE, PRO_CODE) 
+		VALUES(#{mem_code}, #{pro_code} )
+	</insert>
+	
+	<delete id="productWishListDelete">
+		DELETE 
+		FROM
+			MEMBER_WISHLIST
+		WHERE
+			PRO_CODE = #{pro_code}
+		AND
+			MEM_CODE = #{mem_code}
+		
+	</delete>
+	
+	<select id="productPoint"
+		resultType="com.tech.petfriends.product.dto.ProductDetailPointDto">
+		SELECT 
+            GRADE.G_RATE
+        FROM
+            GRADE
+        INNER JOIN 
+            MEMBER ON GRADE.G_NO = MEMBER.G_NO
+        WHERE
+            MEMBER.G_NO= (SELECT G_NO FROM MEMBER WHERE MEM_CODE=#{mem_code})
 	</select>
 </mapper>

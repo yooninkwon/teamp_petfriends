@@ -26,44 +26,184 @@ $(document).ready(function() {
 	// 초기 이미지 표시
 	showImage(currentIndex);
 
+
+
+	function generateStarRating(rating) {
+		const fullStars = Math.floor(rating); // 정수 부분
+		const decimalPart = rating - fullStars; // 소수 부분
+		let starRatingHtml = '';
+
+		// 정수 부분의 별
+		for (let i = 0; i < fullStars; i++) {
+			starRatingHtml += '<span class="star filled">&#9733;</span>'; // 가득 찬 별
+		}
+
+		// 소수점 부분을 반영한 별 추가
+		if (decimalPart >= 0.5) {
+			starRatingHtml += `<span class="star half-filled">&#9733;</span>`; // 반쪽 별
+		}
+
+		// 나머지 회색 별
+		for (let i = fullStars + (decimalPart >= 0.5 ? 1 : 0); i < 5; i++) {
+			starRatingHtml += '<span class="star gray">&#9733;</span>'; // 빈 별
+		}
+
+		return starRatingHtml;
+	}
+
+	// 별점 표시
+	document.querySelector('.data-reviewAverage').innerHTML = `
+	    ${generateStarRating(averageRating)} (${totalReviews}개 후기) <br />
+	`;
+
+
+	//페이지 시작시 유저의 상품 찜상태 체크
+	startWish(wishResult);
+
+	function startWish(wishResult) {
+
+		const button = $('#wishListBtn'); // 버튼 선택
+		const $wishWord = $('#wishWord'); // wishWord 요소 선택
+
+		if (wishResult === 1) {
+			$wishWord.text('찜 꽁!').css('color', 'red'); // 찜 목록에 추가된 상태, 글씨 색상을 빨간색으로 변경
+			button.find('img').attr('src', '/static/Images/ProductImg/WishListImg/wish.png'); // 찜 이미지로 변경
+		} else {
+			$wishWord.text('찜').css('color', 'black'); // 찜 목록에서 제거된 상태, 글씨 색상을 검은색으로 변경
+			button.find('img').attr('src', '/static/Images/ProductImg/WishListImg/nowish.png'); // 원래 이미지로 변경
+
+		}
+	}
+
+	//찜버튼 누를시  ajax 요청 / 세션에 로그인정보가 없을시 로그인화면 유도 팝업창
 	$('#wishListBtn').click(function() {
-	    const button = $(this);
-	    const productCode = button.data('product-code');
-	    const memCode = button.data('mem-code'); // 세션에서 mem_code 가져오기
-	    const $wishWord = $('#wishWord');
+		const button = $(this);
+		const productCode = button.data('product-code');
+		const memCode = button.data('mem-code'); // 세션에서 mem_code 가져오기
+		const $wishWord = $('#wishWord');
 
-	    // 로그인 상태 확인
-	    if (!memCode) {
-	        // 로그인 유도 팝업
-	        if (confirm("로그인이 필요합니다. 로그인 페이지로 가시겠습니까?")) {
-	            window.location.href = '/login'; // 로그인 페이지로 이동
-	        }
-	        return; // 로그인하지 않은 경우 AJAX 요청 중단
-	    }
+		console.log(memCode);
+		console.log(productCode);
 
-	    // 찜목록 상품 넣기 AJAX 요청
-	    $.ajax({
-	        url: '/product/productWishList',
-	        type: 'POST',
-	        data: { productCode: productCode, memCode: memCode }, // 필요한 데이터 전송
-	        success: function(response) {
-	            if (response.success) {
-	                if (response.action === 'added') {
-	                    $wishWord.text('찜 꽁!').css('color', 'red'); // 찜 목록에 추가된 상태, 글씨 색상을 빨간색으로 변경
-	                    button.find('img').attr('src', '/static/Images/ProductImg/WishListImg/wish.png'); // 찜 이미지로 변경
-	                } else {
-	                    $wishWord.text('찜하기').css('color', 'black'); // 찜 목록에서 제거된 상태, 글씨 색상을 검은색으로 변경
-	                    button.find('img').attr('src', '/static/Images/ProductImg/WishListImg/nowish.png'); // 원래 이미지로 변경
-	                }
-	            } else {
-	                alert('문제가 발생했습니다. 다시 시도해 주세요.');
-	            }
-	        },
-	        error: function() {
-	            alert('서버와의 연결에 문제가 발생했습니다.');
-	        }
-	    });
+		var loginPopup = document.getElementById("loginPopup");
+		var loginBtn = document.getElementById("loginBtn");
+		var closeBtn = document.getElementById("closeBtn");
+
+		// 로그인 상태 확인
+		if (!memCode) {
+			// 팝업 표시
+			loginPopup.style.display = "flex";
+			// 로그인 버튼 클릭 시
+			loginBtn.addEventListener("click", function() {
+				window.location.href = '/login/loginPage'; // 로그인 페이지로 이동
+				loginPopup.style.display = "none"; // 팝업 닫기
+			});
+			// 닫기 버튼 클릭 시
+			closeBtn.addEventListener("click", function() {
+				loginPopup.style.display = "none"; // 팝업 닫기
+			});
+			return;
+		}
+
+		// 찜목록 상품 넣기 AJAX 요청
+		$.ajax({
+			url: '/product/productWishList',
+			type: 'POST',
+			contentType: 'application/json', // JSON 형식으로 전송
+			data: JSON.stringify({ productCode: productCode, memCode: memCode }), // 필요한 데이터 전송
+			success: function(response) {
+				if (response === 1) {
+					$wishWord.text('찜 꽁!').css('color', 'red'); // 찜 목록에 추가된 상태, 글씨 색상을 빨간색으로 변경
+					button.find('img').attr('src', '/static/Images/ProductImg/WishListImg/wish.png'); // 찜 이미지로 변경
+				} else if (response === 0) {
+					$wishWord.text('찜').css('color', 'black'); // 찜 목록에서 제거된 상태, 글씨 색상을 검은색으로 변경
+					button.find('img').attr('src', '/static/Images/ProductImg/WishListImg/nowish.png'); // 원래 이미지로 변경
+
+				} else {
+					alert('문제가 발생했습니다. 다시 시도해 주세요.');
+				}
+			},
+			error: function() {
+				alert('서버와의 연결에 문제가 발생했습니다.');
+			}
+		});
+	});
+
+	// 상품 옵션 선택 변경 시 장바구니 팝업에 해당상품, 옵션, 가격 기입 및 수정
+	const selectedOption = $(this).find('option:selected');
+	const productName = selectedOption.text().split(' +')[0].trim(); // 선택된 옵션의 텍스트 가져오기
+	const productPrice = selectedOption.data('price'); // 선택된 옵션의 가격 가져오기
+	$('#selectedOptionText').text(productName); // 장바구니 팝업에 표시
+	$('#selectedOptionPrice').text(`1개 (${productPrice}원)`); // 가격 표시
+	
+	// 상품 옵션 선택 변경 시 장바구니 팝업에 해당상품, 옵션, 가격 기입 및 수정
+	const selectedOptionCode = selectedOption.val(); // 선택된 옵션 코드
+	$('#optionCodeInput').val(selectedOptionCode); // 숨겨진 필드 업데이트
+	$('#productOptions').change(function() {
+		const productPrice = selectedOption.data('price'); // 선택된 옵션의 가격 가져오기
+		const selectedOption = $(this).find('option:selected');
+		const productName = selectedOption.text().split(' +')[0].trim(); // 선택된 옵션의 텍스트 가져오기
+		$('#selectedOptionText').text(productName); // 장바구니 팝업에 표시
+		$('#selectedOptionPrice').text(`1개 (${productPrice}원)`); // 가격 표시
+		// 선택된 옵션 코드 업데이트
+		const selectedOptionCode = selectedOption.val(); // 선택된 옵션 코드
+		$('#optionCodeInput').val(selectedOptionCode); // 숨겨진 필드 업데이트
 	});
 
 
+	// 수량 입력 필드의 변경 이벤트 리스너 추가
+	document.getElementById('quantityInput').addEventListener('input', function() {
+	    const quantity = parseInt(this.value); // 현재 수량을 가져옵니다.
+	    const totalPrice = basePrice * quantity; // 총 가격 계산
+	    document.getElementById('finalPrice').textContent = `총 가격: ${totalPrice}원`; // 총 가격을 표시
+	});
+
+	// 초기 상태에서 가격 표시
+	document.getElementById('selectedOptionPrice').textContent = `가격: ${basePrice}원`; // 기본 가격 표시
+	document.getElementById('finalPrice').textContent = `총 가격: ${basePrice}원`; // 초기 총 가격 표시
+	
+	
+	//장바구니 담기 버튼
+	$('#cartBtn').click(function() {
+		const button = $(this);
+		const productCode = button.data('product-code');
+		const memCode = button.data('mem-code'); // 세션에서 mem_code 가져오기
+
+		console.log(memCode);
+		console.log(productCode);
+
+		var loginPopup = document.getElementById("loginPopup");
+		var loginBtn = document.getElementById("loginBtn");
+		var closeBtn = document.getElementById("closeBtn");
+		var cartPopup = document.getElementById("cartPopup");
+		var addCartBtn = document.getElementById("addCartBtn");
+		var closeCartBtn = document.getElementById("closeCartBtn");
+
+		// 로그인 상태 확인
+		if (!memCode) {
+			// 팝업 표시
+			loginPopup.style.display = "flex";
+			// 로그인 버튼 클릭 시
+			loginBtn.addEventListener("click", function() {
+				window.location.href = '/login/loginPage'; // 로그인 페이지로 이동
+				loginPopup.style.display = "none"; // 팝업 닫기
+			});
+			// 닫기 버튼 클릭 시
+			closeBtn.addEventListener("click", function() {
+				loginPopup.style.display = "none"; // 팝업 닫기
+			});
+
+		} else if (memCode) {
+			cartPopup.style.display = "flex";
+
+		};
+		closeCartBtn.addEventListener("click", function() {
+			cartPopup.style.display = "none"; // 팝업 닫기
+		});
+
+	});
+
 });
+
+
+
