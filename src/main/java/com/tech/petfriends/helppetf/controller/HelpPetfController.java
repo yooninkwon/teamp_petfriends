@@ -44,10 +44,7 @@ public class HelpPetfController {
 	}
 		
 	@GetMapping("/petteacher/petteacher_main") // 펫티쳐 메인
-	public String petteacherList(Model model) {
-		helpServiceInterface = new PetteacherService(helpDao);
-		helpServiceInterface.execute(model);
-		
+	public String petteacherList() {
 		return "/helppetf/petteacher/petteacher_main";
 	}
 

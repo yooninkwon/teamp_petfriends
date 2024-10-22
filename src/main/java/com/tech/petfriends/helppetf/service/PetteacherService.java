@@ -23,7 +23,5 @@ public class PetteacherService implements HelppetfServiceInter {
 		ArrayList<HelpPetfDto> ylist = helpDao.petteacherList();
 
 		model.addAttribute("ylist", ylist);
-		
 	}
-	
 }
