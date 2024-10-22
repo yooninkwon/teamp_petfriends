@@ -1,6 +1,8 @@
 package com.tech.petfriends.community.mapper;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -24,5 +26,15 @@ public interface IDao {
 //	public ArrayList<CDto> selectImg(String board_no);
 
 	public ArrayList<CCategoryDto> getCategoryList();
+
+	public ArrayList<CDto> getPostsByCategory(int b_cate_no);
+
+//	public List<CDto> getAllPosts(); // 모든 게시물 조회 메서드 추가
+	
+	 public void modify(int board_no, String board_title, String board_content, Timestamp board_modified);
+
+	
+	
+	
 }
 

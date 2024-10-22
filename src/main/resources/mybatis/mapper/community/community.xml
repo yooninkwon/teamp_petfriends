@@ -14,7 +14,7 @@
 		BOARD_TITLE, BOARD_PASSWORD, BOARD_CONTENT, BOARD_CREATED, BOARD_MODIFIED, BOARD_VIEWS, 
 		BOARD_TAG,  BOARD_LIKES, BOARD_COMMENT_COUNT) 
 		VALUES
-		(COMMUNITY_BOARD_SEQ.NEXTVAL, #{b_cate_no}, 3, #{param1}, #{param2}, 1234, #{param3}, SYSTIMESTAMP, SYSTIMESTAMP, 
+		(COMMUNITY_BOARD_SEQ.NEXTVAL, #{b_cate_no}, 3, #{param1}, #{param2}, 1234, #{param3}, SYSTIMESTAMP, null, 
 		0, 'tag1', 10,3)
 	</insert>
 
@@ -44,6 +44,21 @@
 	SELECT B_CATE_NO, B_CATE_NAME FROM BOARD_CATEGORY
 	</select>
 
+	<select id="getPostsByCategory" parameterType="int" resultType="com.tech.petfriends.community.dto.CDto">
+	    SELECT * FROM COMMUNITY_BOARD
+	    <if test="b_cate_no != 0">
+	        WHERE B_CATE_NO = #{b_cate_no} ORDER BY BOARD_NO DESC
+	    </if>
+	</select>
+
+	<select id="getAllPosts" resultType="com.tech.petfriends.community.dto.CDto">
+    SELECT * FROM COMMUNITY_BOARD
+	</select>
 
 
+	<update id="modify">
+	    UPDATE COMMUNITY_BOARD
+	    SET BOARD_TITLE = #{param2}, BOARD_CONTENT = #{param3}, BOARD_MODIFIED = SYSTIMESTAMP
+	    WHERE BOARD_NO = #{param1}
+	</update>
 </mapper>

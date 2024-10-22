@@ -30,8 +30,23 @@
         </div> --%>
 
         <div class="post-footer">
+               <div class="left-buttons">
             <span>❤️ ${contentView.board_likes}</span>
             <span>💬 ${contentView.board_comment_count}</span>
+         </div>
+         
+          <div class="edit-delete-buttons">
+                   <form action="/community/modifyView" method="get">
+                    <input type="hidden" name="board_no" value="${contentView.board_no}">
+                    <button type="submit" class="edit-button">수정</button>
+                </form>
+                <a href="/community/delete?board_no=${contentView.board_no}" class="delete-button" 
+                   onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
+            </div>
+        
+        
+
+        
         </div>
     </div>
 
