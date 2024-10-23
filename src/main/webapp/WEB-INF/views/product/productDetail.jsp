@@ -99,7 +99,9 @@
 			<img src="/static/Images/ProductImg/WishListImg/nowish.png" id="wishListImg" /><br />
 			<span id="wishWord">찜</span>
 		</button>
-		<button id="cartBtn" data-mem-code="${sessionScope.loginUser.mem_code }">장바구니 담기</button>
+		<button id="cartBtn" data-mem-code="${sessionScope.loginUser.mem_code }"
+		data-pro-code="${product.pro_code }" data-opt-code="${option.proopt_code}"
+		>장바구니 담기</button>
 		</div>
 		</div>
 	</div>
@@ -188,6 +190,15 @@
 </div>
 </form>
 
+<!-- 장바구니에 이미 담겨있어 장바구니로 유도하는 팝업 -->
+<form action="/mypage/cart">
+<div id="goCartPopup" class="popup-overlay">
+    <div class="popup-content-cart">
+        <p>이미 장바구니에 담겨있는 상품입니다.</p>
+        <button type="submit" id="goCartBtn" class="popup-btn">장바구니로 가기</button>
+        <button type="button" id="closeGoCartBtn" class="popup-btn">닫기</button>
+    </div>
+</div>
 
 </body>
 

@@ -47,7 +47,7 @@ $(document).ready(function() {
 		for (let i = fullStars + (decimalPart >= 0.5 ? 1 : 0); i < 5; i++) {
 			starRatingHtml += '<span class="star gray">&#9733;</span>'; // 빈 별
 		}
-		
+
 
 		return starRatingHtml;
 	}
@@ -56,22 +56,22 @@ $(document).ready(function() {
 	document.querySelector('.data-reviewAverage').innerHTML = `
 	    ${generateStarRating(averageRating)} 
 	`;
-	
+
 	//추천상품 별점표시
 	$(function() {
-	    // 모든 데이터 리뷰 평균 점수를 기반으로 별점 생성
-	    document.querySelectorAll('.data-reviewAverage2').forEach(element => {
-	        const averageRating = parseFloat(element.getAttribute('data-average-rating')); // 데이터 속성에서 평균 평점 가져오기
-	        const starRatingHtml = generateStarRating(averageRating); // 별점 HTML 생성
-	        
-			// 별점 HTML을 데이터 리뷰 평균 점수 바로 옆에 추가
-			       element.insertAdjacentHTML('afterend', starRatingHtml);
-	    });
-	});
-	
-	
+		// 모든 데이터 리뷰 평균 점수를 기반으로 별점 생성
+		document.querySelectorAll('.data-reviewAverage2').forEach(element => {
+			const averageRating = parseFloat(element.getAttribute('data-average-rating')); // 데이터 속성에서 평균 평점 가져오기
+			const starRatingHtml = generateStarRating(averageRating); // 별점 HTML 생성
 
-	
+			// 별점 HTML을 데이터 리뷰 평균 점수 바로 옆에 추가
+			element.insertAdjacentHTML('afterend', starRatingHtml);
+		});
+	});
+
+
+
+
 
 
 	//페이지 시작시 유저의 상품 찜상태 체크
@@ -143,17 +143,18 @@ $(document).ready(function() {
 			error: function() {
 				alert('서버와의 연결에 문제가 발생했습니다.');
 			}
+
 		});
 	});
 
 	//장바구니 담기 버튼
 	$('#cartBtn').click(function() {
 		const button = $(this);
-		const productCode = button.data('product-code');
+		const proCode = button.data('pro-code');
 		const memCode = button.data('mem-code'); // 세션에서 mem_code 가져오기
+		const proOption = $('#productOptions').find('option:selected');
+		const optCode = proOption.data('code');
 
-		console.log(memCode);
-		console.log(productCode);
 
 		var loginPopup = document.getElementById("loginPopup");
 		var loginBtn = document.getElementById("loginBtn");
@@ -161,6 +162,39 @@ $(document).ready(function() {
 		var cartPopup = document.getElementById("cartPopup");
 		var addCartBtn = document.getElementById("addCartBtn");
 		var closeCartBtn = document.getElementById("closeCartBtn");
+		var goCartPopup = document.getElementById("goCartPopup");
+		var goCartBtn = document.getElementById("goCartBtn");
+		var closeGoCartBtn = document.getElementById("closeGoCartBtn");
+
+		console.log(memCode);
+		console.log(proCode);
+		console.log(optCode);
+
+		// 장바구니 담겨있는지 확인요청 ajax
+		if (memCode) {
+			$.ajax({
+				url: '/product/productDetailCartCheck',
+				type: 'POST',
+				contentType: 'application/json', // JSON 형식으로 전송
+				data: JSON.stringify({ proCode: proCode, memCode: memCode, optCode: optCode }), // 필요한 데이터 전송
+				success: function(response) {
+					if (response === 1) {
+						console.log(response);
+						goCartPopup.style.display = "flex";
+					} else if (response === 0) {
+						console.log(response);
+						cartPopup.style.display = "flex";
+					} else {
+						alert('문제가 발생했습니다. 다시 시도해 주세요.');
+					}
+				},
+				error: function() {
+					alert('서버와의 연결에 문제가 발생했습니다.');
+				}
+
+			});
+		}
+
 
 		// 로그인 상태 확인
 		if (!memCode) {
@@ -176,17 +210,25 @@ $(document).ready(function() {
 				loginPopup.style.display = "none"; // 팝업 닫기
 			});
 
-		} else if (memCode) {
-			cartPopup.style.display = "flex";
+		}
 
-		};
-			addCartBtn.addEventListener("click", function() {
-				cartPopup.style.display = "none"; // 팝업 닫기
-			});
 
-			closeCartBtn.addEventListener("click", function() {
-				cartPopup.style.display = "none"; // 팝업 닫기
-			});
+		addCartBtn.addEventListener("click", function() {
+			cartPopup.style.display = "none"; // 팝업 닫기
+		});
+
+		closeCartBtn.addEventListener("click", function() {
+			cartPopup.style.display = "none"; // 팝업 닫기
+		});
+
+		goCartBtn.addEventListener("click", function() {
+			goCartPopup.style.display = "none"; // 팝업 닫기
+		});
+
+		closeGoCartBtn.addEventListener("click", function() {
+			goCartPopup.style.display = "none"; // 팝업 닫기
+		});
+
 		$('#quantityInput').val(1); // 수량 초기화
 		const selectedOption = $('#productOptions').find('option:selected');
 		const selectedPrice = selectedOption.data('price');

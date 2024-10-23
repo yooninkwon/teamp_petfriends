@@ -3,6 +3,7 @@ package com.tech.petfriends.product.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.product.dao.ProductDao;
 import com.tech.petfriends.product.dto.ProductDetailWishListDto;
 import com.tech.petfriends.product.dto.ProductListViewDto;
+import com.tech.petfriends.product.service.ProductDetailCartCheckService;
 import com.tech.petfriends.product.service.ProductDetailCartService;
 import com.tech.petfriends.product.service.ProductDetailService;
 import com.tech.petfriends.product.service.ProductListViewService;
@@ -116,4 +118,20 @@ public class ProductController {
 		return "redirect:/product/productDetail?code="+pro_code;
 	}
 
+	
+	//장바구니 담겨있는지 확인
+	@PostMapping("/productDetailCartCheck")
+	@ResponseBody
+	public int productDetailCartCheck(@RequestBody Map<String, Object> request, Model model) {
+		model.addAllAttributes(request);
+		
+		
+		productService = new ProductDetailCartCheckService(productDao);
+		productService.execute(model);
+		
+		int cartCheckResult =(int) model.getAttribute("cartResult");
+		
+		
+		return cartCheckResult;
+	}
 }

@@ -246,4 +246,18 @@
 	
 	</select>
 	
+	<select id="productDetailCartCheck"
+		resultType="com.tech.petfriends.product.dto.ProductDetailCartCheckDto">
+		SELECT
+			COUNT(*) cartCheckResult
+		FROM
+			PRODUCT_CART
+		WHERE
+			MEM_CODE = #{mem_code}
+		AND
+			PRO_CODE = #{pro_code}
+		AND 
+			PROOPT_CODE	= #{opt_code} 
+	</select>
+	
 </mapper>
