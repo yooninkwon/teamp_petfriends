@@ -26,7 +26,10 @@
     
  // 평균 별점과 리뷰 수를 가져오기
     const averageRating = ${reviewRank.average_rating};
-    const totalReviews = ${reviewRank.total_reviews};
+    const averageRatingElement = document.querySelector('.data-reviewAverage2');
+	const averageRating2 = parseFloat(averageRatingElement.getAttribute('data-average-rating')); // data-attribute에서 평점 가져오기
+   
+    
  // 페이지 시작시 찜된 상품 데이터 전달
     const wishResult = ${whishCheck.wishListResult };
     
@@ -42,7 +45,7 @@
 
 	<br />
 	<br />
-	<br />
+	
 	
 
 	<div class="productData">
@@ -58,6 +61,7 @@
 		<span class = "data-proType">${product.pro_type } / ${product.pro_category }</span> <br />
 		<span class = "data-proName">${product.pro_name }</span> <br />
 		<span class = "data-reviewAverage">${reviewRank.average_rating}</span>
+		<span class = "data-reviewCount">${reviewRank.total_reviews}개 후기</span> <br />
 		<span class="data-proDiscount">${product.pro_discount}%</span>
 		<span class="data-proPrice">${productOption.proopt_price }원</span> <br />
 		<span class="data-proFinalPrice">${productOption.proopt_finalprice }원</span> <br />
@@ -91,22 +95,53 @@
 		        </option>
 		    </c:forEach>
 		</select>
-		
 		<div class="data-line"></div>
-		
 		<div class="putBtn">
 		<button id="wishListBtn" data-product-code="${product.pro_code }" data-mem-code="${sessionScope.loginUser.mem_code }">
-			
 			<img src="/static/Images/ProductImg/WishListImg/nowish.png" id="wishListImg" /><br />
 			<span id="wishWord">찜</span>
-	
 		</button>
 		<button id="cartBtn" data-mem-code="${sessionScope.loginUser.mem_code }">장바구니 담기</button>
 		</div>
-		
 		</div>
 	</div>
 	
+	<!-- 구분선 -->
+	<div class="line"></div>
+	
+	<!-- 다른 추천제품 유도 제품리스트 -->
+		<div class="recommend">
+			<span class="recMent">다른 댕댕이들한테 인기있는 상품</span>
+			<div class="recProduct">
+				<c:forEach var="recPro" items="${recPro}">
+	                <div class="recProductItem" data-product-code="${recPro.pro_code}" 
+	                >
+						<div class="recproduct-image-wrapper">
+		   	    	        <img src="/static/images/ProductImg/MainImg/${recPro.main_img1}"/>
+		                </div>
+		                <span>${recPro.pro_name}</span> <br />
+						<span>${recPro.proopt_price}원</span> <br />
+		                <span>${recPro.pro_discount}% ${recPro.proopt_finalprice}원</span>
+						<div class="recRating">
+	                    <span class = "data-reviewAverage2" data-average-rating="${recPro.average_rating}">${recPro.average_rating}</span> 
+	                    <span>(${recPro.total_reviews})</span> <!-- 별점과 리뷰 개수 -->
+		                </div>
+		            </div>
+           		</c:forEach>
+			</div>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

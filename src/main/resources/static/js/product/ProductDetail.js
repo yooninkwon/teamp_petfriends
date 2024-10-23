@@ -27,7 +27,7 @@ $(document).ready(function() {
 	showImage(currentIndex);
 
 
-
+	//제품상세페이지 해당상품 별점표시
 	function generateStarRating(rating) {
 		const fullStars = Math.floor(rating); // 정수 부분
 		const decimalPart = rating - fullStars; // 소수 부분
@@ -51,10 +51,15 @@ $(document).ready(function() {
 		return starRatingHtml;
 	}
 
-	// 별점 표시
+	// 해당상품 별점 표시
 	document.querySelector('.data-reviewAverage').innerHTML = `
-	    ${generateStarRating(averageRating)} (${totalReviews}개 후기) <br />
+	    ${generateStarRating(averageRating)} 
 	`;
+	// 추천상품 별점 표시
+	averageRatingElement.innerHTML = generateStarRating(averageRating2);
+
+	
+	
 
 
 	//페이지 시작시 유저의 상품 찜상태 체크

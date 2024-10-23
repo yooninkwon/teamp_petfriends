@@ -40,6 +40,8 @@ public interface ProductDao {
 
 	public void productDetailCart(String mem_code, String pro_code, String opt_code, int cart_cnt, String cart_code);
 
+	public ArrayList<ProductListViewDto> productRecommendProduct(String pro_code);
+
 	
 	
 
