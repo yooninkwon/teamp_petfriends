@@ -1,22 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>주소기반 주변 동물병원 찾기</title>
-<link rel="stylesheet" href="/static/css/helppetf/helppetf_find.css" />
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
+<link rel="stylesheet" href="/static/css/helppetf/helppetf_find.css" />
+<link rel="stylesheet"
+	href="/static/css/helppetf/helppetf_sub_navbar.css" />
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
-	<br /><br /><br />
-	<h5>주소기반 주변 반려동물 동물병원 찾기</h5>
-	<a href="/helppetf/find/pet_hospital">주변 동물병원 찾기</a> &nbsp;
-	<a href="/helppetf/find/pet_facilities">주변 반려동물 시설 찾기</a> &nbsp;
-	<a href="/helppetf/adoption/adoption_main">입양 센터</a> &nbsp;
-	<a href="/helppetf/petteacher/petteacher_main">펫티쳐</a> &nbsp;
-<!-- RestController로 수정해보기 -->
+	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+	<jsp:include page="/WEB-INF/views/include_jsp/helppetf_sub_navbar.jsp" />
+	<script>
+		$(document).ready(function() {
+			document.getElementById('${main_navbar_id }').classList.add('selected');
+			document.getElementById('${sub_navbar_id }').classList.add('selected');
+		});
+	</script>
 	<div class="map_wrap">
 		<div id="map"
 			style="width: 1000px; height: 500px; position: relative; overflow: hidden;"></div>
@@ -29,11 +31,9 @@
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey }&libraries=services"></script>
 	<script>
-	
-	
 		// 마커를 담을 배열입니다
 		var markers = [];
-		
+
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = {
 			center : new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
@@ -58,13 +58,13 @@
 
 				// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 				map.setCenter(coords);
-				
-		        // 결과값으로 받은 위치를 마커로 표시합니다
-// @@ TODO: 유저 주소 마커 이미지 변경
-		        var marker = new kakao.maps.Marker({
-		            map: map,
-		            position: coords
-		        });
+
+				// 결과값으로 받은 위치를 마커로 표시합니다
+				// @@ TODO: 유저 주소 마커 이미지 변경
+				var marker = new kakao.maps.Marker({
+					map : map,
+					position : coords
+				});
 
 				// 장소 검색 객체를 생성합니다
 				var ps = new kakao.maps.services.Places();
@@ -76,29 +76,27 @@
 			}
 		});
 
-
-		
 		// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
 		var infowindow = new kakao.maps.InfoWindow({
 			zIndex : 1
 		});
 
 		// 키워드로 장소를 검색합니다
-//		searchPlaces();
+		//		searchPlaces();
 
 		// 키워드 검색을 요청하는 함수입니다
-//		function searchPlaces() {
-//
-//			var keyword = document.getElementById('keyword').value;
-//
-//			if (!keyword.replace(/^\s+|\s+$/g, '')) {
-//				// alert('키워드를 입력해주세요!');
-//				return false;
-//			}
-//
-			// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-//			ps.keywordSearch(keyword, placesSearchCB);
-//		}
+		//		function searchPlaces() {
+		//
+		//			var keyword = document.getElementById('keyword').value;
+		//
+		//			if (!keyword.replace(/^\s+|\s+$/g, '')) {
+		//				// alert('키워드를 입력해주세요!');
+		//				return false;
+		//			}
+		//
+		// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+		//			ps.keywordSearch(keyword, placesSearchCB);
+		//		}
 
 		// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
 		function placesSearchCB(data, status, pagination) {
@@ -183,7 +181,7 @@
 		}
 
 		// 검색결과 항목을 Element로 반환하는 함수입니다
-// TODO : 검색결과 항목에 링크 걸기
+		// TODO : 검색결과 항목에 링크 걸기
 		function getListItem(index, places) {
 
 			var el = document.createElement('li'), itemStr = '<span class="markerbg marker_'
@@ -223,9 +221,7 @@
 				position : position, // 마커의 위치
 				image : markerImage
 			});
-			
 
-	        
 			marker.setMap(map); // 지도 위에 마커를 표출합니다
 			markers.push(marker); // 배열에 생성된 마커를 추가합니다
 
@@ -287,6 +283,6 @@
 			}
 		}
 	</script>
-	    <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
+	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>

@@ -124,9 +124,19 @@ public class AdminPageController {
 		return "admin/community";
 	}
 	
-	@GetMapping("/petture")
+	@GetMapping("/petteacher")
 	public String petture() {
-		return "admin/petture";
+		return "admin/petteacher";
+	}
+
+	@GetMapping("/pethotel")
+	public String pethotel() {
+		return "admin/pethotel";
+	}
+
+	@GetMapping("/pethotel_reserve")
+	public String pethotelReserve() {
+		return "admin/pethotel_reserve";
 	}
 	
 	@GetMapping("/notice")
