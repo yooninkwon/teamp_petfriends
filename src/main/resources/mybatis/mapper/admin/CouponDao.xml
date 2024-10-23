@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tech.petfriends.admin.mapper.CouponDao">
+	
+	<select id="getAllCoupons" resultType="com.tech.petfriends.admin.dto.CouponDto">
+	       SELECT CP.*, 
+	       (SELECT COUNT(*) FROM MEMBER_COUPON_BRIDGE MC WHERE MC.CP_NO = CP.CP_NO) AS issueCount
+	       FROM COUPON CP
+	       <where>
+               <choose>
+		           <when test="status == '전체'">
+		               CP_NO > 0
+		           </when>
+		           <when test="status == '발급중'">
+		               SYSDATE BETWEEN CP_START AND CP_END
+		           </when>
+		           <when test="status == '예정'">
+		               CP_START > SYSDATE 
+		           </when>
+		           <when test="status == '종료'">
+		               SYSDATE > CP_END
+		           </when>
+		       </choose>
+		
+		       <choose>
+		           <when test="type == '전체'">
+		               AND CP_TYPE IN ('A', 'R')
+		           </when>
+		           <otherwise>
+		               AND CP_TYPE = #{type}
+		           </otherwise>
+		       </choose>
+	       </where>
+	       <choose>
+		       <when test="sort == '최신순'">
+		           ORDER BY CP_NO DESC
+		       </when>
+		       <when test="sort == '발급순'">
+		           ORDER BY issueCount DESC
+		       </when>
+		       <when test="sort == '사용액순'">
+		           ORDER BY CP_NO DESC
+		       </when>
+		   </choose>
+	   </select>
+	
+</mapper>
