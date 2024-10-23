@@ -1,16 +1,36 @@
 
-// 이메일 형식 확인 함수
+// 이메일 형식 확인 및 중복 검사 함수
 function validateEmail() {
     var email = document.getElementById("email").value;
     var emailError = document.getElementById("emailError");
     var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
-    if (emailPattern.test(email)) {
-        emailError.style.display = "none";  // 이메일 형식이 맞으면 메시지 숨김
+    // 이메일 형식이 맞는지 확인
+    if (!emailPattern.test(email)) {
+        emailError.innerText = "올바른 이메일 형식을 입력해주세요.";
+        emailError.style.display = "block";  // 이메일 형식이 틀리면 오류 메시지 표시
+        return;
     } else {
-        emailError.style.display = "block"; // 이메일 형식이 틀리면 메시지 표시
+        emailError.style.display = "none";  // 형식이 맞으면 오류 메시지 숨김
     }
-	validateForm();
+
+    // 이메일 중복 검사
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `/check-email?email=${encodeURIComponent(email)}`, true); // 서버에 AJAX 요청
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (response.isDuplicate) {
+                emailError.innerText = "이미 사용 중인 이메일입니다.";
+                emailError.style.display = "block"; // 중복된 이메일이면 오류 메시지 표시
+            } else {
+                emailError.style.display = "none"; // 중복되지 않으면 오류 메시지 숨김
+            }
+        }
+    };
+    xhr.send(); // 요청 보내기
+
+    validateForm(); // 폼 유효성 검사 업데이트
 }
 
 // 비밀번호 형식 확인 함수
@@ -191,24 +211,22 @@ function openAddressSearch() {
     new daum.Postcode({
         width: popupWidth,  // 팝업 가로 크기
         height: popupHeight, // 팝업 세로 크기
-		top: popupY,
-		left: popupX,
+        top: popupY,
+        left: popupX,
         oncomplete: function(data) {
-            // 선택한 주소 값을 새 창에 전달하여 새 팝업 창을 엽니다.
+            // 선택한 주소와 우편번호 값을 새 창에 전달하여 새 팝업 창을 엽니다.
             const addr = data.address; // 선택한 주소
             const extraAddr = data.extraAddress ? ` (${data.extraAddress})` : ""; // 상세 주소
+            const postcode = data.zonecode; // 우편번호
 
-            // 주소 정보를 새로운 팝업에 전달
-            window.open(`/join/addressMap?address=${encodeURIComponent(addr + extraAddr)}`, "주소 상세 정보", 
+            // 주소 정보와 우편번호를 새로운 팝업에 전달
+            window.open(`/join/addressMap?address=${encodeURIComponent(addr + extraAddr)}&postcode=${postcode}`, "주소 상세 정보", 
                         `width=${popupWidth},height=${popupHeight},left=${popupX},top=${popupY},resizable=no`);
-			
-						
         }
     }).open({
         popupName: 'postcodePopup' // 팝업 이름 지정 (팝업이 여러 번 뜨지 않도록 제어 가능)
     });
 }
-
 
 // 동의하고 가입하기 버튼
 // 모든 필드가 유효한지 확인하여 버튼 활성화
@@ -230,12 +248,15 @@ function validateForm() {
     const nicknameValue = document.getElementById("nickname").value !== "";
     const phoneNumberValue = document.getElementById("phoneNumberDisabled").value !== "";
     const birthValue = document.getElementById("birth").value !== "";
+	const addressValue = document.getElementById("address").value !== "";
+	const detailAddressValue = document.getElementById("detailAddress").value !== "";
+	
 
     // 폼의 모든 필드가 유효한지 확인
     const isFormValid = emailError && passwordError && confirmPasswordMatch && confirmPasswordError &&
         nicknameError && phoneNumberError && birthError && verificationCodeError &&
         emailValue && passwordValue && confirmPasswordValue && 
-        nicknameValue && phoneNumberValue && birthValue;
+        nicknameValue && phoneNumberValue && birthValue && addressValue && detailAddressValue;
 
     const submitBtn = document.getElementById("submitBtn");
     if (isFormValid) {
