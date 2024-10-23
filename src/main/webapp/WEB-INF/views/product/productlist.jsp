@@ -132,7 +132,7 @@
 		
 	</form>
 
-	 <div id="product-Count">상품 목록 갯수</div>
+	 <div id="product-Count"></div>
     <div id="product-List"></div> <!-- AJAX로 데이터가 표시될 부분 -->
     
     
