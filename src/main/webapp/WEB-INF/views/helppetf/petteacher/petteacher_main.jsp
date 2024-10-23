@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>펫티쳐</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
+<link rel="stylesheet" href="/static/css/helppetf/petteacher_main.css" />
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
@@ -16,34 +17,42 @@
 	<a href="/helppetf/find/pet_facilities">주변 반려동물 시설 찾기</a> &nbsp;
 	<a href="/helppetf/adoption/adoption_main">입양 센터</a> &nbsp;
 	<a href="/helppetf/petteacher/petteacher_main">펫티쳐</a> &nbsp;
-<hr />
-<!-- 임시: admin page 이동 -->
-<a href="/admin/admin_petteacher">임시 링크: 펫티쳐 어드민 페이지 이동</a><br />
-<br />
-	<table border="1" width="750">
-		<tr>
-			<th>번호</th>
-			<th>이름</th>
-			<th>제목</th>
-			<th>썸네일</th>
-			<th>설명</th>
-			<th>히트</th>
-		</tr>
-		<c:forEach items="${ylist }" var="y">
-			<tr>
-				<td>${y.hpt_seq }</td>
-				<td>${y.hpt_exp }</td>
-				<td><a href="/helppetf/petteacher/petteacher_detail?hpt_seq=${y.hpt_seq }">
-						${y.hpt_title } </a></td>
-				<td><img src="https://i.ytimg.com/vi/${y.hpt_yt_videoid }/mqdefault.jpg" alt="썸네일" /></td>
-				<td>${y.hpt_rgedate }</td>
-				<td>${y.hpt_hit }</td>
-			</tr>
-		</c:forEach>
-		<tr>
-			<td colspan="5"><a href="/admin/admin_petteacher_form">글작성</a></td>
-		</tr>
-	</table>
+	<hr />
+	<!-- 임시: admin page 이동 -->
+	<a href="/admin/admin_petteacher">임시 링크: 펫티쳐 어드민 페이지 이동</a>
+	<br />
+	<br />
+	<!-- 필터 div -->
+	<div id="filter_form">
+	<span>필터로 영상 찾아보기 </span> <br />
+		<form action="#">
+			<select id="petType" name="petType">
+				<option disabled selected>동물종류</option>
+				<option value="cat">고양이</option>
+				<option value="dog">강아지</option>
+				<option value="etc">기타 동물</option>
+			</select> <select id="category" name="category">
+				<option disabled selected>카테고리</option>
+				<option value="1">훈련</option>
+				<option value="2">건강</option>
+				<option value="3">습관</option>
+				<option value="4">관찰</option>
+				<option value="5">케어</option>
+				<option value="6">생활</option>
+			</select>
+			<button id="filterSubmit">검색</button>
+			<button id="filterReset">선택 초기화</button>
+		</form>
+	</div>
+
+	<div class="video-grid" id="videoContainer">
+		<!-- 데이터 테이블 -->
+	</div>
+	<div id="pagination">
+		<!-- 페이징 -->
+	</div>
+	<script src="/static/js/helppetf/petteacher_main.js"></script>
+
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>

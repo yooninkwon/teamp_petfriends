@@ -9,10 +9,10 @@ import lombok.Setter;
 @Getter
 public class HelpPetfDto {
 	private int hpt_seq;
-	private String hpt_yt_url;
 	private String hpt_yt_videoid;
 	private String hpt_exp;
 	private String hpt_title;
+	private String hpt_channal;
 	private String hpt_content;
 	private String hpt_pettype;
 	private String hpt_category;
