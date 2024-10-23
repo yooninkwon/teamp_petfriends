@@ -57,6 +57,7 @@ $(document).ready(function() {
 	    ${generateStarRating(averageRating)} 
 	`;
 	
+	//추천상품 별점표시
 	$(function() {
 	    // 모든 데이터 리뷰 평균 점수를 기반으로 별점 생성
 	    document.querySelectorAll('.data-reviewAverage2').forEach(element => {

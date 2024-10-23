@@ -108,8 +108,9 @@
 	<div class="line"></div>
 	
 	<!-- 다른 추천제품 유도 제품리스트 -->
+	<div class="detailInfo">
 		<div class="recommend">
-			<span class="recMent">다른 댕댕이들한테 인기있는 상품</span>
+			<span class="detailMent">다른 댕댕이들한테 인기있는 상품</span>
 			<div class="recProduct">
 				<c:forEach var="recPro" items="${recPro}">
 	                <div class="recProductItem" data-product-code="${recPro.pro_code}" 
@@ -129,14 +130,27 @@
            		</c:forEach>
 			</div>
 		</div>
-
-
-
-
-
-
-
-
+</div>
+	<!-- 구분선 -->
+	<div class="line"></div>
+	
+	<div class="detailInfo">
+		<div class="productInfo">
+			<span class="detailMent">펫프 <span style = "color : #ff4081;" >Check</span> Point</span> <br />
+			<img class="checkImg" src="/static/Images/ProductImg/CheckImg/${product.check_img }" /> <br />
+			<span class="detailMent">상품 설명</span> <br />
+			<div class=desImgBlock>
+			<c:forEach var="i" begin="1" end="10">
+	  		  	<c:set var="imageKey" value="des_img${i}"/>
+	    			<img class="infoImg" 
+	         		src="/static/Images/ProductImg/DesImg/${product[imageKey]}" 
+	         		alt="Description Image ${i}" 
+	         			<c:if test="${empty product[imageKey]}"> style="display:none;"</c:if> />
+			</c:forEach>
+			</div>
+		</div>
+		</div>
+	
 
 
 
