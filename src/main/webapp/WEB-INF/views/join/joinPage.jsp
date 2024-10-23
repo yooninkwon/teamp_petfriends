@@ -75,15 +75,15 @@
 
                 <label for="address">주소*</label> <br />
                 <div class="address-group">
-                    <input type="text" id="address" name="address" placeholder="주소 입력" >
+                    <input type="text" id="address" name="address" readonly placeholder="주소 입력" >
                     <button type="button" onclick="openAddressSearch()">주소 검색</button> <br />
                 </div>
                 <label for="detailAddress">상세주소*</label> <br />
-                <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소 입력">
+                <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소 입력" oninput="validateForm()" readonly >
             </div>
             
 			<input type="hidden" id="hiddenPhoneNumber" name="phoneNumber" value="">
-			<input type="text" id="postcode" name="postcode" placeholder="우편번호 입력">
+			<input type="hidden" id="postcode" name="postcode" placeholder="우편번호 입력">
             <button type="submit" class="submit-btn" id="submitBtn" oninput="validateForm()" onclick="syncPhoneNumber()">동의하고 가입하기</button>
         </form>
     </div>

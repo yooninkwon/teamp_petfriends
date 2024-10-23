@@ -95,8 +95,15 @@ public class JoinController {
         // 주소 테이블 인서트
         String uniqueID2 = UUID.randomUUID().toString();
         address.setAddr_code(uniqueID2);
+        // 멤버 코드는 동일하게 맞추기 위해 기존 uuid 사용
         address.setMem_code(uniqueID);
         
+        address.setAddr_postal(request.getParameter("postcode"));
+        address.setAddr_line1(request.getParameter("address"));
+        address.setAddr_line2(request.getParameter("detailAddress"));
+        address.setAddr_default('Y');
+        
+        memberService.joinAddress(address);       
         
         System.out.println("회원 가입 서비스 이동");
         
