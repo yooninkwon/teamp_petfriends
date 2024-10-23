@@ -24,7 +24,7 @@
 	        <li><a href="/product/productlist">PRODUCT</a></li>
 	        <li><a href="">NOTICE</a></li>
 	        <li><a href="/community/main">COMMUNITY</a></li>
-	        <li><a href="/helppetf/find/pet_hospital">HELP PETF!</a></li>   
+	        <li><a id="helppetf" href="/helppetf/find/pet_hospital">HELP PETF!</a></li>   
 
 	        <c:if test="${sessionScope.loginUser.mem_name ne null }">
 	        	<h3 id="welcome">${sessionScope.loginUser.mem_name}님 환영합니다.</h3>
@@ -33,4 +33,5 @@
 	    </ul>
 	</div>
 </p>
-
+<div id="brbrbr"></div>
+	<div id="wrapper">

@@ -11,18 +11,17 @@
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet" href="/static/css/helppetf/adoption_main.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<link rel="stylesheet" href="/static/css/helppetf/helppetf_sub_navbar.css" />
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />.
-	<h1>입양 센터</h1>
-	
-
-	<a href="/helppetf/find/pet_hospital">주변 동물병원 찾기</a> &nbsp;
-	<a href="/helppetf/find/pet_facilities">주변 반려동물 시설 찾기</a> &nbsp;
-	<a href="/helppetf/adoption/adoption_main">입양 센터</a> &nbsp;
-	<a href="/helppetf/petteacher/petteacher_main">펫티쳐</a> &nbsp;
-	<hr />
+	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+	<jsp:include page="/WEB-INF/views/include_jsp/helppetf_sub_navbar.jsp" />
+	<script>
+		$(document).ready(function() {
+			document.getElementById('${main_navbar_id }').classList.add('selected');
+			document.getElementById('${sub_navbar_id }').classList.add('selected');
+		});
+	</script>
 	<!--
 	누른 값을 전송할 때 해당하는 값의 필터링 제공
 	눌렀던 값을 페이지를 다시 불러왔을때 유지시키면 좋을 듯

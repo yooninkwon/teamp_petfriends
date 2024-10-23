@@ -26,8 +26,7 @@ public class PetteacherDetailService implements HelppetfServiceInter {
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		
 		String hpt_seq = request.getParameter("hpt_seq");
-		// 조회수 +1
-		helpDao.upViews(hpt_seq);
+		helpDao.upViews(hpt_seq); // 조회수 +1
 		HelpPetfDto dto = helpDao.petteacherDetail(hpt_seq);
 		
 		model.addAttribute("dto", dto);
