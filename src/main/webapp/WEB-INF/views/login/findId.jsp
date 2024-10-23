@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet" href="/static/css/login/findIdAndPw.css" />
-<script src="/static/js/findIdAndPw.js"></script>
+<script src="/static/js/findId.js"></script>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
@@ -54,7 +54,7 @@
                 <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호를 입력하세요">
             </div>
 
-            <button type="submit" class="submit-btn-Id" id="submit-btn-Id" disabled >인증확인</button>
+            <button type="submit" class="submit-btn-Id" id="submit-btn-Id" disabled >확인</button>
         </form>
     </div>
 </body>

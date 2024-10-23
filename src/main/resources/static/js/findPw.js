@@ -1,5 +1,8 @@
+
+
 // JavaScript 코드 추가
 window.addEventListener('DOMContentLoaded', function () {
+	const emailInput = document.getElementById('email');
     const nameInput = document.getElementById('name');
     const phoneNumberInput = document.getElementById('phoneNumber');
     const sendCodeBtn = document.querySelector('#requestCodeBtn');
@@ -7,7 +10,7 @@ window.addEventListener('DOMContentLoaded', function () {
     // 입력 필드의 값이 변경될 때마다 호출되는 함수
     function toggleSendCodeButton() {
         const phoneNumber = phoneNumberInput.value.replace(/\D/g, ''); // 숫자만 남김
-        if (nameInput.value.trim() !== '' && phoneNumber.length === 11) {
+        if (emailInput.value.trim() !== '' && nameInput.value.trim() !== '' && phoneNumber.length === 11) {
             sendCodeBtn.disabled = false;
             sendCodeBtn.style.cursor = 'pointer';
             sendCodeBtn.style.color = 'white';
@@ -29,6 +32,7 @@ window.addEventListener('DOMContentLoaded', function () {
     toggleSendCodeButton();
 
     // 입력 필드 값 변경 시 이벤트 리스너 추가
+	emailInput.addEventListener('input', toggleSendCodeButton);
     nameInput.addEventListener('input', toggleSendCodeButton);
     phoneNumberInput.addEventListener('input', toggleSendCodeButton);
 });
@@ -68,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // 인증번호 확인 버튼 클릭 이벤트
     document.getElementById("verificationCode").addEventListener("input", function() {
         const enteredCode = document.getElementById("verificationCode").value;
-		const submitBtn = document.getElementById("submit-btn-Id");
+		const submitBtn = document.getElementById("submit-btn-Pw");
 
         if (enteredCode === authCode) {
             document.getElementById("verificationCode").disabled = true; // 인증번호 입력 수정 불가능하게 설정
@@ -78,64 +82,6 @@ document.addEventListener("DOMContentLoaded", function() {
         } else if (enteredCode.length === authCode.length && enteredCode !== authCode) {
             alert("인증번호가 일치하지 않습니다.");
         }
-    });
-});
-
-
-// submit
-window.addEventListener('DOMContentLoaded', function() {
-    // 폼 제출 이벤트 리스너 등록
-    document.getElementById('findIdForm').addEventListener('submit', function(event) {
-        // 기본 폼 제출을 막음
-        event.preventDefault();
-
-        // 폼이 제출되지 않았다는 콘솔 로그 출력
-        console.log('폼 제출이 막혔습니다.');
-
-        // 여기에 데이터 전송 로직 추가 (예: fetch 호출)
-        const name = document.getElementById('name').value;
-        const phoneNumber = document.getElementById('phoneNumber').value;
-
-        // 서버로 데이터 전송
-        fetch('/find-id', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: name,
-                phoneNumber: phoneNumber,
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-			console.log(data);
-            if (data.userId) {
-                // 팝업을 띄우고, 아이디를 표시
-                document.getElementById('popup').style.display = 'block';
-				document.getElementById('popupBackground').style.display = 'block';
-                document.getElementById('userEmail').innerText = data.userId;
-            } else {
-                alert('가입 정보가 없습니다.');
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    });
-});
-
-
-// 팝업 닫기
-// DOMContentLoaded 이벤트가 발생하면 실행
-window.addEventListener('DOMContentLoaded', function () {
-    const popup = document.getElementById('popup');
-    const closeButton = document.getElementById('popup-close');
-
-    // 'X' 버튼 클릭 시 팝업 숨기기
-    closeButton.addEventListener('click', function () {
-		document.getElementById('popupBackground').style.display = 'none'; 
-        popup.style.display = 'none'; // 팝업 숨기기
     });
 });
 
