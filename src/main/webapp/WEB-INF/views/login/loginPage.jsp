@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="/static/css/login/login.css" />
 </head>
 <body>
+	<c:if test="${not empty error}">
+        <script>
+            alert("${error}");
+        </script>
+    </c:if>
     <!-- 헤더 인클루드 -->
     <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
     <!--  -->

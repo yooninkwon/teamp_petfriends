@@ -19,4 +19,6 @@ public class MemberService {
     public void joinAddress(MemberAddressDto address) {
     	memberMapper.insertJoinAddress(address);
     }
+    
+    
 }
