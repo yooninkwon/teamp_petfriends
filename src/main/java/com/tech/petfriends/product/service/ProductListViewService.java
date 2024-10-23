@@ -119,7 +119,7 @@ public class ProductListViewService implements ProductService {
 		} else if (rankOption.equals("rankopt1")) {
 			rankOption = "pro.pro_date desc";
 		} else if (rankOption.equals("rankopt2")) { // 여기 리뷰많은순할때 수정해야댐
-			rankOption = "pro.pro_name asc";
+			rankOption = "total_reviews desc";
 		} else if (rankOption.equals("rankopt3")) {
 			rankOption = "proopt_finalprice asc";
 		} else if (rankOption.equals("rankopt4")) {
