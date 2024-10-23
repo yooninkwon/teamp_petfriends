@@ -165,8 +165,6 @@ public String modifyView(@RequestParam("board_no") int board_no, Model model) {
 	
 	}
 
+
+
 }
-
-
-
-

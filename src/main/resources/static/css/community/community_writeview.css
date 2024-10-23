@@ -13,7 +13,7 @@
         background-color: #fff;
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    
+    	
     }
     h3 {
         font-size: 24px;
@@ -175,12 +175,25 @@ input[type="file"] {
 
 .post-image {
     position: relative; /* 자식 요소의 절대 위치 지정을 위한 상대적 위치 */
-    margin: 40px 0; /* 상하 마진 추가 */
+    margin: 5px 0; /* 상하 마진 추가 */
 }
 
 .post-image img {
-    max-width: 100%;
+    width: 100px;
     height: auto;
     margin-bottom: 40px; /* 이미지와 새 이미지 업로드 필드 간격 */
 }
+
+.write-form label[for="file"]{
+    margin-top: 20px; /* 위쪽 간격 */
+    margin-bottom: 5px; /* 아래쪽 간격 */
+    display: block; /* label과 input을 블록으로 표시하여 줄 바꿈 */
+}
+
+
+/* 대표 이미지 업로드와 현재 대표 이미지 간격 줄이기 */
+label[for="newImage"] {
+    margin-bottom: 5px; /* 기본 마진값에서 줄여서 설정 */
+}
+
 

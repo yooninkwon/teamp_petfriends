@@ -17,13 +17,13 @@ public interface IDao {
 	
 	public void write (String user_id,String board_title,String board_content, int b_cate_no);
 	
-	public void imgWrite(int board_no, String originalFile, String changeFile);
+	public void imgWrite(int board_no, String originalFile, String changeFile,String repImgOriginal, String repImgChange);
 
 	public int selBid();
 
 	public CDto contentView(String board_no); 
 
-//	public ArrayList<CDto> selectImg(String board_no);
+	public ArrayList<CDto> selectImg(String board_no);
 
 	public ArrayList<CCategoryDto> getCategoryList();
 
@@ -31,10 +31,9 @@ public interface IDao {
 
 //	public List<CDto> getAllPosts(); // 모든 게시물 조회 메서드 추가
 	
-	public void modify(int board_no, String board_title, String board_content, Timestamp board_modified, int b_cate_no);
+	public void modify(int board_no, String board_title, String board_content, int b_cate_no);
 
-	
-	
+	public void modifyImg(int board_no, String originalFile, String changeFile,String repImgOriginal, String repImgChange);
 	
 }
 

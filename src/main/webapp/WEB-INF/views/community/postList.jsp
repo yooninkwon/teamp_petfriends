@@ -29,7 +29,7 @@
        		</div>
         </div>
        
-        <img src="${pageContext.request.contextPath}/static/images/community_img/${post.cchgfile}" alt="포스트 1 이미지" class="post-image"/>
+        <img src="${pageContext.request.contextPath}/static/images/community_img/${post.chrepfile}" alt="포스트 1 이미지" class="post-image"/>
       		</a>
         <div class="post-footer">
             <span class="like-button">❤️ ${post.board_likes}</span>
