@@ -93,6 +93,7 @@
 			${rankOption}
 	</select>
 	
+	<!-- 제품 상세페이지 쿼리문 -->
 	<select id="productDetail"
 		resultType="com.tech.petfriends.product.dto.ProductDetailDto">
 		
@@ -110,6 +111,7 @@
 		
 	</select>
 	
+	<!-- 제품별 별점평균, 리뷰수 쿼리문 -->
 	<select id="productReviewRank"
 		resultType="com.tech.petfriends.product.dto.ProductDetailReviewRankDto">
 		SELECT
@@ -127,6 +129,7 @@
 		
 	</select>
 	
+	<!-- 제품상세페이지 제품의 옵션 쿼리문 -->
 	<select id="productOption"
 		resultType="com.tech.petfriends.product.dto.ProductDetailOptionDto">
 		SELECT
@@ -139,6 +142,7 @@
 			PROOPT_CODE ASC
 	</select>
 	
+	<!-- 제품상세페이지 해당유저의 제품 찜상태 -->
 	<select id="productWishList"
 		resultType="com.tech.petfriends.product.dto.ProductDetailWishListDto">
 		SELECT
@@ -151,12 +155,14 @@
 			MEM_CODE = #{mem_code}
 	</select>
 	
+	<!-- 제품상세페이지 제품 찜목록에 추가 -->
 	<insert id="productWishListInsert">
 		INSERT INTO 
 			MEMBER_WISHLIST(MEM_CODE, PRO_CODE) 
 		VALUES(#{mem_code}, #{pro_code} )
 	</insert>
 	
+	<!-- 제품상세페이지 제품 찜목록에서 삭제 -->
 	<delete id="productWishListDelete">
 		DELETE 
 		FROM
@@ -168,6 +174,7 @@
 		
 	</delete>
 	
+	<!-- 제품상세페이지 제품구매시 해당유저의 등급별 예상 적립금 % -->
 	<select id="productPoint"
 		resultType="com.tech.petfriends.product.dto.ProductDetailPointDto">
 		SELECT 
@@ -179,4 +186,21 @@
         WHERE
             MEMBER.G_NO= (SELECT G_NO FROM MEMBER WHERE MEM_CODE=#{mem_code})
 	</select>
+	
+	<!-- 제품상세페이지 장바구니담기 인서트 -->
+	<insert id="productDetailCart">
+		INSERT INTO 
+			PRODUCT_CART(CART_CODE, MEM_CODE, PRO_CODE, PROOPT_CODE, CART_CNT, ADDR_CODE)
+		VALUES (
+    		#{cart_code}, #{mem_code}, #{pro_code}, #{opt_code}, #{cart_cnt},
+    		(SELECT 
+    			ADDR_CODE
+    		FROM 
+    			ADDRESS
+    		WHERE 
+    			MEM_CODE = #{mem_code}
+    		AND 
+    			ADDR_DEFAULT = 'Y'))
+	</insert>
+	
 </mapper>

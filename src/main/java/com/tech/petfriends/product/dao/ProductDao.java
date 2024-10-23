@@ -38,6 +38,8 @@ public interface ProductDao {
 
 	public ProductDetailPointDto productPoint(String mem_code);
 
+	public void productDetailCart(String mem_code, String pro_code, String opt_code, int cart_cnt, String cart_code);
+
 	
 	
 

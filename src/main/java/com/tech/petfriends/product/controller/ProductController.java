@@ -20,6 +20,7 @@ import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.product.dao.ProductDao;
 import com.tech.petfriends.product.dto.ProductDetailWishListDto;
 import com.tech.petfriends.product.dto.ProductListViewDto;
+import com.tech.petfriends.product.service.ProductDetailCartService;
 import com.tech.petfriends.product.service.ProductDetailService;
 import com.tech.petfriends.product.service.ProductListViewService;
 import com.tech.petfriends.product.service.ProductService;
@@ -102,12 +103,15 @@ public class ProductController {
 	public String productDetailCart( @RequestParam("mem_code") String mem_code,
 	        @RequestParam("pro_code") String pro_code,
 	        @RequestParam("opt_code") String opt_code,
-	        @RequestParam("quantity") int cart_cnt ) {
+	        @RequestParam("quantity") int cart_cnt, Model model ) {
 		
-		System.out.println(mem_code);
-		System.out.println(pro_code);
-		System.out.println(opt_code);
-		System.out.println(cart_cnt);
+		model.addAttribute("mem_code",mem_code);
+		model.addAttribute("pro_code",pro_code);
+		model.addAttribute("opt_code",opt_code);
+		model.addAttribute("cart_cnt",cart_cnt);
+		
+		productService = new ProductDetailCartService(productDao);
+		productService.execute(model);
 		
 		return "redirect:/product/productDetail?code="+pro_code;
 	}
