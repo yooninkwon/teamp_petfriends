@@ -7,8 +7,11 @@ import com.tech.petfriends.login.dto.MemberLoginDto;
 
 @Mapper
 public interface MemberMapper {
-    // 이메일과 사용자 조회
+    // 이메일로 사용자 조회
     MemberLoginDto getMemberByEmail(String email);
+    
+    // 아이디 찾기
+    MemberLoginDto findUserId(String name, String phoneNumber);
     
     // 회원가입
     void insertMember(MemberLoginDto member);
