@@ -29,10 +29,10 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/helppetf")
 public class HelpPetfRestController {
 
-	private final AdoptionGetJson adoptionService;
+	private final AdoptionGetJson adoptionGetJson;
 
     public HelpPetfRestController(AdoptionGetJson adoptionService) {
-        this.adoptionService = adoptionService;
+        this.adoptionGetJson = adoptionService;
     }
     
 	@Autowired
@@ -43,7 +43,7 @@ public class HelpPetfRestController {
 	@GetMapping("/adoption/getJson")
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson(HttpServletRequest request, Model model) throws Exception {
 		model.addAttribute("request", request);
-		return adoptionService.fetchAdoptionData(model);
+		return adoptionGetJson.fetchAdoptionData(model);
 	}
 	
 	@PostMapping("/adoption/adoption_data")
@@ -62,7 +62,10 @@ public class HelpPetfRestController {
 		model.addAttribute("request", request);
 		helpServiceInterface = new PetteacherService(helpDao);
 		helpServiceInterface.execute(model);
+		
+		@SuppressWarnings("unchecked")
 		ArrayList<HelpPetfDto> ylist = (ArrayList<HelpPetfDto>) model.getAttribute("ylist");
+		
 		return ylist;
 	}
 	
