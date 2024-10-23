@@ -82,7 +82,7 @@ public class LoginController {
                 return "login/loginPage";  // 로그인 실패 시 로그인 페이지로 이동
             }
         } else {
-            System.out.println("로그인 실패: 이메일 또는 비밀번호가 잘못되었습니다.");
+            System.out.println("등록된 이메일이 아닙니다.");
             model.addAttribute("error", "이메일 또는 비밀번호가 잘못되었습니다.");
             return "login/loginPage";  // 로그인 실패 시 로그인 페이지로 이동
         }
@@ -100,5 +100,7 @@ public class LoginController {
       System.out.println("비밀번호 찾기 이동");
       return "login/findPw";
    }
+   
+   
    
 }

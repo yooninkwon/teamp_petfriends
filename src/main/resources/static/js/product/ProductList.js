@@ -229,6 +229,32 @@ $(document).ready(function() {
 
 			const soldOutOverlay = product.pro_onoff === '품절' ? '<div class="sold-out-overlay">품절</div>' : '';
 
+
+
+			// 소수점 포함 별점 처리
+			const fullStars = Math.floor(product.average_rating);  // 정수 부분
+			const halfStar = (product.average_rating % 1) >= 0.5;  // 소수점 반영 (0.5 이상일 경우 반쪽 별)
+
+			let starRatingHtml = '';
+
+			// 정수 부분의 별
+			for (let i = 1; i <= fullStars; i++) {
+				starRatingHtml += '<span class="star">&#9733;</span>';  // 노란 별 (가득 찬)
+			}
+
+			// 반쪽 별 추가
+			if (halfStar) {
+				starRatingHtml += '<span class="star half">&#9733;</span>';  // 반쪽 별
+			}
+
+			// 나머지 회색 별
+			for (let i = fullStars + (halfStar ? 1 : 0); i < 5; i++) {
+				starRatingHtml += '<span class="star gray">&#9733;</span>';  // 회색 별 (빈 별)
+			}
+
+
+
+
 			const productItem = `
 	            <div class="product-Item" data-product-code="${product.pro_code}">
 					<div class="product-image-wrapper">
@@ -238,18 +264,20 @@ $(document).ready(function() {
 	                <h3>${product.pro_name}</h3>
 					<p>${product.proopt_price}원</p>
 	                <p>${product.pro_discount}% ${product.proopt_finalprice}원</p>
-	                <!-- 추가 정보 필요 시 더 작성 -->
+					<div class="rating">
+                    ${starRatingHtml} <span>(${product.total_reviews})</span> <!-- 별점과 리뷰 개수 -->
+	                </div>
 	            </div>
 	        `;
 			// 생성한 요소를 컨테이너에 추가
 			productListContainer.append(productItem);
 		});
 	}
-	
+
 	$(document).on('click', '.product-Item', function() {
-	    const productCode = $(this).data('product-code'); // data-product-code 값을 가져옴
-	    // productCode를 사용하여 작업 수행
-	    window.location.href = `/product/productDetail?code=${productCode}`;
+		const productCode = $(this).data('product-code'); // data-product-code 값을 가져옴
+		// productCode를 사용하여 작업 수행
+		window.location.href = `/product/productDetail?code=${productCode}`;
 	});
 
 });

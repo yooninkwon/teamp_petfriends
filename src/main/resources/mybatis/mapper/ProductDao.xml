@@ -15,13 +15,18 @@
 			MIN(PROOPT.PROOPT_FINALPRICE) PROOPT_FINALPRICE,
 			MIN(PROOPT.PROOPT_PRICE) PROOPT_PRICE,
 			PRO.PRO_DISCOUNT,
-			PRO.PRO_ONOFF
+			PRO.PRO_ONOFF,
+			NVL(COUNT(PROREV.PRO_CODE), 0) AS TOTAL_REVIEWS, 
+		    COALESCE(ROUND(AVG(PROREV.REVIEW_RATING), 1), 0.0) AS AVERAGE_RATING  
+			
 		FROM
 			PRODUCT PRO
 		INNER JOIN
 			PRODUCT_IMAGE PROIMG ON PRO.PRO_CODE = PROIMG.PRO_CODE
 		INNER JOIN
 			PRODUCT_OPTION PROOPT ON PRO.PRO_CODE = PROOPT.PRO_CODE
+		LEFT JOIN
+			PRODUCT_REVIEW PROREV ON PRO.PRO_CODE = PROREV.PRO_CODE
 		WHERE
 			PRO.PRO_PETS = #{petType}
 		AND
@@ -88,6 +93,7 @@
 			${rankOption}
 	</select>
 	
+	<!-- 제품 상세페이지 쿼리문 -->
 	<select id="productDetail"
 		resultType="com.tech.petfriends.product.dto.ProductDetailDto">
 		
@@ -105,6 +111,7 @@
 		
 	</select>
 	
+	<!-- 제품별 별점평균, 리뷰수 쿼리문 -->
 	<select id="productReviewRank"
 		resultType="com.tech.petfriends.product.dto.ProductDetailReviewRankDto">
 		SELECT
@@ -122,6 +129,7 @@
 		
 	</select>
 	
+	<!-- 제품상세페이지 제품의 옵션 쿼리문 -->
 	<select id="productOption"
 		resultType="com.tech.petfriends.product.dto.ProductDetailOptionDto">
 		SELECT
@@ -133,4 +141,123 @@
 		ORDER BY
 			PROOPT_CODE ASC
 	</select>
+	
+	<!-- 제품상세페이지 해당유저의 제품 찜상태 -->
+	<select id="productWishList"
+		resultType="com.tech.petfriends.product.dto.ProductDetailWishListDto">
+		SELECT
+			COUNT(*) wishListResult
+		FROM
+			MEMBER_WISHLIST
+		WHERE
+			PRO_CODE = #{pro_code}
+		AND
+			MEM_CODE = #{mem_code}
+	</select>
+	
+	<!-- 제품상세페이지 제품 찜목록에 추가 -->
+	<insert id="productWishListInsert">
+		INSERT INTO 
+			MEMBER_WISHLIST(MEM_CODE, PRO_CODE) 
+		VALUES(#{mem_code}, #{pro_code} )
+	</insert>
+	
+	<!-- 제품상세페이지 제품 찜목록에서 삭제 -->
+	<delete id="productWishListDelete">
+		DELETE 
+		FROM
+			MEMBER_WISHLIST
+		WHERE
+			PRO_CODE = #{pro_code}
+		AND
+			MEM_CODE = #{mem_code}
+		
+	</delete>
+	
+	<!-- 제품상세페이지 제품구매시 해당유저의 등급별 예상 적립금 % -->
+	<select id="productPoint"
+		resultType="com.tech.petfriends.product.dto.ProductDetailPointDto">
+		SELECT 
+            GRADE.G_RATE
+        FROM
+            GRADE
+        INNER JOIN 
+            MEMBER ON GRADE.G_NO = MEMBER.G_NO
+        WHERE
+            MEMBER.G_NO= (SELECT G_NO FROM MEMBER WHERE MEM_CODE=#{mem_code})
+	</select>
+	
+	<!-- 제품상세페이지 장바구니담기 인서트 -->
+	<insert id="productDetailCart">
+		INSERT INTO 
+			PRODUCT_CART(CART_CODE, MEM_CODE, PRO_CODE, PROOPT_CODE, CART_CNT, ADDR_CODE)
+		VALUES (
+    		#{cart_code}, #{mem_code}, #{pro_code}, #{opt_code}, #{cart_cnt},
+    		(SELECT 
+    			ADDR_CODE
+    		FROM 
+    			ADDRESS
+    		WHERE 
+    			MEM_CODE = #{mem_code}
+    		AND 
+    			ADDR_DEFAULT = 'Y'))
+	</insert>
+	
+	<!-- 제품상세페이지 추천제품 리스트 -->
+	<select id="productRecommendProduct" 
+		resultType="com.tech.petfriends.product.dto.ProductListViewDto">
+		SELECT 
+			*
+		FROM 
+			(
+	    	SELECT 
+	        	PRO.PRO_CODE,
+	        	PRO.PRO_NAME,
+	        	PROIMG.MAIN_IMG1,
+	        	MIN(PROOPT.PROOPT_FINALPRICE) AS PROOPT_FINALPRICE,
+	        	MIN(PROOPT.PROOPT_PRICE) AS PROOPT_PRICE,
+	        	PRO.PRO_DISCOUNT,
+	        	PRO.PRO_ONOFF,
+	        	NVL(COUNT(PROREV.PRO_CODE), 0) AS TOTAL_REVIEWS, 
+	        	COALESCE(ROUND(AVG(PROREV.REVIEW_RATING), 1), 0.0) AS AVERAGE_RATING  
+	    	FROM 
+		        PRODUCT PRO
+		    INNER JOIN 
+	        	PRODUCT_IMAGE PROIMG ON PRO.PRO_CODE = PROIMG.PRO_CODE
+	    	INNER JOIN 
+		        PRODUCT_OPTION PROOPT ON PRO.PRO_CODE = PROOPT.PRO_CODE
+		    LEFT JOIN 
+	        	PRODUCT_REVIEW PROREV ON PRO.PRO_CODE = PROREV.PRO_CODE
+	    	WHERE 
+		        PRO.PRO_PETS = (SELECT PRO_PETS FROM PRODUCT WHERE PRO_CODE = #{pro_code})
+	        AND 
+	        	PRO.PRO_TYPE = (SELECT PRO_TYPE FROM PRODUCT WHERE PRO_CODE = #{pro_code})	
+		    AND 
+		    	PRO.PRO_ONOFF IN ('판매')
+	        AND 
+	        	PRO.PRO_CODE != #{pro_code}
+	    	GROUP BY 
+	        	PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, PRO.PRO_ONOFF
+	    	ORDER BY 
+	        	AVERAGE_RATING DESC
+			) 
+		WHERE 
+			ROWNUM &lt;= 4
+	
+	</select>
+	
+	<select id="productDetailCartCheck"
+		resultType="com.tech.petfriends.product.dto.ProductDetailCartCheckDto">
+		SELECT
+			COUNT(*) cartCheckResult
+		FROM
+			PRODUCT_CART
+		WHERE
+			MEM_CODE = #{mem_code}
+		AND
+			PRO_CODE = #{pro_code}
+		AND 
+			PROOPT_CODE	= #{opt_code} 
+	</select>
+	
 </mapper>
