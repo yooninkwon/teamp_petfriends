@@ -26,8 +26,6 @@
     
  // 평균 별점과 리뷰 수를 가져오기
     const averageRating = ${reviewRank.average_rating};
-    const averageRatingElement = document.querySelector('.data-reviewAverage2');
-	const averageRating2 = parseFloat(averageRatingElement.getAttribute('data-average-rating')); // data-attribute에서 평점 가져오기
    
     
  // 페이지 시작시 찜된 상품 데이터 전달
@@ -115,7 +113,7 @@
 			<div class="recProduct">
 				<c:forEach var="recPro" items="${recPro}">
 	                <div class="recProductItem" data-product-code="${recPro.pro_code}" 
-	                >
+	                onclick="location.href='/product/productDetail?code=${recPro.pro_code}'">
 						<div class="recproduct-image-wrapper">
 		   	    	        <img src="/static/images/ProductImg/MainImg/${recPro.main_img1}"/>
 		                </div>
@@ -123,8 +121,9 @@
 						<span>${recPro.proopt_price}원</span> <br />
 		                <span>${recPro.pro_discount}% ${recPro.proopt_finalprice}원</span>
 						<div class="recRating">
-	                    <span class = "data-reviewAverage2" data-average-rating="${recPro.average_rating}">${recPro.average_rating}</span> 
+	                    <span class="data-reviewAverage2" data-average-rating="${recPro.average_rating}"></span> 
 	                    <span>(${recPro.total_reviews})</span> <!-- 별점과 리뷰 개수 -->
+	                      <div class="star-rating"></div> <!-- 별점 표시를 위한 요소 -->
 		                </div>
 		            </div>
            		</c:forEach>

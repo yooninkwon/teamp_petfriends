@@ -47,6 +47,7 @@ $(document).ready(function() {
 		for (let i = fullStars + (decimalPart >= 0.5 ? 1 : 0); i < 5; i++) {
 			starRatingHtml += '<span class="star gray">&#9733;</span>'; // 빈 별
 		}
+		
 
 		return starRatingHtml;
 	}
@@ -55,10 +56,20 @@ $(document).ready(function() {
 	document.querySelector('.data-reviewAverage').innerHTML = `
 	    ${generateStarRating(averageRating)} 
 	`;
-	// 추천상품 별점 표시
-	averageRatingElement.innerHTML = generateStarRating(averageRating2);
-
 	
+	$(function() {
+	    // 모든 데이터 리뷰 평균 점수를 기반으로 별점 생성
+	    document.querySelectorAll('.data-reviewAverage2').forEach(element => {
+	        const averageRating = parseFloat(element.getAttribute('data-average-rating')); // 데이터 속성에서 평균 평점 가져오기
+	        const starRatingHtml = generateStarRating(averageRating); // 별점 HTML 생성
+	        
+			// 별점 HTML을 데이터 리뷰 평균 점수 바로 옆에 추가
+			       element.insertAdjacentHTML('afterend', starRatingHtml);
+	    });
+	});
+	
+	
+
 	
 
 
