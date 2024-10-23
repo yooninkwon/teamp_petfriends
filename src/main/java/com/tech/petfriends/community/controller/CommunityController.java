@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -139,14 +138,14 @@ public String getPostsByCategory(@RequestParam("b_cate_no") int bCateNo, Model m
     return "community/postList"; // 부분 뷰 리턴
 }
 
-@RequestMapping(method = RequestMethod.POST, value = "/modify")
-public String modify(HttpServletRequest request, Model model) {
-	model.addAttribute("request", request);
+@PostMapping("/modify")
+public String modify(MultipartHttpServletRequest mtfRequest, Model model) {
+	model.addAttribute("request", mtfRequest);
 	serviceInterface = new CModifyService(iDao);
 	serviceInterface.execute(model);
 	
 	
-	return "redirect:/community/contentView?board_no=" + request.getParameter("board_no");
+	return "redirect:/community/contentView?board_no=" + mtfRequest.getParameter("board_no");
 	
 }
 

@@ -25,10 +25,10 @@ public class CModifyService implements CServiceInterface {
 
         // 파라미터 수집
         int board_no = Integer.parseInt(mtfRequest.getParameter("board_no"));
-        int b_cate_no = Integer.parseInt(mtfRequest.getParameter("b_cate_no"));
         String user_id = mtfRequest.getParameter("user_id");
         String board_title = mtfRequest.getParameter("board_title");
         String board_content = mtfRequest.getParameter("board_content");
+        int b_cate_no = Integer.parseInt(mtfRequest.getParameter("b_cate_no"));
 
         // 기존 데이터 수정
         iDao.modify(board_no, board_title, board_content, b_cate_no);
@@ -81,10 +81,13 @@ public class CModifyService implements CServiceInterface {
 				e.printStackTrace();
 				throw new RuntimeException("File upload failed", e);
 			}
+		
+			System.out.println("originalFile: " + originalFile);
+			System.out.println("changeFile: " + changeFile);
+			System.out.println("repImgOriginal: " + repImgOriginal);
+			System.out.println("repImgChange: " + repImgChange);
 		}
-        
-        
-        //
+
         
         
     }

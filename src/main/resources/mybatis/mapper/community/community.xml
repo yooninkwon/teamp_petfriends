@@ -73,5 +73,5 @@
 	   		CHREPFILE = #{repImgChange}
 	    WHERE BOARD_NO = #{board_no}
 	</update>
-	
+	 
 </mapper>

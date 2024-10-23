@@ -40,7 +40,8 @@
         <label for="repfile" class="image-label">대표이미지</label>
         <input type="file" id="repfile" name="repfile" onchange="previewRepImage(event)">
 
-        <!-- 대표 이미지 미리보기 -->
+		
+		<!-- 대표 이미지 미리보기 -->
         <div id="repImagePreview" class="post-image" style="max-width: 100%; height: auto; margin-top: 10px;">
             <img id="previewImage" src="" alt="대표 이미지 미리보기" style="max-width: 100%; height: auto; display: none;">
         </div>

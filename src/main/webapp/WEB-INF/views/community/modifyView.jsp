@@ -39,18 +39,22 @@
 
         <label for="board_content">내용</label>
         <textarea id="board_content" name="board_content" placeholder="내용을 입력하세요" required>${contentView.board_content}</textarea>
-		
-        <label for="chrepfile">대표 이미지 업로드</label>
-        <input type="file" id="chrepfile" name="chrepfile" accept="image/*" onchange="showPreview(event)">
+		<option value="${category.b_cate_no}" <c:if test="${category.b_cate_no == contentView.b_cate_no}">selected</c:if>>${category.b_cate_name}</option>
+        <label for="repfile">대표 이미지 업로드</label>
+        <input type="file" id="repfile" name="repfile" accept="image/*" onchange="previewRepImage(event)">
         <div id="newImagePreview" class="post-image" style="margin-top: 10px;"></div>
 
-        <label>현재 대표 이미지</label>
+		<!-- 대표 이미지 미리보기 -->
+		<div id="repImagePreview" class="post-image" style="max-width: 100%; height: auto; margin-top: 10px;">
+		    <img id="previewImage" src="" alt="대표 이미지 미리보기" style="max-width: 100%; height: auto; display: none;">
+		</div>
+		
+		
+		<label>현재 대표 이미지</label>
         <div class="post-image">
-            <img src="${pageContext.request.contextPath}/static/images/community_img/${contentView.cchgfile}" alt="현재 이미지" style="max-width: 100%; height: auto;">
+            <img src="${pageContext.request.contextPath}/static/images/community_img/${contentView.chrepfile}" alt="현재 이미지" style="max-width: 100%; height: auto;">
         </div>
         
-        <!-- 수정된 부분: 현재 이미지 이름을 저장하는 히든 필드 추가 -->
-        <input type="hidden" name="current_image_name" value="${contentView.cchgfile}"> <!-- 현재 이미지 파일 이름 저장 -->
         
         <input type="button" id="previewButton" class="btn submit-btn" value="내용 미리보기">
         <input type="submit" id="submit-btn" class="btn submit-btn" value="수정 완료">
@@ -67,82 +71,80 @@
 </div>
 
 <script>
-    // CKEditor 초기화
-    CKEDITOR.replace('board_content', {
-        height: 700,
-        on: {
-            instanceReady: function() {
-                this.dataProcessor.htmlFilter.addRules({
-                    elements: {
-                        img: function(el) {
-                            el.attributes.style = 'max-width:1000px;max-height:400px;width:auto;height:auto;';
-                            return el;
-                        }
-                    }
-                });
-            }
-        }
-    });
+	 // CKEditor 초기화
+	    CKEDITOR.replace('board_content', {
+	        height: 700,
+	        on: {
+	            instanceReady: function() {
+	                this.dataProcessor.htmlFilter.addRules({
+	                    elements: {
+	                        img: function(el) {
+	                            el.attributes.style = 'max-width:1000px;max-height:400px;width:auto;height:auto;';
+	                            return el;
+	                        }
+	                    }
+	                });
+	            }
+	        }
+	    });
 
-    // 파일 업로드 이벤트 리스너 추가
-    document.getElementById('file').addEventListener('change', function(event) {
-        for (let i = 0; i < event.target.files.length; i++) {
-            const file = event.target.files[i];
-            const reader = new FileReader();
+	    // 대표 이미지 미리보기 함수
+	    function previewRepImage(event) {
+	        const file = event.target.files[0]; 
+	        const reader = new FileReader(); 
 
-            reader.onload = function(e) {
-                const img = '<img src="' + e.target.result + '" style="max-width:100%; max-height:400px; width:auto; height:auto;">';
-                CKEDITOR.instances.board_content.insertHtml(img); 
-            };
+	        reader.onload = function(e) {
+	            const preview = document.getElementById('previewImage');
+	            preview.src = e.target.result; 
+	            preview.style.display = 'block'; 
+	        };
 
-            reader.readAsDataURL(file); 
-        }
-    });
-    
-    // 새 이미지 미리보기 함수
-    function showPreview(event) {
-        const previewContainer = document.getElementById('newImagePreview');
-        previewContainer.innerHTML = ''; // 기존 미리보기 초기화
+	        if (file) {
+	            reader.readAsDataURL(file); 
+	        } else {
+	            const preview = document.getElementById('previewImage');
+	            preview.src = ""; 
+	            preview.style.display = 'none'; 
+	        }
+	    }
 
-        const files = event.target.files; // 선택한 파일들
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const reader = new FileReader();
+	    // 파일 업로드 이벤트 리스너 추가
+	    document.getElementById('file').addEventListener('change', function(event) {
+	        for (let i = 0; i < event.target.files.length; i++) {
+	            const file = event.target.files[i];
+	            const reader = new FileReader();
 
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result; // 파일 내용
-                img.style.maxWidth = '100%'; // 최대 너비
-                img.style.height = 'auto'; // 자동 높이
-                previewContainer.appendChild(img); // 미리보기 영역에 이미지 추가
-            }
+	            reader.onload = function(e) {
+	                const img = '<img src="' + e.target.result + '" style="max-width:100%; max-height:400px; width:auto; height:auto;">';
+	                CKEDITOR.instances.board_content.insertHtml(img); 
+	            };
 
-            reader.readAsDataURL(file); // 파일 읽기
-        }
-    }
+	            reader.readAsDataURL(file); 
+	        }
+	    });
 
-    // 미리보기 버튼 클릭 시 팝업 열기
-    document.getElementById('previewButton').addEventListener('click', function() {
-        const previewContent = CKEDITOR.instances.board_content.getData();
-        document.getElementById('preview').innerHTML = previewContent; // CKEditor 내용 미리보기
-        document.getElementById('previewPopup').style.display = 'flex'; // 팝업 열기
-    });
+	    // 미리보기 버튼 클릭 시 팝업 열기
+	    document.getElementById('previewButton').addEventListener('click', function() {
+	        const previewContent = CKEDITOR.instances.board_content.getData();
+	        document.getElementById('preview').innerHTML = previewContent; 
+	        document.getElementById('previewPopup').style.display = 'flex'; 
+	    });
 
-    // 닫기 버튼 클릭 시 팝업 닫기
-    document.getElementById('closePreview').addEventListener('click', function() {
-        document.getElementById('previewPopup').style.display = 'none'; // 팝업 닫기
-    });
+	    // 닫기 버튼 클릭 시 팝업 닫기
+	    document.getElementById('closePreview').addEventListener('click', function() {
+	        document.getElementById('previewPopup').style.display = 'none'; 
+	    });
 
-    // 폼 유효성 검사 함수
-    function validateForm() {
-        var imageInput = document.getElementById("file").value;
-        if (imageInput === "") {
-            alert("새 이미지를 선택하세요.");
-            return false; // 폼 제출 방지
-        }
-        return true; // 폼 제출 허용
-    }
-</script>
+	    // 폼 유효성 검사 함수
+	    function validateForm() {
+	        var imageInput = document.getElementById("repfile").value; 
+	        if (imageInput === "") {
+	            alert("대표 이미지를 선택하세요.");
+	            return false; 
+	        }
+	        return true; 
+	    }
+	</script>
 
 <footer>
     <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
