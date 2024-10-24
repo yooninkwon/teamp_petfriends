@@ -29,23 +29,25 @@ $(document).ready(function() {
 
 	//제품상세페이지 해당상품 별점표시
 	function generateStarRating(rating) {
-		const fullStars = Math.floor(rating); // 정수 부분
-		const decimalPart = rating - fullStars; // 소수 부분
+		// 소수점 포함 별점 처리
+		const fullStars = Math.floor(rating);  // 정수 부분
+		const halfStar = (rating % 1) >= 0.5;  // 소수점 반영 (0.5 이상일 경우 반쪽 별)
+
 		let starRatingHtml = '';
 
 		// 정수 부분의 별
-		for (let i = 0; i < fullStars; i++) {
-			starRatingHtml += '<span class="star filled">&#9733;</span>'; // 가득 찬 별
+		for (let i = 1; i <= fullStars; i++) {
+			starRatingHtml += '<span class="star">&#9733;</span>';  // 노란 별 (가득 찬)
 		}
 
-		// 소수점 부분을 반영한 별 추가
-		if (decimalPart >= 0.5) {
-			starRatingHtml += `<span class="star half-filled">&#9733;</span>`; // 반쪽 별
+		// 반쪽 별 추가
+		if (halfStar) {
+			starRatingHtml += '<span class="star half">&#9733;</span>';  // 반쪽 별
 		}
 
 		// 나머지 회색 별
-		for (let i = fullStars + (decimalPart >= 0.5 ? 1 : 0); i < 5; i++) {
-			starRatingHtml += '<span class="star gray">&#9733;</span>'; // 빈 별
+		for (let i = fullStars + (halfStar ? 1 : 0); i < 5; i++) {
+			starRatingHtml += '<span class="star gray">&#9733;</span>';  // 회색 별 (빈 별)
 		}
 
 
@@ -54,6 +56,9 @@ $(document).ready(function() {
 
 	// 해당상품 별점 표시
 	document.querySelector('.data-reviewAverage').innerHTML = `
+	    ${generateStarRating(averageRating)} 
+	`;
+	document.querySelector('.data-reviewAverage3').innerHTML = `
 	    ${generateStarRating(averageRating)} 
 	`;
 
@@ -260,9 +265,29 @@ $(document).ready(function() {
 		$('#finalPrice').text(`총 가격: ${finalPrice}원`);
 	}
 
+	//리뷰갯수 게이지
+	var gauge5 = document.getElementById("heartSignalFill5");
+	var gauge4 = document.getElementById("heartSignalFill4");
+	var gauge3 = document.getElementById("heartSignalFill3");
+	var gauge2 = document.getElementById("heartSignalFill2");
+	var gauge1 = document.getElementById("heartSignalFill1");
 
-
-
+	// 값 가져오기 및 숫자 변환
+	var score5 = Number(gauge5.getAttribute("value"));
+	var score4 = Number(gauge4.getAttribute("value"));
+	var score3 = Number(gauge3.getAttribute("value"));
+	var score2 = Number(gauge2.getAttribute("value"));
+	var score1 = Number(gauge1.getAttribute("value"));
+	
+	var total = score1 + score2 + score3 + score4 + score5;
+	
+	console.log(total);
+	
+	gauge5.style.width = score5/total*100+"%";
+	gauge4.style.width = score4/total*100+"%";
+	gauge3.style.width = score3/total*100+"%";
+	gauge2.style.width = score2/total*100+"%";
+	gauge1.style.width = score1/total*100+"%";
 
 });
 
