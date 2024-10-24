@@ -20,11 +20,17 @@
             비밀번호 찾기
             </a>
         </div>
+        
+        <%
+	    // URL에서 email 파라미터 가져오기
+	    String email = request.getParameter("email");
+		%>
 
-        <form action="/findPw" method="post" class="find-form">       	
+        <form action="changePw" method="post" class="find-form" id="findPwForm">       	
         	<div class="form-group">
                 <label for="email">아이디(Email)</label>
-                <input type="email" id="email" name="email" oninput="validateEmail()" placeholder="이메일을 입력해주세요">
+                <input type="email" id="email" name="email" value="<%= email != null ? email : "" %>" placeholder="이메일을 입력해주세요">
+                
             </div>
         
             <div class="form-group">
@@ -43,7 +49,7 @@
                 <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호를 입력하세요">
             </div>
 
-            <button type="submit" class="submit-btn-Pw" id="submit-btn-Pw" disabled >확인</button>
+            <button type="submit" class="submit-btn-Pw" id="submit-btn-Pw"  >확인</button>
         </form>
         <a href=""><h4>내새꾸 정보로 비밀번호 찾기</h4></a>
     </div>

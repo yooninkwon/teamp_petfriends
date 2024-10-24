@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet" href="/static/css/login/findIdAndPw.css" />
-<script src="/static/js/findId.js"></script>
+	<script src="/static/js/findId.js"></script>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
@@ -32,8 +32,10 @@
 		        <span id="popup-close">&times;</span>
 		        <h3 style='margin-top: 30px; font-size: 20px;'>회원님의 아이디(E-mail)</h3>
 		        <p style='margin-top: 60px; font-size: 25px;' id="userEmail"></p>
-		        <button id="loginBtn">로그인</button>
-		        <button id="findPwBtn">비밀번호찾기</button>
+		        <a href="/login/loginPage">
+				  <button id="loginBtn">로그인</button>
+				</a>				
+				  <button id="findPwBtn">비밀번호찾기</button>       
 		    </div>
 		</div>
 
