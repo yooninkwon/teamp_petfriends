@@ -31,8 +31,8 @@
 	<definition name="admin/community" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/community.jsp" />
 	</definition>
-	<definition name="admin/petture" extends="admin_baselayout">
-		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/petture.jsp" />
+	<definition name="admin/petteacher" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/petteacher.jsp" />
 	</definition>
 	<definition name="admin/notice" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/notice.jsp" />
@@ -42,5 +42,11 @@
 	</definition>
 	<definition name="admin/customer" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/customer.jsp" />
+	</definition>
+		<definition name="admin/pethotel" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/pethotel.jsp" />
+	</definition>
+	<definition name="admin/pethotel_reserve" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/pethotel_reserve.jsp" />
 	</definition>
 </tiles-definitions>

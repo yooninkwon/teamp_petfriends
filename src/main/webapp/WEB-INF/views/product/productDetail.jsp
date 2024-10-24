@@ -26,7 +26,8 @@
     
  // 평균 별점과 리뷰 수를 가져오기
     const averageRating = ${reviewRank.average_rating};
-    const totalReviews = ${reviewRank.total_reviews};
+   
+    
  // 페이지 시작시 찜된 상품 데이터 전달
     const wishResult = ${whishCheck.wishListResult };
     
@@ -42,7 +43,7 @@
 
 	<br />
 	<br />
-	<br />
+	
 	
 
 	<div class="productData">
@@ -58,6 +59,7 @@
 		<span class = "data-proType">${product.pro_type } / ${product.pro_category }</span> <br />
 		<span class = "data-proName">${product.pro_name }</span> <br />
 		<span class = "data-reviewAverage">${reviewRank.average_rating}</span>
+		<span class = "data-reviewCount">${reviewRank.total_reviews}개 후기</span> <br />
 		<span class="data-proDiscount">${product.pro_discount}%</span>
 		<span class="data-proPrice">${productOption.proopt_price }원</span> <br />
 		<span class="data-proFinalPrice">${productOption.proopt_finalprice }원</span> <br />
@@ -91,22 +93,70 @@
 		        </option>
 		    </c:forEach>
 		</select>
-		
 		<div class="data-line"></div>
-		
 		<div class="putBtn">
 		<button id="wishListBtn" data-product-code="${product.pro_code }" data-mem-code="${sessionScope.loginUser.mem_code }">
-			
 			<img src="/static/Images/ProductImg/WishListImg/nowish.png" id="wishListImg" /><br />
 			<span id="wishWord">찜</span>
-	
 		</button>
-		<button id="cartBtn" data-mem-code="${sessionScope.loginUser.mem_code }">장바구니 담기</button>
+		<button id="cartBtn" data-mem-code="${sessionScope.loginUser.mem_code }"
+		data-pro-code="${product.pro_code }" data-opt-code="${option.proopt_code}"
+		>장바구니 담기</button>
 		</div>
-		
 		</div>
 	</div>
 	
+	<!-- 구분선 -->
+	<div class="line"></div>
+	
+	<!-- 다른 추천제품 유도 제품리스트 -->
+	<div class="detailInfo">
+		<div class="recommend">
+			<span class="detailMent">다른 댕댕이들한테 인기있는 상품</span>
+			<div class="recProduct">
+				<c:forEach var="recPro" items="${recPro}">
+	                <div class="recProductItem" data-product-code="${recPro.pro_code}" 
+	                onclick="location.href='/product/productDetail?code=${recPro.pro_code}'">
+						<div class="recproduct-image-wrapper">
+		   	    	        <img src="/static/images/ProductImg/MainImg/${recPro.main_img1}"/>
+		                </div>
+		                <span>${recPro.pro_name}</span> <br />
+						<span>${recPro.proopt_price}원</span> <br />
+		                <span>${recPro.pro_discount}% ${recPro.proopt_finalprice}원</span>
+						<div class="recRating">
+	                    <span class="data-reviewAverage2" data-average-rating="${recPro.average_rating}"></span> 
+	                    <span>(${recPro.total_reviews})</span> <!-- 별점과 리뷰 개수 -->
+	                      <div class="star-rating"></div> <!-- 별점 표시를 위한 요소 -->
+		                </div>
+		            </div>
+           		</c:forEach>
+			</div>
+		</div>
+</div>
+	<!-- 구분선 -->
+	<div class="line"></div>
+	
+	<div class="detailInfo">
+		<div class="productInfo">
+			<span class="detailMent">펫프 <span style = "color : #ff4081;" >Check</span> Point</span> <br />
+			<img class="checkImg" src="/static/Images/ProductImg/CheckImg/${product.check_img }" /> <br />
+			<span class="detailMent">상품 설명</span> <br />
+			<div class=desImgBlock>
+			<c:forEach var="i" begin="1" end="10">
+	  		  	<c:set var="imageKey" value="des_img${i}"/>
+	    			<img class="infoImg" 
+	         		src="/static/Images/ProductImg/DesImg/${product[imageKey]}" 
+	         		alt="Description Image ${i}" 
+	         			<c:if test="${empty product[imageKey]}"> style="display:none;"</c:if> />
+			</c:forEach>
+			</div>
+		</div>
+		</div>
+	
+
+
+
+
 
 
 
@@ -140,6 +190,15 @@
 </div>
 </form>
 
+<!-- 장바구니에 이미 담겨있어 장바구니로 유도하는 팝업 -->
+<form action="/mypage/cart">
+<div id="goCartPopup" class="popup-overlay">
+    <div class="popup-content-cart">
+        <p>이미 장바구니에 담겨있는 상품입니다.</p>
+        <button type="submit" id="goCartBtn" class="popup-btn">장바구니로 가기</button>
+        <button type="button" id="closeGoCartBtn" class="popup-btn">닫기</button>
+    </div>
+</div>
 
 </body>
 

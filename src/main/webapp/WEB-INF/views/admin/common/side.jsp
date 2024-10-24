@@ -37,8 +37,15 @@
                 게시판
                 <ul class="submenu">
                     <li><a href="community" id="community">커뮤니티</a></li>
-                    <li><a href="petture" id="petture">펫 티쳐</a></li>
+                    <li><a href="petteacher" id="petteacher">펫 티쳐</a></li>
                     <li><a href="notice" id="notice">공지사항/이벤트</a></li>
+                </ul>
+            </li>
+            <li class="menu-item">
+                펫호텔
+                <ul class="submenu">
+                    <li><a href="pethotel" id="pethotel">펫호텔</a></li>
+                    <li><a href="pethotel_reserve" id="pethotel_reserve">예약관리</a></li>
                 </ul>
             </li>
             <li class="menu-item">
