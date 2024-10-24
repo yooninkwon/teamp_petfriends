@@ -1,5 +1,6 @@
 package com.tech.petfriends.login.controller;
 
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -102,5 +103,24 @@ public class LoginController {
    }
    
    
+   @PostMapping("/changePw")
+   public String ChangePw(HttpServletRequest request, Model model) {
+	   String email = request.getParameter("email");
+	   System.out.println("비밀번호 변경 이동");
+	   System.out.println(email);
+	   model.addAttribute("userEmail",email);
+	   return "login/changePw";
+   }
+   
+   @PostMapping("/changePwService")
+   public String ChangePwService(HttpServletRequest request) {
+	   String email = request.getParameter("email");
+	   String pw = request.getParameter("password");
+	   
+	   System.out.println(email);
+	   System.out.println(pw);
+	   
+	   return "login/loginPage";
+   }
    
 }
