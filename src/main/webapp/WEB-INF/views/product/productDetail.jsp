@@ -69,12 +69,14 @@
 		<span class="data-memGrade">예상 적립금 ${estimatedReward}원</span> <br />
 		
 		<!-- 상품 옵션 선택창  -->
-		<label for="productOptions">상품 옵션 </label>
+		<label for="productOptions">옵션 선택</label>
 		<select id="productOptions" name="proOption">
 		    <c:forEach var="option" items="${productOptionList}" varStatus="status">
 		        <option value="${option.proopt_code}" data-price="${option.proopt_finalprice}" data-name="${option.proopt_name }"
-		        data-code="${option.proopt_code }">
-		            ${product.pro_name} ${option.proopt_name}
+		        data-code="${option.proopt_code }" data-stock="${option.proopt_stock }"
+		         <c:if test="${option.proopt_stock == 0}">disabled</c:if>>
+            ${product.pro_name} ${option.proopt_name}
+		            
 		            <c:if test="${status.index > 0}">
 		                <c:set var="basePrice" value="${productOptionList[0].proopt_finalprice}" />
 		                <c:set var="currentPrice" value="${option.proopt_finalprice}" />
@@ -88,6 +90,9 @@
 		                    </c:when>
 		                </c:choose>
 		            </c:if>
+		         	   <c:if test="${option.proopt_stock == 0}">
+              		  (품절)
+          			  </c:if>
 		        </option>
 		    </c:forEach>
 		</select>
@@ -245,7 +250,8 @@
         <span>${product.pro_name}</span>
         <span id="selectedOptionText"> </span>
         <p id="selectedOptionPrice"></p> <!-- 가격을 표시할 요소 추가 -->
-        <input type="number" id="quantityInput" name="quantity" min="1" max="99" value="1" onkeydown="return false;" /> 최대 99개 
+        <input type="number" id="quantityInput" name="quantity" min="1" value="1" onkeydown="return false;" />
+        <span id="quantityMaxText"></span> 
         <span id="finalPrice"></span> <br /> 
         <button type="submit" id="addCartBtn" class="popup-btn">장바구니 담기</button>
         <button type="button" id="closeCartBtn" class="popup-btn">닫기</button>

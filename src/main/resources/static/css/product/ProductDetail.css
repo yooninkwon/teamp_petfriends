@@ -147,7 +147,7 @@ body {
 	display: block;          /* 이미지를 블록 요소로 설정 */
     max-width: 800px;        /* 이미지 너비 제한 */
     height: auto;            /* 이미지 비율 유지 */
-    margin: 40px auto;       /* 상하 40px 여백, 좌우 자동 정렬로 중앙 배치 */
+    margin: 40px 110px;       /* 상하 40px 여백, 좌우 자동 정렬로 중앙 배치 */
     
 }
 .infoImg{

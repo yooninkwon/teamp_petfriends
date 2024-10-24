@@ -240,12 +240,15 @@ $(document).ready(function() {
 		const selectedCode = selectedOption.val();
 		const selectedOptionName = selectedOption.data('name');
 		const selectedOptionCode = selectedOption.data('code');
+		const selectedOptionStock = selectedOption.data('stock');
 
 		$('#selectedOptionPrice').text(`1개 (${selectedPrice}원)`);
 		$('#optionCodeInput').val(selectedCode);
 		$('#selectedOptionText').text(selectedOptionName); // 옵션 이름 업데이트
 		opt_code.value = selectedOptionCode;
-
+		$('#quantityInput').attr('max', selectedOptionStock);
+		$('#quantityMaxText').text(`최대 ${selectedOptionStock}개`); // 화면에 재고 표시
+		
 		updateFinalPrice(selectedPrice);
 
 	});
