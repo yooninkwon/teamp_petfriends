@@ -308,3 +308,64 @@ $(document).ready(function() {
         });
     }
 });
+
+/*// 모달 열기/닫기
+$('#new-coupon-btn').on('click', function() {
+    document.getElementById('couponModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('couponModal').style.display = 'none';
+}
+
+// 쿠폰 타입에 따라 입력 필드 변경
+function toggleCouponType(type) {
+    if (type === '등급') {
+        document.getElementById('gradeSelect').style.display = 'block';
+    } else {
+        document.getElementById('gradeSelect').style.display = 'none';
+    }
+}
+
+// 할인 타입에 따라 단위 변경
+function updateDiscountLabel() {
+    const discountType = document.getElementById('discountType').value;
+    document.getElementById('discountUnit').innerText = discountType;
+}
+
+// 발급 종료일과 만료 예정일 동일 설정
+document.getElementById('sameAsEndDate').addEventListener('change', function () {
+    if (this.checked) {
+        document.getElementById('deadDate').value = document.getElementById('endDate').value;
+    }
+});
+
+// 쿠폰 등록 데이터 전송
+function submitCoupon() {
+    const couponData = {
+        cpName: document.getElementById('cpName').value,
+        cpKeyword: document.getElementById('cpKeyword').value,
+        cpType: document.querySelector('input[name="couponType"]:checked').value,
+        grade: document.getElementById('grade').value || null,
+        cpStart: document.getElementById('startDate').value || null,
+        cpEnd: document.getElementById('endDate').value || null,
+        cpDead: document.getElementById('deadDate').value || null,
+        cpDiscountType: document.getElementById('discountType').value,
+        cpAmount: document.getElementById('discountAmount').value
+    };
+
+    $.ajax({
+        url: '/admin/coupon/register',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(couponData),
+        success: function (response) {
+            alert('쿠폰이 성공적으로 등록되었습니다.');
+            closeModal();
+        },
+        error: function (error) {
+            console.error(error);
+            alert('쿠폰 등록 중 오류가 발생했습니다.');
+        }
+    });
+}*/

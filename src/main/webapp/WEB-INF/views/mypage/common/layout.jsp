@@ -25,7 +25,7 @@
             <tiles:insertAttribute name="mypage_body" />
         </section>
     </div>
-    <section id="footer">
+    <section>
         <tiles:insertAttribute name="mypage_footer" />
     </section>
 </div>

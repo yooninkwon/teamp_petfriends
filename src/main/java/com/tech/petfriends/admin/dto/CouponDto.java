@@ -16,6 +16,7 @@ public class CouponDto {
 	private Date cp_dead;
 	private String cp_type;
 	private int cp_amount;
+	private int g_no;
 	
     private int issueCount;
 }
