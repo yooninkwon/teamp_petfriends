@@ -119,6 +119,15 @@ public class AdminPageController {
         return coupons;
     }
 	
+	@PostMapping("/coupon/register")
+	@ResponseBody
+	public String registerCoupon(CouponDto couponDto) {
+		
+		/* couponDao.registerCoupon(couponDto); */
+	    	
+        return "redirect:admin/coupon";
+	}
+	
 	@GetMapping("/product")
 	public String product() {
 		return "admin/product";

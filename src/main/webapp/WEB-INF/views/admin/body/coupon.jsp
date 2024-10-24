@@ -145,6 +145,73 @@
 	</div>
 </div>
 
+<!-- 쿠폰 등록 모달창 -->
+<!-- <div id="couponModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">X</span>
+        
+        쿠폰 정보 입력
+        <div class="input-group">
+            <label for="cpName">쿠폰명</label>
+            <input type="text" id="cpName" placeholder="쿠폰명을 입력하세요">
+        </div>
+        
+        <div class="input-group">
+            <label for="cpKeyword">쿠폰 키워드</label>
+            <input type="text" id="cpKeyword" placeholder="키워드를 입력하세요">
+        </div>
+        
+        일반 쿠폰/등급 쿠폰 라디오 버튼
+        <div class="radio-group">
+            <label><input type="radio" name="couponType" value="일반" checked onclick="toggleCouponType('일반')"> 일반 쿠폰</label>
+            <label><input type="radio" name="couponType" value="등급" onclick="toggleCouponType('등급')"> 등급 쿠폰</label>
+        </div>
+        
+        등급 쿠폰 드롭다운
+        <div id="gradeSelect" class="input-group" style="display: none;">
+            <label for="grade">기준 등급</label>
+            <select id="grade">
+                <option value="설렘시작">설렘시작</option>
+                <option value="몽글몽글">몽글몽글</option>
+                <option value="두근두근">두근두근</option>
+                <option value="콩닥콩닥">콩닥콩닥</option>
+                <option value="심쿵주의">심쿵주의</option>
+                <option value="평생연분">평생연분</option>
+            </select>
+        </div>
+
+        발급 시작일, 종료일, 만료 예정일 입력
+        <div class="input-group">
+            <label for="startDate">발급 시작일</label>
+            <input type="date" id="startDate">
+        </div>
+
+        <div class="input-group">
+            <label for="endDate">발급 종료일</label>
+            <input type="date" id="endDate">
+        </div>
+
+        <div class="input-group">
+            <label for="deadDate">만료 예정일</label>
+            <input type="date" id="deadDate">
+            <input type="checkbox" id="sameAsEndDate"> 발급 종료일과 동일
+        </div>
+
+        할인액/할인율 선택
+        <div class="input-group">
+            <label for="discountType">할인 타입</label>
+            <select id="discountType" onchange="updateDiscountLabel()">
+                <option value="원">할인액</option>
+                <option value="%">할인율</option>
+            </select>
+            <input type="number" id="discountAmount" placeholder="할인 금액을 입력하세요">
+            <span id="discountUnit">원</span>
+        </div>
+
+        <button id="registerCouponBtn" onclick="submitCoupon()">등록완료</button>
+    </div>
+</div> -->
+
 <script src="/static/js/admin/coupon.js"></script>
 </body>
 </html>
