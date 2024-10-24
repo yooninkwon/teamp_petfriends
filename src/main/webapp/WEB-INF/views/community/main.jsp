@@ -10,6 +10,31 @@
     <title>Insert title here</title>
     <link rel="stylesheet" href="/static/css/community/community_main.css">
     <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
+	 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<script>
+	$(document).ready(function() {
+	    $('.category-button').click(function(e) {
+	        e.preventDefault(); // 기본 링크 클릭 이벤트 방지
+	        
+	        var cateNo = $(this).data('cate-no'); // 클릭한 카테고리 번호
+	        
+	        $.ajax({
+	            url: '/community/getPostsByCategory', // 카테고리별 게시글 조회 URL
+	            type: 'GET',
+	            data: { b_cate_no: cateNo }, // 카테고리 번호 전달
+	            success: function(data) {
+	                // postContainer 영역 업데이트
+	                $('#postContainer').html(data);
+	            },
+	            error: function() {
+	                alert('게시글을 불러오는 데 실패했습니다.');
+	            }
+	        });
+	    });
+	});
+	</script>	
+
 </head>
 
 <body>
@@ -150,50 +175,50 @@
 	    <ul>
 	        
 	        <li>
-	            <a href="#">
+	            <a href="#" class="category-button" data-cate-no="0" >
 	                <img src="/static/Images/community_img/category0.png" alt="" />
 	                <p>전체</p>
 	            </a>
 	        </li>      
 	        
 	        <li>
-	            <a href="#">
+	            <a href="#" class="category-button" data-cate-no="1" >
 	                <img src="/static/Images/community_img/category1.png" alt="" />
 	                <p>육아꿀팁</p>
 	            </a>
 	        </li>
 	        <li>
-	            <a href="#">
+	            <a href="#" class="category-button" data-cate-no="2" >
 	                <img src="/static/Images/community_img/category2.png" alt="" />
 	                <p>내새꾸자랑</p>
 	            </a>
 	        </li>
 	        <li>
-	            <a href="#">
+	            <a href="#" class="category-button" data-cate-no="3" >
 	                <img src="/static/Images/community_img/category3.png" alt="" />
 	                <p>펫테리어</p>
 	            </a>
 	        </li>
 	        <li>
-	            <a href="#">
+	            <a href="#" class="category-button" data-cate-no="4" >
 	                <img src="/static/Images/community_img/category4.png" alt="" />
 	                <p>펫션쇼</p>
 	            </a>
 	        </li>
 	        <li>
-	            <a href="#">
+	            <a href="#" class="category-button" data-cate-no="5" >
 	                <img src="/static/Images/community_img/category5.png" alt="" />
 	                <p>집사일기</p>
 	            </a>
 	        </li>
 			<li>
-			    <a href="#">
+			    <a href="#" class="category-button" data-cate-no="6" >
 			        <img src="/static/Images/community_img/category6.png" alt="" />
 			        <p>육아질문</p>
 			    </a>
 			</li>   
 			<li>
-			    <a href="#">
+			    <a href="#" class="category-button" data-cate-no="7" >
 			        <img src="/static/Images/community_img/category7.png" alt="" />
 			        <p>수의사상담</p>
 			    </a>
@@ -201,39 +226,13 @@
 			
 		 </ul>
 	
-	<script type="text/javascript"></script>
 	
 
 
 <!-- 포스트 -->
+<jsp:include page="postList.jsp" />
 
-   <c:forEach items="${postList }" var="post" >
-    <article class="post-card">
-        <div class="post-header">
-             <a href="/community/contentView?board_no=${post.board_no}" class="profile-link">
-           		<div class="profile-info"> 
-           		  <img src="/static/Images/community_img/story1.jpeg" alt="프로필 이미지 1" class="profile-image"/>               
-           		  <span class="user-name">${post.user_id }</span>
-       		 </a>
-           	<span class="post-time">${post.board_created}</span>
-            </div >
-            
-            <h2 class="post-title">
-            <a href="/community/contentView?board_no=${post.board_no}">${post.board_title}</h2>
-           <div class="post-content">  
-            ${fn:substringBefore(post.board_content, '<img') }      
-       		</div>
-        </div>
-       
-        <img src="${pageContext.request.contextPath}/static/images/community_img/${post.cchgfile}" alt="포스트 1 이미지" class="post-image"/>
-      		</a>
-        <div class="post-footer">
-            <span class="like-button">❤️ ${post.board_likes}</span>
-            <span class="comment-button">💬 ${post.board_comment_count}</span>
-        </div>
-    </article>
-   </c:forEach>
-    
+
 
 </section>
 

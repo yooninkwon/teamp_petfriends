@@ -32,3 +32,53 @@ body {
     text-align: center; /* 텍스트 중앙 정렬 */
     background-color: #f9f9f9; /* 배경색 설정 (선택사항) */
 }
+
+
+.edit-delete-buttons {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    gap: 10px; /* 버튼 사이 간격 */
+    margin-top: 10px;
+}
+
+.edit-button, .delete-button {
+    padding: 5px 10px;
+    background-color: #ff4081; /* 수정 버튼 배경색 */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between; /* 좌우 공간 나누기 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 20px;
+	margin: 50px;
+}
+
+.left-buttons, .right-buttons {
+    display: flex;
+    gap: 15px; /* 버튼 간 간격 */
+}
+
+.right-buttons {
+    margin-left: auto; /* 오른쪽으로 밀기 */
+}
+
+.edit-button, .delete-button {
+    padding: 10px 15px; /* 패딩을 동일하게 설정 */
+    background-color: #ff4081; /* 수정 버튼 배경색 */
+    color: white;
+    text-decoration: none;
+    border: none; /* 테두리 제거 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer; /* 마우스 커서 포인터로 변경 */
+    font-size: 16px; /* 폰트 크기 통일 */
+    flex-grow: 1; /* 버튼이 동일한 크기로 늘어나도록 설정 */
+}
+
+.edit-button:hover, .delete-button:hover {
+    background-color: #ffe5ee; /* 호버 시 배경색 */
+    color: #ff4081; /* 호버 시 글자색 변경 */
+}
