@@ -33,7 +33,7 @@ public class AdoptionDeserializer extends JsonDeserializer<HelpPetfAdoptionItems
 		// "item" 필드를 찾음 (없을 경우 null)
 		JsonNode itemNode = node.findValue("item");
 		
-		/* @ node.함수 ::
+		/** node.함수 ::
 		 * get() : 노드의 필드를 찾고 없으면 null을 반환한다.
 		 * 		EX) node.get("body").get("totalCount").asInt(); 
 		 * path() : 노드의 필드를 찾고 없으면 MissingNode를 반환한다.

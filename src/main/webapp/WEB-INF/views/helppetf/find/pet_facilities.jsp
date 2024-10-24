@@ -4,10 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>주소기반 주변 동반시설 찾기</title>
+<title>주변 반려동물 동반시설 찾기</title>
 <link rel="stylesheet" href="/static/css/helppetf/helppetf_find.css" />
-<link rel="stylesheet"
-	href="/static/css/helppetf/helppetf_sub_navbar.css" />
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 </head>
 <body>
