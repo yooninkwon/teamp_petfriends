@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>postList</title>
 <link rel="stylesheet" href="/static/css/community/community_main.css">
 </head>
 <body>

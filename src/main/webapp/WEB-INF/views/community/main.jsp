@@ -229,10 +229,12 @@
 	
 
 
-<!-- 포스트 -->
-<jsp:include page="postList.jsp" />
-
-
+         <!-- 포스트 -->
+           
+                <div id="postContainer">
+                    <jsp:include page="postList.jsp" />
+                </div>
+           
 
 </section>
 

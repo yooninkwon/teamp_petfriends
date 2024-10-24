@@ -23,7 +23,9 @@
 		<input type="hidden" name="orepfile" value="${contentView.orepfile}">
 		<input type="hidden" name="chrepfile" value="${contentView.chrepfile}">
 	
-		
+		 <!-- 기존 일반 이미지 파일명을 히든 필드로 전송 -->
+	    <input type="hidden" name="corgfile" value="${contentView.corgfile}"> <!-- 기존 일반 이미지 파일명 -->
+	    <input type="hidden" name="cchgfile" value="${contentView.cchgfile}"> <!-- 기존 변경된 일반 이미지 파일명 -->
        
        
         <label for="user_id">이름</label>
