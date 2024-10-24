@@ -72,6 +72,9 @@ label {
     background-color: white;
 }
 #sort-order{
+	height: 30px;
+}
+#search-order{
 	height: 25px;
     margin-left: 10px;
 }
@@ -125,11 +128,11 @@ input[type="text"] {
 }
 
 #pagination a:hover {
-	background-color: #ff007f;
+	background-color: #545454;
 	color: white;
 }
 
 #pagination a.active {
-	background-color: #ff007f;
+	background-color: #545454;
 	color: white;
 }

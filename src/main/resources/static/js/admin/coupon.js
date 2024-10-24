@@ -20,168 +20,291 @@ document.querySelectorAll('.tab-btn').forEach(function(tabBtn) {
     });
 });
 
-//쿠폰등록 페이지네이션 & 필터링
 $(document).ready(function() {
+    
+    // 페이지 로드 시 기본적으로 첫 탭의 데이터를 불러오기
+    loadCouponRegisterData();
 
-	const itemsPerPage = 15; // 페이지 당 item 수 = 15
-	let currentPage = 1; // 현재 표시되는 페이지
-	let totalItems = 0; // 총 item 수 초기화
-	let couponList; // couponsayList를 담을 배열
-	let currPageGroup = 1; // 현재 페이지 그룹
-	let totalPages = 0; // 총 페이지 수
-	let preEndPage = 0; // 이전 페이지의 마지막 페이지 번호
+	// 탭 전환 시 쿠폰 등록 데이터 로드
+    $('button[data-tab="couponRegister"]').on('click', function () {
+        loadCouponRegisterData();
+    });
+
+    // 탭 전환 시 회원 쿠폰 데이터 로드
+    $('button[data-tab="couponStatus"]').on('click', function () {
+        loadMemberCouponData();
+    });
+
+    // 쿠폰 등록 탭 데이터 로드 함수
+    function loadCouponRegisterData() {
+        const itemsPerPage = 15; // 페이지 당 item 수
+        let currentPage = 1;
+        let totalItems = 0;
+        let couponList = []; // 데이터 저장할 배열
+        let currPageGroup = 1;
+        let totalPages = 0;
+
+        // 필터 기본 값
+        let filterParam = {
+            status: '전체',
+            type: '전체',
+            sort: '최신순'
+        };
 	
-	// filterParam의 초기값 설정 ('전체, 전체, 최신순')
-    let filterParam = {
-        status: '전체',
-        type: '전체',
-        sortOrder: '최신순'
-    };
-
-	fetchData(currentPage, currPageGroup, filterParam); // 페이지 로드 시 호출 (formParam은 공백: 필터가 없으므로)
-
-	function fetchData(currentPage, currPageGroup, filterParam) {
-		$.ajax({
-			url: '/admin/coupon/data', // pageNo에 맞는 데이터 요청
-			method: 'GET',
-			data: filterParam,  // 필터 데이터를 전송
-			dataType: 'json',
-			headers: {
-				'Cache-Control': 'no-cache' // 캐시 없음 설정
-			},
-			success: function(coupons) {
-				couponList = coupons; // 함수에 데이터 대입
-				totalItems = couponList.length; // 받아온 데이터에서 총 item 수 계산
-				totalPages = Math.ceil(totalItems / itemsPerPage); // 총 페이지 수 계산
-
-				displayItems(currentPage); // 리스트 표시
-				setupPagination(currentPage, currPageGroup); // 페이지네이션 설정
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching data:', error);
-			}
-		});
-	}
-
-	// 리스트를 페이지에 맞게 출력
-	function displayItems(currentPage) {
-
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-
-		if (currentPage <= 10) {
-			// 현재 페이지가 10이하인 경우 == 페이지그룹이 1인 경우
-			var start = (currentPage - 1) * itemsPerPage;
-		} else {
-			// 그 외 == 페이지그룹이 2이상인 경우
-			// start = (현재페이지 - 이전마지막페이지 - 1) * itemsPerPage(15)
-			var start = ((currentPage - preEndPage) - 1) * itemsPerPage;
-		}
-
-		// end = 시작 인덱스번호 + itemsPerPage(15)
-		const end = start + itemsPerPage;
-		const sliceList = couponList.slice(start, end);
-		// .slice(start, end)는 배열에서 start부터 end 이전까지의 아이템들을 추출
-		// start가 0이고 end가 15이라면 인덱스 [0] ~ [14] 을 출력
-
-		// 데이터를 테이블로 출력
-		let lists = '';
-		$.each(sliceList, function(index, coupons) {
-			lists += '<tr>';
-            lists += '<td>' + coupons.cp_no + '</td>';
-            lists += '<td>' + coupons.cp_name + '</td>';
-            lists += '<td>' + coupons.cp_keyword + '</td>';
-            lists += '<td>' + coupons.cp_start + '</td>';
-            lists += '<td>' + coupons.cp_end + '</td>';
-			
-			if (coupons.cp_type === 'A') {
-			    lists += '<td>' + coupons.cp_amount + '원</td>';
-			} else if (coupons.cp_type === 'R') {
-			    lists += '<td>' + coupons.cp_amount + '%</td>';
-			}
-			
-            lists += '<td>' + coupons.issueCount + '</td>';
-            lists += '<td>coupons.totalUsage</td>';
-            lists += '<td><button id="edit-btn" class="btn-style">수정</button><button id="delete-btn" class="btn-style">삭제</button></td>';
-            lists += '</tr>';
-		});
 		
-		$('#coupon-table-body').html(lists);
-	}
+        fetchData(currentPage, currPageGroup, filterParam);
 
-	// 페이지네이션 설정
-	function setupPagination() {
-	    const maxPagesToShow = 10; // 한 번에 보여줄 페이지 수
-	    const startPage = (currPageGroup - 1) * maxPagesToShow + 1; // 현재 그룹의 첫 페이지 계산
-	    const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages); // 마지막 페이지 계산
+        function fetchData(currentPage, currPageGroup, filterParam) {
+            $.ajax({
+                url: '/admin/coupon/data',
+                method: 'GET',
+                data: filterParam,
+                dataType: 'json',
+                success: function (coupons) {
+                    couponList = coupons;
+                    totalItems = couponList.length;
+                    totalPages = Math.ceil(totalItems / itemsPerPage);
 
-	    let paginationHtml = '';
+                    displayItems(currentPage);
+                    setupPagination(currentPage, currPageGroup);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        }
 
-	    // 이전 버튼 추가 (현재 페이지 그룹이 1보다 크면 표시)
-	    if (currPageGroup > 1) {
-	        paginationHtml += '<a href="#" class="page-link" data-page="prev-group">&laquo; 이전</a>';
-	    }
+        function displayItems(currentPage) {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const sliceList = couponList.slice(start, end);
 
-	    // 페이지 번호 생성
-	    for (let i = startPage; i <= endPage; i++) {
-	        paginationHtml += '<a href="#" class="page-link ' + (i === currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</a>';
-	    }
+            let lists = '';
+            $.each(sliceList, function (index, coupon) {
+                lists += '<tr>';
+                lists += '<td>' + coupon.cp_no + '</td>';
+                lists += '<td>' + coupon.cp_name + '</td>';
+                lists += '<td>' + coupon.cp_keyword + '</td>';
+                lists += '<td>' + coupon.cp_start + '</td>';
+                lists += '<td>' + coupon.cp_end + '</td>';
 
-	    // 다음 버튼 추가
-	    if (endPage < totalPages) {
-	        paginationHtml += '<a href="#" class="page-link" data-page="next-group">다음 &raquo;</a>';
-	    }
+                if (coupon.cp_type === 'A') {
+                    lists += '<td>' + coupon.cp_amount + '원</td>';
+                } else if (coupon.cp_type === 'R') {
+                    lists += '<td>' + coupon.cp_amount + '%</td>';
+                }
 
-	    $('#pagination').html(paginationHtml);  // `#pagination` 요소에 페이지 번호 추가
+                lists += '<td>' + coupon.issueCount + '</td>';
+                lists += '<td>' + (coupon.totalUsage || 'N/A') + '</td>';
+                lists += '<td><button class="btn-style">수정</button><button class="btn-style">삭제</button></td>';
+                lists += '</tr>';
+            });
 
-	    // 페이지 클릭 이벤트 핸들러
-	    $('.page-link').on('click', function(event) {
-	        event.preventDefault();
+            $('#coupon-table-body').html(lists);
+        }
 
-	        let clickedPage = $(this).data('page');
-	        if (clickedPage === 'prev-group') {
-	            currPageGroup--;
-	            currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 이전 그룹의 첫 페이지
-	        } else if (clickedPage === 'next-group') {
-	            currPageGroup++;
-	            currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 다음 그룹의 첫 페이지
-	        } else {
-	            currentPage = clickedPage;  // 클릭한 페이지로 이동
-	        }
+        function setupPagination(currentPage, currPageGroup) {
+            const maxPagesToShow = 10;
+            const startPage = (currPageGroup - 1) * maxPagesToShow + 1;
+            const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages);
 
-	        // 페이지 번호와 그룹에 맞게 데이터 다시 로드
-	        displayItems(currentPage);
-	        setupPagination(); // 페이지를 다시 그리면서 active 클래스를 적용
-	    });
-	}
+            let paginationHtml = '';
+            if (currPageGroup > 1) {
+                paginationHtml += '<a href="#" class="page-link" data-page="prev-group">&laquo; 이전</a>';
+            }
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHtml += '<a href="#" class="page-link ' + (i === currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</a>';
+            }
+            if (endPage < totalPages) {
+                paginationHtml += '<a href="#" class="page-link" data-page="next-group">다음 &raquo;</a>';
+            }
 
-	
-	// 발급상태 필터 적용
-	$('#status-filter input[name="status-filter"]').on('change', function() {
-	   filterParam = {
-	      status: $('input[name="status-filter"]:checked').val(),
-	      type: $('input[name="type-filter"]:checked').val(),
-		  sort: $('#sort-order').val()
-	   };
-	   fetchData(currentPage, currPageGroup, filterParam);
-	});
+            $('#pagination').html(paginationHtml);
 
-	// 쿠폰 종류 필터 적용
-	$('#type-filter input[name="type-filter"]').on('change', function() {
-	   filterParam = {
-	      status: $('input[name="status-filter"]:checked').val(),
-	      type: $('input[name="type-filter"]:checked').val(),
-		  sort: $('#sort-order').val()
-	   };
-	   fetchData(currentPage, currPageGroup, filterParam);
-	});
-	
-	// 정렬 드롭다운 변경 시 필터링 적용
-	$('#sort-order').on('change', function() {
-		filterParam = {
-	        status: $('input[name="status-filter"]:checked').val(),
-	        type: $('input[name="type-filter"]:checked').val(),
-	        sort: $(this).val()
-	    };
-	    fetchData(currentPage, currPageGroup, filterParam); // 새로운 정렬 기준으로 데이터 가져오기
-	});
+            $('.page-link').on('click', function (event) {
+                event.preventDefault();
+
+                let clickedPage = $(this).data('page');
+                if (clickedPage === 'prev-group') {
+                    currPageGroup--;
+                    currentPage = (currPageGroup - 1) * maxPagesToShow + 1;
+                } else if (clickedPage === 'next-group') {
+                    currPageGroup++;
+                    currentPage = (currPageGroup - 1) * maxPagesToShow + 1;
+                } else {
+                    currentPage = clickedPage;
+                }
+
+                displayItems(currentPage);
+                setupPagination(currentPage, currPageGroup);
+            });
+        }
+
+        // 필터링 관련 코드
+        $('#status-filter input[name="status-filter"]').on('change', function() {
+            filterParam = {
+                status: $('input[name="status-filter"]:checked').val(),
+                type: $('input[name="type-filter"]:checked').val(),
+                sort: $('#sort-order').val()
+            };
+			
+            fetchData(currentPage, currPageGroup, filterParam);
+        });
+
+        $('#type-filter input[name="type-filter"]').on('change', function() {
+            filterParam = {
+                status: $('input[name="status-filter"]:checked').val(),
+                type: $('input[name="type-filter"]:checked').val(),
+                sort: $('#sort-order').val()
+            };
+			
+            fetchData(currentPage, currPageGroup, filterParam);
+        });
+
+        $('#sort-order').on('change', function() {
+            filterParam = {
+                status: $('input[name="status-filter"]:checked').val(),
+                type: $('input[name="type-filter"]:checked').val(),
+                sort: $(this).val()
+            };
+			
+            fetchData(currentPage, currPageGroup, filterParam);
+        });
+    }
+
+	// 회원 쿠폰 탭 데이터 로드 함수
+	function loadMemberCouponData() {
+        const itemsPerPage = 12;
+        let currentPage = 1;
+        let totalItems = 0;
+        let memberCouponList = [];
+        let currPageGroup = 1;
+        let totalPages = 0;
+        let filterParam = {
+            status: '발급,사용,만료', 
+            startDate: '', 
+            endDate: '', 
+            memberCode: '', 
+            couponCode: ''
+        };
+		
+		
+        fetchData(currentPage, currPageGroup, filterParam);
+
+        function fetchData(currentPage, currPageGroup, filterParam) {
+            $.ajax({
+                url: '/admin/memberCoupon/data',
+                method: 'GET',
+                data: filterParam,
+                dataType: 'json',
+                success: function (coupons) {
+                    memberCouponList = coupons;
+                    totalItems = memberCouponList.length;
+                    totalPages = Math.ceil(totalItems / itemsPerPage);
+
+                    displayItems(currentPage);
+                    setupPagination(currentPage, currPageGroup);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        }
+
+        function displayItems(currentPage) {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const sliceList = memberCouponList.slice(start, end);
+
+            let lists = '';
+            $.each(sliceList, function (index, coupon) {
+                lists += '<tr>';
+                lists += '<td>' + coupon.mc_code + '</td>';
+                lists += '<td>' + coupon.mem_name + '</td>';
+                lists += '<td>' + coupon.cp_name + '</td>';
+                lists += '<td>' + coupon.mc_issue + '</td>';
+                lists += '<td>' + coupon.mc_use + '</td>';
+                lists += '<td>' + (coupon.payment_code || 'N/A') + '</td>';
+                lists += '<td>' + coupon.mc_dead + '</td>';
+                lists += '</tr>';
+            });
+
+            $('#member-coupon-table-body').html(lists);
+        }
+
+        function setupPagination(currentPage, currPageGroup) {
+            const maxPagesToShow = 10;
+            const startPage = (currPageGroup - 1) * maxPagesToShow + 1;
+            const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages);
+
+            let paginationHtml = '';
+            if (currPageGroup > 1) {
+                paginationHtml += '<a href="#" class="page-link" data-page="prev-group">&laquo; 이전</a>';
+            }
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHtml += '<a href="#" class="page-link ' + (i === currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</a>';
+            }
+            if (endPage < totalPages) {
+                paginationHtml += '<a href="#" class="page-link" data-page="next-group">다음 &raquo;</a>';
+            }
+
+            $('#pagination').html(paginationHtml);
+
+            $('.page-link').on('click', function (event) {
+                event.preventDefault();
+
+                let clickedPage = $(this).data('page');
+                if (clickedPage === 'prev-group') {
+                    currPageGroup--;
+                    currentPage = (currPageGroup - 1) * maxPagesToShow + 1;
+                } else if (clickedPage === 'next-group') {
+                    currPageGroup++;
+                    currentPage = (currPageGroup - 1) * maxPagesToShow + 1;
+                } else {
+                    currentPage = clickedPage;
+                }
+
+                displayItems(currentPage);
+                setupPagination(currentPage, currPageGroup);
+            });
+        }
+
+        // 필터 적용
+        function applyFilters() {
+            filterParam = {
+                status: $('input[name="issue-filter"]:checked').map(function() { return $(this).val(); }).get().join(','),
+                searchOrder: $('#search-order').val(),
+                startDate: $('#start-date').val(),
+                startDate: $('#start-date').val(),
+                endDate: $('#end-date').val(),
+                memberCode: $('#search-member-code').val(),
+                couponCode: $('#search-coupon-code').val(),
+                orderCode: $('#search-order-code').val()
+            };
+			
+            fetchData(currentPage, currPageGroup, filterParam);
+        }
+
+        // 쿠폰 상태 필터 적용
+        $('input[name="issue-filter"]').on('change', function() {
+            applyFilters();
+        });
+		
+        // 조회 기간 필터 적용
+        $('#search-order, #start-date, #end-date').on('change', function() {
+            applyFilters();
+        });
+
+        // 검색 필터 적용
+        $('#search-btn').on('click', function() {
+            applyFilters();
+        });
+
+        // 조회 기간 리셋
+        $('#reset-date').on('click', function() {
+            $('#start-date').val('');
+            $('#end-date').val('');
+            applyFilters();
+        });
+    }
 });
