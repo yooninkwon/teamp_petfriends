@@ -25,7 +25,7 @@
                 <label for="email">이메일*</label> <br />
 				<input type="email" id="email" name="email" placeholder="example@example.com" oninput="validateEmail()">
 				<span id="emailError" style="font-size:15px; color:red; float:right;
-				margin-right:45px; margin-top:-10px; visibility:hidden;">올바른 양식으로 입력해 주세요</span> <br />
+				margin-right:45px; margin-top:-10px; display:none;">올바른 양식으로 입력해 주세요</span> <br />
 
                 <label for="password">비밀번호*</label> <br />
 				<input type="password" id="password" name="password" placeholder="영문/숫자/특수문자 혼합 8~20자" oninput="validatePassword()">

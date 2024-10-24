@@ -14,16 +14,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.login.util.PasswordEncryptionService;
 import com.tech.petfriends.member.service.MemberService;
 
 @Controller
 @RequestMapping("/join")
 public class JoinController {
+	
+	@Autowired
+    private MemberMapper memberMapper;
 	
 	@Autowired
 	private MemberService memberService;
@@ -53,11 +58,19 @@ public class JoinController {
 	
 	
 	@PostMapping("/joinService")
-	public String joinService(HttpServletRequest request, HttpSession session) {
+	public String joinService(HttpServletRequest request, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         MemberLoginDto member = new MemberLoginDto();
         MemberAddressDto address = new MemberAddressDto();
         // 비밀번호 암호화 아르곤2
         PasswordEncryptionService passencrypt = new PasswordEncryptionService(); 
+        
+        String phoneNumber = request.getParameter("phoneNumber");
+        
+        int duplicateCount = memberMapper.isPhoneNumberDuplicate(phoneNumber);
+        if (duplicateCount > 0) {
+        	redirectAttributes.addFlashAttribute("error", "이미 가입된 정보입니다.");
+            return "redirect:/login/loginPage";  // 중복일 경우 회원 가입 페이지로 다시 이동
+        }
         
         // UUID로 mem_code 생성
         String uniqueID = UUID.randomUUID().toString();
@@ -65,7 +78,7 @@ public class JoinController {
         member.setMem_email(request.getParameter("email"));
         member.setMem_pw(passencrypt.encryptPassword(request.getParameter("password")));
         member.setMem_nick(request.getParameter("nickname"));
-        member.setMem_tell(request.getParameter("phoneNumber"));
+        member.setMem_tell(phoneNumber);
         
         
         System.out.println(request.getParameter("phoneNumber")); 
