@@ -11,9 +11,18 @@
     <link rel="stylesheet" href="/static/css/login/login.css" />
 </head>
 <body>
+
+	<!-- 에러 전달받는게 있을때 표시 -->
 	<c:if test="${not empty error}">
         <script>
             alert("${error}");
+        </script>
+    </c:if>
+    
+    <!-- 알림 전달받는게 있을때 표시 -->
+    <c:if test="${not empty message}">
+        <script>
+            alert("${message}");
         </script>
     </c:if>
     <!-- 헤더 인클루드 -->

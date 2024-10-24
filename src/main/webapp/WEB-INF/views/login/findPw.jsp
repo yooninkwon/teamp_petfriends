@@ -49,7 +49,7 @@
                 <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호를 입력하세요">
             </div>
 
-            <button type="submit" class="submit-btn-Pw" id="submit-btn-Pw"  >확인</button>
+            <button type="submit" class="submit-btn-Pw" id="submit-btn-Pw" disabled >확인</button>
         </form>
         <a href=""><h4>내새꾸 정보로 비밀번호 찾기</h4></a>
     </div>

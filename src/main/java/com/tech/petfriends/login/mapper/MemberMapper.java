@@ -24,4 +24,10 @@ public interface MemberMapper {
     
     // 이메일 중복 검사
     int isEmailDuplicate(String email);
+    
+    // 비밀번호 변경
+    void updatePassword(String email, String encryptedPassword);
+    
+    // 중복회원 검사
+    int isPhoneNumberDuplicate(String phoneNumber);
 }

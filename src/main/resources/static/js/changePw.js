@@ -28,3 +28,38 @@ function checkPasswordMatch() {
     }
 	validateForm();
 }
+
+
+
+function validateForm() {
+	const submit = document.getElementById("submitBtn")
+	
+	const emailError = document.getElementById("passwordError").style.display === "none";
+	const passwordError = document.getElementById("confirmPasswordError").style.display === "none";	
+	const emailValue = document.getElementById("password").value !== "";
+	const passwordValue = document.getElementById("confirmPassword").value !== "";
+	
+	if(emailError && passwordError && emailValue && passwordValue) {
+		submit.disabled = false;
+		if(submit.disabled === false) {
+			submit.style.backgroundColor = '#ff4081';  // 활성화 상태일 때 배경색
+			submit.style.color = 'white';  // 활성화 상태일 때 텍스트 색상	
+		}
+	} else {
+		submit.disabled = true;
+		if(submit.disabled === true) {
+			submit.style.backgroundColor = '#ddd';  // 비활성화 상태일 때 배경색 변경
+			submit.style.color = '#999';  // 비활성화 상태일 때 텍스트 색상 변경
+			submit.style.cursor = not-allowed;		
+		}
+	}
+
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("submitBtn").style.backgroundColor = '#ddd';
+    document.getElementById("submitBtn").style.cursor = not-allowed;	
+    document.getElementById("submitBtn").disabled = true;
+});
+
+
