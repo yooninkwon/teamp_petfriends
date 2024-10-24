@@ -18,13 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.login.util.PasswordEncryptionService;
+import com.tech.petfriends.member.service.MemberService;
 
 @Controller
 @RequestMapping("/login")
 public class LoginController {
    
     @Autowired
-       private MemberMapper memberMapper;
+    private MemberMapper memberMapper;
+    
+    @Autowired
+    private MemberService memberService;
    
     @GetMapping("/loginPage")
     public String LoginPage(HttpServletRequest request) {
@@ -82,7 +86,7 @@ public class LoginController {
                 return "login/loginPage";  // 로그인 실패 시 로그인 페이지로 이동
             }
         } else {
-            System.out.println("로그인 실패: 이메일 또는 비밀번호가 잘못되었습니다.");
+            System.out.println("등록된 이메일이 아닙니다.");
             model.addAttribute("error", "이메일 또는 비밀번호가 잘못되었습니다.");
             return "login/loginPage";  // 로그인 실패 시 로그인 페이지로 이동
         }
@@ -101,5 +105,32 @@ public class LoginController {
       return "login/findPw";
    }
    
+   
+   @PostMapping("/changePw")
+   public String ChangePw(HttpServletRequest request, Model model) {
+	   String email = request.getParameter("email");
+	   System.out.println("비밀번호 변경 이동");
+	   System.out.println(email);
+	   model.addAttribute("userEmail",email);
+	   return "login/changePw";
+   }
+   
+   @PostMapping("/changePwService")
+   public String ChangePwService(HttpServletRequest request, Model model) {
+	   
+       String email = request.getParameter("email");
+       String newPassword = request.getParameter("password");
+
+       // 새로운 비밀번호 암호화 후 업데이트
+       try {
+           memberService.updatePassword(email, newPassword);
+           model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
+           return "login/loginPage";  // 비밀번호 변경 후 로그인 페이지로 리다이렉트
+       } catch (Exception e) {
+           e.printStackTrace();
+           model.addAttribute("error", "비밀번호 변경 중 오류가 발생했습니다.");
+           return "login/changePw";  // 에러 발생 시 비밀번호 변경 페이지로 다시 이동
+       }
+   }
    
 }

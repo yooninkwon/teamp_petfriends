@@ -13,7 +13,7 @@
         background-color: #fff;
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    
+    	
     }
     h3 {
         font-size: 24px;
@@ -25,6 +25,9 @@
         width: 100%;
         margin: 20px 0;
     }
+    
+    
+    
     .write-form input[type="text"], .write-form textarea {
         width: 100%;
         padding: 10px;
@@ -168,3 +171,29 @@ input[type="file"] {
     background-color: #ffffff; /* 포커스 시 배경색 변경 */
     outline: none; /* 포커스 아웃라인 제거 */
 }
+
+
+.post-image {
+    position: relative; /* 자식 요소의 절대 위치 지정을 위한 상대적 위치 */
+    margin: 5px 0; /* 상하 마진 추가 */
+}
+
+.post-image img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 40px; /* 이미지와 새 이미지 업로드 필드 간격 */
+}
+
+.write-form label[for="file"]{
+    margin-top: 20px; /* 위쪽 간격 */
+    margin-bottom: 5px; /* 아래쪽 간격 */
+    display: block; /* label과 input을 블록으로 표시하여 줄 바꿈 */
+}
+
+
+/* 대표 이미지 업로드와 현재 대표 이미지 간격 줄이기 */
+label[for="newImage"] {
+    margin-bottom: 5px; /* 기본 마진값에서 줄여서 설정 */
+}
+
+

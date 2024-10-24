@@ -25,15 +25,17 @@ public class CDto {
     private Timestamp board_modified;
     private int board_views;
     private String board_tag;
-    private String board_post_img;
-    private Integer board_likes;
-    private Integer board_comment_count;
-	private String board_post_unimg;
+//    private String board_post_img;
+    private int board_likes;
+    private int board_comment_count;
+//	private String board_post_unimg;
 	
+//    RE_CBOARD_IMAGE 테이블
 	private int rebno;
-	private String corgfile;
-	private String cchgfile;
-	
+	private String corgfile; // 일반 이미지 원본 파일 이름
+	private String cchgfile; // 일반 이미지 변경 파일 이름
+	private String orepfile; // 대표 이미지 원본 파일 이름
+	private String chrepfile; // 대표 이미지변경 파일 이름
 
 
 }

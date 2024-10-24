@@ -25,6 +25,12 @@ public interface MypageDao {
 
 	ArrayList<CouponDto> getAllCoupon();
 
-	ArrayList<MyCouponDto> getCouponByMemberCode(String mem_code);
+	ArrayList<CouponDto> getCouponByMemberCode(String mem_code);
+
+	CouponDto searchCouponByKeyword(String keyword);
+	
+	int checkIssued(String mem_code, int cp_no);
+
+	void insertCouponByCouponNo(String mc_code, String mem_code, int cp_no);
 	
 }

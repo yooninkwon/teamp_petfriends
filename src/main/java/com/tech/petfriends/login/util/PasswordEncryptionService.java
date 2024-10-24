@@ -1,8 +1,11 @@
 package com.tech.petfriends.login.util;
 
+import org.springframework.stereotype.Service;
+
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 
+@Service
 public class PasswordEncryptionService {
 
     // 비밀번호 암호화 메소드

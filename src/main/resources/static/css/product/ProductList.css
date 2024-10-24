@@ -1,5 +1,5 @@
 .menubar{
-	margin: 80px 0 0 50px; /* 헤더에 가려서 내림 */
+	margin: 0 0 0 50px; /* 헤더에 가려서 내림 */
 }
 
 #product-List {
@@ -41,4 +41,21 @@
 
 .product-image-wrapper {
     position: relative;
+}
+
+.star {
+    font-size: 16px;
+    color: #f5c518;  /* 노란색 */
+    position: relative;
+    display: inline-block;
+}
+
+.star.half {
+    background: linear-gradient(90deg, #f5c518 50%, #ddd 50%);  /* 반쪽 노란 별 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.star.gray {
+    color: #ddd;  /* 회색 */
 }

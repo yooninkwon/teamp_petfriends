@@ -25,4 +25,5 @@ public class MemberLoginDto {
     private String mem_funnel;
     private Timestamp mem_regdate;
     private Timestamp mem_logdate;
+    
 }

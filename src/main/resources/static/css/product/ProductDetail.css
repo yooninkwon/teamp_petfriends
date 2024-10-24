@@ -10,6 +10,7 @@ body {
     width: 100%; /* 너비를 설정하거나 제거 가능 */
     justify-content: center; /* 자식 요소들을 중앙에 배치 */
     align-items: center; /* 자식 요소들을 수직 중앙에 배치 */
+    
 }
 
 
@@ -25,7 +26,7 @@ body {
     height: auto; /* 이미지의 높이를 자동으로 조정 */
 }
 
-button {
+#prevButton, #nextButton {
     position: absolute;
     top: 50%; /* 버튼을 세로 중앙에 위치시킴 */
     transform: translateY(-50%); /* 버튼의 중심을 기준으로 중앙 정렬 */
@@ -44,9 +45,259 @@ button {
     right: 10px; /* 오른쪽 버튼의 위치 */
 }
 
+.star {
+    font-size: 16px;
+    color: #f5c518;  /* 노란색 */
+    position: relative;
+    display: inline-block;
+}
+
+.star.half {
+    background: linear-gradient(90deg, #f5c518 50%, #ddd 50%);  /* 반쪽 노란 별 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.star.gray {
+    color: #ddd;  /* 회색 */
+}
 
 .data-line { /* 옵션 밑 라인 */
     border-bottom: 1px solid black; /* 원하시는 색상과 두께로 조정 */
     width: 100%; /* 원하는 너비로 설정 */
     margin: 10px 0; /* 위아래 여백을 조정할 수 있음 */
+}
+
+.putBtn {
+    display: flex; /* 버튼들을 가로로 나열하기 위해 flexbox 사용 */
+    align-items: center; /* 버튼들의 수직 정렬 */
+    gap: 100px; /* 버튼 사이 간격을 10px로 설정 (원하는 간격으로 조절 가능) */
+    margin-left: 100px
+}
+#wishListBtn {
+    background-color: transparent; /* 버튼 배경을 투명하게 설정 */
+    border: none; /* 버튼 테두리를 제거 */
+    padding: 0; /* 여백을 제거 */
+    cursor: pointer; /* 커서를 포인터로 설정 */
+    width: 80px; /* 버튼의 고정 너비 설정 */
+    
+}
+
+#wishListImg {
+    width: 25px; /* 이미지 크기 조정 */
+    height: auto;
+}
+
+.line { /* 제품상세페이지 구분선 */
+	 border-bottom: 1px solid #d9d9d9; /* 원하시는 색상과 두께로 조정 */
+    width: 100%; /* 원하는 너비로 설정 */
+    margin: 40px 0; /* 위아래 여백을 조정할 수 있음 */
+}
+
+.recommend {
+    justify-self: start;  /* 부모 그리드 내에서 왼쪽 정렬 */
+    
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+.detailMent {
+	font-weight: bold;
+	font-size: 40px;
+	
+}
+
+.recProduct {
+    display: flex; /* Flexbox 활성화 */
+    flex-wrap: wrap; /* 아이템이 공간을 초과할 경우 줄 바꿈 */
+    justify-content: center; /* 아이템을 중앙 정렬 */
+    margin: 10px; /* 주변 여백 */
+    overflow-x: auto; /* 가로 스크롤 허용 (필요할 경우) */
+}
+
+.recProductItem {
+    width: 200px;               /* 각 아이템의 너비 */
+    margin: 20px;               /* 아이템 간격 */
+    padding: 5px;              /* 아이템 내부 여백 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    text-align: center;         /* 텍스트 중앙 정렬 */
+}
+
+.recproduct-image-wrapper {
+    height: 200px;              /* 이미지 높이 설정 */
+    overflow: hidden;           /* 이미지가 영역을 넘지 않도록 설정 */
+}
+
+.recproduct-image-wrapper img {
+    max-width: 100%;            /* 이미지 너비를 최대 100%로 설정 */
+    height: auto;               /* 이미지 비율 유지 */
+}
+
+.recRating {
+    color: #ffcc00;             /* 별점 색상 */
+}
+
+.productInfo {
+	justify-self: start;  /* 부모 그리드 내에서 왼쪽 정렬 */
+	text-align: left; /* 텍스트 왼쪽 정렬 */
+	
+}
+
+.checkImg{
+	
+	display: block;          /* 이미지를 블록 요소로 설정 */
+    max-width: 800px;        /* 이미지 너비 제한 */
+    height: auto;            /* 이미지 비율 유지 */
+    margin: 40px auto;       /* 상하 40px 여백, 좌우 자동 정렬로 중앙 배치 */
+    
+}
+.infoImg{
+	
+	max-width: 800px;            /* 이미지 너비를 최대 100%로 설정 */
+    height: auto; 
+    justify-content: center;      /* 수평 중앙 정렬 */
+    align-items: center;          /* 수직 중앙 정렬 (필요할 경우) */
+}
+
+.desImgBlock {
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 가운데 정렬 */
+    justify-content: center; /* 수직 가운데 정렬 */
+    height: 100%; /* 부모 요소의 높이에 맞춰 조정 */
+}
+
+
+
+.reviewCount {
+	margin-right: 800px;
+	font-weight: bold;
+	font-size: 40px;
+	
+}
+
+.reviewAvrCount{
+	margin-top: 20px;
+	background-color: #f1f1f1; 
+	height: 230px;
+	display: flex;
+	align-items: center; /* 가운데 정렬 */
+    justify-content: center; /* 수직 가운데 정렬 */ 
+    gap: 70px;
+}
+
+.revLeft{
+	    display: flex; /* flexbox 활성화 */
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 가운데 정렬 */
+    justify-content: center; /* 수직 가운데 정렬 */
+	
+}
+.revAvg{
+	font-weight: bold;
+	font-size: 70px;
+}
+
+.revRight{
+	    display: flex; /* flexbox 활성화 */
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 가운데 정렬 */
+    justify-content: center; /* 수직 가운데 정렬 */
+    gap: 10px;
+}
+
+.score{
+	 display: flex; /* Flexbox 활성화 */
+	flex-direction: row; /* 세로 정렬 */
+	justify-content: center; /* 수직 가운데 정렬 */
+	align-items: center; /* 가운데 정렬 */
+	gap: 10px;
+}
+
+.heart-signal-bar {
+    width: 450px;
+    height: 30px;
+    background-color: #d9d9d9;
+    border-radius: 20px;
+    position: relative;
+}
+
+.heart-signal-fill {
+    height: 100%;
+    background-color: #ff4081;
+    border-radius: 20px;
+    width: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 팝업 오버레이 스타일 */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /* 기본적으로 숨김 */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* 로그인유도 팝업 내용 스타일 */
+.popup-content-login {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content-login p, .popup-content-cart p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+#selectedOptionPrice{
+	text-align: left;
+}
+
+/* 버튼 스타일 */
+.popup-btn {
+    background-color: #ff639c;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.popup-btn:hover {
+    background-color: #ff4573;
+}
+
+/* 팝업 내용 스타일 */
+.popup-content-cart {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

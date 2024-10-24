@@ -1,5 +1,7 @@
 package com.tech.petfriends.admin.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +10,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tech.petfriends.admin.dto.MemberCouponDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
+import com.tech.petfriends.admin.mapper.CouponDao;
 import com.tech.petfriends.admin.service.AdminPetteacherDelete;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminPetteacherService;
 import com.tech.petfriends.admin.service.AdminPetteacherWriteService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
+import com.tech.petfriends.mypage.dto.CouponDto;
 
 
 @Controller
@@ -23,6 +29,8 @@ public class AdminPageController {
 	
 	@Autowired
 	AdminPageDao adminDao;
+	@Autowired
+	CouponDao couponDao;
 	
 	AdminServiceInterface adminServInter;
 	
@@ -79,9 +87,37 @@ public class AdminPageController {
 	}
 	
 	@GetMapping("/coupon")
-	public String coupon() {
+	public String couponPage() {
 		return "admin/coupon";
 	}
+	
+	@GetMapping("/coupon/data")
+	@ResponseBody
+	public List<CouponDto> getCouponData(HttpServletRequest request) {
+		
+		String status = request.getParameter("status");
+		String type = request.getParameter("type");
+		String sort = request.getParameter("sort");
+		
+		List<CouponDto> coupons = couponDao.getAllCoupons(status, type, sort);
+		
+	    return coupons;
+	}
+	
+	@GetMapping("/memberCoupon/data")
+    @ResponseBody
+    public List<MemberCouponDto> getMemberCouponData(HttpServletRequest request) {
+        String status = request.getParameter("status");
+        String searchOrder = request.getParameter("searchOrder");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String memberCode = request.getParameter("memberCode");
+        String couponCode = request.getParameter("couponCode");
+        String orderCode = request.getParameter("orderCode");
+
+        List<MemberCouponDto> coupons = couponDao.getMemberCoupons(status, searchOrder, startDate, endDate, memberCode, couponCode, orderCode);
+        return coupons;
+    }
 	
 	@GetMapping("/product")
 	public String product() {
@@ -103,9 +139,19 @@ public class AdminPageController {
 		return "admin/community";
 	}
 	
-	@GetMapping("/petture")
+	@GetMapping("/petteacher")
 	public String petture() {
-		return "admin/petture";
+		return "admin/petteacher";
+	}
+
+	@GetMapping("/pethotel")
+	public String pethotel() {
+		return "admin/pethotel";
+	}
+
+	@GetMapping("/pethotel_reserve")
+	public String pethotelReserve() {
+		return "admin/pethotel_reserve";
 	}
 	
 	@GetMapping("/notice")

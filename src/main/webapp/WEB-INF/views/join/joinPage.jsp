@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="/static/css/join/join.css">
     <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
     <script src="/static/js/join.js"></script>
+    
+    <!-- 다음 우편번호 검색 -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <!-- 카카오 지도 -->
+	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoApi }&libraries=services"></script>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
@@ -40,7 +45,7 @@
 
 				<label for="phoneNumber">휴대폰 번호*</label> <br />
 				<div class="phone-group">
-				    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="'-'를 제외한 숫자만 입력해주세요" maxlength="11" onblur="formatPhoneNumber()">
+				    <input type="text" id="phoneNumberDisabled" name="phoneNumber" placeholder="'-'를 제외한 숫자만 입력해주세요"  maxlength="11" onblur="formatPhoneNumber()">
 				    <button type="button" id="requestCodeBtn" name="requestCodeBtn" >인증 요청</button> <br />
 				</div>
 				<p id="phoneNumberError" style="font-size:15px; color:red; float:right;
@@ -68,16 +73,18 @@
                 <label for="inviteCode">초대코드 입력 (선택)</label> <br />
                 <input type="text" id="inviteCode" name="inviteCode" placeholder="초대코드 입력하고 5천원 받기"> <br />
 
-                <label for="address">주소</label> <br />
+                <label for="address">주소*</label> <br />
                 <div class="address-group">
-                    <input type="text" id="address" name="address" placeholder="주소 입력" >
-                    <button type="button">주소 검색</button> <br />
+                    <input type="text" id="address" name="address" readonly placeholder="주소 입력" >
+                    <button type="button" onclick="openAddressSearch()">주소 검색</button> <br />
                 </div>
-                <label for="detailAddress">상세주소</label> <br />
-                <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소 입력">
+                <label for="detailAddress">상세주소*</label> <br />
+                <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소 입력" oninput="validateForm()" readonly >
             </div>
-
-            <button type="submit" class="submit-btn" id="submitBtn" oninput="validateForm()">동의하고 가입하기</button>
+            
+			<input type="hidden" id="hiddenPhoneNumber" name="phoneNumber" value="">
+			<input type="hidden" id="postcode" name="postcode" placeholder="우편번호 입력">
+            <button type="submit" class="submit-btn" id="submitBtn" oninput="validateForm()" onclick="syncPhoneNumber()">동의하고 가입하기</button>
         </form>
     </div>
 </body>

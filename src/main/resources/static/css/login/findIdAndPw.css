@@ -9,6 +9,34 @@ body {
     height: 100vh;
 }
 
+#popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 2px solid #ff4081;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    height: 200px;
+    z-index: 9999;
+    
+}
+
+.popup-content {
+    text-align: center;
+}
+
+#popup-close {
+    cursor: pointer;
+    float: right;
+    font-size: 20px;
+    margin-top: -10px;
+    color: #ff4081;
+}
+
 
 .find-container {
 	margin-top: 50px;
@@ -67,7 +95,7 @@ body {
 }
 
 .find-form input:focus {
-    border-color: #ff4081;
+    border: 1px solid black;
 }
 
 h4{
@@ -80,7 +108,7 @@ h4:hover{
 	text-decoration: underline;
 }
 
-.send-code-btn {
+#requestCodeBtn {
     position: absolute;
     right: 10px;
     top: 100px;
@@ -107,6 +135,18 @@ h4:hover{
     margin-top: 101px;
 }
 
+.submit-btn-Id:disabled {
+	cursor: not-allowed;
+	background-color: #ddd;
+	color: black;
+}
+
+.submit-btn-Pw:disabled {
+	cursor: not-allowed;
+	background-color: #ddd;
+	color: black;
+}
+
 .submit-btn-Pw {
     width: 100%;
     padding: 12px;
@@ -119,9 +159,18 @@ h4:hover{
     margin-top: -60px;
 }
 
-
-.submit-btn-Id:hover, .submit-btn-Pw:hover {
-    background-color: #e62e59;
+#loginBtn, #findPwBtn{
+	width: 180px;
+	height: 40px;
+	margin-top: 60px;
+	background-color: #ff4081;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	font-size: 20px;
+	font: bold;
 }
 
-
+#loginBtn:hover, #findPwBtn:hover{
+	background-color: #e62e59;
+}

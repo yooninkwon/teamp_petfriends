@@ -1,0 +1,40 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tech.petfriends.helppetf.mapper.HelpPetfDao">
+	<select id="petteacherList"
+		resultType="com.tech.petfriends.helppetf.dto.HelpPetfDto">
+		SELECT * FROM HELP_PETTEACHER
+		<choose>
+			<when test="petType != null and category != null">
+				WHERE HPT_PETTYPE = #{petType} 
+				AND HPT_CATEGORY = #{category}
+			</when>
+			<when test="petType != null">
+				WHERE HPT_PETTYPE = #{petType}
+			</when>
+			<when test="category != null">
+				WHERE HPT_CATEGORY = #{category}
+			</when>
+		</choose>
+		ORDER BY HPT_SEQ DESC
+	</select>
+	<update id="upViews">
+		UPDATE HELP_PETTEACHER
+		SET HPT_HIT = HPT_HIT + 1
+		WHERE
+		HPT_SEQ = #{hpt_seq}
+	</update>
+	<select id="petteacherDetail"
+		resultType="com.tech.petfriends.helppetf.dto.HelpPetfDto">
+		SELECT * FROM HELP_PETTEACHER
+		WHERE HPT_SEQ = #{hpt_seq}
+	</select>
+	<select id="findUserAddr" resultType="String">
+		SELECT TEMP_ADDR
+		FROM
+		TEMP_FIND_ADDR
+		WHERE USER_ID = #{userId}
+	</select>
+</mapper>

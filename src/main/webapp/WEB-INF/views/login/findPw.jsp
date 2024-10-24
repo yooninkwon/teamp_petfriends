@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet" href="/static/css/login/findIdAndPw.css" />
-<script src="/static/js/findIdAndPw.js"></script>
+<script src="/static/js/findPw.js"></script>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
@@ -20,11 +20,17 @@
             비밀번호 찾기
             </a>
         </div>
+        
+        <%
+	    // URL에서 email 파라미터 가져오기
+	    String email = request.getParameter("email");
+		%>
 
-        <form action="/findId" method="post" class="find-form">       	
+        <form action="changePw" method="post" class="find-form" id="findPwForm">       	
         	<div class="form-group">
-                <label for="name">아이디(Email)</label>
-                <input type="email" id="email" name="email" placeholder="이메일을 입력해주세요">
+                <label for="email">아이디(Email)</label>
+                <input type="email" id="email" name="email" value="<%= email != null ? email : "" %>" placeholder="이메일을 입력해주세요">
+                
             </div>
         
             <div class="form-group">
@@ -35,7 +41,7 @@
             <div class="form-group">
                 <label for="phoneNumber">휴대폰 번호</label>
                 <input type="text" id="phoneNumber" name="phoneNumber" placeholder="'-'를 제외한 숫자만 입력해주세요">
-                <button type="button" class="send-code-btn" disabled>인증번호 전송</button>
+                <button type="button" class="send-code-btn" id="requestCodeBtn" disabled>인증번호 전송</button>
             </div>
 
             <div class="form-group">
@@ -43,7 +49,7 @@
                 <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호를 입력하세요">
             </div>
 
-            <button type="submit" class="submit-btn-Pw">인증확인</button>
+            <button type="submit" class="submit-btn-Pw" id="submit-btn-Pw" disabled >확인</button>
         </form>
         <a href=""><h4>내새꾸 정보로 비밀번호 찾기</h4></a>
     </div>

@@ -1,20 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>펫티쳐-게시글</title>
+<title>펫티쳐</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
-	<h1>youtubeDetail.jsp</h1>
+	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+	<jsp:include page="/WEB-INF/views/include_jsp/helppetf_sub_navbar.jsp" />
+	<script>
+		$(document).ready(function() {
+			document.getElementById('${main_navbar_id }').classList.add('selected');
+			document.getElementById('${sub_navbar_id }').classList.add('selected');
+		});
+	</script>
 	<a href="/helppetf/petteacher/petteacher_main">목록으로</a>
 	<table width="500" border="1">
 		<tr>
-		<td>번호</td>
+			<td>번호</td>
 			<td>${dto.hpt_seq }</td>
 		</tr>
 		<tr>
@@ -78,12 +84,12 @@
 							height : '360', //변경가능-영상 높이
 							width : '640', //변경가능-영상 너비
 							//videoId : '0RqbZt_TZkY', //변경-영상ID
- 							videoId : v_id, //변경-영상ID
+							videoId : v_id, //변경-영상ID
 							playerVars : {
 								'rel' : 0, //연관동영상 표시여부(0:표시안함)
 								'controls' : 1, //플레이어 컨트롤러 표시여부(0:표시안함)
-						//		'autoplay' : 1, //자동재생 여부(1:자동재생 함, mute와 함께 설정)
-						//		'mute' : 1, //음소거여부(1:음소거 함)
+								//		'autoplay' : 1, //자동재생 여부(1:자동재생 함, mute와 함께 설정)
+								//		'mute' : 1, //음소거여부(1:음소거 함)
 								'loop' : 0, //반복재생여부(1:반복재생 함)
 								'playsinline' : 1
 							//iOS환경에서 전체화면으로 재생하지 않게
@@ -121,11 +127,10 @@
 		</tr>
 
 		<tr>
-			<td colspan="2">
-				<a href="/helppetf/petteacher/petteacher_main">목록으로</a>
+			<td colspan="2"><a href="/helppetf/petteacher/petteacher_main">목록으로</a>
 			</td>
 		</tr>
 	</table>
-    <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
+	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>
