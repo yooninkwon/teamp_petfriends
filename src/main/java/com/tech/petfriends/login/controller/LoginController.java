@@ -113,8 +113,12 @@ public class LoginController {
    }
    
    @PostMapping("/changePwService")
-   public String ChangePwService() {
+   public String ChangePwService(HttpServletRequest request) {
+	   String email = request.getParameter("email");
+	   String pw = request.getParameter("password");
 	   
+	   System.out.println(email);
+	   System.out.println(pw);
 	   
 	   return "login/loginPage";
    }
