@@ -4,10 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>펫호텔</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
-<link rel="stylesheet"
-	href="/static/css/helppetf/helppetf_sub_navbar.css" />
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />

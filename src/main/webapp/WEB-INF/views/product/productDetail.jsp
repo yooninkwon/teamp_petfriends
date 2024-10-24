@@ -41,8 +41,6 @@
 <body>
 
 
-	<br />
-	<br />
 	
 	
 
@@ -112,7 +110,7 @@
 	<!-- 다른 추천제품 유도 제품리스트 -->
 	<div class="detailInfo">
 		<div class="recommend">
-			<span class="detailMent">다른 댕댕이들한테 인기있는 상품</span>
+			<span class="detailMent">다른 친구들한테 인기있는 상품</span>
 			<div class="recProduct">
 				<c:forEach var="recPro" items="${recPro}">
 	                <div class="recProductItem" data-product-code="${recPro.pro_code}" 
@@ -171,36 +169,46 @@
 					<span>5점</span>
 					<div class="heart-signal-bar">
             			<div class="heart-signal-fill" id="heartSignalFill5" value="${reviewRank.rating_5 }"></div>
-        			</div>
+        			</div >
+        			<div class="revCounts">
         			${reviewRank.rating_5 }개
+        			</div>
 					</div>
 					<div class="score" id="score4">
 					<span>4점</span>
 					<div class="heart-signal-bar">
             			<div class="heart-signal-fill" id="heartSignalFill4" value="${reviewRank.rating_4 }"></div>
         			</div>
+        			<div class="revCounts">
         			${reviewRank.rating_4 }개
+        			</div>
 					</div>
 					<div class="score" id="score3">
 					<span>3점</span>
 					<div class="heart-signal-bar">
             			<div class="heart-signal-fill" id="heartSignalFill3" value="${reviewRank.rating_3 }"></div>
         			</div>
+        			<div class="revCounts">
         			${reviewRank.rating_3 }개
+        			</div>
 					</div>
 					<div class="score" id="score2">
 					<span>2점</span>
 					<div class="heart-signal-bar">
             			<div class="heart-signal-fill" id="heartSignalFill2" value="${reviewRank.rating_2 }"></div>
         			</div>
+        			<div class="revCounts">
         			${reviewRank.rating_2 }개
+        			</div>
 					</div>
 					<div class="score" id="score1">
 					<span>1점</span>
 					<div class="heart-signal-bar">
             			<div class="heart-signal-fill" id="heartSignalFill1" value="${reviewRank.rating_1 }"></div>
         			</div>
-        			${reviewRank.rating_1 }개
+        			<div class="revCounts">
+        			${reviewRank.rating_1}개
+        			</div>
 					</div>
 				
 				

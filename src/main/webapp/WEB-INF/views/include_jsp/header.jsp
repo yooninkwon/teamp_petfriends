@@ -9,7 +9,7 @@
 	</script>
 	<script src="/static/js/Main.js"></script>
 	<div id="menu">
-	    <img src="<c:url value='/static/Images/MainImg/LOGO_white.png'/>" id="top_logo" alt="">
+	    <a href="/"><img src="<c:url value='/static/Images/MainImg/LOGO_white.png'/>" id="top_logo" alt=""></a>
 	    <div class="menu_icons">
 	        <img src="<c:url value='/static/Images/MainImg/search_icon.png'/>" id="search_icon" alt="">
 	        <img src="<c:url value='/static/Images/MainImg/user_icon.png'/>" id="user_icon" alt="">

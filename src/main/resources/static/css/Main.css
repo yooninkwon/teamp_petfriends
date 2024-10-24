@@ -76,9 +76,9 @@ html, body {
 
 #main_nav ul {
 	list-style: none;
-	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-family: noto-sans-kr, sans-serif;
 	font-size: 20px;
-	font-weight: 100;
+	font-weight: bold;
 }
 
 #main_nav ul li {
@@ -90,7 +90,7 @@ html, body {
 
 #main_nav ul li a {
 	text-decoration: none;
-	color: black;
+	color: #858585;
 }
 
 #main_nav ul li a:hover {
@@ -110,6 +110,8 @@ html, body {
 /* 슬라이더 컨테이너 */
 .slider {
 	width: 100%;
+	margin-top: -50px;
+	/* 	margin-top: 80px; */
 	overflow: hidden;
 	position: relative;
 	z-index: 1;
@@ -213,7 +215,6 @@ html, body {
 
 #brbrbr {
 	min-height: 100px;
-	
 	margin-bottom: 15px;
 }
 
@@ -236,16 +237,19 @@ html, body {
 	margin-left: 80px;
 	margin-top: 20px;
 	color: white;
+	min-width: 500px;
 }
 
 #footer2 {
 	color: white;
-	margin-left: 800px;
+	margin-left: 30%;
 	margin-top: -20px;
+	min-width: 200px;
 }
 
 #footer3 {
 	color: white;
-	margin-left: 100px;
+	margin-left: 80px;
 	margin-top: -110px;
+	min-width: 150px;
 }

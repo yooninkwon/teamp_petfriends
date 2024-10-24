@@ -9,7 +9,7 @@
 	    </ul>
 		<ul class="sub_navbar">
 			<li><a id="pet_hospital" href="/helppetf/find/pet_hospital">주변 동물병원 찾기</a></li>
-			<li><a id="pet_facilities" href="/helppetf/find/pet_facilities">주변 동반시설 찾기</a></li>
+			<li><a id="pet_facilities" href="/helppetf/find/pet_facilities">주변 반려동물 동반시설 찾기</a></li>
 			<li><a id="adoption" href="/helppetf/adoption/adoption_main">입양 센터</a></li>
 			<li><a id="petteacher" href="/helppetf/petteacher/petteacher_main">펫티쳐</a></li>
 			<li><a id="pethotel" href="/helppetf/pethotel/pethotel_main">펫호텔</a></li>

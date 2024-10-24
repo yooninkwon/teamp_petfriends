@@ -1,6 +1,5 @@
 package com.tech.petfriends.login.controller;
 
-import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,13 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.login.util.PasswordEncryptionService;
+import com.tech.petfriends.member.service.MemberService;
 
 @Controller
 @RequestMapping("/login")
 public class LoginController {
    
     @Autowired
-       private MemberMapper memberMapper;
+    private MemberMapper memberMapper;
+    
+    @Autowired
+    private MemberService memberService;
    
     @GetMapping("/loginPage")
     public String LoginPage(HttpServletRequest request) {
@@ -113,14 +116,21 @@ public class LoginController {
    }
    
    @PostMapping("/changePwService")
-   public String ChangePwService(HttpServletRequest request) {
-	   String email = request.getParameter("email");
-	   String pw = request.getParameter("password");
+   public String ChangePwService(HttpServletRequest request, Model model) {
 	   
-	   System.out.println(email);
-	   System.out.println(pw);
-	   
-	   return "login/loginPage";
+       String email = request.getParameter("email");
+       String newPassword = request.getParameter("password");
+
+       // 새로운 비밀번호 암호화 후 업데이트
+       try {
+           memberService.updatePassword(email, newPassword);
+           model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
+           return "login/loginPage";  // 비밀번호 변경 후 로그인 페이지로 리다이렉트
+       } catch (Exception e) {
+           e.printStackTrace();
+           model.addAttribute("error", "비밀번호 변경 중 오류가 발생했습니다.");
+           return "login/changePw";  // 에러 발생 시 비밀번호 변경 페이지로 다시 이동
+       }
    }
    
 }

@@ -1,5 +1,5 @@
 .menubar{
-	margin: 80px 0 0 50px; /* 헤더에 가려서 내림 */
+	margin: 0 0 0 50px; /* 헤더에 가려서 내림 */
 }
 
 #product-List {
@@ -36,7 +36,7 @@
     justify-content: center;
     align-items: center;
     font-weight: bold;
-    z-index: 10;
+    z-index: 0;
 }
 
 .product-image-wrapper {

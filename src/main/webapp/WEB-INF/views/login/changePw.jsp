@@ -19,7 +19,7 @@
 				
 			<input style='width: 60%; height: 30px; float: left; margin-top:20px; margin-left:30px; font: bold;
 				font-size: 20px; border:1px solid black; border-radius: 8px; padding-left: 10px;'
-				id="password" name="password" type="password" placeholder="변결 하실 비밀번호를 입력 해 주세요." oninput="validatePassword()"/>
+				id="password" name="password" type="password" placeholder="변경 하실 비밀번호를 입력 해 주세요." oninput="validatePassword()"/>
 				
 			<p style='width: 35%; float: right; font-size: 20px; margin-top: 25px; font: bold; color: red; display: none;'
 				id="passwordError" name="passwordError">변경 불가능한 비밀번호 입니다.</p> <br />
@@ -44,7 +44,7 @@
 			
 			<input style='margin-top: 80px; width: 70%; height: 40px; border: none; 
 				border-radius: 8px; color: white; background-color: #ff4081; font: bold; font-size: 20px;'
-				type="submit" value="비밀번호 변경하기" />
+				type="submit" id="submitBtn" name="submitBtn" value="비밀번호 변경하기" disabled />
 				
 			<input type="hidden" id="email" name="email" value="${userEmail }" />
 		</form>	
