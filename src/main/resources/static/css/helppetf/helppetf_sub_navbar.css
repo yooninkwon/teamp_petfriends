@@ -9,10 +9,11 @@ nav .main-category {
 	margin-top: 9px;
 	margin-bottom: 20px;
 	margin-right: 10px;
-	margin-left: 17.5px;
+	margin-left: 20px;
 }
 
 nav .main-category #helpcenter {
+	font-family: noto-sans-kr, sans-serif;
 	text-decoration: none;
 	color: black;
 	font-weight: bold;
@@ -29,7 +30,7 @@ nav .divider {
 
 nav .sub_navbar {
 	position: fixed;
-	margin-left: 250px;
+	margin-left: 263px;
 	top: 100px;
 	display: flex;
 	list-style-type: none;
@@ -43,6 +44,7 @@ nav .sub_navbar li {
 }
 
 nav .sub_navbar a {
+	font-family: noto-sans-kr, sans-serif;
 	text-decoration: none;
 	color: black;
 	padding: 5px 10px;
