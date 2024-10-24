@@ -10,6 +10,7 @@ import com.tech.petfriends.product.dto.ProductDetailOptionDto;
 import com.tech.petfriends.product.dto.ProductDetailPointDto;
 import com.tech.petfriends.product.dto.ProductDetailReviewRankDto;
 import com.tech.petfriends.product.dto.ProductDetailWishListDto;
+import com.tech.petfriends.product.dto.ProductListViewDto;
 
 public class ProductDetailService implements ProductService {
 
@@ -51,6 +52,8 @@ public class ProductDetailService implements ProductService {
 		ProductDetailPointDto point = productDao.productPoint(mem_code);
 		model.addAttribute("point",point);
 		
+		ArrayList<ProductListViewDto> recPro = productDao.productRecommendProduct(pro_code);
+		model.addAttribute("recPro",recPro);
 	}
 
 	

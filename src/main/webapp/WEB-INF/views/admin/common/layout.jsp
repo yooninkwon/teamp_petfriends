@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://kit.fontawesome.com/6c32a5aaaa.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="/static/css/admin.css">
+<link rel="stylesheet" href="/static/css/admin/admin.css">
 <title>
 	<tiles:insertAttribute name="admin_title" />
 </title>

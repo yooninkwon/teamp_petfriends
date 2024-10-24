@@ -203,4 +203,61 @@
     			ADDR_DEFAULT = 'Y'))
 	</insert>
 	
+	<!-- 제품상세페이지 추천제품 리스트 -->
+	<select id="productRecommendProduct" 
+		resultType="com.tech.petfriends.product.dto.ProductListViewDto">
+		SELECT 
+			*
+		FROM 
+			(
+	    	SELECT 
+	        	PRO.PRO_CODE,
+	        	PRO.PRO_NAME,
+	        	PROIMG.MAIN_IMG1,
+	        	MIN(PROOPT.PROOPT_FINALPRICE) AS PROOPT_FINALPRICE,
+	        	MIN(PROOPT.PROOPT_PRICE) AS PROOPT_PRICE,
+	        	PRO.PRO_DISCOUNT,
+	        	PRO.PRO_ONOFF,
+	        	NVL(COUNT(PROREV.PRO_CODE), 0) AS TOTAL_REVIEWS, 
+	        	COALESCE(ROUND(AVG(PROREV.REVIEW_RATING), 1), 0.0) AS AVERAGE_RATING  
+	    	FROM 
+		        PRODUCT PRO
+		    INNER JOIN 
+	        	PRODUCT_IMAGE PROIMG ON PRO.PRO_CODE = PROIMG.PRO_CODE
+	    	INNER JOIN 
+		        PRODUCT_OPTION PROOPT ON PRO.PRO_CODE = PROOPT.PRO_CODE
+		    LEFT JOIN 
+	        	PRODUCT_REVIEW PROREV ON PRO.PRO_CODE = PROREV.PRO_CODE
+	    	WHERE 
+		        PRO.PRO_PETS = (SELECT PRO_PETS FROM PRODUCT WHERE PRO_CODE = #{pro_code})
+	        AND 
+	        	PRO.PRO_TYPE = (SELECT PRO_TYPE FROM PRODUCT WHERE PRO_CODE = #{pro_code})	
+		    AND 
+		    	PRO.PRO_ONOFF IN ('판매')
+	        AND 
+	        	PRO.PRO_CODE != #{pro_code}
+	    	GROUP BY 
+	        	PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, PRO.PRO_ONOFF
+	    	ORDER BY 
+	        	AVERAGE_RATING DESC
+			) 
+		WHERE 
+			ROWNUM &lt;= 4
+	
+	</select>
+	
+	<select id="productDetailCartCheck"
+		resultType="com.tech.petfriends.product.dto.ProductDetailCartCheckDto">
+		SELECT
+			COUNT(*) cartCheckResult
+		FROM
+			PRODUCT_CART
+		WHERE
+			MEM_CODE = #{mem_code}
+		AND
+			PRO_CODE = #{pro_code}
+		AND 
+			PROOPT_CODE	= #{opt_code} 
+	</select>
+	
 </mapper>

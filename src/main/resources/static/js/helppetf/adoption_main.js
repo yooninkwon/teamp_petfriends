@@ -9,6 +9,9 @@
  * Object 형태로 저장한 파일을 import하여 사용한다. 
  * 사용자가 필터에서 대분류(도시, 동물 종류)를 선택하면,
  * 선택된 대분류 값에 맞춰 소분류(시/군/구, 동물 품종)가 동적으로 업데이트된다.
+ * 
+ * 검색 버튼을 눌러 필터링이 포함된 데이터를 불러온 이후에도 선택된 필터링은 유지된다.
+ * 초기화 버튼을 눌러 필터링을 초기화할 수 있음.
  */
 
 import { kindOptions } from '/static/js/helppetf/kind_data.js'; // 품종 데이터 Object import
@@ -49,11 +52,6 @@ $(document).ready(function() {
 
 	// 아이템을 페이지에 맞게 출력
 	function displayItems(currentPage) {
-		// 화면 로드시 설정한 Y좌표로 스크롤
-		const element = document.getElementById("filter_form");
-		const yOffset = -110;
-		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-		window.scrollTo({ top: y, behavior: 'smooth' });
 
 		if (currentPage <= 10) {
 			// 현재 페이지가 10이하인 경우 == 페이지그룹이 1인 경우
@@ -143,32 +141,34 @@ $(document).ready(function() {
 		paginationHtml += '<a href="#" id="next-group">다음 &raquo;</a>';
 
 		$('#pagination').html(paginationHtml);
-
-		// 페이지 클릭 이벤트 핸들러
-		$('#pagination a').on('click', function(event) {
-			event.preventDefault();
-			if ($(this).attr('id') === 'prev-group') {
-				// 이전 그룹으로 이동
-				currPageGroup--;
-				currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 이전 그룹의 첫 페이지
-				preEndPage = endPage - 20;
-				fetchData(currentPage, currPageGroup, formParam);
-				displayItems(currentPage)
-			} else if ($(this).attr('id') === 'next-group') {
-				// 다음 그룹으로 이동
-				currPageGroup++;
-				currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 다음 그룹의 첫 페이지
-				preEndPage = endPage;
-				fetchData(currentPage, currPageGroup, formParam);
-				displayItems(currentPage)
-			} else /* if ($(this).attr('id') === $(this).data('page')) */ {
-				// 클릭한 페이지로 이동
-				currentPage = $(this).data('page');
-				displayItems(currentPage)
-				setupPagination(currentPage, currPageGroup)
-			}
-		});
-	}
+	
+	
+	// 페이지 클릭 이벤트 핸들러
+	$('#pagination a').on('click', function(event) {
+		event.preventDefault();
+		pageScroll(); // 페이지 스크롤 함수
+		if ($(this).attr('id') === 'prev-group') {
+			// 이전 그룹으로 이동
+			currPageGroup--;
+			currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 이전 그룹의 첫 페이지
+			preEndPage = endPage - 20;
+			fetchData(currentPage, currPageGroup, formParam);
+			displayItems(currentPage)
+		} else if ($(this).attr('id') === 'next-group') {
+			// 다음 그룹으로 이동
+			currPageGroup++;
+			currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 다음 그룹의 첫 페이지
+			preEndPage = endPage;
+			fetchData(currentPage, currPageGroup, formParam);
+			displayItems(currentPage)
+		} else /* if ($(this).attr('id') === $(this).data('page')) */ {
+			// 클릭한 페이지로 이동
+			currentPage = $(this).data('page');
+			displayItems(currentPage)
+			setupPagination(currentPage, currPageGroup)
+		}
+	});
+}
 
 	/** @ 필터링
 	 * 오브젝트 : 지역, 품종 데이터 저장
@@ -234,22 +234,30 @@ $(document).ready(function() {
 
 	// 필터 선택 후 filterSubmit 클릭 시 호출 - 필터 선택 리셋
 	$('#filterReset').on('click', function() {
-	// 동적으로 바뀐 select 태그 비우고 초기값으로 재설정
+		// 동적으로 바뀐 select 태그 비우고 초기값으로 재설정
 		$('#org_cd').empty();
 		$('#org_cd').append(`<option value="any" selected>시, 군, 구</option>`);
 		$('#org_cd').append(`<option value="any" selected>지역을 먼저 골라주세요</option>`);
-		
+
 		$('#kind').empty();
 		$('#kind').append(`<option value="any" selected>품종</option>`);
 		$('#kind').append(`<option value="any" selected>동물종류를 먼저 골라주세요</option>`);
-				
+
 		// option 태그의 선택값을 인덱스넘버 0으로 바꾸기
 		$("#upr_cd option:eq(0)").prop("selected", true);
 		$("#upKind option:eq(0)").prop("selected", true);
 		$("#org_cd option:eq(0)").prop("selected", true);
 		$("#kind option:eq(0)").prop("selected", true);
-		
+
 		fetchData(currentPage, currPageGroup, formParam); // 필터 데이터 초기화한 뒤 fetchData 재호출
 	});
+
+	function pageScroll() {
+		// 함수 호출시 설정한 Y좌표로 스크롤
+		const element = document.getElementById("filter_form");
+		const yOffset = -110;
+		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+		window.scrollTo({ top: y, behavior: 'smooth' });
+	}
 
 });
