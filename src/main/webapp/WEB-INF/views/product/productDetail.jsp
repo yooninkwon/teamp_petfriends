@@ -250,8 +250,8 @@
         <span>${product.pro_name}</span>
         <span id="selectedOptionText"> </span>
         <p id="selectedOptionPrice"></p> <!-- 가격을 표시할 요소 추가 -->
-        <input type="number" id="quantityInput" name="quantity" min="1" value="1" onkeydown="return false;" />
         <span id="quantityMaxText"></span> 
+        <input type="number" id="quantityInput" name="quantity" min="1" value="1" onkeydown="return false;" />
         <span id="finalPrice"></span> <br /> 
         <button type="submit" id="addCartBtn" class="popup-btn">장바구니 담기</button>
         <button type="button" id="closeCartBtn" class="popup-btn">닫기</button>
@@ -274,6 +274,10 @@
         <button type="button" id="closeGoCartBtn" class="popup-btn">닫기</button>
     </div>
 </div>
+
+
+<div id="scrollTopBtn" class="scrollTopBtn"><span>▲</span><br /> Top</div>
+
 
 </body>
 

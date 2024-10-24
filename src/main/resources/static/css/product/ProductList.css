@@ -59,3 +59,7 @@
 .star.gray {
     color: #ddd;  /* 회색 */
 }
+
+.product-Item {
+    cursor: pointer;
+}
