@@ -26,8 +26,9 @@ public class CContentVieWService implements CServiceInterface{
 		
 		String board_no = request.getParameter("board_no");
 		CDto dto = iDao.contentView(board_no);
-//		ArrayList<CDto> imgList = iDao.selectImg(board_no);
 		model.addAttribute("contentView", dto);
+
+		//		ArrayList<CDto> imgList = iDao.selectImg(board_no);
 //		model.addAttribute("imgList",imgList);
 		
 	}

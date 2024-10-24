@@ -46,25 +46,20 @@ body {
 }
 
 .star {
-    font-size: 20px; /* 별의 크기 조절 */
+    font-size: 16px;
+    color: #f5c518;  /* 노란색 */
+    position: relative;
     display: inline-block;
-    position: relative; /* 위치를 조정하기 위해 필요 */
-    color: gray; /* 기본 색상 */
 }
 
-.star.filled {
-    color: gold; /* 가득 찬 별 색상 */
-}
-
-.star.half-filled {
-    color: gold; /* 반쪽 별 색상 */
-    overflow: hidden; /* 반쪽 별의 일부만 보이도록 설정 */
-    position: absolute; /* 부모 요소에 대해 절대 위치 */
-    left: 0; /* 부모의 왼쪽 모서리에 맞추기 */
+.star.half {
+    background: linear-gradient(90deg, #f5c518 50%, #ddd 50%);  /* 반쪽 노란 별 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .star.gray {
-    color: gray; /* 빈 별 색상 */
+    color: #ddd;  /* 회색 */
 }
 
 .data-line { /* 옵션 밑 라인 */
@@ -95,7 +90,7 @@ body {
 
 .line { /* 제품상세페이지 구분선 */
 	 border-bottom: 1px solid #d9d9d9; /* 원하시는 색상과 두께로 조정 */
-    width: 60%; /* 원하는 너비로 설정 */
+    width: 70%; /* 원하는 너비로 설정 */
     margin: 40px 0; /* 위아래 여백을 조정할 수 있음 */
 }
 
@@ -108,6 +103,7 @@ body {
 .detailMent {
 	font-weight: bold;
 	font-size: 20px;
+	
 }
 
 .recProduct {
@@ -140,7 +136,7 @@ body {
     color: #ffcc00;             /* 별점 색상 */
 }
 
-.productInfo{
+.productInfo {
 	justify-self: start;  /* 부모 그리드 내에서 왼쪽 정렬 */
 	text-align: left; /* 텍스트 왼쪽 정렬 */
 }
@@ -170,9 +166,65 @@ body {
 
 
 
+.reviewCount {
+	margin-right: 800px;
+	font-weight: bold;
+	font-size: 20px;
+	
+}
 
+.reviewAvrCount{
+	margin-top: 20px;
+	background-color: #f1f1f1; 
+	height: 230px;
+	display: flex;
+	align-items: center; /* 가운데 정렬 */
+    justify-content: center; /* 수직 가운데 정렬 */ 
+    gap: 70px;
+}
 
+.revLeft{
+	    display: flex; /* flexbox 활성화 */
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 가운데 정렬 */
+    justify-content: center; /* 수직 가운데 정렬 */
+	
+}
+.revAvg{
+	font-weight: bold;
+	font-size: 70px;
+}
 
+.revRight{
+	    display: flex; /* flexbox 활성화 */
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 가운데 정렬 */
+    justify-content: center; /* 수직 가운데 정렬 */
+    gap: 10px;
+}
+
+.score{
+	 display: flex; /* Flexbox 활성화 */
+	flex-direction: row; /* 세로 정렬 */
+	justify-content: center; /* 수직 가운데 정렬 */
+	align-items: center; /* 가운데 정렬 */
+	gap: 10px;
+}
+
+.heart-signal-bar {
+    width: 450px;
+    height: 30px;
+    background-color: #d9d9d9;
+    border-radius: 20px;
+    position: relative;
+}
+
+.heart-signal-fill {
+    height: 100%;
+    background-color: #ff4081;
+    border-radius: 20px;
+    width: 0;
+}
 
 
 

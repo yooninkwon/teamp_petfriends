@@ -87,9 +87,9 @@
 	    <div class="filter-section-1">
 	        <div class="checkbox-group">
 	            <div class="filter-title">쿠폰상태</div>
-	            <label><input type="checkbox" name="status-filter" value="발급"> 발급</label>
-	            <label><input type="checkbox" name="status-filter" value="사용"> 사용</label>
-	            <label><input type="checkbox" name="status-filter" value="만료"> 만료</label>
+	            <label><input type="checkbox" name="issue-filter" value="발급" checked> 발급</label>
+	            <label><input type="checkbox" name="issue-filter" value="사용" checked> 사용</label>
+	            <label><input type="checkbox" name="issue-filter" value="만료" checked> 만료</label>
 	        </div>
 	    </div>
 		
@@ -97,10 +97,10 @@
 		<div class="filter-section-1">
 	        <div class="date-group">
 	            <div class="filter-title">조회기간</div>
-	            <select id="sort-order">
-		            <option value="발급">발급</option>
-		            <option value="사용">사용</option>
-		            <option value="만료">만료</option>
+	            <select id="search-order">
+		            <option value="mc_issue">발급</option>
+		            <option value="mc_use">사용</option>
+		            <option value="mc_dead">만료</option>
 		        </select>
 	            <label><input type="text" id="start-date" placeholder="YYYY-MM-DD">부터</label>
 	            <label><input type="text" id="end-date" placeholder="YYYY-MM-DD">까지</label>
@@ -114,7 +114,7 @@
 	            <div class="filter-title">검색</div>
 	            <label>회원코드<input type="text" id="search-member-code"></label>
 	            <label>쿠폰번호<input type="text" id="search-coupon-code"></label>
-	            <label>결제코드<input type="text" id="search-coupon-code"></label>
+	            <label>결제코드<input type="text" id="search-order-code"></label>
 	            <button id="search-btn" class="btn-style">조회</button>
 	        </div>
 	    </div>

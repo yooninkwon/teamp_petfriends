@@ -20,6 +20,15 @@ body {
 
 a {
     text-decoration: none; /* 모든 링크의 밑줄 제거 */
+   	color:#333
+}
+
+a:visited {
+	color: #333
+}
+
+a:hover  {
+    color: #ff4081; /* 마우스를 올렸을 때 색상 변경 */
 }
 
 .container {
@@ -402,9 +411,7 @@ a {
     transition: color 0.3s ease; /* 호버 시 부드러운 색상 변화 */
 }
 
-.post-title a:hover, .post-content a:hover {
-    color: #ff4081; /* 마우스를 올렸을 때 색상 변경 */
-}
+
 
 
 

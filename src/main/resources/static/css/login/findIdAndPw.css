@@ -141,6 +141,12 @@ h4:hover{
 	color: black;
 }
 
+.submit-btn-Pw:disabled {
+	cursor: not-allowed;
+	background-color: #ddd;
+	color: black;
+}
+
 .submit-btn-Pw {
     width: 100%;
     padding: 12px;
