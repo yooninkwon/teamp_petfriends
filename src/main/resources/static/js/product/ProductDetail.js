@@ -283,12 +283,19 @@ $(document).ready(function() {
 	
 	console.log(total);
 	
+	//총 리뷰갯수에 따른 각 점수별 갯수 % 계산만큼 게이지바 나타내기
 	gauge5.style.width = score5/total*100+"%";
 	gauge4.style.width = score4/total*100+"%";
 	gauge3.style.width = score3/total*100+"%";
 	gauge2.style.width = score2/total*100+"%";
 	gauge1.style.width = score1/total*100+"%";
 
+	
+	
+	
+	
+	
+	
 });
 
 
