@@ -41,8 +41,6 @@
 <body>
 
 
-	<br />
-	<br />
 	
 	
 
@@ -112,7 +110,7 @@
 	<!-- 다른 추천제품 유도 제품리스트 -->
 	<div class="detailInfo">
 		<div class="recommend">
-			<span class="detailMent">다른 댕댕이들한테 인기있는 상품</span>
+			<span class="detailMent">다른 친구들한테 인기있는 상품</span>
 			<div class="recProduct">
 				<c:forEach var="recPro" items="${recPro}">
 	                <div class="recProductItem" data-product-code="${recPro.pro_code}" 
