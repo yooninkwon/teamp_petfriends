@@ -224,6 +224,10 @@ $(document).ready(function() {
 		const productCountContainer = $('#product-Count');
 		productCountContainer.text(`${productList.length}개의 상품`);
 
+		// 품절 상품과 재고 있는 상품을 분리할 배열 생성
+		const availableProducts = [];
+		const soldOutProducts = [];
+
 		// 제품 목록을 반복하며 HTML 요소를 생성
 		productList.forEach(product => {
 
@@ -269,9 +273,25 @@ $(document).ready(function() {
 	                </div>
 	            </div>
 	        `;
-			// 생성한 요소를 컨테이너에 추가
-			productListContainer.append(productItem);
+
+			// 재고 여부에 따라 상품을 다른 배열에 추가
+			if (product.pro_onoff === '품절') {
+				soldOutProducts.push(productItem);  // 품절 상품
+			} else {
+				availableProducts.push(productItem);  // 재고 있는 상품
+			}
 		});
+
+		// 재고 있는 상품 먼저 추가
+		availableProducts.forEach(item => {
+			productListContainer.append(item);
+		});
+
+		// 품절된 상품 나중에 추가
+		soldOutProducts.forEach(item => {
+			productListContainer.append(item);
+		});
+
 	}
 
 	$(document).on('click', '.product-Item', function() {
