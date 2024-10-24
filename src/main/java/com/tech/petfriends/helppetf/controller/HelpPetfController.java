@@ -29,11 +29,18 @@ public class HelpPetfController {
 	
 	HelppetfServiceInter helpServiceInterface;
 	
-	@GetMapping("/pethotel/pethotel_main") // 펫호텔 메인
-	public String pethotelMain(Model model) {
+	@GetMapping("/pethotel/pethotel_petcam") // 펫호텔 펫 캠
+	public String pethotelPetCam(Model model) {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "pethotel");
-		return "/helppetf/pethotel/pethotel_main";
+		return "/helppetf/pethotel/pethotel_petcam";
+	}
+
+	@GetMapping("/pethotel/pethotel_info") // 펫호텔 이용안내
+	public String pethotelInfo(Model model) {
+		model.addAttribute("main_navbar_id", "helppetf");
+		model.addAttribute("sub_navbar_id", "pethotel");
+		return "/helppetf/pethotel/pethotel_info";
 	}
 
 	@GetMapping("/pethotel/pethotel_reserve") // 펫호텔 예약화면
@@ -41,6 +48,13 @@ public class HelpPetfController {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "pethotel");
 		return "/helppetf/pethotel/pethotel_reserve";
+	}
+
+	@GetMapping("/pethotel/pethotel_main") // 펫호텔 메인
+	public String pethotelMain(Model model) {
+		model.addAttribute("main_navbar_id", "helppetf");
+		model.addAttribute("sub_navbar_id", "pethotel");
+		return "/helppetf/pethotel/pethotel_main";
 	}
 
 	@GetMapping("/adoption/adoption_main") // 입양 센터 메인

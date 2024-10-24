@@ -1,0 +1,125 @@
+@charset "UTF-8";
+
+body {
+	background-color: #f8f8f8;
+}
+
+.container {
+	width: 80%;
+	max-width: 600px;
+	margin: 5px auto;
+	padding: 30px;
+	background-color: white;
+	border-radius: 15px;
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+	/*     text-align: center; */
+	border: 2px solid #ddd;
+}
+
+/* 상단 섹션 */
+.top-section {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.text-content {
+	text-align: left;
+	flex: 1;
+}
+
+.top-section h1 {
+	font-size: 22px;
+	color: #000;
+	margin-left: 30%;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.top-section p {
+	font-size: 16px;
+	color: #333;
+	line-height: 1.5;
+	margin-bottom: 15px;
+	margin-left: 20px;
+}
+
+/* 중간 섹션 */
+.middle-section h2 {
+	font-size: 20px;
+	margin-top: 15px;
+	color: #333;
+	border-top: 1px solid #ddd;
+	padding-top: 20px;
+	text-align: center;
+}
+
+wrapper ul, li {
+	list-style: none;
+	padding-left: 10px;
+	padding: 0;
+}
+
+wrapper ul li {
+	margin-bottom: 15px;
+	font-size: 15px;
+	color: #444;
+	margin-left: 20px;
+}
+
+.small-text {
+	font-size: 12px;
+	color: gray;
+}
+
+/* 하단 버튼 */
+.bottom-section {
+	margin-top: 30px;
+}
+
+.pethotel_img {
+	width: 120px;
+	margin-left: 20px;
+	flex-shrink: 0;
+}
+
+.button {
+	display: inline-block;
+	padding: 10px 25px;
+	margin: 10px;
+	background-color: #FF4081;
+	color: white;
+	border: none;
+	border-radius: 25px;
+	text-decoration: none;
+	font-size: 16px;
+	transition: background-color 0.3s ease;
+}
+
+#left {
+	margin-left: 15%;
+}
+
+#right {
+	margin-left: 20%;
+}
+
+.button:hover {
+	background-color: #FF2972;
+}
+
+/* 하단 링크 */
+.more_info {
+	margin-top: 20px;
+	margin-left: 80%
+}
+
+.more_info a {
+	color: #666;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.more_info a:hover {
+	text-decoration: underline;
+}
