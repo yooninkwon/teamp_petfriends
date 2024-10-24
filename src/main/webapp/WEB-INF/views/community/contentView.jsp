@@ -23,11 +23,6 @@
             ${contentView.board_content}
         </div>
 
- <%--        <div class="image-container">
-            <c:forEach var="image" items="${imgList}">
-                <img src="${pageContext.request.contextPath}/static/images/community_img/${image.cchgfile}" alt="게시글 이미지"/>
-            </c:forEach>
-        </div> --%>
 
         <div class="post-footer">
                <div class="left-buttons">

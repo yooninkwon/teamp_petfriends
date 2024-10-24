@@ -3,6 +3,7 @@ package com.tech.petfriends.community.mapper;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -34,6 +35,8 @@ public interface IDao {
 	public void modify(int board_no, String board_title, String board_content, int b_cate_no);
 
 	public void modifyImg(int board_no, String originalFile, String changeFile,String repImgOriginal, String repImgChange);
+
+	
 	
 }
 

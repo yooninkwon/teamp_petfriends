@@ -25,7 +25,7 @@
 	<insert id="imgWrite">
 		INSERT INTO RE_CBOARD_IMAGE(REBNO, BOARD_NO, CORGFILE, CCHGFILE, OREPFILE, CHREPFILE) VALUES
 		(RE_CBOARD_IMAGE_SEQ.NEXTVAL,
-		#{param1}, #{param2}, #{param3}, #{param4}, #{param5})
+		#{board_no}, #{originalFile}, #{changeFile}, #{repImgOriginal}, #{repImgChange})
 	</insert>
 
 
@@ -72,6 +72,7 @@
 	    	OREPFILE = #{repImgOriginal},
 	   		CHREPFILE = #{repImgChange}
 	    WHERE BOARD_NO = #{board_no}
+
 	</update>
 	 
 </mapper>

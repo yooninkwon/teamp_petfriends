@@ -19,7 +19,13 @@
     <form id="postForm" action="${pageContext.request.contextPath}/community/modify" method="post" enctype="multipart/form-data" class="write-form" onsubmit="return validateForm()">
         <input type="hidden" name="board_no" value="${contentView.board_no}"> <!-- 게시글 번호 -->
         <input type="hidden" name="u_no" value="${contentView.u_no}"> <!-- 사용자 번호 -->
-        
+        <!-- 기존 대표 이미지 파일명을 히든 필드로 전송 -->
+		<input type="hidden" name="orepfile" value="${contentView.orepfile}">
+		<input type="hidden" name="chrepfile" value="${contentView.chrepfile}">
+	
+		
+       
+       
         <label for="user_id">이름</label>
         <input type="text" id="user_id" name="user_id" value="${contentView.user_id}" readonly required>
 		
@@ -40,6 +46,7 @@
         <label for="board_content">내용</label>
         <textarea id="board_content" name="board_content" placeholder="내용을 입력하세요" required>${contentView.board_content}</textarea>
 		<option value="${category.b_cate_no}" <c:if test="${category.b_cate_no == contentView.b_cate_no}">selected</c:if>>${category.b_cate_name}</option>
+        
         <label for="repfile">대표 이미지 업로드</label>
         <input type="file" id="repfile" name="repfile" accept="image/*" onchange="previewRepImage(event)">
         <div id="newImagePreview" class="post-image" style="margin-top: 10px;"></div>
@@ -135,7 +142,7 @@
 	        document.getElementById('previewPopup').style.display = 'none'; 
 	    });
 
-	    // 폼 유효성 검사 함수
+/* 	    // 폼 유효성 검사 함수
 	    function validateForm() {
 	        var imageInput = document.getElementById("repfile").value; 
 	        if (imageInput === "") {
@@ -143,7 +150,7 @@
 	            return false; 
 	        }
 	        return true; 
-	    }
+	    } */
 	</script>
 
 <footer>

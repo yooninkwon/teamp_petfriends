@@ -38,14 +38,14 @@ public class CModifyService implements CServiceInterface {
         String root = workPath + "\\src\\main\\resources\\static\\images\\community_img";
         System.out.println(System.getProperty("user.dir"));
         
-        //
+     
 		// 파일 업로드 처리 (일반 이미지)
-		List<MultipartFile> fileList = mtfRequest.getFiles("file");
-		String repImgOriginal = null; // 대표 이미지 원본 파일명
-		String repImgChange = null; // 대표 이미지 변경 파일명
-
-		// 대표 이미지 처리
-		MultipartFile repFile = mtfRequest.getFile("repfile");
+        // 대표 이미지 처리
+        MultipartFile repFile = mtfRequest.getFile("repfile");
+        String repImgOriginal = mtfRequest.getParameter("orepfile"); // 기존 대표 이미지 파일명
+        String repImgChange = mtfRequest.getParameter("chrepfile");  // 기존 대표 이미지 변경 파일명 
+        
+		
 		if (repFile != null && !repFile.isEmpty()) {
 			String originalRepFile = repFile.getOriginalFilename();
 			long longtime = System.currentTimeMillis();
@@ -58,37 +58,42 @@ public class CModifyService implements CServiceInterface {
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new RuntimeException("Representative image upload failed", e);
-			}
-		}
-
-		// 일반 이미지 업로드 처리
-		for (MultipartFile mf : fileList) {
-			String originalFile = mf.getOriginalFilename();
-			System.out.println("original: " + originalFile);
-
-			long longtime = System.currentTimeMillis();
-			String changeFile = longtime + "_" + originalFile;
-			String pathFile = root + "\\" + changeFile;
-
-			try {
-				if (!originalFile.isEmpty()) {
-					mf.transferTo(new File(pathFile));
-					System.out.println("다중업로드성공");
-					// db에 기록
-					iDao.modifyImg(board_no, originalFile, changeFile, repImgOriginal, repImgChange);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new RuntimeException("File upload failed", e);
+					
 			}
 		
-			System.out.println("originalFile: " + originalFile);
-			System.out.println("changeFile: " + changeFile);
-			System.out.println("repImgOriginal: " + repImgOriginal);
-			System.out.println("repImgChange: " + repImgChange);
 		}
+		
+		
+		// 일반 이미지 업로드 처리
+		List<MultipartFile> fileList = mtfRequest.getFiles("file");
+		String originalFile = mtfRequest.getParameter("corgfile");
+		String changeFile = mtfRequest.getParameter("cchgfile");
+		
+	    if ((originalFile != null && !originalFile.isEmpty()) ||
+	    		(fileList != null && !fileList.isEmpty())) {
+	      
+	    	for (MultipartFile mf : fileList) {
+	            originalFile = mf.getOriginalFilename();
+	            System.out.println("original: " + originalFile);
+	            
+	            long longtime = System.currentTimeMillis();
+	            changeFile = longtime + "_" + originalFile;
+	            String pathFile = root + "\\" + changeFile;
+	            
+	            try {
+	                mf.transferTo(new File(pathFile));
+	                System.out.println("다중업로드성공");
+	                iDao.modifyImg(board_no, originalFile, changeFile, repImgOriginal, repImgChange);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	                throw new RuntimeException("Representative image upload failed", e);
+	            }
+	        }
+	    }
 
-        
-        
-    }
+	    // 일반 이미지 파일이 없을 때
+	    else {
+	        iDao.modifyImg(board_no, originalFile, changeFile, repImgOriginal, repImgChange);
+	    }
+	}
 }
