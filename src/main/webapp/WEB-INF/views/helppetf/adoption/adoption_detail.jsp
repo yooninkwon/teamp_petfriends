@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Adoption Detail</title>
+<title>입양 센터</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet"
 	href="/static/css/helppetf/helppetf_sub_navbar.css" />

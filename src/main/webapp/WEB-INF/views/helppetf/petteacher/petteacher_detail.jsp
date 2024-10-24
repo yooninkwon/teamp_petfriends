@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>펫티쳐-게시글</title>
+<title>펫티쳐</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet"
 	href="/static/css/helppetf/helppetf_sub_navbar.css" />

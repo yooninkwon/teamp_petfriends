@@ -1,17 +1,20 @@
 // 상단 로고 클릭시 메인화면 이동
+/* @@ footer의 a태그로 바꿈
 $(function(){
     $("#top_logo").click(function(){
         window.location.href = "/";
     });
 });     
-
+*/
 // 푸터 인스타그램 아이콘
+
+/* @@ footer의 a태그로 바꿈
 $(function(){
     $("#instagram").click(function(){
         window.location.href = "https://www.instagram.com/petfriends_official/";
     });
 });   
-
+*/
 // 상단 우측 유저 아이콘 클릭시 로그인 화면 이동
 $(document).ready(function() {
     $("#user_icon").click(function(){
