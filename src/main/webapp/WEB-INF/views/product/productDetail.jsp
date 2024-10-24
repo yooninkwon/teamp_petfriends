@@ -136,6 +136,7 @@
 	<!-- 구분선 -->
 	<div class="line"></div>
 	
+	<!-- 제품설명이미지 -->
 	<div class="detailInfo">
 		<div class="productInfo">
 			<span class="detailMent">펫프 <span style = "color : #ff4081;" >Check</span> Point</span> <br />
@@ -153,6 +154,62 @@
 		</div>
 		</div>
 	
+	<!-- 구분선 -->
+	<div class="line"></div>
+
+	<div class="detailInfo">
+		<div class="reviewScore">
+			<span class="reviewCount">후기 ${reviewRank.total_reviews}</span>
+			<div class="reviewAvrCount">
+				<div class="revLeft">
+					<span class="revAvg">${reviewRank.average_rating}</span> 
+					<span class="data-reviewAverage3">${reviewRank.average_rating}</span>
+					<span class="satisfaction">만족도 ${Math.round(reviewRank.average_rating / 0.05)}%</span>
+				</div>
+				<div class="revRight">
+					<div class="score" id="score5">
+					<span>5점</span>
+					<div class="heart-signal-bar">
+            			<div class="heart-signal-fill" id="heartSignalFill5" value="${reviewRank.rating_5 }"></div>
+        			</div>
+        			${reviewRank.rating_5 }개
+					</div>
+					<div class="score" id="score4">
+					<span>4점</span>
+					<div class="heart-signal-bar">
+            			<div class="heart-signal-fill" id="heartSignalFill4" value="${reviewRank.rating_4 }"></div>
+        			</div>
+        			${reviewRank.rating_4 }개
+					</div>
+					<div class="score" id="score3">
+					<span>3점</span>
+					<div class="heart-signal-bar">
+            			<div class="heart-signal-fill" id="heartSignalFill3" value="${reviewRank.rating_3 }"></div>
+        			</div>
+        			${reviewRank.rating_3 }개
+					</div>
+					<div class="score" id="score2">
+					<span>2점</span>
+					<div class="heart-signal-bar">
+            			<div class="heart-signal-fill" id="heartSignalFill2" value="${reviewRank.rating_2 }"></div>
+        			</div>
+        			${reviewRank.rating_2 }개
+					</div>
+					<div class="score" id="score1">
+					<span>1점</span>
+					<div class="heart-signal-bar">
+            			<div class="heart-signal-fill" id="heartSignalFill1" value="${reviewRank.rating_1 }"></div>
+        			</div>
+        			${reviewRank.rating_1 }개
+					</div>
+				
+				
+				</div>
+
+
+			</div>
+		</div>
+	</div>
 
 
 
@@ -160,7 +217,11 @@
 
 
 
- <!-- 로그인이 필요합니다 팝업 -->
+
+
+
+
+	<!-- 로그인이 필요합니다 팝업 -->
 <div id="loginPopup" class="popup-overlay">
     <div class="popup-content-login">
         <p>로그인이 필요해요</p>

@@ -52,6 +52,7 @@ public class ProductDetailService implements ProductService {
 		ProductDetailPointDto point = productDao.productPoint(mem_code);
 		model.addAttribute("point",point);
 		
+		//제품상세페이지 _ 추천제품4가지 
 		ArrayList<ProductListViewDto> recPro = productDao.productRecommendProduct(pro_code);
 		model.addAttribute("recPro",recPro);
 	}
