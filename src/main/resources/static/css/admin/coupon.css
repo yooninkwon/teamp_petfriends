@@ -54,7 +54,7 @@ label {
 }
 .radio-group {
     display: flex;
-	width: 50%;
+	width: 100%;
     border: 2px solid white;
     background-color: #efefef;
 }
@@ -100,97 +100,77 @@ input[type="text"] {
     font-size: 14px;
 }
 
-/* 모달창 배경 */
-/* .modal {
-    display: none; 기본적으로 숨김
+/* 모달창 */
+.modal {
     position: fixed; 
     z-index: 9999; 
     left: 0; 
     top: 0;
     width: 100%; 
     height: 100%; 
-    background-color: rgba(0, 0, 0, 0.4); 반투명 검정 배경
+    background-color: rgba(0, 0, 0, 0.4); /* 반투명 검정 배경 */
 }
-
-모달창 컨텐츠
 .modal-content {
     position: relative;
-    margin: 10% auto; 중앙 정렬
-    padding: 20px;
-    width: 400px;
-    background-color: #f4f4f4; 밝은 배경
-    border-radius: 10px; 모서리 둥글게
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10% auto; /* 중앙 정렬 */
+    padding: 40px;
+    width: 600px;
+    background-color: #f4f4f4;
+    text-align: left;
 }
-
-닫기 버튼
 .close-btn {
     position: absolute;
     right: 20px;
     top: 15px;
     cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
 }
-
-입력 그룹
 .input-group {
-    margin-bottom: 15px;
+	display: flex;
+    margin: 5px;
+    height: 30px;
 }
-
 .input-group label {
-    display: block;
+	width: 120px;
     font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
 }
 
-.input-group input[type="text"],
-.input-group input[type="date"],
-.input-group input[type="number"],
-.input-group select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
+.input-group input {
+    width: 200px;
+    padding: 5px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
+    font-size: 15px;
 }
-
-할인 타입 선택 드롭다운
-#discountType {
-    width: 70%;
-    display: inline-block;
-}
-
-#discountUnit {
-    display: inline-block;
-    font-size: 14px;
-    margin-left: 5px;
-    color: #555;
-}
-
-라디오 버튼 그룹
-.radio-group {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 15px;
-}
-
-.radio-group label {
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.radio-group input[type="radio"] {
+.input-group select {
+    width: 100px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    font-size: 15px;
     margin-right: 5px;
 }
-
-등록 완료 버튼
+.cpType-group {
+    display: flex;
+    gap: 20px;
+    margin: 5px;
+}
+.cpType-group label {
+    font-size: 16px;
+    cursor: pointer;
+}
+.cpType-group input {
+    margin-right: 5px;
+}
+#sameAsEndDate {
+	width: 40px;
+    height: 20px;
+}
+#discountUnit {
+    font-size: 17px;
+    margin-left: 5px;
+}
 #registerCouponBtn {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
+    margin-top: 15px;
     background-color: #555;
     color: white;
     font-size: 16px;
@@ -199,33 +179,9 @@ input[type="text"] {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
 #registerCouponBtn:hover {
     background-color: #333;
 }
-
-드롭다운과 체크박스
-#gradeSelect {
-    display: none;
-}
-
-input[type="checkbox"] {
-    margin-left: 5px;
-    cursor: pointer;
-}
-
-반응형 디자인
-@media (max-width: 600px) {
-    .modal-content {
-        width: 90%;
-        padding: 15px;
-    }
-
-    #registerCouponBtn {
-        padding: 10px;
-        font-size: 14px;
-    }
-} */
 
 /* 페이지네이션 */
 .coupon-list-container {

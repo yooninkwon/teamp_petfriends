@@ -3,7 +3,6 @@ package com.tech.petfriends.product.controller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.product.dao.ProductDao;
+import com.tech.petfriends.product.dto.ProductDetailReviewListDto;
 import com.tech.petfriends.product.dto.ProductDetailWishListDto;
 import com.tech.petfriends.product.dto.ProductListViewDto;
 import com.tech.petfriends.product.service.ProductDetailCartCheckService;
 import com.tech.petfriends.product.service.ProductDetailCartService;
+import com.tech.petfriends.product.service.ProductDetailReviewListService;
 import com.tech.petfriends.product.service.ProductDetailService;
 import com.tech.petfriends.product.service.ProductListViewService;
 import com.tech.petfriends.product.service.ProductService;
@@ -134,4 +135,20 @@ public class ProductController {
 		
 		return cartCheckResult;
 	}
+	
+	
+	//리뷰리스트 불러오기 ajax
+	@PostMapping("/productDetailReivewList")
+	@ResponseBody
+	public List<ProductDetailReviewListDto> productDetailReviewList(@RequestBody Map<String, Object> data, Model model) {
+		model.addAllAttributes(data);
+		
+		productService = new ProductDetailReviewListService(productDao);
+		productService.execute(model);
+		
+		List<ProductDetailReviewListDto> reviewList = (List<ProductDetailReviewListDto>) model.getAttribute("reviewList");
+		
+		return reviewList;
+	}
+	
 }

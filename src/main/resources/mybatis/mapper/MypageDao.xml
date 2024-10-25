@@ -37,20 +37,20 @@
 		WHERE PET_CODE=#{param1}
 	</select>
 	
-	<select id="getAllCoupon" resultType="com.tech.petfriends.mypage.dto.CouponDto">
+	<select id="getAllCoupon" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT *
 		FROM COUPON
 		WHERE SYSDATE BETWEEN CP_START AND CP_END AND CP_KEYWORD IS NULL
 	</select>
 	
-	<select id="getCouponByMemberCode" resultType="com.tech.petfriends.mypage.dto.CouponDto">
+	<select id="getCouponByMemberCode" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT CP.CP_NO,CP_NAME,CP_KEYWORD,CP_START,CP_END,CP_DEAD,CP_TYPE,CP_AMOUNT
 		FROM COUPON CP
 		JOIN MEMBER_COUPON_BRIDGE MC ON CP.CP_NO=MC.CP_NO
 		WHERE MEM_CODE=#{param1} AND MC_USE IS NULL AND MC_DEAD IS NULL
 	</select>
 	
-	<select id="searchCouponByKeyword" resultType="com.tech.petfriends.mypage.dto.CouponDto">
+	<select id="searchCouponByKeyword" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT *
 		FROM COUPON
 		WHERE CP_KEYWORD=#{param1}

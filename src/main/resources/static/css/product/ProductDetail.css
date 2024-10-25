@@ -1,4 +1,4 @@
-body {
+.productDetailpg {
     display: grid;
     place-items: center; /* 가로 및 세로 중앙 정렬 */
     min-height: 100vh; /* 화면 전체 높이를 차지 */
@@ -90,7 +90,7 @@ body {
 
 .line { /* 제품상세페이지 구분선 */
 	 border-bottom: 1px solid #d9d9d9; /* 원하시는 색상과 두께로 조정 */
-    width: 100%; /* 원하는 너비로 설정 */
+    width: 1200px; /* 원하는 너비로 설정 */
     margin: 40px 0; /* 위아래 여백을 조정할 수 있음 */
 }
 
@@ -233,15 +233,103 @@ body {
     margin-right: 10px; /* 바와의 여백 */
 }
 
-.revCounts {
-    min-width: 40px; /* 최소 너비 설정: 1개, 2개 또는 3개 숫자와 일치하도록 설정 */
-    text-align: right; /* 텍스트 오른쪽 정렬 */
+
+
+/* ---------------------------리뷰리스트--------------------------- */
+
+.reviewList {
+    display: flex; /* 수평 배치 */
+    flex-direction: column; /* 세로로 쌓이도록 설정 */
+    border: 1px solid #ddd; /* 테두리 */
+    border-radius: 8px; /* 둥근 모서리 */
+    padding: 15px; /* 내부 여백 */
+    margin: 10px 0; /* 외부 여백 */
+    background-color: #fff; /* 배경색 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    width: 900px;
+}
+.reviewFirst{
+	display: flex; /* 수평 배치 */
+	position: relative;
 }
 
+.petImage {
+    width: 40px; /* 프로필 이미지 크기 */
+    height: 40px; /* 프로필 이미지 크기 */
+    border-radius: 50%; /* 동그라미 모양 */
+    margin-right: 10px; /* 오른쪽 여백 */
+}
 
+.reviewAuthor {
+    display: flex; /* 플렉스 박스 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    margin-bottom: 5px; /* 아래 여백 */
+}
 
+.reviewRating{
+	display: flex; /* 플렉스 박스 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    margin-bottom: 7px; /* 아래 여백 */
+    margin-left: 7px;
+}
 
+.reviewDate {
+    position: absolute;
+    right: 10px; /* 오른쪽 끝에 정렬 */
+    top: 10px; /* 원하는 위치 조정 */
+    color: #666;
+    font-size: 14px;
+}
 
+.reviewImages {
+    display: flex; /* 가로로 나열 */
+    flex-wrap: wrap; /* 줄 바꿈 허용 */
+    margin: 10px 0; /* 외부 여백 */
+}
+
+.reviewImage {
+    width: 100px; /* 리뷰 이미지 크기 */
+    height: 100px; /* 리뷰 이미지 크기 */
+    object-fit: cover; /* 비율 유지하며 잘리도록 */
+    margin-right: 5px; /* 오른쪽 여백 */
+    border-radius: 5px; /* 둥근 모서리 */
+}
+
+.reviewText {
+    margin-top: 10px; /* 상단 여백 */
+    font-size: 14px; /* 글자 크기 */
+    line-height: 1.5; /* 줄 높이 */
+    color: #333; /* 텍스트 색상 */
+}
+
+.reviewListPagination a {
+    color: #333;
+    padding: 8px 12px;
+    margin: 0 4px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.reviewListPagination a:hover {
+    background-color: #ddd;
+}
+
+.reviewListPagination a.active {
+    background-color: #ff4081; /* 클릭된 페이지의 배경색 */
+    color: #fff; /* 텍스트 색상 */
+}
+
+.reviewListPagination a#prev-group,
+.reviewListPagination a#next-group {
+    font-weight: bold;
+    color: #666;
+}
+
+.reviewListPagination a#prev-group:hover,
+.reviewListPagination a#next-group:hover {
+    background-color: #ddd;
+}
 
 
 
