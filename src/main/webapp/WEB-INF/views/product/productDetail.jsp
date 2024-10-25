@@ -103,6 +103,9 @@
               		  (품절)
           			  </c:if>
 						</option>
+						<c:set var="totalStock"
+							value="${totalStock + option.proopt_stock}" />
+						<!-- 재고량 합산 -->
 					</c:forEach>
 				</select>
 				<div class="data-line"></div>
@@ -115,7 +118,13 @@
 					<button id="cartBtn"
 						data-mem-code="${sessionScope.loginUser.mem_code }"
 						data-pro-code="${product.pro_code }"
-						data-opt-code="${option.proopt_code}">장바구니 담기</button>
+						data-opt-code="${option.proopt_code}"
+						<c:if test="${totalStock == 0}">disabled</c:if>>
+						
+						<!-- 재고가 0이면 비활성화 -->
+						<c:if test="${totalStock == 0}">현재 품절 상품입니다</c:if>
+						<c:if test="${totalStock > 0}">장바구니 담기</c:if>
+					</button>
 				</div>
 			</div>
 		</div>
@@ -236,8 +245,9 @@
 		<!-- 리뷰 리스트 -->
 		<!-- 리뷰리스트 옵션설정 / 최신순,높은평점순,낮은평점순 -->
 		<div class="reviewListBox">
-			<select name="reviewOption" id="reviewOption" data-procode ="${product.pro_code }"
-			data-totalReviews="${reviewRank.total_reviews}">
+			<select name="reviewOption" id="reviewOption"
+				data-procode="${product.pro_code }"
+				data-totalReviews="${reviewRank.total_reviews}">
 				<option value="rankDesc">높은평점순</option>
 				<option value="rankAsc">낮은평점순</option>
 				<option value="dateDesc">최신순</option>
@@ -246,6 +256,7 @@
 
 		<!-- 리뷰리스트 -->
 		<div class="reviewContentListContainer"></div>
+		<!-- 리뷰리스트 페이징 번호 -->
 		<div class="reviewListPagination"></div>
 
 
