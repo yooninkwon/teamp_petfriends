@@ -9,9 +9,8 @@
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 	<h1>youtubeDetail.jsp</h1>
-	<a href="/admin/admin_petteacher">목록으로</a>
+	<a href="/admin/petteacher">목록으로</a>
 	<table width="500" border="1">
 		<tr>
 		<td>번호</td>
@@ -120,11 +119,10 @@
 
 		<tr>
 			<td colspan="2">
-				<a href="/admin/admin_petteacher">목록으로</a> &nbsp;
-				<a href="/admin/admin_petteacher_delete?hpt_seq=${dto.hpt_seq }">삭제</a>
+				<a href="/admin/petteacher">목록으로</a> &nbsp;
+				<a href="/admin/petteacher_delete?hpt_seq=${dto.hpt_seq }">삭제</a>
 			</td>
 		</tr>
 	</table>
-    <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>

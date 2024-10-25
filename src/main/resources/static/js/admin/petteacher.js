@@ -1,68 +1,35 @@
-//탭 전환 기능
-document.querySelectorAll('.tab-btn').forEach(function(tabBtn) {
-    tabBtn.addEventListener('click', function() {
-        // 모든 탭에서 'active' 클래스를 제거
-        document.querySelectorAll('.tab-btn').forEach(function(btn) {
-            btn.classList.remove('active');
-        });
-
-        // 클릭한 탭에 'active' 클래스 추가
-        this.classList.add('active');
-
-        // 모든 콘텐츠 숨김
-        document.querySelectorAll('.tab-content').forEach(function(content) {
-            content.style.display = 'none';
-        });
-
-        // 클릭한 탭에 해당하는 콘텐츠만 표시
-        const tabId = this.getAttribute('data-tab');
-        document.getElementById(tabId).style.display = 'block';
-    });
-});
-
 $(document).ready(function() {
-    
+//    
     // 페이지 로드 시 기본적으로 첫 탭의 데이터를 불러오기
     loadCouponRegisterData();
-
-	// 탭 전환 시 쿠폰 등록 데이터 로드
-    $('button[data-tab="couponRegister"]').on('click', function () {
-        loadCouponRegisterData();
-    });
-
-    // 탭 전환 시 회원 쿠폰 데이터 로드
-    $('button[data-tab="couponStatus"]').on('click', function () {
-        loadMemberCouponData();
-    });
 
     // 쿠폰 등록 탭 데이터 로드 함수
     function loadCouponRegisterData() {
         const itemsPerPage = 15; // 페이지 당 item 수
         let currentPage = 1;
         let totalItems = 0;
-        let couponList = []; // 데이터 저장할 배열
+        let petteacherList = []; // 데이터 저장할 배열
         let currPageGroup = 1;
         let totalPages = 0;
 
         // 필터 기본 값
         let filterParam = {
-            status: '전체',
-            kind: '전체',
-            type: '전체',
+            type: 'all',
+            category: '0',
             sort: '최신순'
         };
-	
+
         fetchData(currentPage, currPageGroup, filterParam);
 
         function fetchData(currentPage, currPageGroup, filterParam) {
             $.ajax({
-                url: '/admin/coupon/data',
+                url: '/admin/petteacher_data',
                 method: 'GET',
                 data: filterParam,
                 dataType: 'json',
-                success: function (coupons) {
-                    couponList = coupons;
-                    totalItems = couponList.length;
+                success: function (data) {
+                    petteacherList = data;
+                    totalItems = petteacherList.length;
                     totalPages = Math.ceil(totalItems / itemsPerPage);
 
                     displayItems(currentPage);
@@ -77,38 +44,23 @@ $(document).ready(function() {
         function displayItems(currentPage) {
             const start = (currentPage - 1) * itemsPerPage;
             const end = start + itemsPerPage;
-            const sliceList = couponList.slice(start, end);
+            const sliceList = petteacherList.slice(start, end);
 
             let lists = '';
-            $.each(sliceList, function (index, coupon) {
+            $.each(sliceList, function (index, plist) {
                 lists += '<tr>';
-                lists += '<td>' + coupon.cp_no + '</td>';
-
-				if (coupon.cp_kind === 'P') {
-				    lists += '<td>일반</td>';
-				} else if (coupon.cp_kind === 'G') {
-				    lists += '<td>등급</td>';
-				}
-
-                lists += '<td>' + coupon.cp_name + '</td>';
-                lists += '<td>' + (coupon.cp_keyword || '') + '</td>';
-                lists += '<td>' + (coupon.cp_start || '') + '</td>';
-                lists += '<td>' + (coupon.cp_end || '') + '</td>';
-
-                if (coupon.cp_type === 'A') {
-                    lists += '<td>' + coupon.cp_amount + '원</td>';
-                } else if (coupon.cp_type === 'R') {
-                    lists += '<td>' + coupon.cp_amount + '%</td>';
-                }
-
-                lists += '<td>' + coupon.issueCount + '</td>';
-                lists += '<td>' + (coupon.totalUsage || '') + '</td>';
+                lists += '<td>' + plist.hpt_seq + '</td>';
+                lists += '<td>' + plist.hpt_category + '</td>';
+                lists += '<td><a href="/admin/petteacher_detail?hpt_seq=' + hpt_seq + '">'  + plist.hpt_title + '</a></td>';
+                lists += '<td>' + plist.hpt_exp + '</td>';
+                lists += '<td>' + plist.hpt_rgedate + '</td>';
+                lists += '<td>' + plist.hpt_hit + '</td>';
 				lists += `<td>
-			                  <button class="btn-style modify-coupon-btn" data-coupon-id="${coupon.cp_no}">수정</button>
-			                  <button class="btn-style delete-coupon-btn" data-coupon-id="${coupon.cp_no}">삭제</button>
+			                  <button class="btn-style modify-coupon-btn" data-coupon-id="${plist.cp_no}">수정</button>
+			                  <button class="btn-style delete-coupon-btn" data-coupon-id="${plist.cp_no}">삭제</button>
 			              </td>`;
 			    lists += '</tr>';
-            });
+            }); 
 
             $('#coupon-table-body').html(lists);
 			
@@ -171,43 +123,31 @@ $(document).ready(function() {
         }
 
         // 필터링 관련 코드
-        $('#status-filter input[name="status-filter"]').on('change', function() {
+        $('#status-filter input[name="pet-type-filter"]').on('change', function() {
             filterParam = {
-                status: $('input[name="status-filter"]:checked').val(),
-                kind: $('input[name="kind-filter"]:checked').val(),
-                type: $('input[name="type-filter"]:checked').val(),
+                type: $('input[name="pet-type-filter"]:checked').val(),
+                category: $('input[name="category-filter"]:checked').val(),
                 sort: $('#sort-order').val()
             };
 			
             fetchData(currentPage, currPageGroup, filterParam);
         });
 
-        $('#kind-filter input[name="kind-filter"]').on('change', function() {
+        $('#kind-filter input[name="category-filter"]').on('change', function() {
             filterParam = {
-                status: $('input[name="status-filter"]:checked').val(),
-				kind: $('input[name="kind-filter"]:checked').val(),
-                type: $('input[name="type-filter"]:checked').val(),
-                sort: $('#sort-order').val()
+				type: $('input[name="pet-type-filter"]:checked').val(),
+				category: $('input[name="category-filter"]:checked').val(),
+				sort: $('#sort-order').val()
             };
 			
             fetchData(currentPage, currPageGroup, filterParam);
         });
-		
-        $('#type-filter input[name="type-filter"]').on('change', function() {
-            filterParam = {
-                status: $('input[name="status-filter"]:checked').val(),
-				kind: $('input[name="kind-filter"]:checked').val(),
-                type: $('input[name="type-filter"]:checked').val(),
-                sort: $('#sort-order').val()
-            };
-			
-            fetchData(currentPage, currPageGroup, filterParam);
-        });
+
 
         $('#sort-order').on('change', function() {
             filterParam = {
-                status: $('input[name="status-filter"]:checked').val(),
-                type: $('input[name="type-filter"]:checked').val(),
+				type: $('input[name="pet-type-filter"]:checked').val(),
+				category: $('input[name="category-filter"]:checked').val(),
                 sort: $(this).val()
             };
 			
@@ -470,14 +410,14 @@ function loadCouponForEdit(couponId) {
 function resetModal() {
     document.getElementById('cpName').value = '';
     document.getElementById('cpKeyword').value = '';
-    document.querySelector('input[name="couponType"][value="P"]').checked = true;
-	toggleCouponType('P');
-    document.getElementById('grade').value = '';
-    document.getElementById('startDate').value = '';
-    document.getElementById('endDate').value = '';
-    document.getElementById('deadDate').value = '';
-    document.getElementById('discountType').value = 'A';
-    document.getElementById('discountAmount').value = '';
+//    document.querySelector('input[name="couponType"][value="P"]').checked = true;
+//	toggleCouponType('P');
+//    document.getElementById('grade').value = '';
+//    document.getElementById('startDate').value = '';
+//    document.getElementById('endDate').value = '';
+//    document.getElementById('deadDate').value = '';
+//    document.getElementById('discountType').value = 'A';
+//    document.getElementById('discountAmount').value = '';
 }
 
 // 쿠폰 삭제

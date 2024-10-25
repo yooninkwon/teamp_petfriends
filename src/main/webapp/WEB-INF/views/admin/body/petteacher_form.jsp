@@ -8,10 +8,9 @@
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 <h1>admin petteacher form</h1>
 
-<form action="/admin/admin_petteacher_write" method="post">
+<form action="/admin/petteacher_write" method="post">
 <table width="500" border="1">
 		<tr>
 			<td>제목</td>
@@ -32,7 +31,7 @@
 		<tr>
 			<td>펫 타입</td>
 			<td><select id="petType" name="petType">
-				<option disabled selected>동물종류</option>
+				<option selected>동물종류</option>
 				<option value="cat">고양이</option>
 				<option value="dog">강아지</option>
 				<option value="etc">기타 동물</option>
@@ -57,6 +56,5 @@
 		</tr>
 	</table>
 </form>
-<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>

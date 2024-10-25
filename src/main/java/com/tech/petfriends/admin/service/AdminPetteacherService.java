@@ -17,8 +17,8 @@ public class AdminPetteacherService implements AdminServiceInterface {
 
 	@Override
 	public void execute(Model model) {
-		ArrayList<AdminHelpPetfDto> ylist = adminDao.adminPetteacherList();
-		model.addAttribute("ylist", ylist);
+//		ArrayList<AdminHelpPetfDto> ylist = adminDao.adminPetteacherList();
+//		model.addAttribute("ylist", ylist);
 	}
 	
 	

@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <meta charset="UTF-8">
 <title>
 	admin_body

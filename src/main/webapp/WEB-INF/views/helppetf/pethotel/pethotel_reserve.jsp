@@ -87,7 +87,7 @@
 				<input type="radio" id="pet-neutered" name="pet-neutered" value="N" class="radio_button"> N
 
 	            <label for="message">전달 사항</label>
-    	        <textarea name="pet-message" id="pet-message" placeholder="그 외 전달해주실 사항을 적어주세요. 먹는 약, 알레르기, 좋아하는 것, 싫어하는 것 등 많은 수록 좋아요!"></textarea>
+    	        <textarea name="pet-message" id="pet-message" placeholder="그 외 전달해주실 사항을 적어주세요. 먹는 약, 알레르기, 좋아하는 것, 싫어하는 것 등 많을 수록 좋아요!"></textarea>
 				<button type="button" id="save-pet">저장</button>
 			</form>
 		</div>

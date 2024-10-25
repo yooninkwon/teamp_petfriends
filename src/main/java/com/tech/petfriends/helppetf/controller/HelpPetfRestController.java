@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tech.petfriends.helppetf.dto.AdoptionSelectedAnimalDto;
-import com.tech.petfriends.helppetf.dto.HelpPetfDto;
+import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.AdoptionGetJson;
@@ -78,13 +78,13 @@ public class HelpPetfRestController {
 	}
 	
 	@GetMapping("/petteacher/petteacher_data")
-	public ArrayList<HelpPetfDto> petteacherData(HttpServletRequest request, Model model) {
+	public ArrayList<PetteacherDto> petteacherData(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		helpServiceInterface = new PetteacherService(helpDao);
 		helpServiceInterface.execute(model);
 		
 		@SuppressWarnings("unchecked")
-		ArrayList<HelpPetfDto> ylist = (ArrayList<HelpPetfDto>) model.getAttribute("ylist");
+		ArrayList<PetteacherDto> ylist = (ArrayList<PetteacherDto>) model.getAttribute("ylist");
 		
 		return ylist;
 	}

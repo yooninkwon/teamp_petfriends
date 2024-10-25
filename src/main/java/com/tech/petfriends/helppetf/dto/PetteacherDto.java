@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class HelpPetfDto {
+public class PetteacherDto {
 	private int hpt_seq;
 	private String hpt_yt_videoid;
 	private String hpt_exp;

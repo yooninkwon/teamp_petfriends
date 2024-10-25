@@ -3,7 +3,35 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.tech.petfriends.admin.mapper.AdminPageDao"> 
-	<select id="adminPetteacherList" resultType="com.tech.petfriends.admin.dto.AdminHelpPetfDto">
+	<select id="getPetteacherList" resultType="com.tech.petfriends.helppetf.dto.PetteacherDto">
+		SELECT * FROM HELP_PETTEACHER
+		<where>
+			<choose>
+				<when test="type == 'all'">HPT_HIT >= 0</when>
+				<when test="type == 'cat'">HPT_PETTYPE = 'cat'</when>
+				<when test="type == 'dog'">HPT_PETTYPE = 'dog'</when>
+				<when test="type == 'etc'">HPT_PETTYPE = 'etc'</when>
+			</choose>
+			<choose>
+				<when test="category == '0'"> </when>
+				<when test="category == '1'">AND HPT_CATEGORY = '1'</when>
+				<when test="category == '2'">AND HPT_CATEGORY = '2'</when>
+				<when test="category == '3'">AND HPT_CATEGORY = '3'</when>
+				<when test="category == '4'">AND HPT_CATEGORY = '4'</when>
+				<when test="category == '5'">AND HPT_CATEGORY = '5'</when>
+				<when test="category == '6'">AND HPT_CATEGORY = '6'</when>
+			</choose>
+		</where>
+		<choose>
+			<when test="sort == '최신순'">ORDER BY HPT_RGEDATE DESC</when>
+			<when test="sort == '오래된순'">ORDER BY HPT_RGEDATE ASC</when>
+			<when test="sort == '조회수순'">ORDER BY HPT_HIT DESC</when>
+		</choose>
+	</select>
+
+
+
+	<!-- <select id="adminPetteacherList" resultType="com.tech.petfriends.admin.dto.AdminHelpPetfDto">
 		SELECT * FROM HELP_PETTEACHER
 		ORDER BY HPT_SEQ DESC
 	</select>
@@ -19,5 +47,5 @@
 	</insert>
 	<delete id="adminPetteacherDelete">
 		DELETE FROM HELP_PETTEACHER WHERE HPT_SEQ = #{hpt_seq}
-	</delete>
+	</delete> -->
 </mapper>

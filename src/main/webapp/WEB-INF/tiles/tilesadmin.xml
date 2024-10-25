@@ -34,6 +34,12 @@
 	<definition name="admin/petteacher" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/petteacher.jsp" />
 	</definition>
+	<definition name="admin/petteacher_detail" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/petteacher_detail.jsp" />
+	</definition>
+	<definition name="admin/petteacher_form" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/petteacher_form.jsp" />
+	</definition>
 	<definition name="admin/notice" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/notice.jsp" />
 	</definition>
