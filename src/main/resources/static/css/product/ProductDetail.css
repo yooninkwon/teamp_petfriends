@@ -208,8 +208,8 @@
 .score {
     display: flex; /* Flexbox 활성화 */
     align-items: center; /* 가운데 정렬 */
-    width: 570px; /* 고정 너비 설정 */
-    gap: 10px;
+    width: 590px; /* 고정 너비 설정 */
+    gap: 20px;
 }
 
 .heart-signal-bar {
@@ -233,6 +233,12 @@
     margin-right: 10px; /* 바와의 여백 */
 }
 
+.revCounts {
+    min-width: 40px; /* 숫자가 길어져도 고정된 최소 공간 확보 */
+    text-align: right;
+    font-size: 18px;
+    margin-left: 10px; /* 바와의 간격 */
+}
 
 
 /* ---------------------------리뷰리스트--------------------------- */
@@ -293,7 +299,14 @@
     object-fit: cover; /* 비율 유지하며 잘리도록 */
     margin-right: 5px; /* 오른쪽 여백 */
     border-radius: 5px; /* 둥근 모서리 */
+    transition: transform 0.3s ease; /* 부드러운 전환 효과 */
 }
+
+.reviewImage.large {
+    transform: scale(5); /* 클릭 시 이미지 확대 */
+    z-index: 1;
+}
+
 
 .reviewText {
     margin-top: 10px; /* 상단 여백 */
@@ -448,3 +461,5 @@
 .scrollTopBtn:hover {
     background-color: #ff4081; /* 마우스를 올렸을 때 배경색 변경 */
 }
+
+
