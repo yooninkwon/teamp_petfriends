@@ -36,9 +36,12 @@
 			<label for="start-date">예약 기간</label>
 			<div class="date-selection">
 				<form action="#" id="start-end-date">
+				<!-- @@@ 이 곳에 input type hidden으로 필요한 유저 정보들 담아 받아오기 -->
+				<!-- 유저정보도 같이 넘기는 것에 DTO 사용 고려해 볼 것 -->
 				<!-- 날짜 최소 최대 설정하기 (스크립트) -->
 					<input name="start-date" type="date" id="start-date" class="date-input"> 부터 
 					<input name="end-date" type="date" id="end-date" class="date-input"> 까지
+					<!-- 날짜제한 메모: <input type="" min=""/> <!-- 장기 투숙일 수도 있으니 끝나는날짜는 제한 x -->
 				</form>
 			</div>
 
@@ -93,5 +96,3 @@
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>
-
-<!-- <input type="" min=""/> <!-- 장기 투숙일 수도 있으니 끝나는날짜는 제한 x -->
