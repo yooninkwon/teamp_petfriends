@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tech.petfriends.helppetf.dto.AdoptionSelectedAnimalDto;
 import com.tech.petfriends.helppetf.dto.HelpPetfDto;
+import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.AdoptionGetJson;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
@@ -40,6 +41,14 @@ public class HelpPetfRestController {
 	
 	HelppetfServiceInter helpServiceInterface;
     
+	@PostMapping("/pothotel/pethotel_reserve_data")
+	public void pethotelReserveData(@RequestBody ArrayList<PethotelFormDataDto> formList, HttpServletRequest request, Model model) throws Exception {
+		HttpSession session = request.getSession();
+		session.setAttribute("formList", formList);
+//		model.addAttribute("request", request);
+		System.out.println(formList);
+	}
+
 	@GetMapping("/adoption/getJson")
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson(HttpServletRequest request, Model model) throws Exception {
 		model.addAttribute("request", request);
