@@ -19,11 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dao.MypageDao;
-import com.tech.petfriends.mypage.dto.CouponDto;
 import com.tech.petfriends.mypage.dto.GradeDto;
-import com.tech.petfriends.mypage.dto.MyCouponDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 
 @Controller
