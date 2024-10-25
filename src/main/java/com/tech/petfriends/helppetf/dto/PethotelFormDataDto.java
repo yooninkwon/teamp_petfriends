@@ -6,12 +6,12 @@ import lombok.Setter;
 @Setter
 @Getter
 public class PethotelFormDataDto {
-	String hphp_reserve_pet_no;
-	String hphp_pet_name;
-	String hphp_pet_type;
-	String hphp_pet_birth;
-	String hphp_pet_gender;
-	String hphp_pet_weight;
-	String hphp_pet_neut;
-	String hphp_comment;
+	private String hphp_reserve_pet_no;
+	private String hphp_pet_name;
+	private String hphp_pet_type;
+	private String hphp_pet_birth;
+	private String hphp_pet_gender;
+	private String hphp_pet_weight;
+	private String hphp_pet_neut;
+	private String hphp_pet_comment;
 }

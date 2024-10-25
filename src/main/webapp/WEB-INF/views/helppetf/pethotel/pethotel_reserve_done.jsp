@@ -21,8 +21,15 @@
 							.add('selected');
 				});
 	</script>
-<table>
-	<c:forEach items="formList" var="fl">
+<table border="1" width="800" style="text-align: center;">
+	<tr>
+		<td>${dm[start_date].value }</td>
+	<c:forEach items="${dateMap }" var="dm">
+		<td>${dm.key }</td>
+		<td>${dm.value }</td>
+	</c:forEach>
+	</tr>
+	<c:forEach items="${formList }" var="fl">
 		<tr>
 			<th>번호</th>
 			<th>이름</th>
@@ -34,7 +41,7 @@
 			<th>전달사항</th>
 		</tr>
 		<tr>
-<%-- 			<td>${fl.hphp_reserve_pet_no }</td> --%>
+ 			<td>${fl.hphp_reserve_pet_no }</td>
 			<td>${fl.hphp_pet_name }</td>
 			<td>${fl.hphp_pet_type }</td>
 			<td>${fl.hphp_pet_birth }</td>
