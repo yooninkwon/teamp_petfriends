@@ -59,7 +59,8 @@
 	</c:forEach>
 	
     <div class="resist-card">
-        <a href="/mypage/mypet/register" class="mypet-card-link">
+        <!-- <a href="/mypage/mypet/register" class="mypet-card-link"> -->
+        <a href="/mypet/myPetRegistPage1" class="mypet-card-link">
             <i class="fa-solid fa-circle-plus" style="color: #e8e8e8; font-size: 60px"></i>
             <div class="mypet-card-text">
                 <h4>반려동물 등록하기</h4>
