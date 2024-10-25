@@ -123,7 +123,7 @@ public class JoinController {
         
         // 회원가입 후 로그인 처리 (세션에 로그인 정보 저장)
         session.setAttribute("loginUser", member);
-        
+        redirectAttributes.addFlashAttribute("fromJoin",member.getMem_nick() + "님 회원가입이 완료 되었습니다.");
         // 회원가입 완료 후 메인 페이지로 리다이렉트
         return "redirect:/mypet/myPetRegistPage1";
     }
