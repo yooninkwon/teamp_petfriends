@@ -4,10 +4,8 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.tech.petfriends.login.dto.MemberLoginDto;
-import com.tech.petfriends.mypage.dto.CouponDto;
+import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.mypage.dto.GradeDto;
-import com.tech.petfriends.mypage.dto.MyCouponDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 
 @Mapper
