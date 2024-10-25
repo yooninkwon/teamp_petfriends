@@ -9,7 +9,7 @@
         JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO ORDER BY CD.BOARD_NO DESC
     </select>
 	
-	<insert id="write">
+	<insert id="write" >
 		INSERT INTO COMMUNITY_BOARD (BOARD_NO, B_CATE_NO, U_NO, USER_ID, 
 		BOARD_TITLE, BOARD_PASSWORD, BOARD_CONTENT, BOARD_CREATED, BOARD_MODIFIED, BOARD_VIEWS, 
 		BOARD_TAG,  BOARD_LIKES, BOARD_COMMENT_COUNT) 
@@ -72,7 +72,24 @@
 	    	OREPFILE = #{repImgOriginal},
 	   		CHREPFILE = #{repImgChange}
 	    WHERE BOARD_NO = #{board_no}
-
 	</update>
 	 
+	<delete id="delete">
+	    DELETE FROM COMMUNITY_BOARD WHERE BOARD_NO = #{board_no}
+	</delete>
+		 
+	<insert id="comment">
+	      INSERT INTO COMMUNITY_COMMENT (COMMENT_NO, BOARD_NO, USER_ID, COMMENT_CONTENT, CREATED_DATE, PARENT_COMMENT_NO, EDITED_DATE)
+	    VALUES (COMMUNITY_COMMENT_SEQ.NEXTVAL, #{board_no}, 111, #{comment_content}, SYSDATE, #{parent_comment_no}, SYSDATE)
+	</insert>
+		 
+	 <select id="commentList" resultType="com.tech.petfriends.community.dto.CCommentDto">
+       SELECT * FROM COMMUNITY_COMMENT WHERE BOARD_NO = #{board_no}   
+    </select>
+	
+<!-- 	<insert id="commentSum">
+	  SELECT count(*) FROM COMMUNITY_COMMENT;
+	</insert> -->
+		
+	
 </mapper>

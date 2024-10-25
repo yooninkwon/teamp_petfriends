@@ -8,6 +8,7 @@
     <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
     <link rel="stylesheet" href="/static/css/community/community_writeview.css">
     <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -134,6 +135,8 @@
         }
         return true; 
     }
+    
+    
 </script>
 
 <footer>

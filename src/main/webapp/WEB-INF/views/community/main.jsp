@@ -227,10 +227,7 @@
 		 </ul>
 	
 	
-
-
-         <!-- 포스트 -->
-           
+ 
                 <div id="postContainer">
                     <jsp:include page="postList.jsp" />
                 </div>

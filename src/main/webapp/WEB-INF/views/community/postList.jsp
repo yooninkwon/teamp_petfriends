@@ -35,8 +35,8 @@
             <span class="like-button">❤️ ${post.board_likes}</span>
             <span class="comment-button">💬 ${post.board_comment_count}</span>
         	 <div class="button-container">
-<%-- 		        <a href="/community/edit?board_no=${contentView.board_no}" class="edit-button">수정</a>
-		        <a href="/community/delete?board_no=${contentView.board_no}" class="delete-button">삭제</a> --%>
+		        <a href="/community/edit?board_no=${contentView.board_no}" class="edit-button">수정</a>
+		        <a href="/community/delete?board_no=${contentView.board_no}" class="delete-button">삭제</a>
 		    </div>
         </div>
     </article>

@@ -1,6 +1,7 @@
 package com.tech.petfriends.community.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tech.petfriends.community.dto.CCategoryDto;
+import com.tech.petfriends.community.dto.CCommentDto;
 import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.mapper.IDao;
 import com.tech.petfriends.community.service.CCategoryService;
+import com.tech.petfriends.community.service.CCommentService;
 import com.tech.petfriends.community.service.CContentVieWService;
+import com.tech.petfriends.community.service.CDeleteService;
 import com.tech.petfriends.community.service.CDownloadService;
 import com.tech.petfriends.community.service.CModifyService;
 import com.tech.petfriends.community.service.CPostListService;
@@ -87,32 +91,6 @@ public class CommunityController {
 	}
 
 
-//    @PostMapping("/community/upload")
-//    public String uploadImage(MultipartHttpServletRequest request, @RequestParam("upload") MultipartFile file, Model model) {
-//        String originalFile = file.getOriginalFilename();
-//        String workPath = System.getProperty("user.dir");
-//        String root = workPath + "\\src\\main\\resources\\static\\images\\community_img";
-//
-//        // 파일 이름 및 저장 경로 설정
-//        long currentTimeMillis = System.currentTimeMillis();
-//        String changeFile = currentTimeMillis + "_" + originalFile;
-//        String pathFile = root + "\\" + changeFile;
-//
-//        try {
-//            if (!originalFile.isEmpty()) {
-//                file.transferTo(new File(pathFile));
-//                String imageUrl = "/static/images/community_img/" + changeFile;
-//
-//                // 업로드된 이미지 URL을 JSON 형식으로 반환
-//                return "{\"uploaded\": 1, \"url\": \"" + imageUrl + "\"}";
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return "{\"uploaded\": 0, \"error\": {\"message\": \"파일 업로드에 실패했습니다.\"}}";
-//    }
-
 
 
 
@@ -163,6 +141,29 @@ public String modifyView(@RequestParam("board_no") int board_no, Model model) {
 	return "/community/modifyView";
 	
 	}
+
+@GetMapping("/delete")
+public String delete(HttpServletRequest request, Model model) {
+    System.out.println("community_delete");
+    model.addAttribute("request", request);
+
+    serviceInterface = new CDeleteService(iDao);
+    serviceInterface.execute(model);
+
+    return "redirect:/community/main";
+}
+
+@PostMapping("/comment")
+public String comment(HttpServletRequest request, Model model) {
+    System.out.println("community_comment");
+    model.addAttribute("request", request);
+
+    serviceInterface = new CCommentService(iDao);
+    serviceInterface.execute(model);
+
+    return "redirect:/community/contentView?board_no=" + request.getParameter("board_no");
+}
+
 
 
 
