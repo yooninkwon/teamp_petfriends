@@ -381,8 +381,12 @@ $(document).ready(function() {
 
 			// 반려동물 이미지
 			cards += '<div class="reviewFirst">'
+			if(rlist.pet_img){
 			cards += '<img src="/static/Images/pet/' + rlist.pet_img + '" class="petImage">';
-
+			}else {
+			cards += '<img src="/static/Images/pet/noPetImg.jpg" class="petImage">';
+			}
+			
 			// 작성자 이름
 			cards += '<div class="reviewAuthor">';
 			cards += '<strong>' + rlist.pet_name + '</strong>'; // 작성자 이름
@@ -478,9 +482,28 @@ $(document).ready(function() {
 	}
 
 
+	// 이미지 클릭 이벤트 추가
+	document.addEventListener('click', function(event) {
+	    if (event.target.closest('.reviewImages')) {
+	        const clickedImage = event.target;
+	        if (clickedImage.classList.contains('reviewImage')) {
+	            // 클릭한 이미지 크기 조정
+	            if (clickedImage.classList.contains('large')) {
+	                clickedImage.classList.remove('large'); // 큰 이미지 클래스를 제거
+	            } else {
+	                const images = clickedImage.closest('.reviewImages').querySelectorAll('.reviewImage');
+	                images.forEach(img => img.classList.remove('large')); // 다른 이미지에서 큰 클래스 제거
+	                clickedImage.classList.add('large'); // 클릭한 이미지에 큰 클래스 추가
+	            }
+	        }
+	    }
+	});
 
-
-
+	// 스크롤 이벤트 추가
+	window.addEventListener('scroll', function() {
+	    const largeImages = document.querySelectorAll('.reviewImage.large');
+	    largeImages.forEach(img => img.classList.remove('large')); // 스크롤 시 모든 큰 이미지 클래스 제거
+	});
 
 
 
