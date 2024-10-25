@@ -1,0 +1,253 @@
+@charset "UTF-8";
+
+#container{
+	margin: 0 auto;
+	width: 80%;
+	height: 650px;
+	text-align: center;
+	
+}
+
+#container2{
+	margin: 0 auto;
+	width: 50%;
+	height: 650px;
+	text-align: center;
+	
+}
+
+#top{
+	width: 100%;
+	height: 150px;
+}
+
+#bottom {
+	width: 100%;
+	height: 500px;
+}
+
+#bottom2 {
+	margin-top: 30px;
+	width: 100%;
+	min-height: 100px;
+	
+}
+
+#left {
+	float: left;
+	width: 45%;
+	height: 500px;
+	padding-left: 40px;
+	
+}
+
+#right {
+	float: right;
+	width: 45%;
+	height: 500px;
+	padding-right: 40px;
+	
+}
+
+#dogDiv{
+	margin-top: 30px;
+	float: left;
+}
+
+#catDiv{
+	margin-top: 30px;
+	float: right;
+}
+
+#petName{
+	width: 60%;
+	height: 40px;
+	font-size: 25px;
+	border-radius: 8px;
+	border: 1px solid black;
+	padding-left: 20px;
+}
+
+#submitBtn{
+	margin-top: 30px;
+	width: 63%;
+	height: 40px;
+	border-radius: 8px;
+	border: none;
+	background-color: #ff4081;
+	color: white;
+	font: bold;
+	font-size: 25px;
+
+}
+
+#submitBtn:hover{
+	background-color: #e62e59;
+	cursor: pointer;
+}
+
+#photo{
+	width: 100%;
+	margin-top: 30px;
+}
+
+.upload-container {
+    width: 350px;
+    height: 350px;
+    border: 2px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9; /* 더 밝은 배경색 */
+    background-repeat: no-repeat;
+    background-size: cover; /* 이미지를 완벽하게 채우기 */
+    border-radius: 50%; /* 둥근 모서리 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
+    position: relative;
+    max-width: 100%;
+    overflow: hidden; /* 넘치는 부분을 숨김 */
+    margin: 0 auto;
+    position: relative; /* 자식 요소를 위한 relative */
+}
+
+.upload-icon {
+    font-size: 48px;
+    color: #888; /* 더 부드러운 색상 */
+    transition: color 0.3s ease; /* 색상 전환 효과 */
+}
+
+.upload-container:hover .upload-icon {
+    color: #555; /* hover 시 아이콘 색상 변경 */
+}
+
+.upload-btn {
+	position: absolute; /* 버튼을 이미지 위로 올리기 위한 절대 위치 설정 */
+	margin-left: 28%;
+	margin-top: -70px;
+    background-color: #ff4081; /* 버튼을 밝은 핑크로 */
+    color: white;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 살짝의 그림자 효과 */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* hover 전환 효과 */
+    z-index: 10;
+}
+
+#plus{
+	width: 40px;
+	margin-top: 20px;
+}
+
+.upload-btn:hover {
+    background-color: #e63070; /* hover 시 버튼 색상 변화 */
+    transform: scale(1.1); /* hover 시 살짝 확대 */
+}
+
+.upload-input {
+    display: none;
+}
+
+#type {
+
+	float: left;
+	width: 50%;
+
+}
+
+#dogType {
+	margin-top: 20px;
+	width: 70%;
+	height: 40px;
+	border: 1px solid black;
+	border-radius: 8px;
+	font: bold;
+	font-size: 20px;
+	text-align: center;
+}
+
+
+#birth {
+
+	float: right;
+	width: 50%;
+
+}
+
+#petBirth {
+	margin-top: 20px;
+	width: 70%;
+	height: 40px;
+	border: 1px solid black;
+	border-radius: 8px;
+	font: bold;
+	font-size: 20px;
+	text-align: center;
+}
+
+#popupBackground {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+#popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 600px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000;
+}
+
+#popup h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.breed-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 500px;
+    overflow-y: auto;
+}
+
+.breed-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.breed-list li:hover {
+    background-color: #f1f1f1;
+}
+
+/* 검색창 스타일 */
+#searchBreed {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}

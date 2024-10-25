@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>내새꾸 등록</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
-<link rel="stylesheet" href="/static/css/mypet/mypetRegist1.css" />
+<link rel="stylesheet" href="/static/css/mypet/mypetRegist.css" />
 </head>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -41,16 +41,16 @@ document.addEventListener('DOMContentLoaded', function() {
 			<h1>반가워요 <span style='color: #ff4081; font-size: 45px;'>${sessionScope.loginUser.mem_nick }</span> 님!</h1>
 			<h2>우리아이를 등록하시면 상품 추천이 80% 더 정확해져요!</h2>
 		</div>
-		<form action="" method="post">
+		<form action="myPetRegistPage2" method="post">
 			<div id="bottom">
 				<div id="left">
 					<h2>어떤 반려동물과 함께하고 계신가요?</h2>
 					<div id="dogDiv">
-						<img id="dogImg" src="<c:url value='/static/Images/mypet/dogImg1.png'/>" alt="Evemt 3"> <br />
+						<img id="dogImg" src="<c:url value='/static/Images/mypet/dogImg1.png'/>" alt=""> <br />
 						<input type="radio" name="petType" value="dog" checked />강아지
 					</div>
 					<div id="catDiv">
-						<img id="catImg" src="<c:url value='/static/Images/mypet/catImg1.png'/>" alt="Evemt 3"> <br />
+						<img id="catImg" src="<c:url value='/static/Images/mypet/catImg1.png'/>" alt=""> <br />
 						<input type="radio" name="petType" value="cat" />고양이
 					</div>
 				</div>
