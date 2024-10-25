@@ -16,6 +16,10 @@ public class ProductDetailCartCheckService implements ProductService {
 	@Override
 	public void execute(Model model) {
 		
+
+		
+		
+		
 		String pro_code = (String) model.getAttribute("proCode");
 		String mem_code = (String) model.getAttribute("memCode");
 		String opt_code = (String) model.getAttribute("optCode");

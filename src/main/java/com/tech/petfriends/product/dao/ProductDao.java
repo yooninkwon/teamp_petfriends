@@ -9,6 +9,7 @@ import com.tech.petfriends.product.dto.ProductDetailCartCheckDto;
 import com.tech.petfriends.product.dto.ProductDetailDto;
 import com.tech.petfriends.product.dto.ProductDetailOptionDto;
 import com.tech.petfriends.product.dto.ProductDetailPointDto;
+import com.tech.petfriends.product.dto.ProductDetailReviewListDto;
 import com.tech.petfriends.product.dto.ProductDetailReviewRankDto;
 import com.tech.petfriends.product.dto.ProductDetailWishListDto;
 import com.tech.petfriends.product.dto.ProductListViewDto;
@@ -48,6 +49,8 @@ public interface ProductDao {
 
 	//제품상세페이지 _ 해당유저 장바구니 담으려는 상품이 장바구니 존재유무 확인
 	public ProductDetailCartCheckDto productDetailCartCheck(String mem_code, String pro_code, String opt_code);
+
+	public ArrayList<ProductDetailReviewListDto> productDetailReviewList(String proCode, String selectedOpt);
 
 	
 	

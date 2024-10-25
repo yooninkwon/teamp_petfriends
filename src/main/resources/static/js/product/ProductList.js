@@ -300,6 +300,9 @@ $(document).ready(function() {
 		window.location.href = `/product/productDetail?code=${productCode}`;
 	});
 
+	
+	
+	
 });
 
 
