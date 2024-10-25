@@ -18,8 +18,10 @@
 	</script>
 	PETHOTEL RESERVE
 	예약
-	<input type="" min=""/> <!-- 장기 투숙일 수도 있으니 끝나는날짜는 제한 x -->
+
 	
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>
+
+<!-- <input type="" min=""/> <!-- 장기 투숙일 수도 있으니 끝나는날짜는 제한 x -->
