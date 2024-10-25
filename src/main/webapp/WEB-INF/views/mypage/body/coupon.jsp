@@ -50,7 +50,7 @@
 		        <p>사용기간: ${coupons.cp_dead} 까지</p>
 		        <p>발급기간: ${coupons.cp_start} ~ ${coupons.cp_end}</p>
 		    </div>
-		    <button class="coupon-btn able-btn" data-coupon-no="${coupons.cp_no}" >쿠폰 받기<i class="fa-solid fa-download"></i></button>
+		    <button class="coupon-btn able-btn" id="receive-btn" data-coupon-no="${coupons.cp_no}" >쿠폰 받기<i class="fa-solid fa-download"></i></button>
           </div>
         </c:forEach>
         
@@ -149,7 +149,7 @@
     });
  	
     // 쿠폰 받기 AJAX
-    document.querySelectorAll('.receive-btn').forEach(function(btn) {
+    document.querySelectorAll('#receive-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
         var couponNo = this.dataset.couponNo;
         $.ajax({

@@ -78,9 +78,12 @@ h2 {
     text-align: center;
     margin-bottom: 40px;
 }
-
-#footer {
-    margin-top: auto;
+#brbrbr {
+    min-height: 0;
+    margin-bottom: 0;
+}
+#wrapper {
+    min-height: 0;
 }
 
 /* 내 새꾸 */

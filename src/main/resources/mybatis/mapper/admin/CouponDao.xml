@@ -17,6 +17,10 @@
 				<when test="status == '종료'">SYSDATE > CP_END</when>
 			</choose>
 			<choose>
+				<when test="kind == '전체'">AND CP_KIND IN ('P', 'G')</when>
+				<otherwise>AND CP_KIND = #{kind}</otherwise>
+			</choose>
+			<choose>
 				<when test="type == '전체'">AND CP_TYPE IN ('A', 'R')</when>
 				<otherwise>AND CP_TYPE = #{type}</otherwise>
 			</choose>
@@ -90,5 +94,37 @@
         </where>
         ORDER BY MC.MC_ISSUE DESC
     </select>
+	
+	<insert id="registerCoupon" parameterType="com.tech.petfriends.admin.dto.CouponDto">
+	    INSERT INTO COUPON
+	    VALUES (COUPON_SEQ.NEXTVAL, #{cp_name}, #{cp_keyword}, #{cp_kind}, #{g_no}, #{cp_start}, #{cp_end}, #{cp_dead}, #{cp_type}, #{cp_amount})
+	</insert>
+	
+	<select id="getCouponById" resultType="com.tech.petfriends.admin.dto.CouponDto">
+		SELECT *
+		FROM COUPON
+		WHERE CP_NO = #{cp_no}
+	</select>
+	
+	<update id="updateCoupon" parameterType="com.tech.petfriends.admin.dto.CouponDto">
+	    UPDATE COUPON
+	    SET
+	        CP_NAME = #{cp_name},
+	        CP_KEYWORD = #{cp_keyword},
+	        CP_KIND = #{cp_kind},       <!-- 일반쿠폰/등급쿠폰 구분 -->
+	        G_NO = #{g_no},             <!-- 등급쿠폰일 경우 등급번호 -->
+	        CP_START = #{cp_start},
+	        CP_END = #{cp_end},
+	        CP_DEAD = #{cp_dead},
+	        CP_TYPE = #{cp_type},       <!-- 할인액 or 할인율 -->
+	        CP_AMOUNT = #{cp_amount}
+	    WHERE CP_NO = #{cp_no}
+	</update>
+	
+	<delete id="deleteCoupon">
+		DELETE
+		FROM COUPON
+		WHERE CP_NO = #{cp_no}
+	</delete>
 	
 </mapper>

@@ -54,7 +54,7 @@ label {
 }
 .radio-group {
     display: flex;
-	width: 50%;
+	width: 100%;
     border: 2px solid white;
     background-color: #efefef;
 }
@@ -98,6 +98,89 @@ input[type="text"] {
     padding: 5px;
     text-align: center;
     font-size: 14px;
+}
+
+/* 모달창 */
+.modal {
+    position: fixed; 
+    z-index: 9999; 
+    left: 0; 
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.4); /* 반투명 검정 배경 */
+}
+.modal-content {
+    position: relative;
+    margin: 10% auto; /* 중앙 정렬 */
+    padding: 40px;
+    width: 600px;
+    background-color: #f4f4f4;
+    text-align: left;
+}
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+}
+.input-group {
+	display: flex;
+    margin: 5px;
+    height: 30px;
+}
+.input-group label {
+	width: 120px;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+.input-group select {
+    width: 100px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    margin-right: 5px;
+}
+.cpType-group {
+    display: flex;
+    gap: 20px;
+    margin: 5px;
+}
+.cpType-group label {
+    font-size: 16px;
+    cursor: pointer;
+}
+.cpType-group input {
+    margin-right: 5px;
+}
+#sameAsEndDate {
+	width: 40px;
+    height: 20px;
+}
+#discountUnit {
+    font-size: 17px;
+    margin-left: 5px;
+}
+#registerCouponBtn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: #555;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+#registerCouponBtn:hover {
+    background-color: #333;
 }
 
 /* 페이지네이션 */
