@@ -9,10 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
 	const closeAddPetButton = document.querySelector('.close-add-pet-button'); // .add-pet-button의 태그를 찾아 반환해줌
 	const popupForm = document.getElementById('popup-form'); // popup-form의 태그를 찾아 반환해줌
 	const savePetButton = document.getElementById('save-pet'); // save-pet의 태그를 찾아 반환해줌
+	const backButton = document.querySelector('.back-button');
 	const registerButton = document.querySelector('.register-button');
 	const formDataObj = [];
 
-	addPetButton.addEventListener('click', () => {
+	backButton.addEventListener('click', () => {
+		window.location.href = '/helppetf/pethotel/pethotel_main';
+	});
+
+		addPetButton.addEventListener('click', () => {
 		popupForm.style.display = 'flex'; // 팝업을 중앙에 표시
 	});
 
