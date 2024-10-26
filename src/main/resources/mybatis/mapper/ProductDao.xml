@@ -263,6 +263,7 @@
 	
 	</select>
 	
+	<!-- 현재 장바구니에 담으려는 제품+옵션이 담겨있는지 확인하는 쿼리 -->
 	<select id="productDetailCartCheck"
 		resultType="com.tech.petfriends.product.dto.ProductDetailCartCheckDto">
 		SELECT
@@ -277,6 +278,7 @@
 			PROOPT_CODE	= #{opt_code} 
 	</select>
 	
+	<!-- 제품상세페이지 _ 리뷰리스트 불러오기 -->
 	<select id="productDetailReviewList"
 		resultType="com.tech.petfriends.product.dto.ProductDetailReviewListDto">
 		SELECT
@@ -294,4 +296,19 @@
 			${selectedOpt}
 	</select>
 	
+	<!-- 헤더 검색페이지 인기순위 top10 -->
+	<select id="productSearchReviewRank10"
+		resultType="com.tech.petfriends.product.dto.ProductSearchReviewRank10Dto">
+		SELECT 
+ 		   PRO.PRO_CODE, PRO.PRO_NAME, PRO.PRO_PETS, PRO.PRO_TYPE, AVG(PROREV.REVIEW_RATING) AS REVIEW_RATING
+		FROM 
+    		PRODUCT PRO
+		LEFT JOIN 
+    		PRODUCT_REVIEW PROREV ON PRO.PRO_CODE=PROREV.PRO_CODE
+		GROUP BY 
+    		PRO.PRO_CODE, PRO.PRO_NAME, PRO.PRO_TYPE, PRO.PRO_PETS
+		ORDER BY 
+    		REVIEW_RATING DESC NULLS LAST
+    	
+	</select>
 </mapper>

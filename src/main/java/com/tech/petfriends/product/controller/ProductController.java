@@ -26,6 +26,7 @@ import com.tech.petfriends.product.service.ProductDetailCartService;
 import com.tech.petfriends.product.service.ProductDetailReviewListService;
 import com.tech.petfriends.product.service.ProductDetailService;
 import com.tech.petfriends.product.service.ProductListViewService;
+import com.tech.petfriends.product.service.ProductSearchReviewRank10Service;
 import com.tech.petfriends.product.service.ProductService;
 import com.tech.petfriends.product.service.ProductWishListService;
 
@@ -149,6 +150,17 @@ public class ProductController {
 		List<ProductDetailReviewListDto> reviewList = (List<ProductDetailReviewListDto>) model.getAttribute("reviewList");
 		
 		return reviewList;
+	}
+	
+	//헤더 검색기능 페이지
+	@RequestMapping("/productSearch")
+	public String productSearch(Model model)	{
+		
+		productService = new ProductSearchReviewRank10Service(productDao);
+		productService.execute(model);
+		
+		
+		return "product/productSearch";
 	}
 	
 }
