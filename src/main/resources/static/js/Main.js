@@ -96,3 +96,23 @@ $(document).ready(function(){
     // 4초마다 슬라이드 전환
     setInterval(showNextSlide, 4000);
 });
+
+
+
+// 드롭다운 토글 함수
+   function toggleSearchDropdown() {
+       const dropdown = document.getElementById("searchDropdown");
+       
+       // 드롭다운이 숨겨져 있다면 AJAX로 내용을 불러오고 표시
+       if (dropdown.style.display === "none") {
+           fetch('/product/productSearch')
+               .then(response => response.text())
+               .then(data => {
+                   dropdown.innerHTML = data;
+                   dropdown.style.display = "block";
+               })
+               .catch(error => console.error('오류 발생:', error));
+       } else {
+           dropdown.style.display = "none"; // 다시 클릭 시 숨김
+       }
+   }
