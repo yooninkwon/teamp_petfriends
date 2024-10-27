@@ -54,7 +54,13 @@ public interface ProductDao {
 	//제품상세페이지 _ 제품리뷰 리스트 나열 쿼리
 	public ArrayList<ProductDetailReviewListDto> productDetailReviewList(String proCode, String selectedOpt);
 
+	//검색아이콘 _ 제품 탑10 제품 나열 쿼리
 	public ArrayList<ProductSearchReviewRank10Dto> productSearchReviewRank10();
+
+	//검색아이콘 _ 검색제품 나열 쿼리
+	public List<ProductListViewDto> productSearchList(String searchPro);
+	
+	
 
 	
 	

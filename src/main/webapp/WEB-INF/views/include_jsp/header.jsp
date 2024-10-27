@@ -8,6 +8,7 @@
 	    var userName = "${sessionScope.loginUser.mem_name}";
 	</script>
 	<script src="/static/js/Main.js"></script>
+	
 	<div id="menu">
 	    <a href="/"><img src="<c:url value='/static/Images/MainImg/LOGO_white.png'/>" id="top_logo" alt=""></a>
 	    <div class="menu_icons">
