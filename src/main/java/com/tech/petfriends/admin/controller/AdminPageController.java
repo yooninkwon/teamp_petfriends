@@ -45,14 +45,8 @@ public class AdminPageController {
 		return "admin/petteacher";
 	}
 
-	// 어드민-펫티쳐 게시글 작성 페이지 이동
-	@GetMapping("/petteacher_form")
-	public String petteacherAdminForm() {
-		return "admin/petteacher_form";
-	}
-
 	// 어드민-펫티쳐 상세페이지
-	@GetMapping("/petteacher_detail")
+	@GetMapping("/petteacher_admin_detail")
 	public String petteacherAdminDetail(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		adminServInter = new AdminPetteacherDetailService(adminDao);
@@ -61,7 +55,7 @@ public class AdminPageController {
 	}
 
 	// 어드민-펫티쳐 게시글 작성완료 버튼 클릭시
-	@PostMapping("/petteacher_write")
+	@PostMapping("/petteacher_admin_write")
 	public String petteacherAdminWrite(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		adminServInter = new AdminPetteacherWriteService(adminDao);
@@ -70,12 +64,12 @@ public class AdminPageController {
 	}
 
 	// 어드민-펫티쳐 상세페이지에서 삭제버튼 클릭시
-	@GetMapping("/petteacher_delete")
+	@GetMapping("/petteacher_admin_delete")
 	public String petteacherAdminDelete(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		adminServInter = new AdminPetteacherDelete(adminDao);
 		adminServInter.execute(model);
-		return "redirect:/admin/admin_petteacher";
+		return "redirect:/admin/petteacher";
 	}
 
 	@GetMapping("/home")

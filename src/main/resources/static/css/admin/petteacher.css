@@ -103,7 +103,7 @@ input[type="text"] {
 	margin: 0 5px;
 }
 
-.coupon-list {
+.petteacher-list {
 	width: 100%;
 	border-collapse: collapse;
 }
@@ -112,7 +112,7 @@ input[type="text"] {
 	background-color: #dddddd;
 }
 
-.coupon-list th, td {
+.petteacher-list th, td {
 	border: 1px solid #cdcdcd;
 	padding: 5px;
 	text-align: center;
@@ -197,7 +197,7 @@ input[type="text"] {
 	margin-left: 5px;
 }
 
-#registerCouponBtn {
+#registerPetteacherBtn {
 	width: 100%;
 	padding: 10px;
 	margin-top: 15px;
@@ -210,17 +210,17 @@ input[type="text"] {
 	transition: background-color 0.3s ease;
 }
 
-#registerCouponBtn:hover {
+#registerPetteacherBtn:hover {
 	background-color: #333;
 }
 
 /* 페이지네이션 */
-.coupon-list-container {
+.petteacher-list-container {
 	position: relative;
 	min-height: calc(100vh - 245px);
 }
 
-.member-coupon-list-container {
+.member-petteacher-list-container {
 	position: relative;
 	min-height: calc(100vh - 280px);
 }

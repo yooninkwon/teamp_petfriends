@@ -10,32 +10,32 @@
 <link rel="stylesheet" href="/static/css/admin/petteacher.css" />
 </head>
 <body>
-<!--  -->
+<!-- 동물종류마다 th, 칼럼마다 width 비율 조정하기 -->
 
 
 <div class="title"><h3>펫티쳐 게시글 관리</h3></div>
 
 <!-- 게시글 등록 -->
-<div id="couponRegister" class="tab-content">
+<div id="petteacherRegister" class="tab-content">
 	<!-- 필터링 영역 -->
-	<div class="filter-section-1" id="status-filter">
+	<div class="filter-section-1" id="petteacher-filter">
 	    <div class="radio-group">
 	        <div class="filter-title">동물 종류</div>
-	        <label><input type="radio" name="pet-type-filter" value="all" checked> all</label>
-	        <label><input type="radio" name="pet-type-filter" value="cat"> 고양이</label>
-	        <label><input type="radio" name="pet-type-filter" value="dog"> 강아지</label>
-	        <label><input type="radio" name="pet-type-filter" value="etc"> 기타 동물</label>
+	        <label><input type="radio" name="pet-type-filter" value="전체" checked> 전체</label>
+	        <label><input type="radio" name="pet-type-filter" value="고양이"> 고양이</label>
+	        <label><input type="radio" name="pet-type-filter" value="강아지"> 강아지</label>
+	        <label><input type="radio" name="pet-type-filter" value="기타 동물"> 기타 동물</label>
 	    </div>
 	    <div class="radio-group" id="category-filter">
 	        <div class="filter-title">카테고리</div>
 			<select name="category-filter" id="category">
-				<option value="0">all</option>
-				<option value="1">훈련</option>
-				<option value="2">건강</option>
-				<option value="3">습관</option>
-				<option value="4">관찰</option>
-				<option value="5">케어</option>
-				<option value="6">생활</option>
+				<option value="전체" selected>전체</option>
+				<option value="훈련">훈련</option>
+				<option value="건강">건강</option>
+				<option value="습관">습관</option>
+				<option value="관찰">관찰</option>
+				<option value="케어">케어</option>
+				<option value="생활">생활</option>
 			</select>
 	    </div>
 	</div>
@@ -48,24 +48,25 @@
             <option value="조회수순">조회수순</option>
         </select>
 	    <!-- 신규등록 버튼 -->
-	    <button id="new-coupon-btn" class="btn-style">신규등록</button>
+	    <button id="new-petteacher-btn" class="btn-style">신규등록</button>
 	</div>
 	
 	<!-- 리스트 영역 -->
-	<div class="coupon-list-container">
-		<table class="coupon-list">
+	<div class="petteacher-list-container">
+		<table class="petteacher-list">
 		    <thead class="thead">
 		        <tr>
 		            <th>번호</th>
 		            <th>카테고리</th>
 					<th>제목</th>
+					<th>동물종류</th>
 					<th>설명</th>
 		            <th>등록일</th>
 		            <th>조회수</th>
 		            <th>수정 / 삭제</th>
 		        </tr>
 		    </thead>
-		    <tbody id="coupon-table-body">
+		    <tbody id="petteacher-table-body">
 		        <!-- 전체 쿠폰 데이터 출력 -->
 		    </tbody>
 		</table>
@@ -77,30 +78,42 @@
 </div>
 
 
-<!-- 쿠폰 등록 모달창 -->
-<div id="couponModal" class="modal" style="display: none;">
+<!-- 게시글 등록 모달창 -->
+<div id="petteacherModal" class="modal" style="display: none;">
     <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></span>
+        <span class="close-btn"><i class="fa-solid fa-xmark"></i></span>
         
         <!-- 쿠폰 정보 입력 -->
         <div class="input-group">
-            <label for="cpName">제목</label>
-            <input type="text" id="cpName">
+            <label for="hpt_title">제목</label>
+            <input type="text" id="hpt_title">
         </div>
         
         <div class="input-group">
-            <label for="cpKeyword">설명</label>
-            <input type="text" id="cpKeyword">
+            <label for="hpt_exp">설명</label>
+            <input type="text" id="hpt_exp">
         </div>
         
-        <!-- 일반 쿠폰/등급 쿠폰 라디오 버튼 -->
-        <div class="cpType-group">
+        <div class="hpt_pettype">
            	<label for="petType">동물종류</label> <!-- 폰트, css조정 -->
             <select id="petType" name="petType">
 				<option disabled selected>동물종류</option>
-				<option value="cat">고양이</option>
-				<option value="dog">강아지</option>
-				<option value="etc">기타 동물</option>
+				<option value="고양이">고양이</option>
+				<option value="강아지">강아지</option>
+				<option value="기타 동물">기타 동물</option>
+        	</select>
+        </div>
+        
+        <div class="hpt_category">
+           	<label for="category">카테고리</label> <!-- 폰트, css조정 -->
+            <select id="category" name="category">
+				<option disabled selected>카테고리</option>
+				<option value="훈련">훈련</option>
+				<option value="건강">건강</option>
+				<option value="습관">습관</option>
+				<option value="관찰">관찰</option>
+				<option value="케어">케어</option>
+				<option value="생활">생활</option>
         	</select>
         </div>
         
@@ -108,21 +121,11 @@
         <div id="periodSelect">
 	        <div class="input-group">
 	            <label for="hpt_content">내용</label>
-	            <textarea name="hpt_content" cols="30" rows="10"></textarea>
+	            <textarea id="hpt_content" name="hpt_content" cols="30" rows="10"></textarea>
 	        </div>
-	
-	        <div class="input-group">
-	            <label for="endDate">발급 종료일</label>
-	            <input type="date" id="endDate">
-	        </div>
-	
-	        <div class="input-group">
-	            <label for="deadDate">https://www.youtube.com/watch?v=</label>
-	            <input type="text" id="deadDate">
-	        </div>
-        </div>
+	     </div>
 
-        <button id="registerCouponBtn" onclick="submitCoupon()">등록완료</button>
+        <button id="registerPetteacherBtn" onclick="submitPetteacher()">등록완료</button>
     </div>
 </div>
 

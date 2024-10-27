@@ -1,10 +1,7 @@
 package com.tech.petfriends.admin.service;
 
-import java.util.ArrayList;
-
 import org.springframework.ui.Model;
 
-import com.tech.petfriends.admin.dto.AdminHelpPetfDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 
 public class AdminPetteacherService implements AdminServiceInterface {
