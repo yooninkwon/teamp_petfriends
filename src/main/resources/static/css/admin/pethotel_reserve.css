@@ -7,6 +7,12 @@
 	padding: 20px 35px;
 	text-align: left;
 }
+
+.tab-section {
+	display: flex;
+	justify-content: flex-start;
+	background-color: #efefef;
+}
 a {
 	color: #000;
 	text-decoration: none;
@@ -18,12 +24,6 @@ a:visited {
 	color: #000;
 	text-decoration: none;
 }
-.tab-section {
-	display: flex;
-	justify-content: flex-start;
-	background-color: #efefef;
-}
-
 .tab-btn {
 	padding: 10px 20px;
 	background-color: #dddddd;
@@ -145,7 +145,6 @@ input[type="text"] {
 	margin: 10% auto; /* 중앙 정렬 */
 	padding: 40px;
 	width: 600px;
-	height: 500px;
 	background-color: #f4f4f4;
 	text-align: left;
 }
@@ -211,7 +210,7 @@ input[type="text"] {
 #registerPetteacherBtn {
 	width: 100%;
 	padding: 10px;
-	margin-top: 150px;
+	margin-top: 15px;
 	background-color: #555;
 	color: white;
 	font-size: 16px;
@@ -257,17 +256,6 @@ input[type="text"] {
 #pagination a:hover {
 	background-color: #545454;
 	color: white;
-}
-
-#hpt_content {
-	margin-top: 5px;
-	margin-left: 30px;
-    width: 500px;
-    height: 160px;
-}
-
-#hpt_pettype, #hpt_category {
-	margin-left: 47px;
 }
 
 #pagination a.active {

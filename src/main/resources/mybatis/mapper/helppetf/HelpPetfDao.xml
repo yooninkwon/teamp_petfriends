@@ -37,4 +37,12 @@
 		TEMP_FIND_ADDR
 		WHERE USER_ID = #{userId}
 	</select>
+		<select id="pethotelIntro" resultType="com.tech.petfriends.helppetf.dto.PethotelIntroDto">
+		SELECT * FROM HELP_PETHOTEL_INTRO
+	</select>
+	<select id="pethotelInfo" resultType="com.tech.petfriends.helppetf.dto.PethotelInfoDto">
+		SELECT * FROM HELP_PETHOTEL_INFO
+	</select>
+	
+	
 </mapper>

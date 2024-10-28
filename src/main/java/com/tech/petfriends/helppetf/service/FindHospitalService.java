@@ -15,6 +15,10 @@ public class FindHospitalService implements HelppetfServiceInter {
 
 	@Override
 	public void execute(Model model) {
+
+		model.addAttribute("main_navbar_id", "helppetf");
+		model.addAttribute("sub_navbar_id", "pet_hospital");
+		
 		String apiKey = (String) model.getAttribute("apiKey");
 		model.addAttribute("apiKey", apiKey);
 		

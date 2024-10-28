@@ -21,6 +21,9 @@ public class PetteacherDetailService implements HelppetfServiceInter {
 
 	@Override
 	public void execute(Model model) {
+
+		model.addAttribute("main_navbar_id", "helppetf");		
+		model.addAttribute("sub_navbar_id", "petteacher");
 		
 		Map<String, Object> map = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
