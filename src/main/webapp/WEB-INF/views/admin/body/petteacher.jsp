@@ -10,9 +10,6 @@
 <link rel="stylesheet" href="/static/css/admin/petteacher.css" />
 </head>
 <body>
-<!-- 동물종류마다 th, 칼럼마다 width 비율 조정하기 -->
-
-
 <div class="title"><h3>펫티쳐 게시글 관리</h3></div>
 
 <!-- 게시글 등록 -->
@@ -103,34 +100,36 @@
             <label for="hpt_channal">채널명</label>
             <input type="text" id="hpt_channal">
         </div>
-        
-        <div class="hpt_pettype">
-           	<label for="hpt_pettype">동물종류</label> <!-- 폰트, css조정 -->
-            <select id="hpt_pettype" name="hpt_pettype">
-				<option disabled selected>동물종류</option>
-				<option value="고양이">고양이</option>
-				<option value="강아지">강아지</option>
-				<option value="기타 동물">기타 동물</option>
-        	</select>
+        <div class="input-group">
+	        <div class="hpt_pettype">
+	           	<label for="hpt_pettype">동물종류</label> <!-- 폰트, css조정 -->
+	            <select id="hpt_pettype" name="hpt_pettype">
+					<option disabled selected>동물종류</option>
+					<option value="고양이">고양이</option>
+					<option value="강아지">강아지</option>
+					<option value="기타 동물">기타 동물</option>
+	        	</select>
+	        </div>
         </div>
-        
-        <div class="hpt_category">
-           	<label for="hpt_category">카테고리</label> <!-- 폰트, css조정 -->
-            <select id="hpt_category" name="hpt_category">
-				<option disabled selected>카테고리</option>
-				<option value="훈련">훈련</option>
-				<option value="건강">건강</option>
-				<option value="습관">습관</option>
-				<option value="관찰">관찰</option>
-				<option value="케어">케어</option>
-				<option value="생활">생활</option>
-        	</select>
+        <div class="input-group">
+	        <div class="hpt_category">
+	           	<label for="hpt_category">카테고리</label> <!-- 폰트, css조정 -->
+	            <select id="hpt_category" name="hpt_category">
+					<option disabled selected>카테고리</option>
+					<option value="훈련">훈련</option>
+					<option value="건강">건강</option>
+					<option value="습관">습관</option>
+					<option value="관찰">관찰</option>
+					<option value="케어">케어</option>
+					<option value="생활">생활</option>
+	        	</select>
+	        </div>
         </div>
         
         <!-- 발급 시작일, 종료일, 만료 예정일 입력 -->
         <div id="periodSelect">
 	        <div class="input-group">
-	            <label for="hpt_content">내용</label>
+	            <label for="hpt_content">내용</label> <br />
 	            <textarea id="hpt_content" name="hpt_content" cols="30" rows="10"></textarea>
 	        </div>
 	     </div>

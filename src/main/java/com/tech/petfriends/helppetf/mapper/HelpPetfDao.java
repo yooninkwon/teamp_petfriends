@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
+import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 
 @Mapper
@@ -16,4 +18,8 @@ public interface HelpPetfDao {
 	public String findUserAddr(String userId);
 
 	public void upViews(String hpt_seq);
+
+	public PethotelIntroDto pethotelIntro();
+
+	public PethotelInfoDto pethotelInfo();
 }

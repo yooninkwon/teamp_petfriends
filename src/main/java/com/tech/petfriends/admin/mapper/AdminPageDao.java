@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
+import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 
 @Mapper
@@ -23,4 +25,16 @@ public interface AdminPageDao {
 
 	void adminPetteacherEdit(String hpt_seq, String hpt_channal, String hpt_title, String hpt_exp, String hpt_content,
 			String hpt_yt_videoid, String hpt_pettype, String hpt_category);
+
+	PethotelIntroDto adminPethotelIntro();
+
+	PethotelInfoDto adminPethotelInfo();
+
+	void adminPethotelIntroEdit(String intro_line1, String intro_line2, String intro_line3, String intro_line4,
+			String intro_line5, String intro_line6, String intro_line7, String intro_line8, String intro_line9);
+
+	void adminPethotelInfoEdit(String info_line1, String info_line2, String info_line3, String info_line4,
+			String info_line5, String info_line6, String info_line7, String info_line8, String info_line9,
+			String info_line10, String info_line11, String info_line12, String info_line13, String info_line14,
+			String info_line15, String info_line16);
 }
