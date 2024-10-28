@@ -8,10 +8,13 @@
 	    var userName = "${sessionScope.loginUser.mem_name}";
 	</script>
 	<script src="/static/js/Main.js"></script>
+	
 	<div id="menu">
 	    <a href="/"><img src="<c:url value='/static/Images/MainImg/LOGO_white.png'/>" id="top_logo" alt=""></a>
 	    <div class="menu_icons">
-	        <img src="<c:url value='/static/Images/MainImg/search_icon.png'/>" id="search_icon" alt="">
+	        <a href="javascript:void(0);" onclick="toggleSearchDropdown()" id="search_icontag">
+	        	<img src="<c:url value='/static/Images/MainImg/search_icon.png'/>" id="search_icon" alt="">
+	        </a>
 	        <img src="<c:url value='/static/Images/MainImg/user_icon.png'/>" id="user_icon" alt="">
 	        <c:if test="${sessionScope.loginUser.mem_nick eq 'admin'}">
 	    		<a href="<c:url value='/admin/home' />">
@@ -20,9 +23,13 @@
 			</c:if>
 	    </div>
 	</div><br>
+	
+	<!-- 드롭다운 형태로 표시할 검색 영역 -->
+	<div id="searchDropdown" style="display: none;"></div>
+	
 	<div id="main_nav">
 	    <ul>
-	        <li><a href="/product/productlist">PRODUCT</a></li>
+	        <li><a id="proClick" href="/product/productlist">PRODUCT</a></li>
 	        <li><a href="">NOTICE</a></li>
 	        <li><a href="/community/main">COMMUNITY</a></li>
 	        <li><a id="helppetf" href="/helppetf/find/pet_hospital">HELP PETF!</a></li>   

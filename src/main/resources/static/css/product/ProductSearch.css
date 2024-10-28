@@ -1,0 +1,137 @@
+@charset "UTF-8";
+
+.searchPage{
+	display: flex; /* 플렉스 컨테이너 설정 */
+	  flex-direction: column; /* 세로 방향으로 나열 */
+    align-items: center; /* 자식 요소들을 가로 방향으로 중앙 정렬 */
+}
+.searchProductList {
+    
+    align-items: center; /* 수직 중앙 정렬 */
+    margin-bottom: 10px; /* 아래쪽 여백 추가 */
+    
+}
+
+#searchInput {
+	width: 100%;
+    
+}
+
+.top10ProductList {
+    
+    margin-top: 20px;
+     
+     
+}
+
+.top10ProductList ol {
+    padding: 0; /* 리스트의 기본 패딩을 제거 */
+    margin: 0; /* 리스트의 기본 마진을 제거 */
+    
+}
+
+.top10ProductList ol span {
+    font-weight: bold; /* 글씨를 굵게 설정 */
+    font-size: 15px;
+}
+
+
+.top10ProductList li a{
+    font-size: 12px; /* 원하는 글씨 크기로 변경 */
+    line-height: 1.5; /* 줄 간격 조정 (선택 사항) */
+    color: inherit; /* 부모 요소의 색상을 상속받도록 설정 */
+    text-decoration: none; /* 링크의 기본 밑줄 제거 */
+    
+    
+}
+
+.top10ProductList li a:hover {
+    color: #ff4081; /* 호버 시 색상 변경 없음 */
+    text-decoration: none; /* 호버 시에도 밑줄 없음 */
+}
+
+
+.searchList {
+    display: flex; /* Flexbox 활성화 */
+    flex-wrap: wrap; /* 줄바꿈 허용 */
+    justify-content: space-between; /* 아이템 사이의 공간 조절 */
+}
+
+.product-Item {
+    width: calc(30% - 10px); /* 너비를 3개씩 나열되게 설정 */
+    margin-bottom: 20px; /* 아래쪽 여백 추가 */
+    position: relative; /* 품절 오버레이를 위한 설정 */
+    text-align: center;
+    overflow: hidden; /* 내용이 넘치지 않도록 설정 */
+    font-size: 14px; /* 기본 폰트 크기를 줄임 */
+}
+
+.product-image-wrapper {
+    position: relative; /* 품절 오버레이를 위한 설정 */
+}
+
+.product-Item img {
+    width: 40%; /* 이미지 크기를 줄여서 80%로 조정 */
+    height: auto; /* 이미지 비율 유지 */
+    display: block; /* 이미지 아래 여백 제거 */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+.product-Item h3 {
+    font-size: 16px; /* 제목 글씨 크기 조정 */
+    margin: 5px 0; /* 위아래 여백 조정 */
+}
+
+.product-Item p {
+    font-size: 10px; /* 가격 글씨 크기 조정 */
+    margin: 5px 0; /* 위아래 여백 조정 */
+}
+
+
+.sold-out-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
+    color: white;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    z-index: 0;
+}
+
+.product-image-wrapper {
+    position: relative;
+}
+
+.star {
+    font-size: 16px;
+    color: #f5c518;  /* 노란색 */
+    position: relative;
+    display: inline-block;
+}
+
+.star.half {
+    background: linear-gradient(90deg, #f5c518 50%, #ddd 50%);  /* 반쪽 노란 별 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.star.gray {
+    color: #ddd;  /* 회색 */
+}
+
+.product-Item {
+    cursor: pointer;
+}
+
+#proClick {
+	text-decoration: none; /* 기존 언더라인 제거 */
+	color: rgb(251, 0, 88)  !important;
+	box-shadow: 0 3px 0 rgb(251, 0, 88); /* 밑에 그림자를 이용한 언더라인 */
+	padding-bottom: 10px;
+}

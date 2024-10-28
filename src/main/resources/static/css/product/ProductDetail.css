@@ -344,7 +344,12 @@
     background-color: #ddd;
 }
 
-
+#proClick {
+	text-decoration: none; /* 기존 언더라인 제거 */
+	color: rgb(251, 0, 88)  !important;
+	box-shadow: 0 3px 0 rgb(251, 0, 88); /* 밑에 그림자를 이용한 언더라인 */
+	padding-bottom: 10px;
+}
 
 
 
