@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tech.petfriends.admin.dto.CouponDto;
+import com.tech.petfriends.configuration.ApikeyConfig;
+import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dao.MypageDao;
 import com.tech.petfriends.mypage.dto.GradeDto;
@@ -31,6 +33,8 @@ public class MyPageController {
 	
 	@Autowired
 	private MypageDao mypageDao;
+	@Autowired
+	ApikeyConfig apikeyConfig;
 	
 	@GetMapping("/mypet")
 	public String mypet(Model model, HttpSession session) {
@@ -56,11 +60,28 @@ public class MyPageController {
 		return "redirect:/mypage/mypet";
 	}
 	
+	@GetMapping("/mypet/register")
+	public String mypetRegister() {
+		return "mypage/mypet/register";
+	}
+	
+	@GetMapping("/mypet/modify")
+	public String mypetModify(HttpServletRequest request, Model model) {
+		
+		String petCode = request.getParameter("petCode");
+		
+        MyPetDto info = mypageDao.getInfoByPetCode(petCode);
+        
+		model.addAttribute("info",info);
+        
+		return "mypage/mypet/modify";
+	}
+	
 	@GetMapping("/grade")
 	public String grade(Model model, HttpSession session) {
 
 		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
-        GradeDto userGrade = mypageDao.getGradeByMemberCode(loginUser.getMem_code());
+		GradeDto userGrade = (GradeDto) session.getAttribute("userGrade");
         
         model.addAttribute("loginUser",loginUser);
         model.addAttribute("userGrade",userGrade);
@@ -81,7 +102,7 @@ public class MyPageController {
 		ArrayList<CouponDto> coupons = mypageDao.getAllCoupon();
 		ArrayList<CouponDto> mycoupons = mypageDao.getCouponByMemberCode(loginUser.getMem_code());
 		
-		ArrayList<CouponDto> issuedCoupons = new ArrayList<>();;
+		ArrayList<CouponDto> issuedCoupons = new ArrayList<>();
 		// coupons 리스트에서 Iterator 사용
 		Iterator<CouponDto> iterator = coupons.iterator();
 		while (iterator.hasNext()) {
@@ -90,7 +111,7 @@ public class MyPageController {
 		    for (CouponDto mycoupon : mycoupons) {
 		        if (coupon.getCp_no() == mycoupon.getCp_no()) {
 		            // cp_no가 일치하는 경우 coupons에서 제거하고 issuedCoupons에 추가
-		        	iterator.remove();  // 현재 요소를 coupons 리스트에서 제거
+		        	iterator.remove();
 		            issuedCoupons.add(coupon);
 		        }
 		    }
@@ -165,6 +186,43 @@ public class MyPageController {
         return "mypage/coupon";
 	}
 	
+	@GetMapping("/setting")
+	public String setting(Model model, HttpSession session) {
+		
+		String kakaoApiKey = apikeyConfig.getKakaoApikey();
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		ArrayList<MemberAddressDto> address = mypageDao.getAddrByMemberCode(loginUser.getMem_code());
+		
+		model.addAttribute("kakaoApi",kakaoApiKey);
+		model.addAttribute("loginUser",loginUser);
+		model.addAttribute("address",address);
+		
+		return "mypage/setting";
+	}
+	
+	@GetMapping("/setting/addressChange")
+	public String addressChange(Model model, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		ArrayList<MemberAddressDto> address = mypageDao.getAddrByMemberCode(loginUser.getMem_code());
+		
+		model.addAttribute("address",address);
+		
+		return "/mypage/popup/addressChange";
+	}
+	
+	@PostMapping("/mypage/setDefaultAddress")
+	@ResponseBody
+	public String setDefaultAddress(HttpServletRequest request) {
+		
+	    return "redirect:/mypage/setDefaultAddress";
+	}
+	
+	@GetMapping("/withdrawal")
+	public String withdrawal() {
+		return "/mypage/withdrawal";
+	}
+	
 	@GetMapping("/cart")
 	public String cart() {
 		return "mypage/cart";
@@ -185,21 +243,18 @@ public class MyPageController {
 		return "mypage/wish";
 	}
 	
-	@GetMapping("/mypet/register")
-	public String mypetRegister() {
-		return "mypage/mypet/register";
+	@GetMapping("/cscenter")
+	public String cscenter() {
+		return "/mypage/cscenter";
 	}
 	
-	@GetMapping("/mypet/modify")
-	public String mypetModify(HttpServletRequest request, Model model) {
+	@GetMapping("/logout")
+    public String logout(HttpSession session) {
 		
-		String petCode = request.getParameter("petCode");
-		
-        MyPetDto info = mypageDao.getInfoByPetCode(petCode);
+        // 세션 무효화
+        session.invalidate();
         
-		model.addAttribute("info",info);
-        
-		return "mypage/mypet/modify";
-	}
+        return "redirect:/";
+    }
 	
 }

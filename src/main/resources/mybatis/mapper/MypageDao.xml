@@ -12,13 +12,6 @@
 		WHERE M.MEM_CODE=#{param1}
 	</select>
 	
-    <select id="getGradeByMemberCode" resultType="com.tech.petfriends.mypage.dto.GradeDto">
-		SELECT G.G_NO,G_NAME,G_CONDITION,G_RATE
-		FROM GRADE G
-		JOIN MEMBER M ON G.G_NO = M.G_NO
-		WHERE M.MEM_CODE=#{param1}
-	</select>
-	
 	<update id="removeMainPet">
 		UPDATE MEMBER_PET
 		SET PET_MAIN='N'
@@ -40,7 +33,7 @@
 	<select id="getAllCoupon" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT *
 		FROM COUPON
-		WHERE SYSDATE BETWEEN CP_START AND CP_END AND CP_KEYWORD IS NULL
+		WHERE (SYSDATE BETWEEN CP_START AND CP_END) AND (CP_KEYWORD IS NULL)
 	</select>
 	
 	<select id="getCouponByMemberCode" resultType="com.tech.petfriends.admin.dto.CouponDto">
@@ -67,4 +60,9 @@
 		VALUES(#{param1},#{param2},#{param3},SYSDATE,NULL,NULL)
 	</insert>
 	
+	<select id="getAddrByMemberCode" resultType="com.tech.petfriends.login.dto.MemberAddressDto">
+		SELECT *
+		FROM ADDRESS
+		WHERE MEM_CODE=#{param1}
+	</select>
 </mapper>

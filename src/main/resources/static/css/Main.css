@@ -42,13 +42,58 @@ html, body {
 	margin-right: 20px;
 }
 
-#user_icon:hover {
+#search_icon:hover {
 	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* 부드러운 그림자 */
 	transition: box-shadow 0.3s ease; /* 부드러운 전환 */
 	border-radius: 50%; /* 동그랗게 */
 }
 
-#search_icon:hover {
+.user-icon-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    text-align: left;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 230px;
+    z-index: 1000;
+}
+
+.user-icon-wrapper:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu p {
+    margin: 20px;
+    font-size: 16px;
+}
+
+.dropdown-menu a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    font-weight: normal;
+}
+
+.dropdown-menu a:hover {
+    font-weight: bold;
+}
+
+.dropdown-menu hr {
+    margin: 10px 0;
+    border: none;
+    border-top: 1px solid #e0e0e0;
+}
+
+#user_icon:hover {
 	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* 부드러운 그림자 */
 	transition: box-shadow 0.3s ease; /* 부드러운 전환 */
 	border-radius: 50%; /* 동그랗게 */

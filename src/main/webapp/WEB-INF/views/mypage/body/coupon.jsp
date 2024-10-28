@@ -80,7 +80,7 @@
 
     <div id="usable" class="tab-content">
       <div class="coupon-grid">
-        <!-- 쿠폰 카드 반복문 -->
+        <!-- 사용 가능 쿠폰 카드 반복문 -->
         <c:forEach items="${mycoupons }" var="coupons">
           <div class="coupon-card able-card">
             <div class="coupon-info">
