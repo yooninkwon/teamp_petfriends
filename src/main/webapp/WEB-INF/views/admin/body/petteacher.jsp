@@ -27,16 +27,14 @@
 	        <label><input type="radio" name="pet-type-filter" value="기타 동물"> 기타 동물</label>
 	    </div>
 	    <div class="radio-group" id="category-filter">
-	        <div class="filter-title">카테고리</div>
-			<select name="category-filter" id="category">
-				<option value="전체" selected>전체</option>
-				<option value="훈련">훈련</option>
-				<option value="건강">건강</option>
-				<option value="습관">습관</option>
-				<option value="관찰">관찰</option>
-				<option value="케어">케어</option>
-				<option value="생활">생활</option>
-			</select>
+	        <div class="filter-title" id="category">카테고리</div>
+			<label><input type="radio" name="category-filter" value="전체" checked> 전체</label>
+			<label><input type="radio" name="category-filter" value="훈련"> 훈련</label>
+			<label><input type="radio" name="category-filter" value="건강"> 건강</label>
+			<label><input type="radio" name="category-filter" value="습관"> 습관</label>
+			<label><input type="radio" name="category-filter" value="관찰"> 관찰</label>
+			<label><input type="radio" name="category-filter" value="케어"> 케어</label>
+			<label><input type="radio" name="category-filter" value="생활"> 생활</label>
 	    </div>
 	</div>
 	
