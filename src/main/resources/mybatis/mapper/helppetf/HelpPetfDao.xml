@@ -4,7 +4,7 @@
 
 <mapper namespace="com.tech.petfriends.helppetf.mapper.HelpPetfDao">
 	<select id="petteacherList"
-		resultType="com.tech.petfriends.helppetf.dto.HelpPetfDto">
+		resultType="com.tech.petfriends.helppetf.dto.PetteacherDto">
 		SELECT * FROM HELP_PETTEACHER
 		<choose>
 			<when test="petType != null and category != null">
@@ -27,7 +27,7 @@
 		HPT_SEQ = #{hpt_seq}
 	</update>
 	<select id="petteacherDetail"
-		resultType="com.tech.petfriends.helppetf.dto.HelpPetfDto">
+		resultType="com.tech.petfriends.helppetf.dto.PetteacherDto">
 		SELECT * FROM HELP_PETTEACHER
 		WHERE HPT_SEQ = #{hpt_seq}
 	</select>

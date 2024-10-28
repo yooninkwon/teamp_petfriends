@@ -2,22 +2,26 @@ package com.tech.petfriends.admin.service;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 
-public class AdminPetteacherWriteService implements AdminServiceInterface {
+public class AdminPetteacherEditService implements AdminServiceInterface {
 
 	private AdminPageDao adminDao;
 
-	public AdminPetteacherWriteService(AdminPageDao adminDao) {
+	public AdminPetteacherEditService(AdminPageDao adminDao) {
 		this.adminDao = adminDao;
 	}
 
 	@Override
 	public void execute(Model model) {
 		Map<String, Object> map = model.asMap();
+		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		String hpt_seq = request.getParameter("hpt_seq");
 		PetteacherDto dto = (PetteacherDto) map.get("dto");
 		String hpt_title = dto.getHpt_title();
 		String hpt_exp = dto.getHpt_exp();
@@ -26,8 +30,7 @@ public class AdminPetteacherWriteService implements AdminServiceInterface {
 		String hpt_pettype = dto.getHpt_pettype();
 		String hpt_category = dto.getHpt_category();
 		String hpt_channal = dto.getHpt_channal();
-		
-		adminDao.adminPetteacherWrite(hpt_channal, hpt_title, hpt_exp, hpt_content, 
+		adminDao.adminPetteacherEdit(hpt_seq, hpt_channal, hpt_title, hpt_exp, hpt_content, 
 				hpt_yt_videoid, hpt_pettype, hpt_category);
 	}
 

@@ -19,9 +19,7 @@ import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.admin.dto.MemberCouponDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
-import com.tech.petfriends.admin.service.AdminPetteacherDelete;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
-import com.tech.petfriends.admin.service.AdminPetteacherService;
 import com.tech.petfriends.admin.service.AdminPetteacherWriteService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
 
@@ -31,50 +29,25 @@ public class AdminPageController {
 
 	@Autowired
 	AdminPageDao adminDao;
+	
 	@Autowired
 	CouponDao couponDao;
 
 	AdminServiceInterface adminServInter;
 
 	// 어드민 페이지 내부에서의 펫티쳐페이지로 이동
-	@GetMapping("/admin_petteacher")
+	@GetMapping("/petteacher")
 	public String petteacherAdminPage(Model model) {
-		adminServInter = new AdminPetteacherService(adminDao);
-		adminServInter.execute(model);
-		return "/admin/admin_petteacher";
-	}
-
-	// 어드민-펫티쳐 게시글 작성 페이지 이동
-	@GetMapping("/admin_petteacher_form")
-	public String petteacherAdminForm() {
-		return "/admin/admin_petteacher_form";
+		return "admin/petteacher";
 	}
 
 	// 어드민-펫티쳐 상세페이지
-	@GetMapping("/admin_petteacher_detail")
+	@GetMapping("/petteacher_admin_detail")
 	public String petteacherAdminDetail(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		adminServInter = new AdminPetteacherDetailService(adminDao);
 		adminServInter.execute(model);
-		return "/admin/admin_petteacher_detail";
-	}
-
-	// 어드민-펫티쳐 게시글 작성완료 버튼 클릭시
-	@PostMapping("/admin_petteacher_write")
-	public String petteacherAdminWrite(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		adminServInter = new AdminPetteacherWriteService(adminDao);
-		adminServInter.execute(model);
-		return "redirect:/admin/admin_petteacher";
-	}
-
-	// 어드민-펫티쳐 상세페이지에서 삭제버튼 클릭시
-	@GetMapping("/admin_petteacher_delete")
-	public String petteacherAdminDelete(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		adminServInter = new AdminPetteacherDelete(adminDao);
-		adminServInter.execute(model);
-		return "redirect:/admin/admin_petteacher";
+		return "admin/petteacher_detail";
 	}
 
 	@GetMapping("/home")
@@ -183,11 +156,6 @@ public class AdminPageController {
 	@GetMapping("/community")
 	public String community() {
 		return "admin/community";
-	}
-
-	@GetMapping("/petteacher")
-	public String petture() {
-		return "admin/petteacher";
 	}
 
 	@GetMapping("/pethotel")
