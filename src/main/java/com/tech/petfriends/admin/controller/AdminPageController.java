@@ -1,6 +1,7 @@
 package com.tech.petfriends.admin.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.admin.dto.MemberCouponDto;
+import com.tech.petfriends.admin.dto.ProductListDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
+import com.tech.petfriends.admin.mapper.AdminProductDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
-import com.tech.petfriends.admin.service.AdminPetteacherWriteService;
+import com.tech.petfriends.admin.service.AdminProductListService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
 
 @Controller
@@ -32,6 +35,9 @@ public class AdminPageController {
 	
 	@Autowired
 	CouponDao couponDao;
+	
+	@Autowired
+	AdminProductDao adminProductDao;
 
 	AdminServiceInterface adminServInter;
 
@@ -141,6 +147,21 @@ public class AdminPageController {
 	@GetMapping("/product")
 	public String product() {
 		return "admin/product";
+	}
+	
+	//관리자페이지 상품리스트 조회
+	@PostMapping("/product/list")
+	@ResponseBody
+	public List<ProductListDto> productList(@RequestBody Map<String, Object> data,Model model) {
+		model.addAllAttributes(data);
+		
+		adminServInter = new AdminProductListService(adminProductDao);
+		adminServInter.execute(model);
+		
+		List<ProductListDto> productList = (List<ProductListDto>) model.getAttribute("productList");
+		
+		return productList;
+		
 	}
 
 	@GetMapping("/customer_status")

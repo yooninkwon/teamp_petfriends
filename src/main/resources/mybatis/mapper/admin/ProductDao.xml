@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tech.petfriends.admin.mapper.AdminProductDao">
+	
+	<select id="adminProductList" 
+		resultType="com.tech.petfriends.admin.dto.ProductListDto">
+		SELECT 
+			PRO_CODE, PRO_NAME, PRO_PETS, PRO_TYPE, PRO_CATEGORY,
+			PRO_ONOFF, PRO_DATE
+		FROM
+			PRODUCT
+		WHERE
+			PRO_ONOFF IN ('판매', '품절', '정지')
+		<if	test="petType != '전체'">
+		AND
+			PRO_PETS = #{petType}
+		</if>
+		<if test="proType != '전체'">
+		AND
+			PRO_TYPE = #{proType}
+		</if>
+		<if test="detailType != '전체' and detailType != ''">
+		AND
+			PRO_CATEGORY = #{detailType}
+		</if>
+		<if test="searchType != ''">
+		AND
+			PRO_NAME LIKE '%' || #{searchType} || '%'
+			
+		</if>
+	</select>
+	
+	
+	
+</mapper>

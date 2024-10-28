@@ -1,0 +1,125 @@
+@charset "UTF-8";
+
+.title {
+	width: 100%;
+    background-color: #efefef;
+    padding: 20px 35px;
+    text-align: left;
+}
+
+.filter-section-1 {
+    display: flex;
+}
+
+.filter-title{
+	width: 100px;
+	height: 100%;
+    padding: 5px 15px;
+    background-color: #dddddd;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+label {
+    padding: 5px 0 5px 10px;
+}
+
+.radio-group {
+    display: flex;
+	width: 100%;
+    border: 2px solid white;
+    background-color: #efefef;
+}
+
+#pet-type {
+	width: 70%;
+}
+
+#pro-type {
+	width: 70%;
+}
+#pro-detail-type{
+	width: 100%;
+}
+#search-filter {
+    
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    width: 270px; /* 입력 필드 너비 */
+}
+
+.btn-style {
+    background-color: #545454;
+    font-weight: bold;
+    color: white;
+    padding: 4px 15px;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.array-section{
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px 10px;
+    background-color: white;
+}
+.product-list-container {
+    position: relative;
+    padding-bottom: 70px; /* 페이징 높이만큼 여백을 추가 */
+    
+}
+
+.product-list {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 고정 테이블 레이아웃 설정 */
+}
+
+/* 각 열의 너비 설정 */
+.product-list th:nth-child(1), .product-list td:nth-child(1) { width: 7%; } /* 날짜 */
+.product-list th:nth-child(2), .product-list td:nth-child(2) { width: 15%; } /* 상품코드 */
+.product-list th:nth-child(3), .product-list td:nth-child(3) { width: 30%; } /* 상품명 */
+.product-list th:nth-child(4), .product-list td:nth-child(4) { width: 15%; } /* 상품타입 */
+.product-list th:nth-child(5), .product-list td:nth-child(5) { width: 8%; } /* 판매상태 */
+.product-list th:nth-child(6), .product-list td:nth-child(6) { width: 10%; } /* 상세보기/편집 */
+.thead {
+    background-color: #dddddd;
+}
+
+.product-list th, .product-list td {
+    border: 1px solid #cdcdcd;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+}
+
+
+#pagination {
+    width: 100%;
+	text-align: center;
+    position: relative;
+    margin-top: 20px;
+}
+
+#pagination a {
+	padding: 5px 10px;
+	margin: 0 5px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	text-decoration: none;
+	color: #333;
+	transition: background-color 0.3s ease;
+}
+
+#pagination a:hover {
+	background-color: #545454;
+	color: white;
+}
+
+#pagination a.active {
+	background-color: #545454;
+	color: white;
+}
