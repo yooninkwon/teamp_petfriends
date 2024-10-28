@@ -95,7 +95,7 @@
 			// 제품 목록을 반복하며 HTML 요소를 생성
 			productList.forEach(product => {
 
-				const soldOutOverlay = product.pro_onoff === '품절' ? '<div class="sold-out-overlay">품절</div>' : '';
+				const soldOutOverlay = product.pro_onoff === '품절' ? '<div class="searchsold-out-overlay">품절</div>' : '';
 
 
 
@@ -124,8 +124,8 @@
 
 
 				const productItem = `
-				            <div class="product-Item" data-product-code="\${product.pro_code}">
-								<div class="product-image-wrapper">
+				            <div class="search-Item" data-product-code="\${product.pro_code}">
+								<div class="search-image-wrapper">
 				   	    	        <img src="/static/Images/ProductImg/MainImg/\${product.main_img1}"/>
 									\${soldOutOverlay} <!-- 품절 표시 -->
 				                </div>
@@ -158,7 +158,7 @@
 
 		}
 
-		$(document).on('click', '.product-Item', function() {
+		$(document).on('click', '.search-Item', function() {
 			const productCode = $(this).data('product-code'); // data-product-code 값을 가져옴
 			// productCode를 사용하여 작업 수행
 			window.location.href = `/product/productDetail?code=\${productCode}`;

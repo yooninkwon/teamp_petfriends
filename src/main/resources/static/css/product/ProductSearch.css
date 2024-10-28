@@ -57,7 +57,7 @@
     justify-content: space-between; /* 아이템 사이의 공간 조절 */
 }
 
-.product-Item {
+.search-Item {
     width: calc(30% - 10px); /* 너비를 3개씩 나열되게 설정 */
     margin-bottom: 20px; /* 아래쪽 여백 추가 */
     position: relative; /* 품절 오버레이를 위한 설정 */
@@ -66,29 +66,32 @@
     font-size: 14px; /* 기본 폰트 크기를 줄임 */
 }
 
-.product-image-wrapper {
+.search-image-wrapper {
     position: relative; /* 품절 오버레이를 위한 설정 */
+    width: 100%; /* 이미지 크기를 줄여서 80%로 조정 */
+    height: auto; /* 이미지 비율 유지 */
+    margin: 0 auto; /* 가운데 정렬 */
 }
 
-.product-Item img {
+.search-Item img {
     width: 40%; /* 이미지 크기를 줄여서 80%로 조정 */
     height: auto; /* 이미지 비율 유지 */
     display: block; /* 이미지 아래 여백 제거 */
     margin: 0 auto; /* 가운데 정렬 */
 }
 
-.product-Item h3 {
+.search-Item h3 {
     font-size: 16px; /* 제목 글씨 크기 조정 */
     margin: 5px 0; /* 위아래 여백 조정 */
 }
 
-.product-Item p {
+.search-Item p {
     font-size: 10px; /* 가격 글씨 크기 조정 */
     margin: 5px 0; /* 위아래 여백 조정 */
 }
 
 
-.sold-out-overlay {
+.searchsold-out-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -104,7 +107,7 @@
     z-index: 0;
 }
 
-.product-image-wrapper {
+.search-image-wrapper {
     position: relative;
 }
 
@@ -125,7 +128,7 @@
     color: #ddd;  /* 회색 */
 }
 
-.product-Item {
+.search-Item {
     cursor: pointer;
 }
 
