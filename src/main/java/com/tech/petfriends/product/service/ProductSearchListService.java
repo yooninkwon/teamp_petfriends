@@ -22,6 +22,8 @@ public class ProductSearchListService implements ProductService {
 		String searchPro = (String) model.getAttribute("searchPro");
 		System.out.println(searchPro);
 		
+		 
+		
 		List<ProductListViewDto> searchList = productDao.productSearchList(searchPro);
 		model.addAttribute("searchList", searchList);
 

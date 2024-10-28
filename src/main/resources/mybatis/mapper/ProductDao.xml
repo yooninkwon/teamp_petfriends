@@ -342,15 +342,11 @@
 		LEFT JOIN
 			PRODUCT_REVIEW PROREV ON PRO.PRO_CODE = PROREV.PRO_CODE 
 		WHERE
-			PRO.PRO_CODE = #{searchPro}
-		OR
-			PRO.PRO_PETS = #{searchPro}
-		OR
-			PRO.PRO_TYPE = #{searchPro}
-		OR
-			PRO.PRO_FILTER1 = #{searchPro}
-		OR
-			PRO.PRO_FILTER2 = #{searchPro}
+		    REGEXP_LIKE(
+        PRO.PRO_NAME || ' ' || PRO.PRO_PETS || ' ' || PRO.PRO_TYPE || ' ' ||
+        PRO.PRO_CATEGORY || ' ' || PRO.PRO_FILTER1 || ' ' || PRO.PRO_FILTER2,
+        REPLACE(#{searchPro}, ' ', '.*?') || '.*|' || #{searchPro}
+    )
 		GROUP BY
 			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, 
 			PRO.PRO_DATE, PRO.PRO_ONOFF	
