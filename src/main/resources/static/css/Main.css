@@ -42,13 +42,58 @@ html, body {
 	margin-right: 20px;
 }
 
-#user_icon:hover {
+#search_icon:hover {
 	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* 부드러운 그림자 */
 	transition: box-shadow 0.3s ease; /* 부드러운 전환 */
 	border-radius: 50%; /* 동그랗게 */
 }
 
-#search_icon:hover {
+.user-icon-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    text-align: left;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 230px;
+    z-index: 1000;
+}
+
+.user-icon-wrapper:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu p {
+    margin: 20px;
+    font-size: 16px;
+}
+
+.dropdown-menu a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    font-weight: normal;
+}
+
+.dropdown-menu a:hover {
+    font-weight: bold;
+}
+
+.dropdown-menu hr {
+    margin: 10px 0;
+    border: none;
+    border-top: 1px solid #e0e0e0;
+}
+
+#user_icon:hover {
 	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* 부드러운 그림자 */
 	transition: box-shadow 0.3s ease; /* 부드러운 전환 */
 	border-radius: 50%; /* 동그랗게 */
@@ -260,4 +305,37 @@ html, body {
 
 #footer p {
 	margin : 10px 0;
+}
+
+#searchDropdown {
+    position: fixed;
+    top: 110px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    height: 500px;
+    overflow-y: auto; /* 세로 스크롤바가 필요할 경우 생성 */
+    z-index: 1000;
+    padding: 16px;
+    opacity: 0;
+    transform: translateY(-20px); /* 처음에 약간 위쪽에 위치 */
+    animation: dropdownSlide 0.3s ease forwards; /* 드롭다운 애니메이션 */
+}
+
+@keyframes dropdownSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px); /* 위에서 시작 */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* 원래 위치로 이동 */
+    }
+}
+
+#search_icontag {
+    line-height: 0; /* 텍스트 줄 높이 제거 */
+    font-size: 0; /* 텍스트 크기 제거 */
 }

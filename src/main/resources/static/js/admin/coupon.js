@@ -490,6 +490,7 @@ function deleteCoupon(couponId) {
         },
         error: function(xhr, status, error) {
             alert('쿠폰 삭제 중 오류가 발생했습니다.');
+			console.error('Error', error);
         }
     });
 }

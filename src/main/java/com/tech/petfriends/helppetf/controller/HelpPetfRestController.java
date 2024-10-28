@@ -1,6 +1,8 @@
 package com.tech.petfriends.helppetf.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,7 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tech.petfriends.helppetf.dto.AdoptionSelectedAnimalDto;
-import com.tech.petfriends.helppetf.dto.HelpPetfDto;
+import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
+import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.AdoptionGetJson;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
@@ -40,6 +43,23 @@ public class HelpPetfRestController {
 	
 	HelppetfServiceInter helpServiceInterface;
     
+	@PostMapping("/pothotel/pethotel_reserve_data")
+	public String pethotelReserveData(@RequestBody ArrayList<PethotelFormDataDto> formList, HttpServletRequest request, Model model) throws Exception {
+		String start_date = request.getParameter("start-date");
+		String end_date = request.getParameter("end-date");
+		Map<String, Object> dateMap = new HashMap<>();
+		dateMap.put("start_date", start_date);
+		dateMap.put("end_date", end_date);
+		System.out.println(dateMap.get("start_date"));
+		System.out.println(dateMap.get("end_date"));
+		HttpSession session = request.getSession();
+		session.setAttribute("formList", formList);
+		session.setAttribute("dateMap", dateMap);
+//		model.addAttribute("request", request);
+		System.out.println(formList);
+		return "{\"status\": \"success\"}"; // 성공 메세지를 반환
+	}
+
 	@GetMapping("/adoption/getJson")
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson(HttpServletRequest request, Model model) throws Exception {
 		model.addAttribute("request", request);
@@ -58,13 +78,13 @@ public class HelpPetfRestController {
 	}
 	
 	@GetMapping("/petteacher/petteacher_data")
-	public ArrayList<HelpPetfDto> petteacherData(HttpServletRequest request, Model model) {
+	public ArrayList<PetteacherDto> petteacherData(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		helpServiceInterface = new PetteacherService(helpDao);
 		helpServiceInterface.execute(model);
 		
 		@SuppressWarnings("unchecked")
-		ArrayList<HelpPetfDto> ylist = (ArrayList<HelpPetfDto>) model.getAttribute("ylist");
+		ArrayList<PetteacherDto> ylist = (ArrayList<PetteacherDto>) model.getAttribute("ylist");
 		
 		return ylist;
 	}

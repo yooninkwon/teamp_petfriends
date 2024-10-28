@@ -19,6 +19,8 @@ import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.login.util.PasswordEncryptionService;
 import com.tech.petfriends.member.service.MemberService;
+import com.tech.petfriends.mypage.dao.MypageDao;
+import com.tech.petfriends.mypage.dto.GradeDto;
 
 @Controller
 @RequestMapping("/login")
@@ -61,7 +63,11 @@ public class LoginController {
             if (isValidPassword) {
                 System.out.println("로그인 성공");
 
+                GradeDto userGrade = memberMapper.getGradeByMemberCode(member.getMem_code());
+                
                 session.setAttribute("loginUser", member); // 세션에 사용자 정보 저장
+                session.setAttribute("userGrade", userGrade);
+                
                 System.out.println(member.getMem_name() + " 님 환영합니다.");
 
                 // 아이디 저장 체크박스 처리

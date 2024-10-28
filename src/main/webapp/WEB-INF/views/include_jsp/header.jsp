@@ -4,15 +4,43 @@
 <!DOCTYPE html>
 <p>
 	<script>
-	    // JSP에서 sessionScope.name 값을 전역 변수로 선언
 	    var userName = "${sessionScope.loginUser.mem_name}";
 	</script>
 	<script src="/static/js/Main.js"></script>
+	
 	<div id="menu">
 	    <a href="/"><img src="<c:url value='/static/Images/MainImg/LOGO_white.png'/>" id="top_logo" alt=""></a>
 	    <div class="menu_icons">
+	        <a href="javascript:void(0);" onclick="toggleSearchDropdown()" id="search_icontag">
+	        	<img src="<c:url value='/static/Images/MainImg/search_icon.png'/>" id="search_icon" alt="">
+	        </a>
 	        <img src="<c:url value='/static/Images/MainImg/search_icon.png'/>" id="search_icon" alt="">
-	        <img src="<c:url value='/static/Images/MainImg/user_icon.png'/>" id="user_icon" alt="">
+	        
+	        <!-- 로그인 아이콘 -->
+	        <div class="user-icon-wrapper">
+	            <img src="<c:url value='/static/Images/MainImg/user_icon.png'/>" id="user_icon" alt="">
+	            <c:if test="${sessionScope.loginUser ne null}">
+	                <div class="dropdown-menu">
+	                    <p>
+	                        <a href="/mypage/grade">
+		                        <strong>${sessionScope.loginUser.mem_name}</strong>님과 펫프의<br />
+		                        하트시그널은 <strong style="color: #11abb1;">${sessionScope.userGrade.g_name}</strong>
+	                        </a>
+	                    </p>
+	                    <hr>
+	                    <p><a href="/mypage/mypet">마이펫프</a></p>
+	                    <p><a href="/mypage/cart">장바구니</a></p>
+	                    <p><a href="/community/main">나의 집사생활</a></p>
+	                    <hr>
+	                    <p><a href="https://petfriends.notion.site/FAQ-0d3f18312bf24878a0095423ddbc3691">자주 묻는 질문(FAQ)</a></p>
+	                    <p><a href="/mypage/cscenter">고객센터</a></p>
+	                    <hr>
+	                    <p><a href="/mypage/logout">로그아웃</a></p>
+	                </div>
+	            </c:if>
+	        </div>
+	        
+	        <!-- 어드민 페이지 아이콘 -->
 	        <c:if test="${sessionScope.loginUser.mem_nick eq 'admin'}">
 	    		<a href="<c:url value='/admin/home' />">
 	        	<img src="<c:url value='/static/Images/MainImg/admin_icon.png'/>" id="admin_icon" alt="관리자 아이콘">
@@ -20,9 +48,13 @@
 			</c:if>
 	    </div>
 	</div><br>
+	
+	<!-- 드롭다운 형태로 표시할 검색 영역 -->
+	<div id="searchDropdown" style="display: none;"></div>
+	
 	<div id="main_nav">
 	    <ul>
-	        <li><a href="/product/productlist">PRODUCT</a></li>
+	        <li><a id="proClick" href="/product/productlist">PRODUCT</a></li>
 	        <li><a href="">NOTICE</a></li>
 	        <li><a href="/community/main">COMMUNITY</a></li>
 	        <li><a id="helppetf" href="/helppetf/find/pet_hospital">HELP PETF!</a></li>   
