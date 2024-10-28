@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="icon" href="/static/icon/favicon.ico" />
 <meta charset="UTF-8">
 <title>admin_header</title>
 </head>

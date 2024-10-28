@@ -13,13 +13,13 @@
 				<when test="type == '기타 동물'">HPT_PETTYPE = '기타 동물'</when>
 			</choose>
 			<choose>
-				<when test="category == '전체'"> </when>
-				<when test="category == '>훈련'">AND HPT_CATEGORY = '훈련'</when>
-				<when test="category == '>건강'">AND HPT_CATEGORY = '건강'</when>
-				<when test="category == '>습관'">AND HPT_CATEGORY = '습관'</when>
-				<when test="category == '>관찰'">AND HPT_CATEGORY = '관찰'</when>
-				<when test="category == '>케어'">AND HPT_CATEGORY = '케어'</when>
-				<when test="category == '>생활'">AND HPT_CATEGORY = '생활'</when>
+				<when test="category == '전체'">AND HPT_SEQ >= 0</when>
+				<when test="category == '훈련'">AND HPT_CATEGORY = '훈련'</when>
+				<when test="category == '건강'">AND HPT_CATEGORY = '건강'</when>
+				<when test="category == '습관'">AND HPT_CATEGORY = '습관'</when>
+				<when test="category == '관찰'">AND HPT_CATEGORY = '관찰'</when>
+				<when test="category == '케어'">AND HPT_CATEGORY = '케어'</when>
+				<when test="category == '생활'">AND HPT_CATEGORY = '생활'</when>
 			</choose>
 		</where>
 		<choose>
@@ -33,23 +33,25 @@
 		SELECT * FROM HELP_PETTEACHER
 		WHERE HPT_SEQ = #{hpt_seq}
 	</select>
-
-
-	<!-- <select id="adminPetteacherList" resultType="com.tech.petfriends.admin.dto.AdminHelpPetfDto">
-		SELECT * FROM HELP_PETTEACHER
-		ORDER BY HPT_SEQ DESC
-	</select>
-	<select id="adminPetteacherDetail" resultType="com.tech.petfriends.admin.dto.AdminHelpPetfDto">
-		SELECT * FROM HELP_PETTEACHER 
-		WHERE HPT_SEQ = #{hpt_seq}
-	</select>
+	<delete id="adminPetteacherDelete">
+		DELETE FROM HELP_PETTEACHER WHERE HPT_SEQ = #{hpt_seq}
+	</delete>
+	
 	<insert id="adminPetteacherWrite">
 		INSERT INTO HELP_PETTEACHER VALUES
 		(SEQ_HPT.NEXTVAL, #{hpt_yt_videoid}, 
 		#{hpt_exp}, #{hpt_title}, #{hpt_content}, 
-		#{hpt_pettype}, #{hpt_category}, 0, SYSDATE)
+		#{hpt_pettype}, #{hpt_category}, 0, SYSDATE, #{hpt_channal})
 	</insert>
-	<delete id="adminPetteacherDelete">
-		DELETE FROM HELP_PETTEACHER WHERE HPT_SEQ = #{hpt_seq}
-	</delete> -->
+	<update id="adminPetteacherEdit">
+		UPDATE HELP_PETTEACHER 
+		SET HPT_YT_VIDEOID = #{hpt_yt_videoid},
+		HPT_EXP = #{hpt_exp}, 
+		HPT_TITLE = #{hpt_title}, 
+		HPT_CONTENT = #{hpt_content}, 
+		HPT_PETTYPE = #{hpt_pettype}, 
+		HPT_CATEGORY = #{hpt_category}, 
+		HPT_CHANNAL = #{hpt_channal}		
+		WHERE HPT_SEQ = #{hpt_seq}
+	</update>
 </mapper>

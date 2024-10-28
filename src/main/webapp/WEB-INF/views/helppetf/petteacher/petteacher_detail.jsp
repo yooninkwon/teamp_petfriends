@@ -77,7 +77,6 @@
 
 					// 3. API 코드를 다운로드 받은 다음에 <iframe>을 생성하는 기능 (youtube player도 더불어)
 					var v_id = '<c:out value="${dto.hpt_yt_videoid }" />';
-					console.log(v_id);
 					var player;
 					function onYouTubeIframeAPIReady() {
 						player = new YT.Player('player', {

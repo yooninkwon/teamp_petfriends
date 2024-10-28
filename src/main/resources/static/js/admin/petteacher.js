@@ -14,8 +14,8 @@ $(document).ready(function() {
 
         // 필터 기본 값
         let filterParam = {
-            type: 'all',
-            category: '0',
+            type: '전체',
+            category: '전체',
             sort: '최신순'
         };
 
@@ -51,14 +51,15 @@ $(document).ready(function() {
                 lists += '<tr>';
                 lists += '<td>' + plist.hpt_seq + '</td>';
                 lists += '<td>' + plist.hpt_category + '</td>';
-                lists += '<td><a href="/admin/petteacher_admin_detail?hpt_seq=' + plist.hpt_seq + '">'  + plist.hpt_title + '</a></td>';
+                lists += '<td><a href="/helppetf/petteacher/petteacher_detail?hpt_seq=' + plist.hpt_seq + '">'  + plist.hpt_title + '</a></td>';
+                lists += '<td>' + plist.hpt_channal + '</td>';
                 lists += '<td>' + plist.hpt_pettype + '</td>';
                 lists += '<td>' + plist.hpt_exp + '</td>';
                 lists += '<td>' + plist.hpt_rgedate + '</td>';
                 lists += '<td>' + plist.hpt_hit + '</td>';
 				lists += `<td>
-			                  <button class="btn-style modify-btn" data-petteacher-id="${plist.hpt_seq}">수정</button>
-			                  <button class="btn-style delete-btn" data-petteacher-id="${plist.hpt_seq}">삭제</button>
+			                  <button class="btn-style modify-btn" data-hpt_seq="${plist.hpt_seq}">수정</button>
+			                  <button class="btn-style delete-btn" data-hpt_seq="${plist.hpt_seq}">삭제</button>
 			              </td>`;
 			    lists += '</tr>';
             }); 
@@ -67,12 +68,11 @@ $(document).ready(function() {
 			
 			// 수정 버튼 이벤트 바인딩
 		    $('.modify-btn').on('click', function() {
-		        const petteacherId = $(this).data('petteacher-id');
-		        loadPetteacherForEdit(petteacherId); // 수정할 쿠폰 로드
-				
-				// 모달에 couponId를 저장하고 버튼 텍스트를 '수정'으로 설정
+		        const hpt_seq = $(this).data('hpt_seq');
+		        loadPetteacherForEdit(hpt_seq); // 수정할 쿠폰 로드
+				// 모달에 seq를 저장하고 버튼 텍스트를 '수정'으로 설정
 			    $('#registerPetteacherBtn').text('수정');
-			    $('#petteacherModal').data('petteacher-id', petteacherId).show();
+			    $('#petteacherModal').data('hpt_seq', hpt_seq).show();
 		    });
 
 		    // 삭제 버튼 이벤트 바인딩
@@ -80,8 +80,8 @@ $(document).ready(function() {
 				const confirmed = confirm('게시글을 삭제하시겠습니까?');
 
 				    if (confirmed) {
-						const petteacherId = $(this).data('petteacher-id');
-				        deleteData(petteacherId);
+						const hpt_seq = $(this).data('hpt_seq');
+				        deleteData(hpt_seq);
 				    }
 		    });
         }
@@ -123,23 +123,21 @@ $(document).ready(function() {
             });
         }
 
-        // 필터링 관련 코드
+        // 필터링 관련 코드 
         $('#petteacher-filter input[name="pet-type-filter"]').on('change', function() {
-			console.log('asdasd');
             filterParam = {
                 type: $('input[name="pet-type-filter"]:checked').val(),
-                category: $('input[name="category-filter"]:selected').val(),
+                category: $('select[name="category-filter"] > option:checked').val(),
                 sort: $('#sort-order').val()
             };
 			
             fetchData(currentPage, currPageGroup, filterParam);
         });
 
-        $('#category-filter input[name="category-filter"]').on('change', function() {
-			console.log('asdasd');
+        $('#category-filter select[name="category-filter"]').on('change', function() {
             filterParam = {
 				type: $('input[name="pet-type-filter"]:checked').val(),
-				category: $('input[name="category-filter"]:selected').val(),
+				category: $('select[name="category-filter"] > option:checked').val(),
 				sort: $('#sort-order').val()
             };
 			
@@ -150,7 +148,7 @@ $(document).ready(function() {
         $('#sort-order').on('change', function() {
             filterParam = {
 				type: $('input[name="pet-type-filter"]:checked').val(),
-				category: $('input[name="category-filter"]:selected').val(),
+				category: $('select[name="category-filter"] > option:checked').val(),
                 sort: $(this).val()
             };
 			
@@ -173,55 +171,58 @@ $('.close-btn').on('click', function() {
 });
 
 
+// registerPetteacherBtn 클릭시
+$('#registerPetteacherBtn').on('click', function() {
+	submitPetteacher();
+});
 
-// 쿠폰 등록 데이터 전송
-function submitCoupon() {
-    const couponData = {
-        cp_name: document.getElementById('cpName').value,
-        cp_keyword: document.getElementById('cpKeyword').value || null,
-        cp_kind: document.querySelector('input[name="couponType"]:checked').value,
-        g_no: document.getElementById('grade').value || null,
-        cp_start: document.getElementById('startDate').value || null,
-        cp_end: document.getElementById('endDate').value || null,
-        cp_dead: document.getElementById('deadDate').value || null,
-        cp_type: document.getElementById('discountType').value,
-        cp_amount: document.getElementById('discountAmount').value
+
+function submitPetteacher() {
+    const petteacherData = {
+        hpt_title: document.getElementById('hpt_title').value,
+        hpt_exp: document.getElementById('hpt_exp').value,
+        hpt_yt_videoid: document.getElementById('hpt_yt_videoid').value,
+        hpt_channal: document.getElementById('hpt_channal').value,
+        hpt_category: document.querySelector('select[name="hpt_category"] > option:checked').value,
+        hpt_pettype: document.querySelector('select[name="hpt_pettype"] > option:checked').value,
+        hpt_content: document.getElementById('hpt_content').value
     };
 	
 	// 버튼의 텍스트로 신규 등록과 수정 구분
-    const actionType = document.getElementById('registerCouponBtn').innerText;
+    const actionType = document.getElementById('registerPetteacherBtn').innerText;
 
     if (actionType === '등록완료') {
         // 신규 등록 처리
         $.ajax({
-            url: '/admin/coupon/register',
+            url: '/admin/petteacher_admin_data_forWrite',
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(couponData),
+            data: JSON.stringify(petteacherData),
             success: function () {
-                alert('쿠폰이 성공적으로 등록되었습니다.');
+                alert('게시물이 성공적으로 등록되었습니다.');
                 location.reload();
             },
             error: function (xhr, status, errorThrown) {
                 console.error(errorThrown);
-                alert('쿠폰 등록 중 오류가 발생했습니다.');
+                alert('게시물 등록 중 오류가 발생했습니다.');
             }
         });
     } else if (actionType === '수정') {
         // 수정 처리
-        const couponId = $('#couponModal').data('coupon-id');
+        const hpt_seq = $('#petteacherModal').data('hpt_seq');
+		console.log(hpt_seq);
         $.ajax({
-            url: `/admin/coupon/update?cpNo=` + couponId,
+            url: `/admin/petteacher_admin_data_forEdit?hpt_seq=` + hpt_seq,
             method: 'PUT',
             contentType: 'application/json',
-            data: JSON.stringify(couponData),
+            data: JSON.stringify(petteacherData),
             success: function () {
-                alert('쿠폰이 성공적으로 수정되었습니다.');
+                alert('게시물이 성공적으로 수정되었습니다.');
                 location.reload();
             },
             error: function (xhr, status, errorThrown) {
                 console.error(errorThrown);
-                alert('쿠폰 수정 중 오류가 발생했습니다.');
+                alert('게시물 수정 중 오류가 발생했습니다.');
             }
         });
     }
@@ -236,28 +237,24 @@ function loadPetteacherForEdit(hpt_seq) {
             // 모달에 기존 쿠폰 정보 표시
             document.getElementById('hpt_title').value = petteacherList.hpt_title;
             document.getElementById('hpt_exp').value = petteacherList.hpt_exp;
-            document.querySelector(`input[name="petType"][value="${petteacherList.petType}"]`).selected = true;
-            document.querySelector(`input[name="category"][value="${petteacherList.category}"]`).selected = true;
+            document.getElementById('hpt_yt_videoid').value = petteacherList.hpt_yt_videoid;
+            document.getElementById('hpt_channal').value = petteacherList.hpt_channal;
+            document.querySelector(`select[name="hpt_pettype"] option[value="${petteacherList.hpt_pettype}"]`).selected = true;
+            document.querySelector(`select[name="hpt_category"] option[value="${petteacherList.hpt_category}"]`).selected = true;
             document.getElementById('hpt_content').value = petteacherList.hpt_content;
         },
+		// document.querySelector('select[name="hpt_pettype"] > option:checked').value
+		
         error: function(xhr, status, error) {
-            alert('쿠폰 정보를 가져오는데 오류가 발생했습니다.');
+			console.error('Error: ',error)
         }
     });
 }
-// @@@@@@@@@@@@@ 여기 하던중 @@@@@@@@@@@@@@@@@@@
-function resetModal() {
-    document.getElementById('hpt_title').value = '';
-    document.getElementById('hpt_exp').value = '';
-	document.getElementById('petType').selectedIndex = 0;
-	document.getElementById('category').selectedIndex = 0;
-    document.getElementById('hpt_content').value = '';
-}
 
-// 쿠폰 삭제
+// 게시물 삭제
 function deleteData(hpt_seq) {
     $.ajax({
-        url: `/admin/petteacher_admin_data_forEdit?hpt_seq=` + hpt_seq,
+        url: `/admin/petteacher_admin_data_forDelete?hpt_seq=` + hpt_seq,
         method: 'DELETE',
         success: function() {
             location.reload();
@@ -268,5 +265,16 @@ function deleteData(hpt_seq) {
         }
     });
 }
+
+function resetModal() {
+	document.getElementById('hpt_category').selectedIndex = 0;
+    document.getElementById('hpt_title').value = '';
+    document.getElementById('hpt_exp').value = '';
+    document.getElementById('hpt_yt_videoid').value = '';
+    document.getElementById('hpt_channal').value = '';
+	document.getElementById('hpt_pettype').selectedIndex = 0;
+    document.getElementById('hpt_content').value = '';
+}
+
 
 });

@@ -19,9 +19,7 @@ import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.admin.dto.MemberCouponDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
-import com.tech.petfriends.admin.service.AdminPetteacherDelete;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
-import com.tech.petfriends.admin.service.AdminPetteacherService;
 import com.tech.petfriends.admin.service.AdminPetteacherWriteService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
 
@@ -40,8 +38,6 @@ public class AdminPageController {
 	// 어드민 페이지 내부에서의 펫티쳐페이지로 이동
 	@GetMapping("/petteacher")
 	public String petteacherAdminPage(Model model) {
-		adminServInter = new AdminPetteacherService(adminDao);
-		adminServInter.execute(model);
 		return "admin/petteacher";
 	}
 
@@ -52,24 +48,6 @@ public class AdminPageController {
 		adminServInter = new AdminPetteacherDetailService(adminDao);
 		adminServInter.execute(model);
 		return "admin/petteacher_detail";
-	}
-
-	// 어드민-펫티쳐 게시글 작성완료 버튼 클릭시
-	@PostMapping("/petteacher_admin_write")
-	public String petteacherAdminWrite(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		adminServInter = new AdminPetteacherWriteService(adminDao);
-		adminServInter.execute(model);
-		return "redirect:admin/petteacher";
-	}
-
-	// 어드민-펫티쳐 상세페이지에서 삭제버튼 클릭시
-	@GetMapping("/petteacher_admin_delete")
-	public String petteacherAdminDelete(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		adminServInter = new AdminPetteacherDelete(adminDao);
-		adminServInter.execute(model);
-		return "redirect:/admin/petteacher";
 	}
 
 	@GetMapping("/home")

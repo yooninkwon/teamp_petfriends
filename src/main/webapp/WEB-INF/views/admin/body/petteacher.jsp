@@ -59,6 +59,7 @@
 		            <th>번호</th>
 		            <th>카테고리</th>
 					<th>제목</th>
+					<th>채널명</th>
 					<th>동물종류</th>
 					<th>설명</th>
 		            <th>등록일</th>
@@ -69,8 +70,9 @@
 		    <tbody id="petteacher-table-body">
 		        <!-- 전체 쿠폰 데이터 출력 -->
 		    </tbody>
-		</table>
-		
+		</table>	
+		<br /><br />
+		<br /><br />
 		<div id="pagination">
 			<!-- 페이징 -->
 		</div>
@@ -83,7 +85,7 @@
     <div class="modal-content">
         <span class="close-btn"><i class="fa-solid fa-xmark"></i></span>
         
-        <!-- 쿠폰 정보 입력 -->
+        <!-- 정보 입력 -->
         <div class="input-group">
             <label for="hpt_title">제목</label>
             <input type="text" id="hpt_title">
@@ -94,9 +96,19 @@
             <input type="text" id="hpt_exp">
         </div>
         
+        <div class="input-group">
+            <label for="hpt_yt_videoid">비디오 아이디</label>
+            <input type="text" id="hpt_yt_videoid">
+        </div>
+
+        <div class="input-group">
+            <label for="hpt_channal">채널명</label>
+            <input type="text" id="hpt_channal">
+        </div>
+        
         <div class="hpt_pettype">
-           	<label for="petType">동물종류</label> <!-- 폰트, css조정 -->
-            <select id="petType" name="petType">
+           	<label for="hpt_pettype">동물종류</label> <!-- 폰트, css조정 -->
+            <select id="hpt_pettype" name="hpt_pettype">
 				<option disabled selected>동물종류</option>
 				<option value="고양이">고양이</option>
 				<option value="강아지">강아지</option>
@@ -105,8 +117,8 @@
         </div>
         
         <div class="hpt_category">
-           	<label for="category">카테고리</label> <!-- 폰트, css조정 -->
-            <select id="category" name="category">
+           	<label for="hpt_category">카테고리</label> <!-- 폰트, css조정 -->
+            <select id="hpt_category" name="hpt_category">
 				<option disabled selected>카테고리</option>
 				<option value="훈련">훈련</option>
 				<option value="건강">건강</option>
@@ -125,40 +137,11 @@
 	        </div>
 	     </div>
 
-        <button id="registerPetteacherBtn" onclick="submitPetteacher()">등록완료</button>
+        <button id="registerPetteacherBtn">등록완료</button>
     </div>
 </div>
 
 <script src="/static/js/admin/petteacher.js"></script>
 
-
-
-
-
-
-<!-- 
-<a href="/helppetf/petteacher/petteacher_main">헬프펫프로 이동</a><br />
-<a href="/admin/petteacher_form">글작성</a>
-<table border="1" width="1000" style="text-align: center;">
-	<tr>
-		<th>선택</th>
-		<th>제목</th>
-		<th>설명</th>
-		<th>등록일</th>
-		<th>조회수</th>
-	</tr>
-	<c:forEach items="${ylist }" var="y">
-			<tr>
-				<td>${y.hpt_seq }</td>
-				<td>${y.hpt_exp }</td>
-				<td><a href="/admin/petteacher_detail?hpt_seq=${y.hpt_seq }">
-						${y.hpt_title } </a></td>
-				<td>${y.hpt_rgedate }</td>
-				<td>${y.hpt_hit }</td>
-			</tr>
-		</c:forEach>
-</table>
-
- -->
 </body>
 </html>
