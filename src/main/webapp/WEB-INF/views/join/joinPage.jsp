@@ -66,7 +66,7 @@
 	                <input type="radio" id="gender" name="gender" value="F" /> 여성
                 </div>
                 
-				<input type="text" id="birth" name="birth" placeholder="20000922" maxlength="11" oninput="validateBirthDate()">
+				<input type="text" id="birth" name="birth" placeholder="20000922" maxlength="8" oninput="validateBirthDate()">
 				<p id="birthError" style="font-size:15px; color:red; float:right;
 				margin-right:45px; margin-top:-10px; display:none;">8자리의 숫자로 입력해 주세요.</p>
 

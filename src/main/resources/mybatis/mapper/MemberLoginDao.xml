@@ -53,5 +53,13 @@
 	    SET mem_pw = #{encryptedPassword}
 	    WHERE mem_email = #{email}
 	</update>
+	
+	<!-- 로그인 회원 등급 정보 검색 -->
+    <select id="getGradeByMemberCode" resultType="com.tech.petfriends.mypage.dto.GradeDto">
+		SELECT G.G_NO,G_NAME,G_CONDITION,G_RATE
+		FROM GRADE G
+		JOIN MEMBER M ON G.G_NO = M.G_NO
+		WHERE M.MEM_CODE=#{param1}
+	</select>
 
 </mapper>
