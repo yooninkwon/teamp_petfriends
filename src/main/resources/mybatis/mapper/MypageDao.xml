@@ -67,4 +67,11 @@
 		VALUES(#{param1},#{param2},#{param3},SYSDATE,NULL,NULL)
 	</insert>
 	
+	<insert id="insertMyPet" parameterType="com.tech.petfriends.mypage.dto.MyPetDto">
+		INSERT INTO MEMBER_PET (PET_CODE, MEM_CODE, PET_TYPE, PET_NAME, PET_IMG, PET_BREED,
+		PET_BIRTH, PET_GENDER, PET_WEIGHT, PET_NEUT, PET_FORM, PET_CARE, PET_ALLERGY, PET_MAIN)
+		VALUES (#{pet_code}, #{mem_code}, #{pet_type}, #{pet_name}, #{pet_img}, #{pet_breed}, #{pet_birth}, #{pet_gender},
+		#{pet_weight}, #{pet_neut}, #{pet_form}, #{pet_care}, #{pet_allergy}, #{pet_main})
+	</insert>
+	
 </mapper>

@@ -19,18 +19,20 @@
     
 	
 	<div id="container2">
-		<form action="" method="post">
+		<form action="myPetRegistPage3" method="post" enctype="multipart/form-data">
 			<h1>함께하는 [ <span style="font-size: 40px; color: #ff4081;">${petName}</span> ] 는
 			<span style="font-size: 25px;">(은)</span> 어떤 아이인가요?</h1>
 			<div id="photo">
 				<div class="upload-container" onclick="document.getElementById('uploadInput').click()" >
-				    <input type="file" class="upload-input" accept="image/*" id="uploadInput" style="display:none;" />
+				    <input type="file" class="upload-input" name="petImg" accept="image/*" id="uploadInput" style="display:none;" />
+				    <input type="hidden" name="petImgFileName" id="petImgFileName" />
 				    <img id="preview" alt="" />
 				</div>
 				<div class="upload-btn" onclick="document.getElementById('uploadInput').click()">
 					<img id="plus" src="<c:url value='/static/Images/mypet/plus.png'/>" alt="">
 				</div>
 			</div>
+			<h4>* 이미지는 기본 가로 500px 로 저장됩니다.</h4>
 			<div id="bottom2">
 				<div id="type">
 					<label for="" style="font: bold; font-size: 25px;" >
@@ -38,16 +40,18 @@
 				        <c:when test="${petType eq 'dog'}">견종</c:when>
 				        <c:otherwise>묘종</c:otherwise>
 				    </c:choose>을 선택 해 주세요</label> <br />
-					<input type="text" id="dogType"  onclick="openPopup()" readonly />
+					<input type="text" id="detailType" name="detailType" onclick="openPopup()" readonly />
 				</div>
 				<div id="birth">
 					<label for="" style="font: bold; font-size: 25px;" >생일을 입력 해 주세요</label> <br />
-					<input type="date" id="petBirth" />
+					<input type="date" name="petBirth" id="petBirth" />
 				</div> <br />
 			</div>
 			<div>
 				<input style="" type="submit" id="submitBtn" value="다음" />
 			</div>
+			<input type="hidden" name="petName" value="${petName }" />
+			<input type="hidden" name="petType" value="${petType }" />
 		</form>
 	</div>
 	
@@ -63,8 +67,8 @@
 	    </h2>
         <!-- 검색창 추가 -->
         <input type="text" id="searchBreed" placeholder="<c:choose>
-	        <c:when test="${petType eq 'dog'}">견종</c:when>
-	        <c:otherwise>묘종</c:otherwise></c:choose>을 입력하세요" onkeyup="filterBreeds()">
+	        <c:when test="${petType eq 'dog'}">견종</c:when><c:otherwise>묘종</c:otherwise></c:choose>을 입력하세요"
+	        onkeyup="filterBreeds()">
                     
         <ul class="breed-list" id="breedList">
         	<c:if test="${petType eq 'dog'}">
@@ -221,17 +225,23 @@
 	<script>
 		// 사진 업로드
 	    document.getElementById('uploadInput').addEventListener('change', function(event) {
-	        const file = event.target.files[0];
-	        if (file) {
-	            const reader = new FileReader();
-	            reader.onload = function(e) {
-	                const previewImage = document.getElementById('preview');
-	                previewImage.src = e.target.result;
-	                previewImage.style.display = 'block'; // 이미지를 보여줌
-	            }
-	            reader.readAsDataURL(file); // 파일을 데이터 URL로 읽음
-	        }
-	    });
+        const file = event.target.files[0];
+        if (file) {
+            const fileName = file.name; // 파일 이름 저장
+            document.getElementById('petImgFileName').value = fileName; // 파일 이름을 hidden input에 저장
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const previewImage = document.getElementById('preview');
+                previewImage.src = e.target.result;
+                previewImage.style.display = 'block'; // 이미지를 보여줌
+                previewImage.style.width = '500px';// 배경 이미지 크기를 500px로 고정
+
+                console.log('파일 이름:', fileName); // 파일 이름을 콘솔에 출력
+            }
+            reader.readAsDataURL(file); // 파일을 데이터 URL로 읽음
+        }
+    });
 	    
 	    // 팝업 열기
 	    function openPopup() {
@@ -248,7 +258,7 @@
 	    // 견종 선택 시 값 넣기
 	    document.querySelectorAll('.breed-list li').forEach(function(item) {
 	        item.addEventListener('click', function() {
-	            document.getElementById('dogType').value = this.innerText;
+	            document.getElementById('detailType').value = this.innerText;
 	            closePopup(); // 선택 후 팝업 닫기
 	        });
 	    });
@@ -267,6 +277,16 @@
 	            }
 	        });
 	    }
+	    
+	 // 페이지가 로드될 때 자동으로 이벤트 리스너 추가
+	    document.addEventListener("DOMContentLoaded", function() {
+	        const dateInput = document.getElementById("petBirth");
+	        
+	        // dateInput을 클릭할 때 바로 날짜 선택창 열기
+	        dateInput.addEventListener("focus", function() {
+	            dateInput.showPicker();  // 날짜 선택창을 바로 표시
+	        });
+	    });
 	    
 	</script>
 

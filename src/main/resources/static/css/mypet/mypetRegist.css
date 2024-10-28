@@ -157,7 +157,7 @@
 
 }
 
-#dogType {
+#detailType {
 	margin-top: 20px;
 	width: 70%;
 	height: 40px;
@@ -250,4 +250,115 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     box-sizing: border-box;
+}
+
+#gender-group, #weight-group, #body-group #neut {
+	margin-top: 30px;
+	width: 100%;
+	height: 100px;
+}
+
+#genderBtn{
+	width: 25%;
+	height: 60px;
+	background-color: white;
+	border: 1px solid gray;
+	border-radius: 8px;
+	font: bold;
+	font-size: 20px;
+	color: gray;
+}
+
+#neutering{
+	width: 25%;
+	height: 60px;
+	background-color: white;
+	border: 1px solid gray;
+	border-radius: 8px;
+	font: bold;
+	font-size: 20px;
+	color: gray;
+}
+
+#weight{
+	width: 50%;
+	height: 40px;
+	border: 1px solid black;
+	border-radius: 8px;
+	font: bold;
+	font-size: 20px;
+	text-align: center;
+}
+
+#bodyBtn{
+	width: 17%;
+	height: 60px;
+	background-color: white;
+	border: 1px solid gray;
+	border-radius: 8px;
+	font: bold;
+	font-size: 20px;
+	color: gray;
+}
+
+#info{
+	width: 100%;
+	margin-top: 20px;
+}
+
+.selectInfo{
+	margin: 0 auto;
+	width: 50%;
+	height: 200px;
+}
+
+.selectInfo input[type="button"] {
+    background-color: white;
+    border: 1px solid gray;
+	border-radius: 8px;
+    width: 150px;
+    height: 40px;
+    font-size: 25px;
+    font: bold;
+    color: gray;
+}
+
+#info input[type="text"] {
+	width: 48%;
+	height: 30px;
+	border: 1px solid gray;
+	border-radius: 8px;
+	font: bold;
+	font-size: 25px;
+	text-align: center;
+	margin-top: 10px;
+}
+
+#allergyInput {
+	width: 48%;
+	height: 30px;
+	border: 1px solid gray;
+	border-radius: 8px;
+	font: bold;
+	font-size: 23px;
+	text-align: center;
+	display: none;
+	margin: 0 auto;
+	margin-top: 10px;
+}
+
+#allerge {
+	width: 100%;
+	
+}
+
+#allerge input[type="button"] {
+	width: 24%;
+	height: 40px;
+	background-color: white;
+	border: 1px solid gray;
+	border-radius: 8px;
+	font: bold;
+	font-size: 20px;
+	color: gray;
 }

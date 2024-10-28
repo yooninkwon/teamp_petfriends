@@ -33,4 +33,5 @@ public interface MypageDao {
 
 	void insertCouponByCouponNo(String mc_code, String mem_code, int cp_no);
 	
+	void insertMyPet(MyPetDto pet);
 }
