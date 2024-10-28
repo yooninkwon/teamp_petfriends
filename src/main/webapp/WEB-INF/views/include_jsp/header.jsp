@@ -14,7 +14,6 @@
 	        <a href="javascript:void(0);" onclick="toggleSearchDropdown()" id="search_icontag">
 	        	<img src="<c:url value='/static/Images/MainImg/search_icon.png'/>" id="search_icon" alt="">
 	        </a>
-	        <img src="<c:url value='/static/Images/MainImg/search_icon.png'/>" id="search_icon" alt="">
 	        
 	        <!-- 로그인 아이콘 -->
 	        <div class="user-icon-wrapper">
