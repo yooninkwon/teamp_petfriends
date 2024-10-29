@@ -216,6 +216,15 @@ $(document).ready(function() {
 			}
 		});
 	}
+	
+	// HTML 요소를 설정하는 부분
+	const proMainImagesInput = document.getElementById('proMainImages'); // 대표 이미지 input 요소 ID
+	const mainImagePreview = document.getElementById('mainImagePreview'); // 대표 이미지 미리보기 컨테이너 ID
+	setupImagePreview(proMainImagesInput, mainImagePreview, 5); // 최대 파일 개수 5
+
+	const proDesImagesInput = document.getElementById('proDesImages'); // 상세 이미지 input 요소 ID
+	const desImagePreview = document.getElementById('desImagePreview'); // 상세 이미지 미리보기 컨테이너 ID
+	setupImagePreview(proDesImagesInput, desImagePreview, 10); // 최대 파일 개수 10
 
 	//상품옵션 +/-
 
