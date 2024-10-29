@@ -32,7 +32,7 @@ public class CReplyDeleteService implements CServiceInterface {
 		
 		
 	    // 댓글 삭제 시도
-	    int rn = iDao.replyDelete(board_no, comment_no, parent_comment_no, comment_level, comment_order_no);
+	    int rn = iDao.replyDelete(comment_no, parent_comment_no, comment_level, comment_order_no);
 
 	    if (rn == 0) {
 	        // 삭제 실패 (상위 댓글이 존재)
@@ -40,7 +40,7 @@ public class CReplyDeleteService implements CServiceInterface {
 	        model.addAttribute("url", "redirect:/community/contentView?board_no=" + board_no);
 	    } else {
 	        // 삭제 성공
-	        iDao.stepInit(parent_comment_no, comment_level);        
+	        iDao.stepInit(comment_no,parent_comment_no, comment_level);        
 	        model.addAttribute("url", "redirect:/community/contentView?board_no=" + board_no);
 	    }
 	}

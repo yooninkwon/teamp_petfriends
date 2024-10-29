@@ -143,7 +143,7 @@ public String modifyView(@RequestParam("board_no") int board_no, Model model) {
 	
 	}
 
-@GetMapping("/delete")
+@PostMapping("/delete")
 public String delete(HttpServletRequest request, Model model) {
     System.out.println("community_delete");
     model.addAttribute("request", request);
@@ -176,7 +176,7 @@ public String commentReply(HttpServletRequest request, Model model) {
     return "redirect:/community/contentView?board_no=" + request.getParameter("board_no");
 }
 
-@GetMapping("/replyDelete")
+@PostMapping("/replyDelete")
 public String replyDelete(HttpServletRequest request, Model model) {
     System.out.println("replyDelete");
     model.addAttribute("request", request);

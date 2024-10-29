@@ -170,6 +170,11 @@ body {
     color: #999;
 }
 
+.commentReply-time{
+    font-size: 12px;
+    color: #999;
+}
+
 .preformatted-text {
     white-space: pre-wrap; /* 띄어쓰기와 줄 바꿈 유지 */
 }

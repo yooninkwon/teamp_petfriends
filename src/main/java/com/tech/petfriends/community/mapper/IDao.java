@@ -47,8 +47,8 @@ public interface IDao {
 
 	public ArrayList<CCommentDto> commentReplyList(String board_no);
 
-	public int stepInit(String parent_comment_no, String comment_level);
+	public int stepInit(String comment_no, String parent_comment_no, String comment_level);
 
-	public int replyDelete(String board_no,String comment_no, String parent_comment_no, String comment_level, String comment_order_no);
+	public int replyDelete(String comment_no, String parent_comment_no, String comment_level, String comment_order_no);
 }
 

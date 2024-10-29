@@ -48,7 +48,7 @@
             <button type="submit" class="main_edit-button">수정</button>
         </form>
 
-        <form action="/community/delete" method="get" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+        <form action="/community/delete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')">
             <input type="hidden" name="board_no" value="${contentView.board_no}">
             <button type="submit" class="main_delete-button">삭제</button>
         </form>
@@ -76,10 +76,13 @@
 
         <!-- 댓글 삭제 버튼: 현재 로그인한 사용자와 댓글 작성자가 같을 경우만 보이기 -->
         <%-- <c:if test="${sessionScope.loggedInUserId == comment.user_id}"> --%>
-            <form action="/community/replyDelete" method="get" onsubmit="return confirm('정말 삭제하시겠습니까?')">
-                <input type="hidden" name="comment_no" value="${comment.comment_no}">
+            <form action="/community/replyDelete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+                <input type="hidden" name="comment_no" value="${commentReply.comment_no}">
                 <input type="hidden" name="board_no" value="${contentView.board_no}">
-                <button type="submit" class="delete-button">삭제</button>
+				<input type="hidden" name="parent_comment_no" value="${commentReply.parent_comment_no}">
+				<input type="hidden" name="comment_level" value="${commentReply.comment_level}">
+				<input type="hidden" name="comment_order_no" value="${commentReply.comment_order_no}">
+				<button type="submit" class="delete-button">삭제</button>
             </form>
       <%--   </c:if> --%>
  	 </div>
@@ -110,10 +113,13 @@
 
                     <!-- 대댓글 삭제 버튼: 현재 로그인한 사용자와 대댓글 작성자가 같을 경우만 보이기 -->
                    <%--  <c:if test="${sessionScope.loggedInUserId == commentReply.user_id}"> --%>
-                        <form action="/community/replyDelete" method="get" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+                        <form action="/community/replyDelete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')">
                             <input type="hidden" name="comment_no" value="${commentReply.comment_no}">
                             <input type="hidden" name="board_no" value="${contentView.board_no}">
-                            <button type="submit" class="delete-button">삭제</button>
+							<input type="hidden" name="parent_comment_no" value="${commentReply.parent_comment_no}">
+							<input type="hidden" name="comment_level" value="${commentReply.comment_level}">
+							<input type="hidden" name="comment_order_no" value="${commentReply.comment_order_no}">
+							<button type="submit" class="delete-button">삭제</button>
                         </form>
                 <%--     </c:if> --%>
 						</div>
