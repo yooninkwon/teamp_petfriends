@@ -19,7 +19,6 @@ public class CCommentDto {
 	private String  comment_content;
 	private Date created_date;
 	private int parent_comment_no;
-	private int comment_group_no;
 	private int comment_level;
 	private int comment_order_no; 
 	private Date edited_date;

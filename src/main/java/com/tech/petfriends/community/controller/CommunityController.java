@@ -22,12 +22,14 @@ import com.tech.petfriends.community.dto.CCommentDto;
 import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.mapper.IDao;
 import com.tech.petfriends.community.service.CCategoryService;
+import com.tech.petfriends.community.service.CCommentReplyService;
 import com.tech.petfriends.community.service.CCommentService;
 import com.tech.petfriends.community.service.CContentVieWService;
 import com.tech.petfriends.community.service.CDeleteService;
 import com.tech.petfriends.community.service.CDownloadService;
 import com.tech.petfriends.community.service.CModifyService;
 import com.tech.petfriends.community.service.CPostListService;
+import com.tech.petfriends.community.service.CReplyDeleteService;
 import com.tech.petfriends.community.service.CServiceInterface;
 import com.tech.petfriends.community.service.CWriteService;
 
@@ -89,7 +91,6 @@ public class CommunityController {
 	
 		return "contentView?bid=" + bid;
 	}
-
 
 
 
@@ -164,7 +165,26 @@ public String comment(HttpServletRequest request, Model model) {
     return "redirect:/community/contentView?board_no=" + request.getParameter("board_no");
 }
 
+@PostMapping("/commentReply")
+public String commentReply(HttpServletRequest request, Model model) {
+    System.out.println("commentReply");
+    model.addAttribute("request", request);
 
+    serviceInterface = new CCommentReplyService(iDao);
+    serviceInterface.execute(model);
 
+    return "redirect:/community/contentView?board_no=" + request.getParameter("board_no");
+}
+
+@GetMapping("/replyDelete")
+public String replyDelete(HttpServletRequest request, Model model) {
+    System.out.println("replyDelete");
+    model.addAttribute("request", request);
+
+    serviceInterface = new CReplyDeleteService(iDao);
+    serviceInterface.execute(model);
+
+    return "redirect:/community/contentView?board_no=" + request.getParameter("board_no");
+}
 
 }

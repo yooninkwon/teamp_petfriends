@@ -9,11 +9,11 @@ import org.springframework.ui.Model;
 
 import com.tech.petfriends.community.mapper.IDao;
 
-public class CCommentService implements CServiceInterface {
+public class CCommentReplyService implements CServiceInterface {
 
 	private IDao iDao;
 	
-	public CCommentService(IDao iDao) {
+	public CCommentReplyService(IDao iDao) {
 		this.iDao = iDao;
 	}
 
@@ -30,8 +30,8 @@ public class CCommentService implements CServiceInterface {
 		String comment_level = request.getParameter("comment_level");
 		String comment_order_no = request.getParameter("comment_order_no");
 		
-		iDao.comment(board_no,comment_no,user_id,comment_content,parent_comment_no,comment_level,comment_order_no);
-		
+		iDao.commentShape(parent_comment_no, comment_level);
+		iDao.commentReply(board_no, user_id,comment_content,parent_comment_no,comment_level,comment_order_no);
 	
 	
 	}

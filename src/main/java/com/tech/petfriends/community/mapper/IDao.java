@@ -25,13 +25,9 @@ public interface IDao {
 
 	public CDto contentView(String board_no); 
 
-//	public ArrayList<CDto> selectImg(String board_no);
-
 	public ArrayList<CCategoryDto> getCategoryList();
 
 	public ArrayList<CDto> getPostsByCategory(int b_cate_no);
-
-//	public List<CDto> getAllPosts(); // 모든 게시물 조회 메서드 추가
 	
 	public void modify(int board_no, String board_title, String board_content, int b_cate_no);
 
@@ -39,11 +35,20 @@ public interface IDao {
 
 	public void delete(int board_no);
 
-
 	public void comment(String board_no, String comment_no, String user_id, String comment_content,
-			String parent_comment_no, String comment_group_no, String comment_level, String comment_order_no);
+			String parent_comment_no, String comment_level, String comment_order_no);
 
-	public ArrayList<CCommentDto> commentList(String board_no);
+	public void commentReply(String board_no,String user_id, String comment_content,
+			String parent_comment_no, String comment_level, String comment_order_no);
 	
+	public void commentShape(String parent_comment_no, String comment_level);
+	
+	public ArrayList<CCommentDto> commentList(String board_no);
+
+	public ArrayList<CCommentDto> commentReplyList(String board_no);
+
+	public int stepInit(String parent_comment_no, String comment_level);
+
+	public int replyDelete(String board_no,String comment_no, String parent_comment_no, String comment_level, String comment_order_no);
 }
 

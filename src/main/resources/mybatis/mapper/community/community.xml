@@ -79,13 +79,55 @@
 	</delete>
 		 
 	<insert id="comment">
-	      INSERT INTO COMMUNITY_COMMENT (COMMENT_NO, BOARD_NO, USER_ID, COMMENT_CONTENT, CREATED_DATE, PARENT_COMMENT_NO, EDITED_DATE)
-	    VALUES (COMMUNITY_COMMENT_SEQ.NEXTVAL, #{board_no}, 111, #{comment_content}, SYSDATE, #{parent_comment_no}, SYSDATE)
+	    INSERT INTO COMMUNITY_COMMENT (COMMENT_NO, BOARD_NO, USER_ID, 
+	    COMMENT_CONTENT, CREATED_DATE, PARENT_COMMENT_NO, COMMENT_LEVEL, COMMENT_ORDER_NO, EDITED_DATE)
+	    VALUES (COMMUNITY_COMMENT_SEQ.NEXTVAL, #{board_no}, 111, 
+	    #{comment_content}, SYSDATE, COMMUNITY_COMMENT_SEQ.CURRVAL,0,0, SYSDATE)
 	</insert>
 		 
 	 <select id="commentList" resultType="com.tech.petfriends.community.dto.CCommentDto">
-       SELECT * FROM COMMUNITY_COMMENT WHERE BOARD_NO = #{board_no}   
+       SELECT * FROM COMMUNITY_COMMENT 
+       WHERE COMMENT_LEVEL = 0
+       ORDER BY COMMENT_NO
     </select>
+	
+	<insert id="commentReply">
+	    INSERT INTO COMMUNITY_COMMENT (COMMENT_NO, BOARD_NO, USER_ID, 
+	    COMMENT_CONTENT, CREATED_DATE, PARENT_COMMENT_NO, COMMENT_LEVEL, COMMENT_ORDER_NO, EDITED_DATE)
+	    VALUES (COMMUNITY_COMMENT_SEQ.NEXTVAL, #{board_no}, 111, 
+	    #{comment_content}, SYSDATE, #{parent_comment_no}, #{comment_level} + 1, #{comment_order_no} + 1, SYSDATE)
+	</insert>
+	
+	<select id="commentReplyList" resultType="com.tech.petfriends.community.dto.CCommentDto">
+    SELECT * FROM COMMUNITY_COMMENT 
+    WHERE COMMENT_LEVEL >= 1
+    AND BOARD_NO = #{board_no}
+    ORDER BY COMMENT_LEVEL
+    </select>
+	
+	<update id="commentShape">
+		UPDATE COMMUNITY_COMMENT
+		SET comment_level=comment_level + 1
+		WHERE PARENT_COMMENT_NO=#{param1} AND COMMENT_LEVEL > #{param2}
+	</update>
+	
+	
+	<delete id="replyDelete">
+		DELETE FROM COMMUNITY_COMMENT
+		WHERE (SELECT COUNT(COMMENT_NO) FROM COMMUNITY_COMMENT 
+		WHERE PARENT_COMMENT_NO=#{parent_comment_no} 
+		AND COMMENT_LEVEL = #{comment_level}+1 
+		AND COMMENT_ORDER_NO > #{comment_order_no})=0
+		AND COMMENT_NO=#{comment_no}
+	</delete>
+	
+	
+	<update id="stepInit">
+		UPDATE COMMUNITY_COMMENT SET COMMENT_LEVEL=COMMENT_LEVEL-1 
+		WHERE PARENT_COMMENT_NO = #{parent_comment_no} 
+		AND COMMENT_LEVEL> #{comment_level}
+	</update>
+	
 	
 <!-- 	<insert id="commentSum">
 	  SELECT count(*) FROM COMMUNITY_COMMENT;

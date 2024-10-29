@@ -46,9 +46,10 @@
         <div id="repImagePreview" class="post-image" style="max-width: 100%; height: auto; margin-top: 10px;">
             <img id="previewImage" src="" alt="대표 이미지 미리보기" style="max-width: 100%; height: auto; display: none;">
         </div>
-
+			<div class="button-container">
         <input type="button" id="previewButton" class="btn submit-btn" value="내용 미리보기">
         <input type="submit" id="submit-btn" class="btn submit-btn" value="작성 완료">
+    	</div>
     </form>
 
     <!-- 미리보기 팝업 -->
