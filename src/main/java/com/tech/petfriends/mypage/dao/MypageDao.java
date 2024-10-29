@@ -32,4 +32,5 @@ public interface MypageDao {
 
 	ArrayList<MemberAddressDto> getAddrByMemberCode(String mem_code);
 	
+	void insertMyPet(MyPetDto pet);
 }

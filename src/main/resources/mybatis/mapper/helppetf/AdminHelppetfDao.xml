@@ -54,4 +54,45 @@
 		HPT_CHANNAL = #{hpt_channal}		
 		WHERE HPT_SEQ = #{hpt_seq}
 	</update>
+	<select id="adminPethotelIntro" resultType="com.tech.petfriends.helppetf.dto.PethotelIntroDto">
+		SELECT * FROM HELP_PETHOTEL_INTRO
+	</select>
+	<select id="adminPethotelInfo" resultType="com.tech.petfriends.helppetf.dto.PethotelInfoDto">
+		SELECT * FROM HELP_PETHOTEL_INFO
+	</select>
+	
+	<update id="adminPethotelIntroEdit">
+		UPDATE HELP_PETHOTEL_INTRO
+		SET 
+		INTRO_LINE1 = #{intro_line1}, 
+		INTRO_LINE2 = #{intro_line2}, 
+		INTRO_LINE3 = #{intro_line3}, 
+		INTRO_LINE4 = #{intro_line4}, 
+		INTRO_LINE5 = #{intro_line5}, 
+		INTRO_LINE6 = #{intro_line6}, 
+		INTRO_LINE7 = #{intro_line7}, 
+		INTRO_LINE8 = #{intro_line8}, 
+		INTRO_LINE9 = #{intro_line9}
+		 
+	</update>
+	<update id="adminPethotelInfoEdit">
+		UPDATE HELP_PETHOTEL_INFO
+		SET 
+		INFO_LINE1 = #{info_line1}, 
+		INFO_LINE2 = #{info_line2}, 
+		INFO_LINE3 = #{info_line3}, 
+		INFO_LINE4 = #{info_line4}, 
+		INFO_LINE5 = #{info_line5}, 
+		INFO_LINE6 = #{info_line6}, 
+		INFO_LINE7 = #{info_line7}, 
+		INFO_LINE8 = #{info_line8}, 
+		INFO_LINE9 = #{info_line9}, 
+		INFO_LINE10 = #{info_line10}, 
+		INFO_LINE11 = #{info_line11}, 
+		INFO_LINE12 = #{info_line12}, 
+		INFO_LINE13 = #{info_line13}, 
+		INFO_LINE14 = #{info_line14}, 
+		INFO_LINE15 = #{info_line15}, 
+		INFO_LINE16 = #{info_line16}
+	</update>
 </mapper>

@@ -11,6 +11,10 @@ public class AdoptionViewService implements HelppetfServiceInter {
 
 	@Override
 	public void execute(Model model) {
+
+		model.addAttribute("main_navbar_id", "helppetf");
+		model.addAttribute("sub_navbar_id", "adoption");
+		
 		// 세션에서 데이터 가져옴 (리다이렉트 되기 때문에 실행함)
 		HttpServletRequest request = (HttpServletRequest) model.getAttribute("request");
 	    HttpSession session = request.getSession();
