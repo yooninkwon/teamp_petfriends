@@ -64,19 +64,28 @@ public class MyPetController {
 
 	    try {
 	        if (petImgFile != null && !petImgFile.isEmpty()) {
-	        	// ClassPathResource를 사용해 resources 경로를 가져옴
+	        	// 절대경로
 		        String imagesDir = "C:\\24sts4\\project\\project_Petfriend\\src\\main\\resources\\static\\Images\\pet\\";
 
 		        // 파일 이름 가져오기
 		        fileName = petImgFile.getOriginalFilename();
 		        File saveFile = new File(imagesDir, fileName);
-
-		        // 디렉토리가 없다면 생성
-		        // if (!staticImagesDir.exists()) staticImagesDir.mkdirs();
+		        
+		        // 파일 이름 중복 체크
+	            int count = 1;
+	            String nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
+	            String ext = fileName.substring(fileName.lastIndexOf('.'));
+	            while (saveFile.exists()) {
+	                fileName = nameWithoutExt + "(" + count + ")" + ext;
+	                saveFile = new File(imagesDir, fileName);
+	                count++;
+	            } 
 
 		        // 파일 저장
 		        petImgFile.transferTo(saveFile);
-			}
+			} else {
+            	fileName = "noPetImg.jpg";
+            }
 
 	        // 모델에 데이터 추가
 	        model.addAttribute("petType", petType);
@@ -178,7 +187,8 @@ public class MyPetController {
 		pet.setPet_allergy(petAllergy);
 		
 		ArrayList<MyPetDto> pets = mypageDao.getPetsByMemberCode(member.getMem_code());
-		if (pets == null) {
+		System.out.println(pets);
+		if (pets == null || pets.isEmpty()) {
 			pet.setPet_main("Y");
 		} else {
 			pet.setPet_main("N");
