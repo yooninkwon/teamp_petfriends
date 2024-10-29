@@ -12,13 +12,6 @@
 		WHERE M.MEM_CODE=#{param1}
 	</select>
 	
-    <select id="getGradeByMemberCode" resultType="com.tech.petfriends.mypage.dto.GradeDto">
-		SELECT G.G_NO,G_NAME,G_CONDITION,G_RATE
-		FROM GRADE G
-		JOIN MEMBER M ON G.G_NO = M.G_NO
-		WHERE M.MEM_CODE=#{param1}
-	</select>
-	
 	<update id="removeMainPet">
 		UPDATE MEMBER_PET
 		SET PET_MAIN='N'
@@ -37,20 +30,20 @@
 		WHERE PET_CODE=#{param1}
 	</select>
 	
-	<select id="getAllCoupon" resultType="com.tech.petfriends.mypage.dto.CouponDto">
+	<select id="getAllCoupon" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT *
 		FROM COUPON
-		WHERE SYSDATE BETWEEN CP_START AND CP_END AND CP_KEYWORD IS NULL
+		WHERE (SYSDATE BETWEEN CP_START AND CP_END) AND (CP_KEYWORD IS NULL)
 	</select>
 	
-	<select id="getCouponByMemberCode" resultType="com.tech.petfriends.mypage.dto.CouponDto">
+	<select id="getCouponByMemberCode" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT CP.CP_NO,CP_NAME,CP_KEYWORD,CP_START,CP_END,CP_DEAD,CP_TYPE,CP_AMOUNT
 		FROM COUPON CP
 		JOIN MEMBER_COUPON_BRIDGE MC ON CP.CP_NO=MC.CP_NO
 		WHERE MEM_CODE=#{param1} AND MC_USE IS NULL AND MC_DEAD IS NULL
 	</select>
 	
-	<select id="searchCouponByKeyword" resultType="com.tech.petfriends.mypage.dto.CouponDto">
+	<select id="searchCouponByKeyword" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT *
 		FROM COUPON
 		WHERE CP_KEYWORD=#{param1}
@@ -74,4 +67,9 @@
 		#{pet_weight}, #{pet_neut}, #{pet_form}, #{pet_care}, #{pet_allergy}, #{pet_main})
 	</insert>
 	
+	<select id="getAddrByMemberCode" resultType="com.tech.petfriends.login.dto.MemberAddressDto">
+		SELECT *
+		FROM ADDRESS
+		WHERE MEM_CODE=#{param1}
+	</select>
 </mapper>

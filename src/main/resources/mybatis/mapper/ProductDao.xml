@@ -261,12 +261,9 @@
 		)
 		WHERE ROWNUM &lt;= 4
 	
-	
-	
-	
-	
 	</select>
 	
+	<!-- 현재 장바구니에 담으려는 제품+옵션이 담겨있는지 확인하는 쿼리 -->
 	<select id="productDetailCartCheck"
 		resultType="com.tech.petfriends.product.dto.ProductDetailCartCheckDto">
 		SELECT
@@ -279,6 +276,81 @@
 			PRO_CODE = #{pro_code}
 		AND 
 			PROOPT_CODE	= #{opt_code} 
+	</select>
+	
+	<!-- 제품상세페이지 _ 리뷰리스트 불러오기 -->
+	<select id="productDetailReviewList"
+		resultType="com.tech.petfriends.product.dto.ProductDetailReviewListDto">
+		SELECT
+			PET.PET_IMG, PET.PET_NAME, REV.REVIEW_RATING, REV.REVIEW_TEXT, REV.REVIEW_DATE,
+			REV.REVIEW_IMG1, REV.REVIEW_IMG2, REV.REVIEW_IMG3, REV.REVIEW_IMG4, REV.REVIEW_IMG5
+		FROM
+			PRODUCT_REVIEW REV
+		INNER JOIN
+			MEMBER_PET PET ON REV.MEM_CODE=PET.MEM_CODE
+		WHERE
+   			PET.PET_MAIN='Y'
+		AND
+			REV.PRO_CODE = #{proCode}
+		ORDER BY 
+			${selectedOpt}
+	</select>
+	
+	<!-- 헤더 검색페이지 인기순위 top10 -->
+	<select id="productSearchReviewRank10"
+		resultType="com.tech.petfriends.product.dto.ProductSearchReviewRank10Dto">
+		SELECT 
+ 		   PRO.PRO_CODE, PRO.PRO_NAME, PRO.PRO_PETS, PRO.PRO_TYPE, AVG(PROREV.REVIEW_RATING) AS REVIEW_RATING
+		FROM 
+    		PRODUCT PRO
+		LEFT JOIN 
+    		PRODUCT_REVIEW PROREV ON PRO.PRO_CODE=PROREV.PRO_CODE
+		GROUP BY 
+    		PRO.PRO_CODE, PRO.PRO_NAME, PRO.PRO_TYPE, PRO.PRO_PETS
+		ORDER BY 
+    		REVIEW_RATING DESC NULLS LAST
+    	
+	</select>
+	
+	<!-- 헤더 검색페이지 검색쿼리 -->
+	<select id="productSearchList"
+		resultType="com.tech.petfriends.product.dto.ProductListViewDto">
+		SELECT
+			PRO.PRO_CODE,
+			PRO.PRO_NAME,
+			PROIMG.MAIN_IMG1,
+			MIN(PROOPT.PROOPT_FINALPRICE) AS PROOPT_FINALPRICE,
+   			MIN(PROOPT.PROOPT_PRICE) AS PROOPT_PRICE,
+			PRO.PRO_DISCOUNT,
+			PRO.PRO_ONOFF,
+			NVL(COUNT(PROREV.PRO_CODE), 0) AS TOTAL_REVIEWS, 
+		    COALESCE(ROUND(AVG(PROREV.REVIEW_RATING), 1), 0.0) AS AVERAGE_RATING  
+		FROM
+			PRODUCT PRO
+		INNER JOIN
+			PRODUCT_IMAGE PROIMG ON PRO.PRO_CODE = PROIMG.PRO_CODE
+		INNER JOIN(
+		    SELECT 
+		        PROOPT.PRO_CODE,
+		        MIN(PROOPT.PROOPT_FINALPRICE) AS PROOPT_FINALPRICE,
+		        MIN(PROOPT.PROOPT_PRICE) AS PROOPT_PRICE
+		    FROM 
+		        PRODUCT_OPTION PROOPT
+		    GROUP BY 
+		        PROOPT.PRO_CODE
+			) PROOPT ON PRO.PRO_CODE = PROOPT.PRO_CODE
+		LEFT JOIN
+			PRODUCT_REVIEW PROREV ON PRO.PRO_CODE = PROREV.PRO_CODE 
+		WHERE
+		    REGEXP_LIKE(
+        PRO.PRO_NAME || ' ' || PRO.PRO_PETS || ' ' || PRO.PRO_TYPE || ' ' ||
+        PRO.PRO_CATEGORY || ' ' || PRO.PRO_FILTER1 || ' ' || PRO.PRO_FILTER2,
+        REPLACE(#{searchPro}, ' ', '.*?') || '.*|' || #{searchPro}
+    )
+		GROUP BY
+			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, 
+			PRO.PRO_DATE, PRO.PRO_ONOFF	
+    	
 	</select>
 	
 </mapper>

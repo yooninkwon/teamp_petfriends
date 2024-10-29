@@ -4,16 +4,22 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.tech.petfriends.helppetf.dto.HelpPetfDto;
+import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
+import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
+import com.tech.petfriends.helppetf.dto.PetteacherDto;
 
 @Mapper
 public interface HelpPetfDao {
 	
-	public HelpPetfDto petteacherDetail(String hpt_seq);
+	public PetteacherDto petteacherDetail(String hpt_seq);
 
-	public ArrayList<HelpPetfDto> petteacherList(String petType, String category);
+	public ArrayList<PetteacherDto> petteacherList(String petType, String category);
 
 	public String findUserAddr(String userId);
 
 	public void upViews(String hpt_seq);
+
+	public PethotelIntroDto pethotelIntro();
+
+	public PethotelInfoDto pethotelInfo();
 }

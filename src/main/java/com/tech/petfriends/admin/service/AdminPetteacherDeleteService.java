@@ -8,12 +8,12 @@ import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 
-public class AdminPetteacherDelete implements AdminServiceInterface {
-	
-	private AdminPageDao adminDao;
+public class AdminPetteacherDeleteService implements AdminServiceInterface {
 
-	public AdminPetteacherDelete(AdminPageDao adminDao) {
-		this.adminDao = adminDao;
+	AdminPageDao adminDao;
+	
+	public AdminPetteacherDeleteService(AdminPageDao adminDao) {
+		this.adminDao = adminDao; 
 	}
 
 	@Override
@@ -24,4 +24,5 @@ public class AdminPetteacherDelete implements AdminServiceInterface {
 
 		adminDao.adminPetteacherDelete(hpt_seq);
 	}
+
 }

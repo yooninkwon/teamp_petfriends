@@ -248,7 +248,7 @@ $(document).ready(function() {
 		opt_code.value = selectedOptionCode;
 		$('#quantityInput').attr('max', selectedOptionStock);
 		$('#quantityMaxText').text(`최대 ${selectedOptionStock}개`); // 화면에 재고 표시
-		
+
 		updateFinalPrice(selectedPrice);
 
 	});
@@ -281,40 +281,278 @@ $(document).ready(function() {
 	var score3 = Number(gauge3.getAttribute("value"));
 	var score2 = Number(gauge2.getAttribute("value"));
 	var score1 = Number(gauge1.getAttribute("value"));
-	
-	var total = score1 + score2 + score3 + score4 + score5;
-	
-	console.log(total);
-	
-	//총 리뷰갯수에 따른 각 점수별 갯수 % 계산만큼 게이지바 나타내기
-	gauge5.style.width = score5/total*100+"%";
-	gauge4.style.width = score4/total*100+"%";
-	gauge3.style.width = score3/total*100+"%";
-	gauge2.style.width = score2/total*100+"%";
-	gauge1.style.width = score1/total*100+"%";
 
-	
-	
+	var total = score1 + score2 + score3 + score4 + score5;
+
+	console.log(total);
+
+	//총 리뷰갯수에 따른 각 점수별 갯수 % 계산만큼 게이지바 나타내기
+	gauge5.style.width = score5 / total * 100 + "%";
+	gauge4.style.width = score4 / total * 100 + "%";
+	gauge3.style.width = score3 / total * 100 + "%";
+	gauge2.style.width = score2 / total * 100 + "%";
+	gauge1.style.width = score1 / total * 100 + "%";
+
+
+	//리뷰리스트 불러오기 ajax 비동기
+	var selectedOpt = $('#reviewOption').val(); //리뷰리스트 옵션선택값 가져오기
+	var totalReviews = total;
+	var proCode = $('#reviewOption').data('procode');
+
+
+	const itemsPerPage = 5; // 페이지 당 item 수 = 6
+	let currentPage = 1; // 현재 표시되는 페이지
+	let totalItems = 0; // 총 item 수 초기화
+	let reviewList; // ArrayList를 담을 변수
+	let currPageGroup = 1; // 현재 페이지 그룹
+	let totalPages = 0; // 총 페이지 수
+	let preEndPage = 0; // 이전 페이지의 마지막 페이지 번호
+
+	loadReviewList(currentPage, currPageGroup)
+
+	// 리뷰 리스트 옵션이 변경될 때마다 AJAX 요청 실행
+	$('#reviewOption').change(function() {
+		selectedOpt = $('#reviewOption').val(); //리뷰리스트 옵션선택값 가져오기
+		currentPage = 1; // 필터링 시 페이지를 1로 리셋
+		loadReviewList(currentPage, currPageGroup); // 옵션이 변경될 때마다 loadReviewList 호출
+	});
+
+	// 리뷰리스트 불러오기 ajax
+	function loadReviewList(currentPage, currPageGroup) {
+		$.ajax({
+			url: '/product/productDetailReivewList',
+			type: 'POST',
+			contentType: 'application/json', // JSON 형식으로 전송
+			data: JSON.stringify({
+				proCode: proCode, selectedOpt: selectedOpt
+
+			}),
+
+			success: function(response) {
+				reviewList = response; // 변수에 데이터 대입
+				totalItems = reviewList.length; // 받아온 데이터 총 갯수 계산
+				totalPages = Math.ceil(totalItems / itemsPerPage); // 총 페이지 수 계산
+
+				displayItems(currentPage); // 아이템 표시
+				setupPagination(currentPage, currPageGroup); // 페이지네이션 설정
+
+
+			},
+			error: function() {
+				alert('서버와의 연결에 문제가 발생했습니다.');
+			}
+
+		});
+	}
+
+
+	// 아이템을 페이지에 맞게 출력
+	function displayItems(currentPage) {
+
+		if (currentPage <= 5) {
+			// 현재 페이지가 10이하인 경우 == 페이지그룹이 1인 경우
+			var start = (currentPage - 1) * itemsPerPage;
+		} else {
+			// 그 외 == 페이지그룹이 2이상인 경우
+			// start = (현재페이지 - 이전마지막페이지 - 1) * itemsPerPage(6)
+			var start = ((currentPage - preEndPage) - 1) * itemsPerPage;
+		}
+
+		// end = 시작 인덱스번호 + itemsPerPage(6)
+		const end = start + itemsPerPage;
+		const sliceList = reviewList.slice(start, end);
+		// .slice(start, end)는 배열에서 start부터 end 이전까지의 아이템들을 추출
+		// start가 0이고 end가 6이라면 인덱스 [0] ~ [5] 을 출력
+
+		// 데이터를 테이블로 출력
+		let cards = '';
+		$.each(sliceList, function(index, rlist) {
+			// 리뷰 날짜 포맷팅 함수
+			function formatDate(dateString) {
+				const dateObject = new Date(dateString);
+				const year = dateObject.getFullYear(); // 연도
+				const month = String(dateObject.getMonth() + 1).padStart(2, '0'); // 월 (0부터 시작하므로 +1)
+				const day = String(dateObject.getDate()).padStart(2, '0'); // 일
+
+				return `${year}-${month}-${day}`; // 형식: YYYY-MM-DD
+			}
+			// 리뷰 카드 생성
+			cards += '<div class="reviewList">';
+
+			// 반려동물 이미지
+			cards += '<div class="reviewFirst">'
+			if(rlist.pet_img){
+			cards += '<img src="/static/Images/pet/' + rlist.pet_img + '" class="petImage">';
+			}else {
+			cards += '<img src="/static/Images/pet/noPetImg.jpg" class="petImage">';
+			}
+			
+			// 작성자 이름
+			cards += '<div class="reviewAuthor">';
+			cards += '<strong>' + rlist.pet_name + '</strong>'; // 작성자 이름
+			cards += '</div>';
+
+			// 리뷰 평점
+			cards += '<div class="reviewRating">';
+			cards += '<span> ' + generateStarRating(rlist.review_rating) + ' </span>'; // 평점
+			cards += '</div>';
+
+			// 리뷰 날짜
+			cards += '<div class="reviewDate">';
+			cards += '<span>' + formatDate(rlist.review_date) + '</span>'; // 포맷팅된 날짜
+			cards += '</div>';
+			cards += '</div>';
+
+		
+
+			// 리뷰 이미지
+			cards += '<div class="reviewImages">';
+			if (rlist.review_img1) {
+				cards += '<img src="/static/Images/ProductImg/ReviewImg/' + rlist.review_img1 + '" class="reviewImage">';
+			}
+			if (rlist.review_img2) {
+				cards += '<img src="/static/Images/ProductImg/ReviewImg/' + rlist.review_img2 + '" class="reviewImage">';
+			}
+			if (rlist.review_img3) {
+				cards += '<img src="/static/Images/ProductImg/ReviewImg/' + rlist.review_img3 + '" class="reviewImage">';
+			}
+			if (rlist.review_img4) {
+				cards += '<img src="/static/Images/ProductImg/ReviewImg/' + rlist.review_img4 + '" class="reviewImage">';
+			}
+			if (rlist.review_img5) {
+				cards += '<img src="/static/Images/ProductImg/ReviewImg/' + rlist.review_img5 + '" class="reviewImage">';
+			}
+			cards += '</div>'; // reviewImages
+
+			// 리뷰 텍스트
+			cards += '<div class="reviewText">';
+			cards += '<p>' + rlist.review_text + '</p>'; // 리뷰 텍스트
+			cards += '</div>'; // reviewText
+
+			cards += '</div>'; // reviewList
+		});
+
+		$('.reviewContentListContainer').html(cards);
+	}
+
+	// 페이지네이션 설정
+	function setupPagination() {
+		const maxPagesToShow = 5; // 한 번에 보여줄 페이지 수
+		const startPage = (currPageGroup - 1) * maxPagesToShow + 1; // 현재 그룹의 첫 페이지 계산
+		const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages); // 마지막 페이지 계산
+
+		let reviewListPagination = '';
+
+		// 이전 버튼 추가 (현재 페이지 그룹이 1보다 크면 표시)
+		if (currPageGroup > 1) {
+			reviewListPagination += '<a href="#" id="prev-group">&laquo; 이전</a>';
+		}
+
+		// 페이지 번호 생성
+		for (let i = startPage; i <= endPage; i++) {
+			reviewListPagination += '<a href="#" id="i" class="' + (i === currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</a>';
+		}
+
+		// 다음 버튼 추가
+		if (endPage < totalPages) {
+			reviewListPagination += '<a href="#" id="next-group">다음 &raquo;</a>';
+		}
+		$('.reviewListPagination').html(reviewListPagination);
+
+		// 페이지 클릭 이벤트 핸들러
+		$('.reviewListPagination a').on('click', function(event) {
+			event.preventDefault();
+
+			if ($(this).attr('id') === 'prev-group') {
+				// 이전 그룹으로 이동
+				currPageGroup--;
+				currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 이전 그룹의 첫 페이지
+			} else if ($(this).attr('id') === 'next-group') {
+				// 다음 그룹으로 이동
+				currPageGroup++;
+				currentPage = (currPageGroup - 1) * maxPagesToShow + 1; // 다음 그룹의 첫 페이지
+			} else {
+				// 클릭한 페이지로 이동
+				currentPage = $(this).data('page');
+			}
+
+			// 페이지 번호와 그룹에 맞게 데이터 다시 로드
+			loadReviewList(currentPage, currPageGroup);
+		});
+	}
+
+
+	// 이미지 클릭 이벤트 추가
+	document.addEventListener('click', function(event) {
+	    if (event.target.closest('.reviewImages')) {
+	        const clickedImage = event.target;
+	        if (clickedImage.classList.contains('reviewImage')) {
+	            // 클릭한 이미지 크기 조정
+	            if (clickedImage.classList.contains('large')) {
+	                clickedImage.classList.remove('large'); // 큰 이미지 클래스를 제거
+	            } else {
+	                const images = clickedImage.closest('.reviewImages').querySelectorAll('.reviewImage');
+	                images.forEach(img => img.classList.remove('large')); // 다른 이미지에서 큰 클래스 제거
+	                clickedImage.classList.add('large'); // 클릭한 이미지에 큰 클래스 추가
+	            }
+	        }
+	    }
+	});
+
+	// 스크롤 이벤트 추가
+	window.addEventListener('scroll', function() {
+	    const largeImages = document.querySelectorAll('.reviewImage.large');
+	    largeImages.forEach(img => img.classList.remove('large')); // 스크롤 시 모든 큰 이미지 클래스 제거
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// 버튼 표시 및 숨김 기능
 	window.onscroll = function() {
-	    const scrollTopBtn = document.getElementById("scrollTopBtn");
-	    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-	        scrollTopBtn.style.display = "block"; // 200px 이상 스크롤하면 버튼 보이기
-	    } else {
-	        scrollTopBtn.style.display = "none"; // 200px 이하일 때 버튼 숨기기
-	    }
+		const scrollTopBtn = document.getElementById("scrollTopBtn");
+		if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+			scrollTopBtn.style.display = "block"; // 200px 이상 스크롤하면 버튼 보이기
+		} else {
+			scrollTopBtn.style.display = "none"; // 200px 이하일 때 버튼 숨기기
+		}
 	};
 
 	// 버튼 클릭 시 페이지 맨 위로 이동
 	document.getElementById("scrollTopBtn").onclick = function() {
-	    window.scrollTo({
-	        top: 0,
-	        behavior: 'smooth' // 부드럽게 스크롤
-	    });
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth' // 부드럽게 스크롤
+		});
 	};
-	
-	
-	
+
+
+
+
+
 });
 
 

@@ -14,6 +14,8 @@ import com.tech.petfriends.helppetf.service.AdoptionViewService;
 import com.tech.petfriends.helppetf.service.FindFacilitiesService;
 import com.tech.petfriends.helppetf.service.FindHospitalService;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
+import com.tech.petfriends.helppetf.service.PethotelInfoService;
+import com.tech.petfriends.helppetf.service.PethotelIntroService;
 import com.tech.petfriends.helppetf.service.PetteacherDetailService;
 
 
@@ -29,11 +31,25 @@ public class HelpPetfController {
 	
 	HelppetfServiceInter helpServiceInterface;
 	
-	@GetMapping("/pethotel/pethotel_main") // 펫호텔 메인
-	public String pethotelMain(Model model) {
+	@GetMapping("/pethotel/pethotel_reserve_done") // 펫호텔 펫 캠
+	public String pethotelReserveDone(Model model) {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "pethotel");
-		return "/helppetf/pethotel/pethotel_main";
+		return "/helppetf/pethotel/pethotel_reserve_done";
+	}
+
+	@GetMapping("/pethotel/pethotel_petcam") // 펫호텔 펫 캠
+	public String pethotelPetCam(Model model) {
+		model.addAttribute("main_navbar_id", "helppetf");
+		model.addAttribute("sub_navbar_id", "pethotel");
+		return "/helppetf/pethotel/pethotel_petcam";
+	}
+
+	@GetMapping("/pethotel/pethotel_info") // 펫호텔 이용안내
+	public String pethotelInfo(Model model) {
+		helpServiceInterface = new PethotelInfoService(helpDao);
+		helpServiceInterface.execute(model);
+		return "/helppetf/pethotel/pethotel_info";
 	}
 
 	@GetMapping("/pethotel/pethotel_reserve") // 펫호텔 예약화면
@@ -41,6 +57,13 @@ public class HelpPetfController {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "pethotel");
 		return "/helppetf/pethotel/pethotel_reserve";
+	}
+
+	@GetMapping("/pethotel/pethotel_main") // 펫호텔 메인
+	public String pethotelMain(Model model) {
+		helpServiceInterface = new PethotelIntroService(helpDao);
+		helpServiceInterface.execute(model);
+		return "/helppetf/pethotel/pethotel_main";
 	}
 
 	@GetMapping("/adoption/adoption_main") // 입양 센터 메인
@@ -53,8 +76,6 @@ public class HelpPetfController {
 	@GetMapping("/adoption/adoption_detail") // 입양 센터 상세페이지
 	public String adoptionContentSend(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
-		model.addAttribute("main_navbar_id", "helppetf");
-		model.addAttribute("sub_navbar_id", "adoption");
 		helpServiceInterface = new AdoptionViewService();
 		helpServiceInterface.execute(model); // <- 리다이렉트 이후 데이터 처리
 		return "/helppetf/adoption/adoption_detail"; // <- view단 jsp 매핑 호출
@@ -70,8 +91,6 @@ public class HelpPetfController {
 	@GetMapping("/petteacher/petteacher_detail") // 펫티쳐 상세 페이지
 	public String petteacherDetails(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
-		model.addAttribute("main_navbar_id", "helppetf");		
-		model.addAttribute("sub_navbar_id", "petteacher");
 		helpServiceInterface = new PetteacherDetailService(helpDao);
 		helpServiceInterface.execute(model);
 		return "/helppetf/petteacher/petteacher_detail";
@@ -80,8 +99,6 @@ public class HelpPetfController {
 	@GetMapping("/find/pet_hospital") // 주변 동물병원 찾기 페이지
 	public String find_hospital(Model model) {
 		model.addAttribute("apiKey", apikeyConfig.getKakaoApikey());
-		model.addAttribute("main_navbar_id", "helppetf");
-		model.addAttribute("sub_navbar_id", "pet_hospital");
 		helpServiceInterface = new FindHospitalService(helpDao);
 		helpServiceInterface.execute(model);
 		
@@ -91,8 +108,6 @@ public class HelpPetfController {
 	@GetMapping("/find/pet_facilities") // 주변 반려동물 시설 찾기 페이지
 	public String pet_facilities(Model model) {
 		model.addAttribute("apiKey", apikeyConfig.getKakaoApikey());
-		model.addAttribute("main_navbar_id", "helppetf");
-		model.addAttribute("sub_navbar_id", "pet_facilities");
 		helpServiceInterface = new FindFacilitiesService(helpDao);
 		helpServiceInterface.execute(model);
 		

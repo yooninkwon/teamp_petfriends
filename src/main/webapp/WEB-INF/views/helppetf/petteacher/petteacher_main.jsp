@@ -23,7 +23,7 @@
 	</script>
 	<!-- 필터 div -->
 	<div id="filter_form">
-		<span> <svg width="12" height="13" viewBox="0 0 12 13"
+		<div> <svg width="12" height="13" viewBox="0 0 12 13"
 				fill="none" xmlns="http://www.w3.org/2000/svg"
 				style="margin-top: 0.25rem;">
 				<mask id="path-1-inside-1_82_11791" fill="white">
@@ -54,7 +54,7 @@
 				<button id="filterSubmit">검색</button>
 				<button id="filterReset">선택 초기화</button>
 			</form>
-		</span>
+		</div>
 	</div>
 
 	<div class="video-grid" id="videoContainer">
