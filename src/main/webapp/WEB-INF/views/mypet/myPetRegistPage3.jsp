@@ -48,7 +48,7 @@
 			<input type="hidden" name="petType" value="${petType }" />
 			<input type="hidden" name="petImg" value="${petImg }" />
 			<input type="hidden" name="petDetailType" value="${petDetailType }" />
-			<input type="hidden" name="petBrith" value="${petBrith }" />
+			<input type="hidden" name="petBirth" value="${petBirth }" />
 			<input type="hidden" id="petGender" name="petGender" value="" />
 			<input type="hidden" id="petNeut" name="petNeut" value="" />
 			<input type="hidden" id="petBodyType" name=petBodyType value="" />
@@ -58,50 +58,67 @@
 	</div>
 	
 	<script>
-        function selectGender(selectedButton) {
-            const genderButtons = document.querySelectorAll("#gender-group input[type='button']");
-            genderButtons.forEach(btn => {
-                btn.style.backgroundColor = "white";
-                btn.style.color = "gray";
-                btn.style.border = "1px solid gray";  
-            });
+    function selectGender(selectedButton) {
+        const genderButtons = document.querySelectorAll("#gender-group input[type='button']");
+        genderButtons.forEach(btn => {
+            btn.style.backgroundColor = "white";
+            btn.style.color = "gray";
+            btn.style.border = "1px solid gray";  
+        });
 
-            selectedButton.style.backgroundColor = "#ff4081";
-            selectedButton.style.border = "none";
-            selectedButton.style.color = "white";
-            document.getElementById('petGender').value = selectedButton.value;
-            
-        }
+        selectedButton.style.backgroundColor = "#ff4081";
+        selectedButton.style.border = "none";
+        selectedButton.style.color = "white";
+        document.getElementById('petGender').value = selectedButton.value;
         
-        function selectNeut(selectedButton) {
-            const NeutButtons = document.querySelectorAll("#neut input[type='button']");
-            NeutButtons.forEach(btn => {
-                btn.style.backgroundColor = "white";
-                btn.style.color = "gray";
-                btn.style.border = "1px solid gray";  
-            });
+        checkSelections();  // 선택 체크 함수 호출
+    }
 
-            selectedButton.style.backgroundColor = "#ff4081";
-            selectedButton.style.border = "none";
-            selectedButton.style.color = "white";
-            document.getElementById('petNeut').value = selectedButton.value;
-            
-        }
+    function selectNeut(selectedButton) {
+        const NeutButtons = document.querySelectorAll("#neut input[type='button']");
+        NeutButtons.forEach(btn => {
+            btn.style.backgroundColor = "white";
+            btn.style.color = "gray";
+            btn.style.border = "1px solid gray";  
+        });
 
-        function selectBodyType(selectedButton) {
-            // Get all body type buttons and reset their styles
-            const bodyButtons = document.querySelectorAll("#body-group input[type='button']");
-            bodyButtons.forEach(btn => {
-                btn.style.backgroundColor = "white";
-                btn.style.color = "gray";
-                btn.style.border = "1px solid gray";  
-            });
+        selectedButton.style.backgroundColor = "#ff4081";
+        selectedButton.style.border = "none";
+        selectedButton.style.color = "white";
+        document.getElementById('petNeut').value = selectedButton.value;
+        
+        checkSelections();  // 선택 체크 함수 호출
+    }
 
-            selectedButton.style.backgroundColor = "#ff4081";
-            selectedButton.style.border = "none";
-            selectedButton.style.color = "white";
-            document.getElementById('petBodyType').value = selectedButton.value;
-        }
-    </script>
+    function selectBodyType(selectedButton) {
+        const bodyButtons = document.querySelectorAll("#body-group input[type='button']");
+        bodyButtons.forEach(btn => {
+            btn.style.backgroundColor = "white";
+            btn.style.color = "gray";
+            btn.style.border = "1px solid gray";  
+        });
+
+        selectedButton.style.backgroundColor = "#ff4081";
+        selectedButton.style.border = "none";
+        selectedButton.style.color = "white";
+        document.getElementById('petBodyType').value = selectedButton.value;
+        
+        checkSelections();  // 선택 체크 함수 호출
+    }
+
+    function checkSelections() {
+        const genderSelected = document.getElementById('petGender').value !== "";
+        const neutSelected = document.getElementById('petNeut').value !== "";
+        const bodyTypeSelected = document.getElementById('petBodyType').value !== "";
+
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = !(genderSelected && neutSelected && bodyTypeSelected);
+    }
+
+    // 초기화 시 submit 버튼 비활성화
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('submitBtn').disabled = true;
+    });
+</script>
 </body>
 </html>

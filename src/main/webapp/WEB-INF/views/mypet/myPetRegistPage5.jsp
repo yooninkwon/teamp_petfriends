@@ -25,7 +25,7 @@
 		<input type="text" name="petType" value="${petType }" />
 		<input type="text" name="petImg" value="${petImg }" />
 		<input type="text" name="petDetailType" value="${petDetailType }" />
-		<input type="text" name="petBrith" value="${petBrith }" />
+		<input type="text" name="petBirth" value="${petBirth }" />
 		<input type="text" name="petGender" value="${petGender }" />
 		<input type="text" name="petGender" value="${petNeut }" />
 		<input type="text" name="petWeight" value="${petWeight }" />

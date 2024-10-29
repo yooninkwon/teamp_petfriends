@@ -55,7 +55,7 @@
 			<input type="hidden" name="petType" value="${petType }" />
 			<input type="hidden" name="petImg" value="${petImg }" />
 			<input type="hidden" name="petDetailType" value="${petDetailType }" />
-			<input type="hidden" name="petBrith" value="${petBrith }" />
+			<input type="hidden" name="petBirth" value="${petBirth }" />
 			<input type="hidden" name="petGender" value="${petGender }" />
 			<input type="hidden" name="petNeut" value="${petNeut }" />
 			<input type="hidden" name="petWeight" value="${petWeight }" />

@@ -225,23 +225,23 @@
 	<script>
 		// 사진 업로드
 	    document.getElementById('uploadInput').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const fileName = file.name; // 파일 이름 저장
-            document.getElementById('petImgFileName').value = fileName; // 파일 이름을 hidden input에 저장
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                const previewImage = document.getElementById('preview');
-                previewImage.src = e.target.result;
-                previewImage.style.display = 'block'; // 이미지를 보여줌
-                previewImage.style.width = '500px';// 배경 이미지 크기를 500px로 고정
-
-                console.log('파일 이름:', fileName); // 파일 이름을 콘솔에 출력
-            }
-            reader.readAsDataURL(file); // 파일을 데이터 URL로 읽음
-        }
-    });
+	        const file = event.target.files[0];
+	        if (file) {
+	            const fileName = file.name; // 파일 이름 저장
+	            document.getElementById('petImgFileName').value = fileName; // 파일 이름을 hidden input에 저장
+	            const reader = new FileReader();
+	            
+	            reader.onload = function(e) {
+	                const previewImage = document.getElementById('preview');
+	                previewImage.src = e.target.result;
+	                previewImage.style.display = 'block'; // 이미지를 보여줌
+	                previewImage.style.width = '500px';// 배경 이미지 크기를 500px로 고정
+	
+	                console.log('파일 이름:', fileName); // 파일 이름을 콘솔에 출력
+	            }
+	            reader.readAsDataURL(file); // 파일을 데이터 URL로 읽음
+	        }
+	    });
 	    
 	    // 팝업 열기
 	    function openPopup() {
@@ -260,6 +260,7 @@
 	        item.addEventListener('click', function() {
 	            document.getElementById('detailType').value = this.innerText;
 	            closePopup(); // 선택 후 팝업 닫기
+	            checkFormCompletion(); // 견종 선택 시 유효성 검사 호출
 	        });
 	    });
 
@@ -278,17 +279,29 @@
 	        });
 	    }
 	    
-	 // 페이지가 로드될 때 자동으로 이벤트 리스너 추가
+	    // 견종과 생일이 입력되었는지 확인하여 버튼 활성화
+	    function checkFormCompletion() {
+	        const detailType = document.getElementById('detailType').value;
+	        const petBirth = document.getElementById('petBirth').value;
+	        const submitBtn = document.getElementById('submitBtn');
+
+	        // detailType과 petBirth가 모두 값이 있을 때만 버튼 활성화
+	        submitBtn.disabled = !(detailType && petBirth);
+	    }
+
+	    // 페이지 로드 시 및 생일 입력 시 유효성 검사
 	    document.addEventListener("DOMContentLoaded", function() {
 	        const dateInput = document.getElementById("petBirth");
-	        
+	        const submitBtn = document.getElementById("submitBtn");
+	        submitBtn.disabled = true;
 	        // dateInput을 클릭할 때 바로 날짜 선택창 열기
 	        dateInput.addEventListener("focus", function() {
 	            dateInput.showPicker();  // 날짜 선택창을 바로 표시
 	        });
+	        
+	        // 생일 입력 시 유효성 검사 호출
+	        dateInput.addEventListener("input", checkFormCompletion);
 	    });
-	    
 	</script>
-
 </body>
 </html>

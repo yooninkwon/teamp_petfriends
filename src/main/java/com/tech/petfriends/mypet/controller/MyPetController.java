@@ -3,7 +3,6 @@ package com.tech.petfriends.mypet.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -56,34 +55,40 @@ public class MyPetController {
 	        Model model) {
 
 	    System.out.println("펫등록 페이지3");
-
+	    // 요청에서 파라미터 가져오기
+	    String fileName = null;
 	    String petType = request.getParameter("petType");
 	    String petName = request.getParameter("petName");
 	    String petDetailType = request.getParameter("detailType");
 	    String petBirth = request.getParameter("petBirth");
 
-	    String uploadDir = request.getServletContext().getRealPath("/static/Images/pet/");
-	    File directory = new File(uploadDir);
-	    if (!directory.exists()) {
-	        directory.mkdirs();
-	    }
-	    String fileName = petImgFile.getOriginalFilename();
-	    String filePath = uploadDir + fileName;
-
 	    try {
-	        petImgFile.transferTo(new File(filePath));
-	        System.out.println("파일 저장 경로: " + filePath);
-	        System.out.println("파일 저장 완료");
+	        if (petImgFile != null && !petImgFile.isEmpty()) {
+	        	// ClassPathResource를 사용해 resources 경로를 가져옴
+		        String imagesDir = "C:\\24sts4\\project\\project_Petfriend\\src\\main\\resources\\static\\Images\\pet\\";
+
+		        // 파일 이름 가져오기
+		        fileName = petImgFile.getOriginalFilename();
+		        File saveFile = new File(imagesDir, fileName);
+
+		        // 디렉토리가 없다면 생성
+		        // if (!staticImagesDir.exists()) staticImagesDir.mkdirs();
+
+		        // 파일 저장
+		        petImgFile.transferTo(saveFile);
+			}
+
+	        // 모델에 데이터 추가
+	        model.addAttribute("petType", petType);
+	        model.addAttribute("petName", petName);
+	        model.addAttribute("petImg", fileName);
+	        model.addAttribute("petDetailType", petDetailType);
+	        model.addAttribute("petBirth", petBirth);
+
 	    } catch (IOException e) {
 	        e.printStackTrace();
+	        return "파일 업로드 실패";
 	    }
-
-	    // 모델에 데이터 추가
-	    model.addAttribute("petType", petType);
-	    model.addAttribute("petName", petName);
-	    model.addAttribute("petImg", uploadDir + fileName); // 경로와 파일 이름을 포함한 이미지 경로 전달
-	    model.addAttribute("petDetailType", petDetailType);
-	    model.addAttribute("petBirth", petBirth);
 
 	    return "mypet/myPetRegistPage3";
 	}
@@ -95,7 +100,7 @@ public class MyPetController {
 		String petName = request.getParameter("petName");
 		String petImg = request.getParameter("petImg");
 		String petDetailType = request.getParameter("petDetailType");
-		String petBrith = request.getParameter("petBrith");
+		String petBirth = request.getParameter("petBirth");
 		String petGender = request.getParameter("petGender");
 		String petNeut = request.getParameter("petNeut");
 		String petWeight = request.getParameter("weight");
@@ -108,7 +113,7 @@ public class MyPetController {
 		model.addAttribute("petName",petName);
 		model.addAttribute("petImg",petImg);
 		model.addAttribute("petDetailType",petDetailType);
-		model.addAttribute("petBrith",petBrith);
+		model.addAttribute("petBirth",petBirth);
 		model.addAttribute("petGender",petGender);
 		model.addAttribute("petNeut",petNeut);
 		model.addAttribute("petWeight",petWeight);
@@ -130,7 +135,7 @@ public class MyPetController {
 		String petName = request.getParameter("petName");
 		String petImg = request.getParameter("petImg");
 		String petDetailType = request.getParameter("petDetailType");
-		String petBrith = request.getParameter("petBrith");
+		String petBirth = request.getParameter("petBirth");
 		String petGender = request.getParameter("petGender");
 		String petNeut = request.getParameter("petNeut");
 		String petWeight = request.getParameter("petWeight");
@@ -153,7 +158,7 @@ public class MyPetController {
 		pet.setPet_img(petImg);
 		pet.setPet_breed(petDetailType);
 
-		Date sqlDate = Date.valueOf(petBrith);
+		Date sqlDate = Date.valueOf(petBirth);
 		pet.setPet_birth(sqlDate);
 		
 		if (petGender == "남아") {
@@ -186,7 +191,7 @@ public class MyPetController {
 		model.addAttribute("petName",petName);
 		model.addAttribute("petImg",petImg);
 		model.addAttribute("petDetailType",petDetailType);
-		model.addAttribute("petBrith",petBrith);
+		model.addAttribute("petBirth",petBirth);
 		model.addAttribute("petGender",petGender);
 		model.addAttribute("petNeut",petNeut);		
 		model.addAttribute("petWeight",petWeight);

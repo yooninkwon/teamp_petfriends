@@ -11,6 +11,19 @@
 </head>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const submitBtn = document.getElementById("submitBtn");
+    const petNameInput = document.getElementById("petName");
+    
+    // 초기에는 비활성화
+    submitBtn.disabled = true;
+
+    // 이름 입력란에 입력이 있을 때마다 유효성 검사
+    petNameInput.addEventListener('input', function() {
+        const nameLength = petNameInput.value.length;
+        // 이름 길이가 1~8 사이면 버튼 활성화, 아니면 비활성화
+        submitBtn.disabled = nameLength < 1 || nameLength > 8;
+    });
+
     const dogImg = document.getElementById('dogImg');
     const catImg = document.getElementById('catImg');
     const dogRadio = document.querySelector('input[value="dog"]');
@@ -27,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
 <body>
 	<c:if test="${not empty fromJoin }">
 		<script>
