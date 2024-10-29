@@ -101,6 +101,95 @@
 				
 		
 	</div>
+	
+	<!-- 상품 등록 모달창 -->
+<div id="productModal" class="modal" style="display: none;">
+    <div class="modal-content">
+    <h3 class="modal-title">상품등록</h3>
+        <span class="close-btn" > <i class="fa-solid fa-xmark"></i></span>
+        <br />
+        <!-- 상품 정보 입력 -->
+    
+        <div class="input-group">
+            <label for="petType">펫타입</label>
+            <input type="text" id="petType">
+            <span class="proEx">ex) 강아지, 고양이 등</span>
+        </div>
+        <div class="input-group">
+            <label for="proType">상품종류</label>
+            <input type="text" id="proType">
+            <span class="proEx">ex) 사료, 간식 용품 등</span>
+        </div>
+        <div class="input-group">
+            <label for="proDetailType">상품타입</label>
+            <input type="text" id="proDetailType">
+            <span class="proEx">ex) 건사료, 장난감, 배변패드 등</span>
+        </div>
+        <div class="input-group">
+            <label for="filterType1">주원료</label>
+            <input type="text" id="filterType1">
+            <span class="proEx">ex) 주원료, 상품재질 등</span>
+        </div>
+        <div class="input-group">
+            <label for="filterType2">기능</label>
+            <input type="text" id="filterType2">
+            <span class="proEx">ex) 면역력, 장난감 소리(삑삑이) 등</span>
+        </div>
+        <div class="checkLine">
+        
+        </div>
+        <div class="input-group">
+            <label for="proName">상품명</label>
+            <input type="text" id="proName">
+        </div>
+        <div class="input-group">
+		    <label>대표이미지 <br /> (최대 5장)</label>
+		    
+		    <input type="file" id="proMainImages" accept="image/*" multiple >
+		</div>
+        <div class="input-group">
+		    <label></label>
+		    <div id="mainImagePreview" class="image-preview"></div>
+		</div>
+        <div class="input-group">
+		    <label>상세이미지<br />(최대 10장)</label>
+		    <input type="file" id="proDesImages" accept="image/*" multiple>
+		</div>
+        <div class="input-group">
+		    <label ></label>
+		    <div id="desImagePreview" class="image-preview"></div>
+		</div>
+      	<div class="input-group">
+            <label for="proDiscount">할인율</label>
+            <input type="number" id="proDiscount">
+            <span class="proEx" >%</span>
+        </div>
+        <div id="option-container">
+	        <div class="input-group2">
+	            <label id="options">상품옵션</label>
+	            <span for="optName">옵션명 <input type="text" id="optName"></span>
+	            <span for="optPrice">판매가 <input type="number" id="optPrice">원</span>
+	            <span for="optCnt">재고수량 <input type="number" id="optCnt">개</span>
+	            <button type="button" class="add-option">+</button>
+	            <button type="button" class="remove-option" style="display: none;">-</button> <!-- 기본적으로 삭제 버튼 숨김 -->
+	        </div>
+       	</div>
+          
+        <div class="input-group">
+       		<label for="productStatus" >판매상태</label>
+            <label><input type="radio" name="productStatus" value="판매" checked class="small-radio">판매</label>
+            <label><input type="radio" name="productStatus" value="정지" class="small-radio">정지</label>
+            <label><input type="radio" name="productStatus" value="품절" class="small-radio">품절</label>
+            
+        </div>
+       
+        
+
+       
+
+        <button type="button" id="registerProductBtn" ></button>
+    </div>
+</div>
 
 
 </body>

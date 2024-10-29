@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.admin.dto.MemberCouponDto;
@@ -23,6 +25,7 @@ import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
+import com.tech.petfriends.admin.service.AdminProductAddService;
 import com.tech.petfriends.admin.service.AdminProductListService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
 
@@ -161,6 +164,26 @@ public class AdminPageController {
 		List<ProductListDto> productList = (List<ProductListDto>) model.getAttribute("productList");
 		
 		return productList;
+	}
+	
+	//관리자페이지 상품 등록
+	@PostMapping("/product/add")
+	@ResponseBody
+	 public void productAdd(
+			 	@RequestParam Map<String, Object> data,
+		        @RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
+		        @RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
+		        @RequestParam(value = "options") String[] options,
+		        Model model) {
+		
+		// Model에 데이터 추가
+		model.addAllAttributes(data);
+	    model.addAttribute("mainImages", mainImages);
+	    model.addAttribute("desImages", desImages);
+	    model.addAttribute("options", options);
+		
+		adminServInter = new AdminProductAddService(adminProductDao);
+		adminServInter.execute(model);
 		
 	}
 

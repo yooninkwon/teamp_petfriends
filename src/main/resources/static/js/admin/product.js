@@ -64,10 +64,10 @@ $(document).ready(function() {
 		let currPageGroup = 1;
 		let totalPages = 0;
 
-		var petType = $('input[name="pet-filter"]:checked').val();
-		var proType = $('input[name="pro-filter"]:checked').val();
-		var detailType = $('input[name="type-DF"]:checked, input[name="type-DS"]:checked, input[name="type-DG"]:checked, input[name="type-CF"]:checked, input[name="type-CS"]:checked, input[name="type-CG"]:checked').val() || null;
-		var searchType = $('#search-filter').val() || null;
+		let petType = $('input[name="pet-filter"]:checked').val();
+		let proType = $('input[name="pro-filter"]:checked').val();
+		let detailType = $('input[name="type-DF"]:checked, input[name="type-DS"]:checked, input[name="type-DG"]:checked, input[name="type-CF"]:checked, input[name="type-CS"]:checked, input[name="type-CG"]:checked').val() || null;
+		let searchType = $('#search-filter').val() || null;
 
 
 
@@ -119,7 +119,7 @@ $(document).ready(function() {
 
 
 				lists += `<td>
-				                  <button class="btn-style" data-product-code="${pro.pro_code}">상세보기</button>
+				                  <button type="button" class="btn-style" data-product-code="${pro.pro_code}">상세보기</button>
 				                 
 				              </td>`;
 				lists += '</tr>';
@@ -169,5 +169,223 @@ $(document).ready(function() {
 			});
 		}
 	};
+
+
+	// 신규등록 모달 열기/닫기
+	$('#new-pro-btn').on('click', function() {
+		//resetModal();
+		$('#registerProductBtn').text('등록하기');
+		document.getElementById('productModal').style.display = 'block';
+	});
+
+
+	$('.close-btn').on('click', function() {
+		$('#productModal').hide();
+	});
+
+
+	//대표,상세이미지 미리보기
+	function setupImagePreview(inputElement, previewContainer, maxFiles) {
+		inputElement.addEventListener('change', function() {
+			const files = inputElement.files;
+
+			// 파일 개수 제한 확인
+			if (files.length > maxFiles) {
+				alert(`최대 ${maxFiles}장을 선택할 수 있습니다.`);
+				inputElement.value = ''; // 입력값 초기화
+				previewContainer.innerHTML = ''; // 미리보기 초기화
+				return;
+			}
+
+			previewContainer.innerHTML = ''; // 이전 미리보기 초기화
+
+			for (let i = 0; i < files.length; i++) {
+				const file = files[i];
+				const reader = new FileReader();
+
+				reader.onload = function(e) {
+					const img = document.createElement('img');
+					img.src = e.target.result; // 파일의 데이터 URL
+					img.classList.add('preview-image'); // CSS 클래스 추가 (스타일링 용)
+					img.style.width = '30px'; // 썸네일 크기 설정
+					img.style.margin = '0 5px'; // 위아래는 0, 좌우는 5px 간격 설정
+					previewContainer.appendChild(img); // 미리보기 컨테이너에 추가
+				}
+
+				reader.readAsDataURL(file); // 파일을 데이터 URL로 변환
+			}
+		});
+	}
+
+	//상품옵션 +/-
+
+	const optionContainer = document.getElementById('option-container');
+
+	optionContainer.addEventListener('click', function(event) {
+		if (event.target.classList.contains('add-option')) {
+			addOptionLine();
+		} else if (event.target.classList.contains('remove-option')) {
+			removeOptionLine(event.target);
+		}
+	});
+
+	function addOptionLine() {
+		const optionGroup = document.querySelector('.input-group2');
+		const newOptionGroup = optionGroup.cloneNode(true);
+
+		newOptionGroup.querySelectorAll('input').forEach(input => input.value = "");
+
+		const removeButton = newOptionGroup.querySelector('.remove-option');
+		removeButton.style.display = 'inline-block'; // 새 줄의 삭제 버튼 보이기
+
+		optionContainer.appendChild(newOptionGroup);
+		newOptionGroup.querySelector('label').innerText = ''; // 레이블을 빈칸으로 설정
+
+		updateButtons();
+	}
+
+	function removeOptionLine(button) {
+		const optionGroup = button.closest('.input-group2');
+		if (optionGroup !== optionContainer.firstElementChild) {
+			optionContainer.removeChild(optionGroup);
+		}
+		updateButtons();
+	}
+
+	function updateButtons() {
+		const optionGroups = optionContainer.querySelectorAll('.input-group2');
+
+		optionGroups.forEach((group, index) => {
+			const removeButton = group.querySelector('.remove-option');
+
+			if (index === 0) {
+				// 첫 번째 줄의 삭제 버튼은 숨김
+				removeButton.style.display = 'none';
+			} else {
+				removeButton.style.display = 'inline-block'; // 그 외 줄은 삭제 버튼 보이기
+			}
+		});
+	}
+
+
+
+	// 옵션 값을 가져오는 함수
+	function getOptionValues() {
+		const optionGroups = optionContainer.querySelectorAll('.input-group2');
+		const options = [];
+
+		optionGroups.forEach(group => {
+			const name = group.querySelector('#optName').value;
+			const price = group.querySelector('#optPrice').value;
+			const count = group.querySelector('#optCnt').value;
+
+			options.push({
+				name: name,
+				price: price,
+				count: count
+			});
+		});
+
+		console.log(options); // 옵션 값 확인
+		return options;
+	}
+
+	//상품등록하기 버튼 ajax 데이터 이동
+	$('#registerProductBtn').on('click', function() {
+
+		// FormData 객체 생성
+		const formData = new FormData();
+
+		// 대표 이미지 파일 가져오기
+		const mainImages = document.getElementById('proMainImages').files;
+		for (let i = 0; i < mainImages.length; i++) {
+			formData.append('mainImages', mainImages[i]); // 대표 이미지 파일 추가
+		}
+
+		// 상세 이미지 파일 가져오기
+		const desImages = document.getElementById('proDesImages').files;
+		for (let i = 0; i < desImages.length; i++) {
+			formData.append('desImages', desImages[i]); // 상세 이미지 파일 추가
+		}
+
+		// 각 입력 필드의 값을 가져오기
+		let petType = document.getElementById("petType") ? document.getElementById("petType").value : '';
+		let proType = document.getElementById("proType") ? document.getElementById("proType").value : '';
+		let proDetailType = document.getElementById("proDetailType") ? document.getElementById("proDetailType").value : '';
+		let filterType1 = document.getElementById("filterType1") ? document.getElementById("filterType1").value : '';
+		let filterType2 = document.getElementById("filterType2") ? document.getElementById("filterType2").value : '';
+		let proName = document.getElementById("proName") ? document.getElementById("proName").value : '';
+		let proDiscount= document.getElementById("proDiscount") ? document.getElementById("proDiscount").value : '';
+		let productStatus = document.querySelector('input[name="productStatus"]:checked').value; // 선택된 라디오 버튼 값
+
+	/*	// 옵션 값을 가져와서 FormData에 배열 형태로 추가
+		const options = getOptionValues();
+		options.forEach((option, index) => {
+			formData.append(`options[${index}].name`, option.name);
+			formData.append(`options[${index}].price`, option.price);
+			formData.append(`options[${index}].count`, option.count);
+		});*/
+
+		// FormData에 추가
+		// 옵션 값을 가져와서 FormData에 추가
+		const options = getOptionValues();
+		// options 배열을 JSON 문자열로 변환하여 추가
+		formData.append('options', JSON.stringify(options));
+
+		formData.append('petType', petType);
+		formData.append('proType', proType);
+		formData.append('proDetailType', proDetailType);
+		formData.append('filterType1', filterType1);
+		formData.append('filterType2', filterType2);
+		formData.append('proName', proName);
+		formData.append('proDiscount', proDiscount);
+		formData.append('productStatus', productStatus);
+
+		// AJAX 요청
+		$.ajax({
+			url: '/admin/product/add', // 등록할 URL
+			method: 'POST',
+			data: formData,
+			contentType: false, // contentType을 false로 설정
+			processData: false, // processData를 false로 설정
+			success: function(response) {
+				// 성공적으로 등록된 경우 처리
+				alert('제품이 등록되었습니다.');
+				$('#productModal').hide();
+			},
+			error: function(xhr, status, error) {
+				logger.error("상품 등록 중 오류 발생", e);
+				console.error('Error registering product:', error);
+				alert('제품 등록에 실패했습니다.');
+			}
+		});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	});
+
+
+
 
 });
