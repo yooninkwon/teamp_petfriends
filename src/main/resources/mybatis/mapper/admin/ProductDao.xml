@@ -32,7 +32,39 @@
 			
 		</if>
 	</select>
+
+	<!-- 어드민 상품등록 product insert -->	
+	<insert id="adminProductAdd">
+		INSERT INTO PRODUCT
+			(PRO_CODE, PRO_NAME, PRO_PETS, PRO_TYPE, PRO_CATEGORY,
+			PRO_FILTER1, PRO_FILTER2, PRO_DISCOUNT, PRO_ONOFF)
+		VALUES
+			(#{proCode}, #{proName}, #{petType}, #{proType}, #{proDetailType},
+			#{filterType1}, #{filterType2}, #{proDiscount}, #{productStatus})
+	</insert>
 	
+	<insert id="adminProductImgAdd">
+		INSERT INTO PRODUCT_IMAGE
+			(PRO_CODE, MAIN_IMG1, MAIN_IMG2, MAIN_IMG3, MAIN_IMG4, MAIN_IMG5, DES_IMG1,
+			DES_IMG2, DES_IMG3, DES_IMG4, DES_IMG5, DES_IMG6, DES_IMG7, DES_IMG8, DES_IMG9,
+			DES_IMG10, CHECK_IMG)
+		VALUES
+			(#{proCode},
+	        #{savedMainImageNames[0]}, #{savedMainImageNames[1]}, #{savedMainImageNames[2]},
+	        #{savedMainImageNames[3]}, #{savedMainImageNames[4]},
+	        #{savedDesImageNames[0]}, #{savedDesImageNames[1]}, #{savedDesImageNames[2]},
+	        #{savedDesImageNames[3]}, #{savedDesImageNames[4]},
+	        #{savedDesImageNames[5]}, #{savedDesImageNames[6]}, #{savedDesImageNames[7]},
+	        #{savedDesImageNames[8]}, #{savedDesImageNames[9]}
+        	,'CHECK.PNG')
+	</insert>
 	
-	
+	<insert id="adminProductOptAdd">
+		INSERT INTO PRODUCT_OPTION
+			(PROOPT_NAME, PROOPT_PRICE, PROOPT_STOCK,
+			PRO_CODE, PROOPT_FINALPRICE, PROOPT_CODE)
+		VALUES
+			(#{optionName}, #{optionPrice}, #{optionCount},
+			#{proCode}, #{finalPrice}, #{optCode})
+	</insert>
 </mapper>

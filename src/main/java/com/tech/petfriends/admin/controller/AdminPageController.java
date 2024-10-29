@@ -173,7 +173,7 @@ public class AdminPageController {
 			 	@RequestParam Map<String, Object> data,
 		        @RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
 		        @RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
-		        @RequestParam(value = "options") String[] options,
+		        @RequestParam(value = "options") String options,
 		        Model model) {
 		
 		// Model에 데이터 추가
