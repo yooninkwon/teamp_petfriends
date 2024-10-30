@@ -35,6 +35,11 @@
 	padding-right: 15px;
 }
 
+#tableDiv a{
+	text-decoration: none;
+	color: black;
+}
+
 #board{
 	margin-top: 10px;
 	margin-bottom: 30px;

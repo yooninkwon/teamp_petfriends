@@ -31,12 +31,12 @@
 					<th>날짜</th>
 					<th>조회수</th>
 				</tr>
-				<c:forEach var="i" begin="1" end="10">
+				<c:forEach var="notice" items="${noticeList}">
 					<tr>
-						<td>1</td>
-						<td id="title">추석연휴(10/01~10/05) 배송관련 공지사항</td>
-						<td>2024-10-17</td>
-						<td>3</td>
+						<td>${notice.notice_no }</td>
+						<td id="title"><a href="/notice/noticeView">${notice.notice_title }</a></td>
+						<td>${notice.notice_date }</td>
+						<td>${notice.notice_hit }</td>
 					</tr>
 				</c:forEach>
 			</table>
