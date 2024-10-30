@@ -34,6 +34,8 @@ public class CWriteService implements CServiceInterface {
 		// 게시글 작성
 		iDao.write(mem_nick, mem_code, board_title, board_content, b_cate_no);
 
+	
+		
 		// 방금 작성한 게시글의 id 가져오기
 		int board_no = iDao.selBid();
 		String workPath = System.getProperty("user.dir");
@@ -96,4 +98,8 @@ public class CWriteService implements CServiceInterface {
 	        iDao.imgWrite(board_no, null, null, repImgOriginal, repImgChange);
 	    }
 	}
+
+
+
+
 }
