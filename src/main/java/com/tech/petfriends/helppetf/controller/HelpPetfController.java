@@ -30,20 +30,6 @@ public class HelpPetfController {
 	HelpPetfDao helpDao;
 	
 	HelppetfServiceInter helpServiceInterface;
-	
-	@GetMapping("/pethotel/pethotel_reserve_done") // 펫호텔 펫 캠
-	public String pethotelReserveDone(Model model) {
-		model.addAttribute("main_navbar_id", "helppetf");
-		model.addAttribute("sub_navbar_id", "pethotel");
-		return "/helppetf/pethotel/pethotel_reserve_done";
-	}
-
-	@GetMapping("/pethotel/pethotel_petcam") // 펫호텔 펫 캠
-	public String pethotelPetCam(Model model) {
-		model.addAttribute("main_navbar_id", "helppetf");
-		model.addAttribute("sub_navbar_id", "pethotel");
-		return "/helppetf/pethotel/pethotel_petcam";
-	}
 
 	@GetMapping("/pethotel/pethotel_info") // 펫호텔 이용안내
 	public String pethotelInfo(Model model) {

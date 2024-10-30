@@ -3,10 +3,12 @@ package com.tech.petfriends.helppetf.service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.tech.petfriends.helppetf.dto.AdoptionSelectedAnimalDto;
 
+@Service
 public class AdoptionViewService implements HelppetfServiceInter {
 
 	@Override
