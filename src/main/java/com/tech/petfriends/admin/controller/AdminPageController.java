@@ -219,7 +219,7 @@ public class AdminPageController {
 	}
 
 	@GetMapping("/notice")
-	public String NoticeWrite(Model model) {
+	public String Notice(Model model) {
 		ArrayList<NoticeDto> noticeAdminList = noticeDao.NoticeAdminList();
         model.addAttribute("noticeAdminList", noticeAdminList);
 		
@@ -227,8 +227,26 @@ public class AdminPageController {
 	}
 	
 	@GetMapping("/notice_write")
-	public String Notice() {
+	public String Notice_write() {
 		System.out.println("글작성페이지");
+		return "admin/notice_write";
+	}
+	
+	@PostMapping("/notice_write_service")
+	public String Notice_write_service(HttpServletRequest request, Model model) {
+		String notice_title = request.getParameter("notice_title");
+		String notice_content = request.getParameter("notice_content");
+		String category = request.getParameter("category");
+		
+		if (category == "공지사항") {
+			category = "NOTICE";
+		} else {
+			category = "event";
+		}
+		
+		noticeDao.NoticeWrite(notice_title,notice_content);
+		System.out.println("글 작성 완료");
+		
 		return "admin/notice_write";
 	}
 

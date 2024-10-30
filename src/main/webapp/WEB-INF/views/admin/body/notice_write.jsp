@@ -14,22 +14,19 @@
 <div class="container">
     <h3>신규등록</h3>
 
-    <form id="postForm" action="${pageContext.request.contextPath}/community/write" method="post" enctype="multipart/form-data" class="write-form" onsubmit="return validateForm()">
+    <form id="postForm" action="notice_write_service" method="post" enctype="multipart/form-data" class="write-form"">
 
         <label for="b_cate_no">카테고리</label>
-        <select id="b_cate_no" name="b_cate_no" required>
+        <select id="b_cate_no" name="category" required>
             <option value="공지사항">공지사항</option>
             <option value="이벤트">이벤트</option>
         </select>
 
-        <label for="file" class="image-label">사진업로드</label>
-        <input type="file" id="file" name="file" multiple>
-
         <label for="board_title">제목</label>
-        <input type="text" id="board_title" name="board_title" placeholder="제목을 입력하세요" required>
+        <input type="text" id="board_title" name="notice_title" placeholder="제목을 입력하세요" required>
 
         <label for="board_content">내용</label>
-        <textarea id="board_content" name="board_content" placeholder="내용을 입력하세요" required></textarea>
+        <textarea id="board_content" name="notice_content" placeholder="내용을 입력하세요" required></textarea>
 
         <input type="button" id="previewButton" class="btn submit-btn" value="내용 미리보기">
         <input type="submit" id="submit-btn" class="btn submit-btn" value="작성 완료">

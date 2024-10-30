@@ -14,5 +14,8 @@ public interface NoticeDao {
 	
 	// 공지사항 리스트 가져오기 표시여부 Y 만
 	public ArrayList<NoticeDto> NoticeAdminList();
+
+	// 글 작성
+	public void NoticeWrite(String notice_title, String notice_content);
 	
 }
