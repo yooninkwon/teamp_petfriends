@@ -15,4 +15,8 @@
 	    SELECT * FROM NOTICE ORDER BY NOTICE_NO DESC
 	</select>
   
+  	<insert id="NoticeWrite">
+  		INSERT INTO NOTICE VALUES(NOTICE_SEQ.NEXTVAL,#{notice_title},#{notice_content},SYSDATE,0,'Y')
+  	</insert>
+  
   </mapper>
