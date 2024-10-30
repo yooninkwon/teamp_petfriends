@@ -326,18 +326,18 @@ $(document).ready(function() {
 		let proName = document.getElementById("proName") ? document.getElementById("proName").value : '';
 		let proDiscount= document.getElementById("proDiscount") ? document.getElementById("proDiscount").value : '';
 		let productStatus = document.querySelector('input[name="productStatus"]:checked').value; // 선택된 라디오 버튼 값
-
-	/*	// 옵션 값을 가져와서 FormData에 배열 형태로 추가
 		const options = getOptionValues();
-		options.forEach((option, index) => {
-			formData.append(`options[${index}].name`, option.name);
-			formData.append(`options[${index}].price`, option.price);
-			formData.append(`options[${index}].count`, option.count);
-		});*/
+		
+		console.log(options);
+		
+		if(petType === "" || proType === "" || proDetailType === "" || proName === "" || proDiscount === "" || options.some(opt => opt.price === "" || opt.count === "")){
+			alert('상품등록 필수 항목을 채워주세요.\n(펫타입, 상품종류, 상품타입, 상품명, 할인율, 옵션최소 1개)');
+			return;
+		}
 
+		
 		// FormData에 추가
 		// 옵션 값을 가져와서 FormData에 추가
-		const options = getOptionValues();
 		// options 배열을 JSON 문자열로 변환하여 추가
 		formData.append('options', JSON.stringify(options));
 
@@ -363,7 +363,7 @@ $(document).ready(function() {
 				$('#productModal').hide();
 			},
 			error: function(xhr, status, error) {
-				logger.error("상품 등록 중 오류 발생", e);
+				logger.error("상품 등록 중 오류 발생", error);
 				console.error('Error registering product:', error);
 				alert('제품 등록에 실패했습니다.');
 			}

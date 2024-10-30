@@ -40,7 +40,9 @@ public class AdminProductAddService implements AdminServiceInterface {
 		filterType1 = ifNull(filterType1);
 		filterType2 = ifNull(filterType2);
 		
-		
+		//상품등록
+		adminProductDao.adminProductAdd(proCode,proName,petType,proType,proDetailType,filterType1,filterType2,proDiscount,productStatus);
+
 		// 이미지 파일 가져오기
 		MultipartFile[] mainImages = (MultipartFile[]) model.getAttribute("mainImages"); // 대표 이미지
 		MultipartFile[] desImages = (MultipartFile[]) model.getAttribute("desImages"); // 상세 이미지
@@ -54,6 +56,15 @@ public class AdminProductAddService implements AdminServiceInterface {
 
 	    List<String> savedMainImageNames = saveFiles(mainImages, mainImagesDir); // 새 파일 이름 리스트
 	    List<String> savedDesImageNames = saveFiles(desImages, desImagesDir); // 상세 이미지
+	    
+	 // Null일 경우 빈 리스트로 초기화하여 null 채우기 작업이 원활히 이루어지도록 설정
+	    if (savedMainImageNames == null) {
+	        savedMainImageNames = new ArrayList<>();
+	    }
+	    if (savedDesImageNames == null) {
+	        savedDesImageNames = new ArrayList<>();
+	    }
+	    
 	    while (savedMainImageNames.size() < 5) {
 	        savedMainImageNames.add(null); // null로 채우기
 	    }
@@ -61,7 +72,7 @@ public class AdminProductAddService implements AdminServiceInterface {
 	        savedDesImageNames.add(null); // null로 채우기
 	    }
 
-		adminProductDao.adminProductAdd(proCode,proName,petType,proType,proDetailType,filterType1,filterType2,proDiscount,productStatus);
+	    //이미지 등록
 		adminProductDao.adminProductImgAdd(proCode,savedMainImageNames,savedDesImageNames);
 		
 		int x=1;
@@ -100,7 +111,11 @@ public class AdminProductAddService implements AdminServiceInterface {
 	// 파일저장 및 이미지 새이름 리턴 
 	public List<String> saveFiles(MultipartFile[] files, String uploadDir) {
 	    List<String> savedFileNames = new ArrayList<>(); // 새 파일 이름을 저장할 리스트
-
+	    
+	    if (files == null || files.length == 0) {
+	        return null; // 파일이 없으면 null 반환
+	    }
+	    
 	    for (MultipartFile file : files) {
 	        if (!file.isEmpty()) {
 	            String originalFilename = file.getOriginalFilename();
