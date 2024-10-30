@@ -49,7 +49,11 @@
 		</div>
 
 		<div class="bottom-section">
-			<a href="/helppetf/pethotel/pethotel_petcam" class="button" id="left">펫캠 보기</a> 
+		
+				
+			<a href="http://172.16.4.10:5500/" 
+			onclick="window.open(this.href, '_blank', 'status=no ,location=no, directoryies=no, resizable=no, scrollbars=yes, titlebar=no,width=430, height=330'); return false;" class="button" id="left">
+			펫캠 보기</a> 
 			<a href="/helppetf/pethotel/pethotel_reserve" class="button" id="right">예약하러 가기</a>
 		</div>
 	</div>

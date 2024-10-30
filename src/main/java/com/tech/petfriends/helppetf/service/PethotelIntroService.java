@@ -1,10 +1,12 @@
 package com.tech.petfriends.helppetf.service;
 
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 
+@Service
 public class PethotelIntroService implements HelppetfServiceInter {
 	
 	HelpPetfDao helpDao;

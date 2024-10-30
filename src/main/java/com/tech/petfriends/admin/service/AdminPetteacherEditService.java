@@ -4,11 +4,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 
+@Service
 public class AdminPetteacherEditService implements AdminServiceInterface {
 
 	private AdminPageDao adminDao;

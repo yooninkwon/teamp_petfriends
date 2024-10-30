@@ -4,10 +4,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 
+@Service
 public class AdminPetteacherDeleteService implements AdminServiceInterface {
 
 	AdminPageDao adminDao;

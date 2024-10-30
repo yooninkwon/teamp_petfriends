@@ -23,13 +23,13 @@
 	</script>
 <table border="1" width="800" style="text-align: center;">
 	<tr>
-		<td>${dm[start_date].value }</td>
-	<c:forEach items="${dateMap }" var="dm">
-		<td>${dm.key }</td>
-		<td>${dm.value }</td>
-	</c:forEach>
+		<td>${memDto.hph_reserve_no }</td>
+		<td>${memDto.mem_code }</td>
+		<td>${memDto.hph_numof_pet }</td>
+		<td>${memDto.hph_start_date }</td>
+		<td>${memDto.hph_end_date }</td>
 	</tr>
-	<c:forEach items="${formList }" var="fl">
+	<c:forEach items="${nullRemovedFormList }" var="fl">
 		<tr>
 			<th>번호</th>
 			<th>이름</th>

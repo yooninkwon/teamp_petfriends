@@ -72,4 +72,42 @@
 		FROM ADDRESS
 		WHERE MEM_CODE=#{param1}
 	</select>
+	
+	<update id="updatePhoneNumber">
+	    UPDATE MEMBER
+	    SET MEM_TELL = #{phoneNumber}
+	    WHERE MEM_CODE = #{memCode}
+	</update>
+	
+	<update id="updateDefaultAddress">
+	    UPDATE ADDRESS
+	    SET ADDR_DEFAULT = 'N'
+	    WHERE MEM_CODE = #{memCode} AND ADDR_DEFAULT = 'Y'
+	</update>
+	
+	<update id="setMainAddress">
+    	UPDATE ADDRESS
+    	SET ADDR_DEFAULT = 'Y'
+    	WHERE ADDR_CODE = #{addrCode}
+	</update>
+	
+	<delete id="deleteAddress">
+	    DELETE
+	    FROM ADDRESS
+	    WHERE ADDR_CODE = #{addrCode}
+	</delete>
+	
+	<insert id="insertNewAddress">
+	    INSERT INTO ADDRESS (ADDR_CODE, MEM_CODE, ADDR_POSTAL, ADDR_LINE1, ADDR_LINE2, ADDR_DEFAULT)
+	    VALUES (#{addrCode}, #{memCode}, #{addrPostal}, #{addrLine1}, #{addrLine2}, 'Y')
+	</insert>
+	
+	<update id="updateMemberInfo">
+    	UPDATE MEMBER
+		SET MEM_EMAIL = #{mem_email},
+		    MEM_NAME = #{mem_name},
+		    MEM_NICK = #{mem_nick},
+		    MEM_BIRTH = #{mem_birth}
+		WHERE MEM_CODE = #{mem_code}
+	</update>
 </mapper>

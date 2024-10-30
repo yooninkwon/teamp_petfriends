@@ -55,4 +55,10 @@
 	<definition name="admin/pethotel_reserve" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/pethotel_reserve.jsp" />
 	</definition>
+	<definition name="admin/notice" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/notice.jsp" />
+	</definition>
+	<definition name="admin/notice_write" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/notice_write.jsp" />
+	</definition>
 </tiles-definitions>

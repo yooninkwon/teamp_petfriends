@@ -54,7 +54,7 @@
 	<div id="main_nav">
 	    <ul>
 	        <li><a id="proClick" href="/product/productlist">PRODUCT</a></li>
-	        <li><a href="">NOTICE</a></li>
+	        <li><a id="notice" href="/notice/noticePage">NOTICE</a></li>
 	        <li><a href="/community/main">COMMUNITY</a></li>
 	        <li><a id="helppetf" href="/helppetf/find/pet_hospital">HELP PETF!</a></li>   
 

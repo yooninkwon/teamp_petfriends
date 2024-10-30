@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.tech.petfriends.notice.dao.NoticeDao">
+  	
+  	<!-- 공지사항 표시여부가 Y인 리스트 가져오기 -->
+  	<select id="NoticeList" resultType="com.tech.petfriends.notice.dto.NoticeDto">
+	    SELECT * FROM NOTICE WHERE NOTICE_SHOW = 'Y' ORDER BY NOTICE_NO DESC
+	</select>
+	
+	<!-- 공지사항 전체 리스트 -->
+	<select id="NoticeAdminList" resultType="com.tech.petfriends.notice.dto.NoticeDto">
+	    SELECT * FROM NOTICE ORDER BY NOTICE_NO DESC
+	</select>
+  
+  </mapper>

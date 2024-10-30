@@ -57,12 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			formDataObj[petHiddenVal].hphp_pet_neut = petNeutered;
 			formDataObj[petHiddenVal].hphp_pet_comment = petMessage;
 
-			console.log(formDataObj);
 			petHiddenVal = Number(petHiddenVal) + 1;
 			document.getElementById('pet-form-no').value = petHiddenVal;
-			//		var form_data = $("#pet-form form").serialize();	
-			//
-			//		console.log(form_data)
 
 			// newPet element의 내부에 (현재로서는 div 태그 안쪽)			
 			// ` <span class="pet-name">${저장해둔 동물 이름}</span>
@@ -79,16 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			// 삭제 버튼 이벤트 추가
 			const deleteButton = newPet.querySelector('.delete-button'); // 삭제버튼이 클릭되면 해당하는 newPet의 div 가져옴
 			deleteButton.addEventListener('click', () => {
-				console.log('삭제전', formDataObj);
 				const petHiddenVal = document.getElementById('objIndexNo').value;
 				delete formDataObj[petHiddenVal];
-				console.log('삭제후', formDataObj);
 				newPet.remove(); // 해당 div 삭제
 			});
 		}
 	});
 	
-	//"register-pet"클릭시
+	//"register-button"클릭시
 	registerButton.addEventListener('click', () => {
 		clickRegisterButton();
 	});
@@ -107,16 +101,54 @@ document.addEventListener('DOMContentLoaded', () => {
 		    if (response.ok) {
 		        // 서버에 데이터 전송 성공 후 간단히 콘솔에 로그 출력
 		        console.log('Data successfully sent to server');
-				window.location.href = '/helppetf/pethotel/pethotel_reserve_done'; // 리다이렉트	
+				return response.json();				
+
 		    } else {
 		        console.error('Failed to send data');
 		    }
 		})
+		.then(data => {
+			console.log(data);
+			
+			// 완료페이지
+			showReserveDonePage(data);
+		})
 		.catch(error => {
-		    console.error('Error occurred:', error);
+			console.error('There was a problem with the fetch operation:', error);
 		});
 
 	}
-
+	function showReserveDonePage(data) {
+		console.log('showReserveDonePage()');		
+		
+		document.getElementById('c-ontainer').style.display = 'none';
+		document.getElementById('reserve-done').style.display = 'block';
+		
+		let post = '';
+				
+		post += '<table border="1" width="800" style="text-align: center;">'
+		post +=	'<tr><td>' + data.mem_Dto.hph_reserve_no + '</td><td>' + data.mem_Dto.mem_nick;
+		post += '</td><td>' + data.mem_Dto.hph_numof_pet + '</td><td>' + data.mem_Dto.hph_start_date + '</td><td>' + data.mem_Dto.hph_end_date + '</td></tr>';
+		
+		data.nrFormList.forEach(function(pet){
+//			pet.hphp_reserve_pet_no
+//			pet.hphp_pet_name
+//			pet.hphp_pet_type
+//			pet.hphp_pet_birth
+//			pet.hphp_pet_gender
+//			pet.hphp_pet_weight
+//			pet.hphp_pet_neut
+//			pet.hphp_pet_comment
+			post += '<tr><th>번호</th><th>이름</th><th>종류</th><th>생일</th><th>성별</th><th>체중</th><th>중성화</th><th>전달사항</th></tr>';
+			post +=	'<tr><td>' + pet.hphp_reserve_pet_no + '</td><td>' + pet.hphp_pet_name + '</td><td>' + pet.hphp_pet_type;
+			post += '</td><td>' + pet.hphp_pet_birth + '</td><td>' + pet.hphp_pet_gender + '</td><td>' + pet.hphp_pet_weight;
+			post += '</td><td>' + pet.hphp_pet_neut + '</td><td>' + pet.hphp_pet_comment + '</td>';
+			post +=	'</tr>';
+		});
+		
+		post += '</table>';
+		
+		$('#reserve-done').html(post);
+	}
 
 });

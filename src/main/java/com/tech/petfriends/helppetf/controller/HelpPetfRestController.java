@@ -16,14 +16,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.helppetf.dto.AdoptionSelectedAnimalDto;
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
+import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.AdoptionGetJson;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
+import com.tech.petfriends.helppetf.service.PethotelReserveService;
 import com.tech.petfriends.helppetf.service.PetteacherService;
 import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
+import com.tech.petfriends.login.dto.MemberLoginDto;
 
 import reactor.core.publisher.Mono;
 
@@ -38,26 +42,35 @@ public class HelpPetfRestController {
         this.adoptionGetJson = adoptionService;
     }
     
+	
+	
 	@Autowired
 	HelpPetfDao helpDao;
 	
 	HelppetfServiceInter helpServiceInterface;
     
 	@PostMapping("/pothotel/pethotel_reserve_data")
-	public String pethotelReserveData(@RequestBody ArrayList<PethotelFormDataDto> formList, HttpServletRequest request, Model model) throws Exception {
-		String start_date = request.getParameter("start-date");
-		String end_date = request.getParameter("end-date");
-		Map<String, Object> dateMap = new HashMap<>();
-		dateMap.put("start_date", start_date);
-		dateMap.put("end_date", end_date);
-		System.out.println(dateMap.get("start_date"));
-		System.out.println(dateMap.get("end_date"));
-		HttpSession session = request.getSession();
-		session.setAttribute("formList", formList);
-		session.setAttribute("dateMap", dateMap);
-//		model.addAttribute("request", request);
-		System.out.println(formList);
-		return "{\"status\": \"success\"}"; // 성공 메세지를 반환
+	public String pethotelReserveData(@RequestBody ArrayList<PethotelFormDataDto> formList, HttpServletRequest request,
+			Model model, HttpSession session) throws Exception {
+		model.addAttribute("formList", formList);
+		model.addAttribute("request", request);
+		model.addAttribute("session", session);
+
+		PethotelReserveService helpServiceInterface = new PethotelReserveService(helpDao);
+		helpServiceInterface.execute(model);
+		
+		@SuppressWarnings("unchecked")
+		ArrayList<PethotelFormDataDto> nrFormList = (ArrayList<PethotelFormDataDto>) model.getAttribute("nullRemovedFormList");
+		PethotelMemDataDto mem_Dto = (PethotelMemDataDto) model.getAttribute("mem_Dto");
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("nrFormList", nrFormList);
+		map.put("mem_Dto", mem_Dto);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+        String jsonData = objectMapper.writeValueAsString(map);
+		
+		return jsonData;
 	}
 
 	@GetMapping("/adoption/getJson")
