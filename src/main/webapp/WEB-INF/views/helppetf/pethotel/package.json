@@ -1,0 +1,30 @@
+{
+  "name": "pethotel",
+  "version": "1.0.0",
+  "description": "CCTV",
+  "main": "app.js",
+  "scripts": {
+    "start": "app.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dpoowa/project_Petfriend.git"
+  },
+  "keywords": [
+    "pethotel"
+  ],
+  "author": "dpoowa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dpoowa/project_Petfriend/issues"
+  },
+  "homepage": "https://github.com/dpoowa/project_Petfriend#readme",
+  "dependencies": {
+    "express": "^4.21.1",
+    "node-rtsp-stream": "^0.0.9",
+    "rtsp-ffmpeg": "^0.0.19",
+    "socket.io": "^4.8.1",
+    "ws": "^8.18.0"
+  }
+}

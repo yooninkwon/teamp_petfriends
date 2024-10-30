@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.mypage.dto.GradeDto;
 
 @Mapper
 public interface MemberMapper {
@@ -25,9 +26,16 @@ public interface MemberMapper {
     // 이메일 중복 검사
     int isEmailDuplicate(String email);
     
+    // 연락처 중복 검사
+    int isTellDuplicate(String tell);
+    
     // 비밀번호 변경
     void updatePassword(String email, String encryptedPassword);
     
     // 중복회원 검사
     int isPhoneNumberDuplicate(String phoneNumber);
+
+    // 로그인 회원 등급 정보 검색
+	GradeDto getGradeByMemberCode(String mem_code);
+
 }

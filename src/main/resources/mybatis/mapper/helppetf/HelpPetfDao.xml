@@ -4,7 +4,7 @@
 
 <mapper namespace="com.tech.petfriends.helppetf.mapper.HelpPetfDao">
 	<select id="petteacherList"
-		resultType="com.tech.petfriends.helppetf.dto.HelpPetfDto">
+		resultType="com.tech.petfriends.helppetf.dto.PetteacherDto">
 		SELECT * FROM HELP_PETTEACHER
 		<choose>
 			<when test="petType != null and category != null">
@@ -27,7 +27,7 @@
 		HPT_SEQ = #{hpt_seq}
 	</update>
 	<select id="petteacherDetail"
-		resultType="com.tech.petfriends.helppetf.dto.HelpPetfDto">
+		resultType="com.tech.petfriends.helppetf.dto.PetteacherDto">
 		SELECT * FROM HELP_PETTEACHER
 		WHERE HPT_SEQ = #{hpt_seq}
 	</select>
@@ -37,4 +37,54 @@
 		TEMP_FIND_ADDR
 		WHERE USER_ID = #{userId}
 	</select>
+		<select id="pethotelIntro" resultType="com.tech.petfriends.helppetf.dto.PethotelIntroDto">
+		SELECT * FROM HELP_PETHOTEL_INTRO
+	</select>
+	<select id="pethotelInfo" resultType="com.tech.petfriends.helppetf.dto.PethotelInfoDto">
+		SELECT * FROM HELP_PETHOTEL_INFO
+	</select>
+	<insert id="pethotelReverseRequestPets">
+		INSERT INTO HELP_PETHOTEL_PETS 
+		(HPH_RESERVE_NO, 
+		HPHP_RESERVE_PET_NO, 
+		HPHP_PET_NAME, 
+		HPHP_PET_TYPE, 
+		HPHP_PET_BIRTH, 
+		HPHP_PET_GENDER, 
+		HPHP_PET_WEIGHT, 
+		HPHP_PET_NEUT, 
+		HPHP_COMMENT)
+		VALUES 
+		(#{hph_reserve_no}, 
+		#{hphp_reserve_pet_no}, 
+		#{hphp_pet_name}, 
+		#{hphp_pet_type}, 
+		TO_DATE(#{hphp_pet_birth}, 'yyyy-MM-dd'), 
+		#{hphp_pet_gender}, 
+		#{hphp_pet_weight}, 
+		#{hphp_pet_neut}, 
+		#{hphp_pet_comment})
+	</insert>
+	<insert id="pethotelReverseRequestMem">
+		INSERT INTO HELP_PETHOTEL_MEM 
+		(HPH_RESERVE_NO, 
+		MEM_CODE, 
+		HPH_NUMOF_PET, 
+		HPH_START_DATE, 
+		HPH_END_DATE)
+		VALUES
+		(CONCAT(#{hph_reserve_no}, TO_CHAR(SEQ_HPH_MEM.NEXTVAL)), 
+		#{mem_code}, 
+		#{hph_numof_pet}, 
+		TO_DATE(#{hph_start_date}, 'yyyy-MM-dd'), 
+		TO_DATE(#{hph_end_date}, 'yyyy-MM-dd'))
+	</insert>
+	<delete id="pethotelReserveErrorPet">
+		DELETE FROM HELP_PETHOTEL_PETS 
+		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
+	</delete>
+	<delete id="pethotelReserveErrorMem">
+		DELETE FROM HELP_PETHOTEL_MEM
+		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
+	</delete>
 </mapper>

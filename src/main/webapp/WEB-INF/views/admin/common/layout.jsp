@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="/static/icon/favicon.ico" />
 <script src="https://kit.fontawesome.com/6c32a5aaaa.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/static/css/admin/admin.css">
 <title>

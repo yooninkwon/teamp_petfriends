@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.tech.petfriends.helppetf.dto.HelpPetfDto;
+import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 
 @Service
@@ -21,13 +21,16 @@ public class PetteacherDetailService implements HelppetfServiceInter {
 
 	@Override
 	public void execute(Model model) {
+
+		model.addAttribute("main_navbar_id", "helppetf");		
+		model.addAttribute("sub_navbar_id", "petteacher");
 		
 		Map<String, Object> map = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		
 		String hpt_seq = request.getParameter("hpt_seq");
 		helpDao.upViews(hpt_seq); // 조회수 +1
-		HelpPetfDto dto = helpDao.petteacherDetail(hpt_seq);
+		PetteacherDto dto = helpDao.petteacherDetail(hpt_seq);
 		
 		model.addAttribute("dto", dto);
 	}

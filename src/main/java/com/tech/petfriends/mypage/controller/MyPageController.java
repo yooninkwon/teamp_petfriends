@@ -1,6 +1,9 @@
 package com.tech.petfriends.mypage.controller;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,13 +20,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tech.petfriends.admin.dto.CouponDto;
+import com.tech.petfriends.configuration.ApikeyConfig;
+import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dao.MypageDao;
-import com.tech.petfriends.mypage.dto.CouponDto;
 import com.tech.petfriends.mypage.dto.GradeDto;
-import com.tech.petfriends.mypage.dto.MyCouponDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 
 @Controller
@@ -32,6 +37,8 @@ public class MyPageController {
 	
 	@Autowired
 	private MypageDao mypageDao;
+	@Autowired
+	ApikeyConfig apikeyConfig;
 	
 	@GetMapping("/mypet")
 	public String mypet(Model model, HttpSession session) {
@@ -57,11 +64,28 @@ public class MyPageController {
 		return "redirect:/mypage/mypet";
 	}
 	
+	@GetMapping("/mypet/register")
+	public String mypetRegister() {
+		return "mypage/mypet/register";
+	}
+	
+	@GetMapping("/mypet/modify")
+	public String mypetModify(HttpServletRequest request, Model model) {
+		
+		String petCode = request.getParameter("petCode");
+		
+        MyPetDto info = mypageDao.getInfoByPetCode(petCode);
+        
+		model.addAttribute("info",info);
+        
+		return "mypage/mypet/modify";
+	}
+	
 	@GetMapping("/grade")
 	public String grade(Model model, HttpSession session) {
 
 		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
-        GradeDto userGrade = mypageDao.getGradeByMemberCode(loginUser.getMem_code());
+		GradeDto userGrade = (GradeDto) session.getAttribute("userGrade");
         
         model.addAttribute("loginUser",loginUser);
         model.addAttribute("userGrade",userGrade);
@@ -82,7 +106,7 @@ public class MyPageController {
 		ArrayList<CouponDto> coupons = mypageDao.getAllCoupon();
 		ArrayList<CouponDto> mycoupons = mypageDao.getCouponByMemberCode(loginUser.getMem_code());
 		
-		ArrayList<CouponDto> issuedCoupons = new ArrayList<>();;
+		ArrayList<CouponDto> issuedCoupons = new ArrayList<>();
 		// coupons 리스트에서 Iterator 사용
 		Iterator<CouponDto> iterator = coupons.iterator();
 		while (iterator.hasNext()) {
@@ -91,7 +115,7 @@ public class MyPageController {
 		    for (CouponDto mycoupon : mycoupons) {
 		        if (coupon.getCp_no() == mycoupon.getCp_no()) {
 		            // cp_no가 일치하는 경우 coupons에서 제거하고 issuedCoupons에 추가
-		        	iterator.remove();  // 현재 요소를 coupons 리스트에서 제거
+		        	iterator.remove();
 		            issuedCoupons.add(coupon);
 		        }
 		    }
@@ -166,6 +190,135 @@ public class MyPageController {
         return "mypage/coupon";
 	}
 	
+	@GetMapping("/setting")
+	public String setting(Model model, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		ArrayList<MemberAddressDto> address = mypageDao.getAddrByMemberCode(loginUser.getMem_code());
+		
+		model.addAttribute("loginUser",loginUser);
+		model.addAttribute("address",address);
+		
+		return "mypage/setting";
+	}
+	
+	@GetMapping("/setting/tellChange")
+	public String tellChange(Model model, HttpSession session) {
+		return "/mypage/popup/tellChange";
+	}
+	
+	@PostMapping("/setting/updatePhoneNumber")
+	@ResponseBody
+	public String updatePhoneNumber(@RequestParam String phoneNumber, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+	    
+	    mypageDao.updatePhoneNumber(loginUser.getMem_code(), phoneNumber);
+	    
+	    // 세션에 최신화된 연락처 정보를 반영
+	    loginUser.setMem_tell(phoneNumber);
+	    session.setAttribute("loginUser", loginUser);
+
+	    return "redirect:/mypage/popup/tellChange";
+	}
+	
+	@GetMapping("/setting/addressChange")
+	public String addressChange(Model model, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		ArrayList<MemberAddressDto> address = mypageDao.getAddrByMemberCode(loginUser.getMem_code());
+		
+		model.addAttribute("address",address);
+		
+		return "/mypage/popup/addressChange";
+	}
+
+	@Transactional
+	@PostMapping("/setting/setMainAddress")
+	@ResponseBody
+	public String setMainAddress(@RequestParam String addrCode, HttpSession session) {
+		
+	    MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+	    
+	    mypageDao.updateDefaultAddress(loginUser.getMem_code()); // 기존 기본 주소 'N'으로 변경
+	    mypageDao.setMainAddress(addrCode); // 선택 주소 'Y'로 업데이트
+	    
+	    return "redirect:/mypage/popup/addressChange";
+	}
+	
+	@PostMapping("/setting/deleteAddress")
+	@ResponseBody
+	public String deleteAddress(@RequestParam String addrCode) {
+		
+		mypageDao.deleteAddress(addrCode);
+		
+	    return "redirect:/mypage/popup/addressChange";
+	}
+	
+	@GetMapping("/setting/addressCheck")
+	public String addressCheck(Model model, HttpServletRequest request) {
+		
+		String kakaoApiKey = apikeyConfig.getKakaoApikey();
+		String roadAddr = request.getParameter("roadAddr");
+		String jibunAddr = request.getParameter("jibunAddr");
+		String postcode = request.getParameter("postcode");
+		
+		model.addAttribute("kakaoApi",kakaoApiKey);
+		model.addAttribute("roadAddr",roadAddr);
+		model.addAttribute("jibunAddr",jibunAddr);
+		model.addAttribute("postcode",postcode);
+		
+		return "/mypage/popup/addressCheck";
+	}
+	
+	@PostMapping("/setting/insertAddress")
+	@ResponseBody
+	public Map<String, Object> insertAddress(HttpServletRequest request, HttpSession session) {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		
+	    String memCode = loginUser.getMem_code();
+	    String addrPostal = request.getParameter("addrPostal");
+	    String addrLine1 = request.getParameter("addrLine1");
+	    String addrLine2 = request.getParameter("addrLine2");
+
+	    mypageDao.updateDefaultAddress(memCode);
+	    boolean success = mypageDao.insertNewAddress(UUID.randomUUID().toString(), memCode, addrPostal, addrLine1, addrLine2);
+
+	    response.put("success", success);
+	    
+	    return response;
+	}
+	
+	@PostMapping("/updateMember")
+	public String updateMember(HttpServletRequest request, HttpSession session) {
+		
+	    MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+	    loginUser.setMem_email(request.getParameter("mem_email"));
+	    loginUser.setMem_name(request.getParameter("mem_name"));
+	    loginUser.setMem_nick(request.getParameter("mem_nick"));
+	    
+	 // 날짜 형식 변환
+	    try {
+	        loginUser.setMem_birth(Date.valueOf(LocalDate.parse(request.getParameter("mem_birth"), DateTimeFormatter.ofPattern("yyyyMMdd"))));
+	    } catch (DateTimeParseException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    mypageDao.updateMemberInfo(loginUser);
+	    
+	    session.setAttribute("loginUser", loginUser);  // 세션 갱신
+	    
+	    return "redirect:/mypage/setting";
+	}
+	
+	@GetMapping("/withdrawal")
+	public String withdrawal() {
+		return "/mypage/withdrawal";
+	}
+	
 	@GetMapping("/cart")
 	public String cart() {
 		return "mypage/cart";
@@ -186,21 +339,18 @@ public class MyPageController {
 		return "mypage/wish";
 	}
 	
-	@GetMapping("/mypet/register")
-	public String mypetRegister() {
-		return "mypage/mypet/register";
+	@GetMapping("/cscenter")
+	public String cscenter() {
+		return "/mypage/cscenter";
 	}
 	
-	@GetMapping("/mypet/modify")
-	public String mypetModify(HttpServletRequest request, Model model) {
+	@GetMapping("/logout")
+    public String logout(HttpSession session) {
 		
-		String petCode = request.getParameter("petCode");
-		
-        MyPetDto info = mypageDao.getInfoByPetCode(petCode);
+        // 세션 무효화
+        session.invalidate();
         
-		model.addAttribute("info",info);
-        
-		return "mypage/mypet/modify";
-	}
+        return "redirect:/";
+    }
 	
 }

@@ -12,13 +12,6 @@
 		WHERE M.MEM_CODE=#{param1}
 	</select>
 	
-    <select id="getGradeByMemberCode" resultType="com.tech.petfriends.mypage.dto.GradeDto">
-		SELECT G.G_NO,G_NAME,G_CONDITION,G_RATE
-		FROM GRADE G
-		JOIN MEMBER M ON G.G_NO = M.G_NO
-		WHERE M.MEM_CODE=#{param1}
-	</select>
-	
 	<update id="removeMainPet">
 		UPDATE MEMBER_PET
 		SET PET_MAIN='N'
@@ -37,20 +30,20 @@
 		WHERE PET_CODE=#{param1}
 	</select>
 	
-	<select id="getAllCoupon" resultType="com.tech.petfriends.mypage.dto.CouponDto">
+	<select id="getAllCoupon" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT *
 		FROM COUPON
-		WHERE SYSDATE BETWEEN CP_START AND CP_END AND CP_KEYWORD IS NULL
+		WHERE (SYSDATE BETWEEN CP_START AND CP_END) AND (CP_KEYWORD IS NULL)
 	</select>
 	
-	<select id="getCouponByMemberCode" resultType="com.tech.petfriends.mypage.dto.CouponDto">
+	<select id="getCouponByMemberCode" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT CP.CP_NO,CP_NAME,CP_KEYWORD,CP_START,CP_END,CP_DEAD,CP_TYPE,CP_AMOUNT
 		FROM COUPON CP
 		JOIN MEMBER_COUPON_BRIDGE MC ON CP.CP_NO=MC.CP_NO
 		WHERE MEM_CODE=#{param1} AND MC_USE IS NULL AND MC_DEAD IS NULL
 	</select>
 	
-	<select id="searchCouponByKeyword" resultType="com.tech.petfriends.mypage.dto.CouponDto">
+	<select id="searchCouponByKeyword" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT *
 		FROM COUPON
 		WHERE CP_KEYWORD=#{param1}
@@ -67,4 +60,54 @@
 		VALUES(#{param1},#{param2},#{param3},SYSDATE,NULL,NULL)
 	</insert>
 	
+	<insert id="insertMyPet" parameterType="com.tech.petfriends.mypage.dto.MyPetDto">
+		INSERT INTO MEMBER_PET (PET_CODE, MEM_CODE, PET_TYPE, PET_NAME, PET_IMG, PET_BREED,
+		PET_BIRTH, PET_GENDER, PET_WEIGHT, PET_NEUT, PET_FORM, PET_CARE, PET_ALLERGY, PET_MAIN)
+		VALUES (#{pet_code}, #{mem_code}, #{pet_type}, #{pet_name}, #{pet_img}, #{pet_breed}, #{pet_birth}, #{pet_gender},
+		#{pet_weight}, #{pet_neut}, #{pet_form}, #{pet_care}, #{pet_allergy}, #{pet_main})
+	</insert>
+	
+	<select id="getAddrByMemberCode" resultType="com.tech.petfriends.login.dto.MemberAddressDto">
+		SELECT *
+		FROM ADDRESS
+		WHERE MEM_CODE=#{param1}
+	</select>
+	
+	<update id="updatePhoneNumber">
+	    UPDATE MEMBER
+	    SET MEM_TELL = #{phoneNumber}
+	    WHERE MEM_CODE = #{memCode}
+	</update>
+	
+	<update id="updateDefaultAddress">
+	    UPDATE ADDRESS
+	    SET ADDR_DEFAULT = 'N'
+	    WHERE MEM_CODE = #{memCode} AND ADDR_DEFAULT = 'Y'
+	</update>
+	
+	<update id="setMainAddress">
+    	UPDATE ADDRESS
+    	SET ADDR_DEFAULT = 'Y'
+    	WHERE ADDR_CODE = #{addrCode}
+	</update>
+	
+	<delete id="deleteAddress">
+	    DELETE
+	    FROM ADDRESS
+	    WHERE ADDR_CODE = #{addrCode}
+	</delete>
+	
+	<insert id="insertNewAddress">
+	    INSERT INTO ADDRESS (ADDR_CODE, MEM_CODE, ADDR_POSTAL, ADDR_LINE1, ADDR_LINE2, ADDR_DEFAULT)
+	    VALUES (#{addrCode}, #{memCode}, #{addrPostal}, #{addrLine1}, #{addrLine2}, 'Y')
+	</insert>
+	
+	<update id="updateMemberInfo">
+    	UPDATE MEMBER
+		SET MEM_EMAIL = #{mem_email},
+		    MEM_NAME = #{mem_name},
+		    MEM_NICK = #{mem_nick},
+		    MEM_BIRTH = #{mem_birth}
+		WHERE MEM_CODE = #{mem_code}
+	</update>
 </mapper>

@@ -11,6 +11,8 @@ public class CouponDto {
 	private int cp_no;
 	private String cp_name;
 	private String cp_keyword;
+	private String cp_kind;
+	private int g_no;
 	private Date cp_start;
 	private Date cp_end;
 	private Date cp_dead;

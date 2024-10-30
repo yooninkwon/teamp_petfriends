@@ -197,3 +197,17 @@ label[for="newImage"] {
 }
 
 
+.button-container {
+    display: flex; /* Flexbox 사용 */
+    justify-content: space-between; /* 버튼 사이의 공간을 최대화하여 오른쪽 끝 정렬 */
+    margin-top: 20px; /* 버튼과 다른 요소 사이의 여백 추가 */
+}
+
+    .form-group {
+        margin-bottom: 15px; /* 원하는 간격으로 조정 */
+   		font-size: 15px;
+        color: #333;
+      	font-weight: bold; 
+        padding-bottom: 20px;
+        border-bottom: 2px solid #eee;
+    }

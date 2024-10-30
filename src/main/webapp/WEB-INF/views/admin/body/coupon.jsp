@@ -27,14 +27,20 @@
 	<!-- 필터링 영역 -->
 	<div class="filter-section-1" id="status-filter">
 	    <div class="radio-group">
-	        <div class="filter-title">발급상태</div>
+	        <div class="filter-title">발급 상태</div>
 	        <label><input type="radio" name="status-filter" value="전체" checked> 전체</label>
 	        <label><input type="radio" name="status-filter" value="발급중"> 발급중</label>
 	        <label><input type="radio" name="status-filter" value="예정"> 예정</label>
 	        <label><input type="radio" name="status-filter" value="종료"> 종료</label>
 	    </div>
-	    <div class="radio-group" id="type-filter">
+	    <div class="radio-group" id="kind-filter">
 	        <div class="filter-title">쿠폰 종류</div>
+	        <label><input type="radio" name="kind-filter" value="전체" checked> 전체</label>
+	        <label><input type="radio" name="kind-filter" value="P"> 일반</label>
+	        <label><input type="radio" name="kind-filter" value="G"> 등급</label>
+	    </div>
+	    <div class="radio-group" id="type-filter">
+	        <div class="filter-title">할인 타입</div>
 	        <label><input type="radio" name="type-filter" value="전체" checked> 전체</label>
 	        <label><input type="radio" name="type-filter" value="A"> 할인액</label>
 	        <label><input type="radio" name="type-filter" value="R"> 할인율</label>
@@ -58,6 +64,7 @@
 		    <thead class="thead">
 		        <tr>
 		            <th>번호</th>
+		            <th>구분</th>
 		            <th>쿠폰명</th>
 		            <th>쿠폰 키워드</th>
 		            <th>발급일</th>
@@ -102,8 +109,8 @@
 		            <option value="mc_use">사용</option>
 		            <option value="mc_dead">만료</option>
 		        </select>
-	            <label><input type="text" id="start-date" placeholder="YYYY-MM-DD">부터</label>
-	            <label><input type="text" id="end-date" placeholder="YYYY-MM-DD">까지</label>
+	            <label><input type="date" id="start-date">부터</label>
+	            <label><input type="date" id="end-date">까지</label>
 	            <button id="reset-date" class="btn-style">전체보기</button>
 	        </div>
 	    </div>
@@ -143,6 +150,75 @@
 			<!-- 페이징 -->
 		</div>
 	</div>
+</div>
+
+<!-- 쿠폰 등록 모달창 -->
+<div id="couponModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></span>
+        
+        <!-- 쿠폰 정보 입력 -->
+        <div class="input-group">
+            <label for="cpName">쿠폰명</label>
+            <input type="text" id="cpName">
+        </div>
+        
+        <div class="input-group">
+            <label for="cpKeyword">쿠폰 키워드</label>
+            <input type="text" id="cpKeyword">
+        </div>
+        
+        <!-- 일반 쿠폰/등급 쿠폰 라디오 버튼 -->
+        <div class="cpType-group">
+            <label><input type="radio" name="couponType" value="P" checked onclick="toggleCouponType('P')">일반 쿠폰</label>
+            <label><input type="radio" name="couponType" value="G" onclick="toggleCouponType('G')">등급 쿠폰</label>
+        </div>
+        
+        <!-- 등급 쿠폰 드롭다운 -->
+        <div class="input-group" id="gradeSelect" style="display: none;">
+            <label for="grade">기준 등급</label>
+            <select id="grade">
+                <option value="1">설렘시작</option>
+                <option value="2">몽글몽글</option>
+                <option value="3">두근두근</option>
+                <option value="4">콩닥콩닥</option>
+                <option value="5">심쿵주의</option>
+                <option value="6">평생연분</option>
+            </select>
+        </div>
+
+        <!-- 발급 시작일, 종료일, 만료 예정일 입력 -->
+        <div id="periodSelect">
+	        <div class="input-group">
+	            <label for="startDate">발급 시작일</label>
+	            <input type="date" id="startDate">
+	        </div>
+	
+	        <div class="input-group">
+	            <label for="endDate">발급 종료일</label>
+	            <input type="date" id="endDate">
+	        </div>
+	
+	        <div class="input-group">
+	            <label for="deadDate">만료 예정일</label>
+	            <input type="date" id="deadDate">
+	            <input type="checkbox" id="sameAsEndDate"> 발급 종료일과 동일
+	        </div>
+        </div>
+
+        <!-- 할인액/할인율 선택 -->
+        <div class="input-group">
+            <label for="discountType">할인 타입</label>
+            <select id="discountType" onchange="updateDiscountLabel()">
+                <option value="A">할인액</option>
+                <option value="R">할인율</option>
+            </select>
+            <input type="number" id="discountAmount">
+            <span id="discountUnit">원</span>
+        </div>
+
+        <button id="registerCouponBtn" onclick="submitCoupon()">등록완료</button>
+    </div>
 </div>
 
 <script src="/static/js/admin/coupon.js"></script>

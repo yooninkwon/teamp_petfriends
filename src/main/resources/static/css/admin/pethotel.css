@@ -1,0 +1,133 @@
+/* 전체 컨테이너 스타일 */
+.title  {
+	width: 100%;
+	background-color: #efefef;
+	padding: 20px 35px;
+	text-align: left;
+}
+
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+	background-color: #f8f8f8;
+}
+input {
+	width: 700px;
+	height: 25px;
+	margin-bottom: 5px;
+}
+h3 {
+	color: #333;
+	margin-bottom: 5px;
+}
+li, p {
+	color: #555;
+	margin-bottom: 5px;
+}
+/* 탭 영역 스타일 */
+.tab-section {
+	display: flex;
+	justify-content: flex-start;
+	background-color: #efefef;
+}
+
+#content .tab-btn {
+    padding: 10px 20px;
+    background-color: #dddddd;
+    cursor: pointer;
+    border: 2px solid white;
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#content .tab-btn:hover {
+    background-color: #c4c4c4;
+}
+
+#content .tab-btn.active {
+    background-color: #545454;
+    color: white;
+}
+
+/* 소개 및 이용안내 섹션 스타일 */
+#content .tab-content {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-align: left;
+}
+
+#content #intro h1, #content #info h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+#content .text-content p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+/* 중간 섹션의 이미지 스타일 */
+#content .pethotel_img {
+    width: 100px;
+    height: auto;
+    margin: 10px 0;
+    display: block;
+    border-radius: 5px;
+}
+
+/* 이용안내 리스트 스타일 */
+#content .middle-section h2 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+#content .middle-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#content .middle-section ul li {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #444;
+}
+li {
+    list-style: none;
+}
+
+#content .middle-section .small_text {
+    font-size: 14px;
+    color: #888;
+}
+
+/* 수정하기 버튼 스타일 */
+#content #intro_edit_button_div, #content #info_edit_button_div {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+#content #intro_edit_button, #content #info_edit_button,
+#content #info_edit_submit_button, #content #intro_edit_submit_button {
+    padding: 8px 15px;
+    background-color: #545454;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#content #intro_edit_button:hover, #content #info_edit_button:hover {
+    background-color: #333;
+}

@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>게시글 수정</title>
     <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/community/community_writeview.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/community/community_modify.css">
     <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
 </head>
 <body>
@@ -23,7 +23,9 @@
 		<input type="hidden" name="orepfile" value="${contentView.orepfile}">
 		<input type="hidden" name="chrepfile" value="${contentView.chrepfile}">
 	
-		
+		 <!-- 기존 일반 이미지 파일명을 히든 필드로 전송 -->
+	    <input type="hidden" name="corgfile" value="${contentView.corgfile}"> <!-- 기존 일반 이미지 파일명 -->
+	    <input type="hidden" name="cchgfile" value="${contentView.cchgfile}"> <!-- 기존 변경된 일반 이미지 파일명 -->
        
        
         <label for="user_id">이름</label>
@@ -63,8 +65,10 @@
         </div>
         
         
+        	<div class="button-container">
         <input type="button" id="previewButton" class="btn submit-btn" value="내용 미리보기">
         <input type="submit" id="submit-btn" class="btn submit-btn" value="수정 완료">
+  		</div>
     </form>
 
     <!-- 미리보기 팝업 -->

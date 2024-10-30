@@ -96,3 +96,37 @@ $(document).ready(function(){
     // 4초마다 슬라이드 전환
     setInterval(showNextSlide, 4000);
 });
+
+
+
+// 드롭다운 토글 함수
+function toggleSearchDropdown() {
+    const dropdown = document.getElementById("searchDropdown");
+    
+    // 드롭다운이 숨겨져 있다면 AJAX로 내용을 불러오고 표시
+    if (dropdown.style.display === "none") {
+        fetch('/product/productSearch')
+            .then(response => response.text())
+            .then(data => {
+                dropdown.innerHTML = data;
+                dropdown.style.display = "block";
+
+                // AJAX 응답에서 스크립트 실행
+                executeScripts(dropdown);
+            })
+            .catch(error => console.error('오류 발생:', error));
+    } else {
+        dropdown.style.display = "none"; // 다시 클릭 시 숨김
+    }
+}
+
+// 응답 내 스크립트를 실행하는 함수
+function executeScripts(container) {
+    const scripts = container.getElementsByTagName("script");
+    for (let script of scripts) {
+        const newScript = document.createElement("script");
+        newScript.text = script.innerHTML; // 스크립트 내용 설정
+        document.body.appendChild(newScript); // 문서에 추가하여 실행
+    }
+}
+   

@@ -47,11 +47,11 @@ $(document).ready(function() {
         // 필터 기본 값
         let filterParam = {
             status: '전체',
+            kind: '전체',
             type: '전체',
             sort: '최신순'
         };
 	
-		
         fetchData(currentPage, currPageGroup, filterParam);
 
         function fetchData(currentPage, currPageGroup, filterParam) {
@@ -83,10 +83,17 @@ $(document).ready(function() {
             $.each(sliceList, function (index, coupon) {
                 lists += '<tr>';
                 lists += '<td>' + coupon.cp_no + '</td>';
+
+				if (coupon.cp_kind === 'P') {
+				    lists += '<td>일반</td>';
+				} else if (coupon.cp_kind === 'G') {
+				    lists += '<td>등급</td>';
+				}
+
                 lists += '<td>' + coupon.cp_name + '</td>';
-                lists += '<td>' + coupon.cp_keyword + '</td>';
-                lists += '<td>' + coupon.cp_start + '</td>';
-                lists += '<td>' + coupon.cp_end + '</td>';
+                lists += '<td>' + (coupon.cp_keyword || '') + '</td>';
+                lists += '<td>' + (coupon.cp_start || '') + '</td>';
+                lists += '<td>' + (coupon.cp_end || '') + '</td>';
 
                 if (coupon.cp_type === 'A') {
                     lists += '<td>' + coupon.cp_amount + '원</td>';
@@ -95,12 +102,35 @@ $(document).ready(function() {
                 }
 
                 lists += '<td>' + coupon.issueCount + '</td>';
-                lists += '<td>' + (coupon.totalUsage || 'N/A') + '</td>';
-                lists += '<td><button class="btn-style">수정</button><button class="btn-style">삭제</button></td>';
-                lists += '</tr>';
+                lists += '<td>' + (coupon.totalUsage || '') + '</td>';
+				lists += `<td>
+			                  <button class="btn-style modify-coupon-btn" data-coupon-id="${coupon.cp_no}">수정</button>
+			                  <button class="btn-style delete-coupon-btn" data-coupon-id="${coupon.cp_no}">삭제</button>
+			              </td>`;
+			    lists += '</tr>';
             });
 
             $('#coupon-table-body').html(lists);
+			
+			// 수정 버튼 이벤트 바인딩
+		    $('.modify-coupon-btn').on('click', function() {
+		        const couponId = $(this).data('coupon-id');
+		        loadCouponForEdit(couponId); // 수정할 쿠폰 로드
+				
+				// 모달에 couponId를 저장하고 버튼 텍스트를 '수정'으로 설정
+			    $('#registerCouponBtn').text('수정');
+			    $('#couponModal').data('coupon-id', couponId).show();
+		    });
+
+		    // 삭제 버튼 이벤트 바인딩
+		    $('.delete-coupon-btn').on('click', function() {
+				const confirmed = confirm('쿠폰을 삭제하시겠습니까?');
+
+				    if (confirmed) {
+						const couponId = $(this).data('coupon-id');
+				        deleteCoupon(couponId);
+				    }
+		    });
         }
 
         function setupPagination(currentPage, currPageGroup) {
@@ -144,6 +174,7 @@ $(document).ready(function() {
         $('#status-filter input[name="status-filter"]').on('change', function() {
             filterParam = {
                 status: $('input[name="status-filter"]:checked').val(),
+                kind: $('input[name="kind-filter"]:checked').val(),
                 type: $('input[name="type-filter"]:checked').val(),
                 sort: $('#sort-order').val()
             };
@@ -151,9 +182,21 @@ $(document).ready(function() {
             fetchData(currentPage, currPageGroup, filterParam);
         });
 
+        $('#kind-filter input[name="kind-filter"]').on('change', function() {
+            filterParam = {
+                status: $('input[name="status-filter"]:checked').val(),
+				kind: $('input[name="kind-filter"]:checked').val(),
+                type: $('input[name="type-filter"]:checked').val(),
+                sort: $('#sort-order').val()
+            };
+			
+            fetchData(currentPage, currPageGroup, filterParam);
+        });
+		
         $('#type-filter input[name="type-filter"]').on('change', function() {
             filterParam = {
                 status: $('input[name="status-filter"]:checked').val(),
+				kind: $('input[name="kind-filter"]:checked').val(),
                 type: $('input[name="type-filter"]:checked').val(),
                 sort: $('#sort-order').val()
             };
@@ -308,3 +351,146 @@ $(document).ready(function() {
         });
     }
 });
+
+// 신규등록 모달 열기/닫기
+$('#new-coupon-btn').on('click', function() {
+	resetModal();
+	$('#registerCouponBtn').text('등록완료');
+    document.getElementById('couponModal').style.display = 'block';
+});
+function closeModal() {
+    document.getElementById('couponModal').style.display = 'none';
+}
+
+// 쿠폰 타입에 따라 입력 필드 변경
+function toggleCouponType(type) {
+    if (type === 'G') {
+        document.getElementById('periodSelect').style.display = 'none';
+        document.getElementById('gradeSelect').style.display = 'flex';
+    } else {
+        document.getElementById('periodSelect').style.display = 'block';
+        document.getElementById('gradeSelect').style.display = 'none';
+    }
+}
+
+// 할인 타입에 따라 단위 변경
+function updateDiscountLabel() {
+    const discountType = document.getElementById('discountType').value;
+	if (discountType === 'A') {
+        document.getElementById('discountUnit').innerText = '원';
+    } else if (discountType === 'R') {
+        document.getElementById('discountUnit').innerText = '%';
+    }
+}
+
+// 발급 종료일과 만료 예정일 동일 설정
+document.getElementById('sameAsEndDate').addEventListener('change', function () {
+    if (this.checked) {
+        document.getElementById('deadDate').value = document.getElementById('endDate').value;
+    }
+});
+
+// 쿠폰 등록 데이터 전송
+function submitCoupon() {
+    const couponData = {
+        cp_name: document.getElementById('cpName').value,
+        cp_keyword: document.getElementById('cpKeyword').value || null,
+        cp_kind: document.querySelector('input[name="couponType"]:checked').value,
+        g_no: document.getElementById('grade').value || null,
+        cp_start: document.getElementById('startDate').value || null,
+        cp_end: document.getElementById('endDate').value || null,
+        cp_dead: document.getElementById('deadDate').value || null,
+        cp_type: document.getElementById('discountType').value,
+        cp_amount: document.getElementById('discountAmount').value
+    };
+	
+	// 버튼의 텍스트로 신규 등록과 수정 구분
+    const actionType = document.getElementById('registerCouponBtn').innerText;
+
+    if (actionType === '등록완료') {
+        // 신규 등록 처리
+        $.ajax({
+            url: '/admin/coupon/register',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(couponData),
+            success: function () {
+                alert('쿠폰이 성공적으로 등록되었습니다.');
+                location.reload();
+            },
+            error: function (xhr, status, errorThrown) {
+                console.error(errorThrown);
+                alert('쿠폰 등록 중 오류가 발생했습니다.');
+            }
+        });
+    } else if (actionType === '수정') {
+        // 수정 처리
+        const couponId = $('#couponModal').data('coupon-id');
+        $.ajax({
+            url: `/admin/coupon/update?cpNo=` + couponId,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(couponData),
+            success: function () {
+                alert('쿠폰이 성공적으로 수정되었습니다.');
+                location.reload();
+            },
+            error: function (xhr, status, errorThrown) {
+                console.error(errorThrown);
+                alert('쿠폰 수정 중 오류가 발생했습니다.');
+            }
+        });
+    }
+}
+
+// 수정할 쿠폰 로드 함수
+function loadCouponForEdit(couponId) {
+    $.ajax({
+        url: `/admin/coupon/modify?cpNo=` + couponId, // 쿠폰 정보를 가져올 URL
+        method: 'GET',
+        success: function(coupon) {
+            // 모달에 기존 쿠폰 정보 표시
+            document.getElementById('cpName').value = coupon.cp_name;
+            document.getElementById('cpKeyword').value = coupon.cp_keyword;
+            document.querySelector(`input[name="couponType"][value="${coupon.cp_kind}"]`).checked = true;
+			toggleCouponType(coupon.cp_kind);
+            document.getElementById('grade').value = coupon.g_no || '';
+            document.getElementById('startDate').value = coupon.cp_start || '';
+            document.getElementById('endDate').value = coupon.cp_end || '';
+            document.getElementById('deadDate').value = coupon.cp_dead || '';
+            document.getElementById('discountType').value = coupon.cp_type;
+            document.getElementById('discountAmount').value = coupon.cp_amount;
+        },
+        error: function(xhr, status, error) {
+            alert('쿠폰 정보를 가져오는데 오류가 발생했습니다.');
+        }
+    });
+}
+
+function resetModal() {
+    document.getElementById('cpName').value = '';
+    document.getElementById('cpKeyword').value = '';
+    document.querySelector('input[name="couponType"][value="P"]').checked = true;
+	toggleCouponType('P');
+    document.getElementById('grade').value = '';
+    document.getElementById('startDate').value = '';
+    document.getElementById('endDate').value = '';
+    document.getElementById('deadDate').value = '';
+    document.getElementById('discountType').value = 'A';
+    document.getElementById('discountAmount').value = '';
+}
+
+// 쿠폰 삭제
+function deleteCoupon(couponId) {
+    $.ajax({
+        url: `/admin/coupon/delete?cpNo=` + couponId,
+        method: 'DELETE',
+        success: function() {
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            alert('쿠폰 삭제 중 오류가 발생했습니다.');
+			console.error('Error', error);
+        }
+    });
+}
