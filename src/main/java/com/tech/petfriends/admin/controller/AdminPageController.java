@@ -1,5 +1,6 @@
 package com.tech.petfriends.admin.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,8 @@ import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminProductAddService;
 import com.tech.petfriends.admin.service.AdminProductListService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
+import com.tech.petfriends.notice.dao.NoticeDao;
+import com.tech.petfriends.notice.dto.NoticeDto;
 
 @Controller
 @RequestMapping("/admin")
@@ -35,6 +38,9 @@ public class AdminPageController {
 
 	@Autowired
 	AdminPageDao adminDao;
+	
+	@Autowired
+	NoticeDao noticeDao;
 	
 	@Autowired
 	CouponDao couponDao;
@@ -213,8 +219,17 @@ public class AdminPageController {
 	}
 
 	@GetMapping("/notice")
-	public String notice() {
+	public String NoticeWrite(Model model) {
+		ArrayList<NoticeDto> noticeAdminList = noticeDao.NoticeAdminList();
+        model.addAttribute("noticeAdminList", noticeAdminList);
+		
 		return "admin/notice";
+	}
+	
+	@GetMapping("/notice_write")
+	public String Notice() {
+		System.out.println("글작성페이지");
+		return "admin/notice_write";
 	}
 
 	@GetMapping("/sales")
