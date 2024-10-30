@@ -66,34 +66,36 @@ public class CModifyService implements CServiceInterface {
 		
 		// 일반 이미지 업로드 처리
 		List<MultipartFile> fileList = mtfRequest.getFiles("file");
-		String originalFile = mtfRequest.getParameter("corgfile");
-		String changeFile = mtfRequest.getParameter("cchgfile");
-		
-	    if ((originalFile != null && !originalFile.isEmpty()) ||
-	    		(fileList != null && !fileList.isEmpty())) {
-	      
-	    	for (MultipartFile mf : fileList) {
-	            originalFile = mf.getOriginalFilename();
-	            System.out.println("original: " + originalFile);
-	            
-	            long longtime = System.currentTimeMillis();
-	            changeFile = longtime + "_" + originalFile;
-	            String pathFile = root + "\\" + changeFile;
-	            
-	            try {
-	                mf.transferTo(new File(pathFile));
-	                System.out.println("다중업로드성공");
-	                iDao.modifyImg(board_no, originalFile, changeFile, repImgOriginal, repImgChange);
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	                throw new RuntimeException("Representative image upload failed", e);
-	            }
-	        }
-	    }
+		String originalFile = mtfRequest.getParameter("corgfile");   // 기존 파일명
+		String changeFile = mtfRequest.getParameter("cchgfile");     // 기존 변경 파일명
 
-	    // 일반 이미지 파일이 없을 때
-	    else {
-	        iDao.modifyImg(board_no, originalFile, changeFile, repImgOriginal, repImgChange);
-	    }
-	}
+		// 새로운 파일이 실제로 업로드되었는지 확인 (파일 크기가 0인 경우는 제외)
+		boolean isFileUploaded = fileList.stream().anyMatch(file -> !file.isEmpty());
+
+		if (isFileUploaded) {
+		    // 새로운 파일이 있는 경우에만 처리
+		    for (MultipartFile mf : fileList) {
+		        if (!mf.isEmpty()) {  // 파일이 실제로 존재할 때만 처리
+		            originalFile = mf.getOriginalFilename();
+		            System.out.println("original: " + originalFile);
+
+		            long longtime = System.currentTimeMillis();
+		            changeFile = longtime + "_" + originalFile;
+		            String pathFile = root + "\\" + changeFile;
+
+		            try {
+		                mf.transferTo(new File(pathFile));
+		                System.out.println("다중업로드성공");
+		                iDao.modifyImg(board_no, originalFile, changeFile, repImgOriginal, repImgChange);
+		            } catch (Exception e) {
+		                e.printStackTrace();
+		                throw new RuntimeException("Image upload failed", e);
+		            }
+		        }
+		    }
+		} else {
+		    // 새로운 파일이 없으면 기존 파일명(corgfile, cchgfile)을 그대로 사용하여 데이터베이스 업데이트
+		    iDao.modifyImg(board_no, originalFile, changeFile, repImgOriginal, repImgChange);
+		}
+    }
 }

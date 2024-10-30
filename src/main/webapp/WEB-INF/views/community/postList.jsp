@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>postList</title>
 <link rel="stylesheet" href="/static/css/community/community_main.css">
 </head>
 <body>
@@ -35,8 +35,8 @@
             <span class="like-button">❤️ ${post.board_likes}</span>
             <span class="comment-button">💬 ${post.board_comment_count}</span>
         	 <div class="button-container">
-<%-- 		        <a href="/community/edit?board_no=${contentView.board_no}" class="edit-button">수정</a>
-		        <a href="/community/delete?board_no=${contentView.board_no}" class="delete-button">삭제</a> --%>
+		        <a href="/community/contentView?board_no=${post.board_no}" class="edit-button">수정</a>
+		        <a href="/community/contentView?board_no=${post.board_no}" class="delete-button">삭제</a>
 		    </div>
         </div>
     </article>
