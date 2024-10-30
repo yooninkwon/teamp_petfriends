@@ -115,20 +115,13 @@ $(document).ready(function() {
 				lists += '<td>' + pro.pro_name + '</td>';
 				lists += '<td>' + pro.pro_pets + ' / ' + pro.pro_type + ' / ' + pro.pro_category + '</td>';
 				lists += '<td>' + pro.pro_onoff + '</td>';
-
-
-
 				lists += `<td>
-				                  <button type="button" class="btn-style" data-product-code="${pro.pro_code}">상세보기</button>
-				                 
+				                  <button type="button" id="modify-btn" class="btn-style" data-product-code="${pro.pro_code}">상세보기</button>
 				              </td>`;
 				lists += '</tr>';
 			});
 
 			$('#product-table-body').html(lists);
-
-
-
 
 		}
 
@@ -173,58 +166,104 @@ $(document).ready(function() {
 
 	// 신규등록 모달 열기/닫기
 	$('#new-pro-btn').on('click', function() {
+		// 기존 미리보기 이미지 초기화
+		document.getElementById('mainImagePreview').innerHTML = ''; // 대표 이미지 미리보기 초기화
+		document.getElementById('desImagePreview').innerHTML = '';  // 상세 이미지 미리보기 초기화
+
+		// 선택된 파일 배열 초기화
+		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
+		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
+
+
 		//resetModal();
 		$('#registerProductBtn').text('등록하기');
 		document.getElementById('productModal').style.display = 'block';
+		document.getElementById('productModalPg').reset();
 	});
 
 
 	$('.close-btn').on('click', function() {
-		$('#productModal').hide();
+		document.getElementById('productModal').style.display = 'none'; // 모달을 숨김
 	});
 
 
-	//대표,상세이미지 미리보기
-	function setupImagePreview(inputElement, previewContainer, maxFiles) {
-		inputElement.addEventListener('change', function() {
-			const files = inputElement.files;
+	let mainSelectedFiles = [];  // 대표이미지 파일 배열
+	let desSelectedFiles = [];   // 상세이미지 파일 배열
 
-			// 파일 개수 제한 확인
-			if (files.length > maxFiles) {
-				alert(`최대 ${maxFiles}장을 선택할 수 있습니다.`);
-				inputElement.value = ''; // 입력값 초기화
-				previewContainer.innerHTML = ''; // 미리보기 초기화
-				return;
-			}
+	// 미리보기 생성 함수
+	function handleFileSelect(event, maxFiles, selectedFiles, previewContainerId) {
+		const files = Array.from(event.target.files);
+		const previewContainer = document.getElementById(previewContainerId);
 
-			previewContainer.innerHTML = ''; // 이전 미리보기 초기화
+		// 파일 수 제한 검사
+		if (selectedFiles.length + files.length > maxFiles) {
+			alert(`이미지는 최대 ${maxFiles}장까지만 업로드할 수 있습니다.`);
+			return;
+		}
 
-			for (let i = 0; i < files.length; i++) {
-				const file = files[i];
-				const reader = new FileReader();
+		// 새로 선택된 파일들을 미리보기로 추가하고, 배열에 저장
+		files.forEach(file => {
+			selectedFiles.push(file);  // 배열에 파일 추가
 
-				reader.onload = function(e) {
-					const img = document.createElement('img');
-					img.src = e.target.result; // 파일의 데이터 URL
-					img.classList.add('preview-image'); // CSS 클래스 추가 (스타일링 용)
-					img.style.width = '30px'; // 썸네일 크기 설정
-					img.style.margin = '0 5px'; // 위아래는 0, 좌우는 5px 간격 설정
-					previewContainer.appendChild(img); // 미리보기 컨테이너에 추가
-				}
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				const imgContainer = document.createElement('div');
+				imgContainer.style.position = 'relative';
+				imgContainer.style.display = 'inline-block';
+				imgContainer.style.marginLeft = '10px'; // 간격 추가
 
-				reader.readAsDataURL(file); // 파일을 데이터 URL로 변환
-			}
+				const img = document.createElement('img');
+				img.src = e.target.result;
+				img.style.width = '60px';
+				img.style.height = '60px';
+				img.style.objectFit = 'cover';
+				img.style.borderRadius = '8px'; // 이미지 모서리 둥글게 설정
+
+				const deleteButton = document.createElement('span');
+				deleteButton.innerText = '×';
+				deleteButton.style.position = 'absolute';
+				deleteButton.style.top = '-3px';
+				deleteButton.style.right = '-3px';
+				deleteButton.style.width = '15px';
+				deleteButton.style.height = '15px';
+				deleteButton.style.borderRadius = '50%';
+				deleteButton.style.backgroundColor = 'white';
+				deleteButton.style.color = 'black';
+				deleteButton.style.fontSize = '16px';
+				deleteButton.style.display = 'flex';
+				deleteButton.style.alignItems = 'center';
+				deleteButton.style.justifyContent = 'center';
+				deleteButton.style.cursor = 'pointer';
+				deleteButton.style.boxShadow = '0 0 3px rgba(0, 0, 0, 0.3)'; // 약간의 그림자 추가
+				deleteButton.onclick = () => {
+					imgContainer.remove();
+					selectedFiles.splice(selectedFiles.indexOf(file), 1);  // 배열에서 파일 제거
+				};
+
+				imgContainer.appendChild(img);
+				imgContainer.appendChild(deleteButton);
+				previewContainer.appendChild(imgContainer);
+			};
+			reader.readAsDataURL(file);
 		});
-	}
-	
-	// HTML 요소를 설정하는 부분
-	const proMainImagesInput = document.getElementById('proMainImages'); // 대표 이미지 input 요소 ID
-	const mainImagePreview = document.getElementById('mainImagePreview'); // 대표 이미지 미리보기 컨테이너 ID
-	setupImagePreview(proMainImagesInput, mainImagePreview, 5); // 최대 파일 개수 5
 
-	const proDesImagesInput = document.getElementById('proDesImages'); // 상세 이미지 input 요소 ID
-	const desImagePreview = document.getElementById('desImagePreview'); // 상세 이미지 미리보기 컨테이너 ID
-	setupImagePreview(proDesImagesInput, desImagePreview, 10); // 최대 파일 개수 10
+		// 파일 입력 초기화
+		event.target.value = '';
+	}
+
+	// 대표이미지 이벤트 핸들러
+	document.getElementById('proMainImages').addEventListener('change', function(event) {
+		handleFileSelect(event, 5, mainSelectedFiles, 'mainImagePreview');
+	});
+
+	// 상세이미지 이벤트 핸들러
+	document.getElementById('proDesImages').addEventListener('change', function(event) {
+		handleFileSelect(event, 10, desSelectedFiles, 'desImagePreview');
+	});
+
+
+
+
 
 	//상품옵션 +/-
 
@@ -305,17 +344,15 @@ $(document).ready(function() {
 		// FormData 객체 생성
 		const formData = new FormData();
 
-		// 대표 이미지 파일 가져오기
-		const mainImages = document.getElementById('proMainImages').files;
-		for (let i = 0; i < mainImages.length; i++) {
-			formData.append('mainImages', mainImages[i]); // 대표 이미지 파일 추가
-		}
+		// 최종 선택된 대표 이미지 파일을 FormData에 추가
+		mainSelectedFiles.forEach(file => {
+			formData.append('mainImages', file); // 키값 'mainImages'로 추가
+		});
 
-		// 상세 이미지 파일 가져오기
-		const desImages = document.getElementById('proDesImages').files;
-		for (let i = 0; i < desImages.length; i++) {
-			formData.append('desImages', desImages[i]); // 상세 이미지 파일 추가
-		}
+		// 최종 선택된 상세 이미지 파일을 FormData에 추가
+		desSelectedFiles.forEach(file => {
+			formData.append('desImages', file); // 키값 'desImages'로 추가
+		});
 
 		// 각 입력 필드의 값을 가져오기
 		let petType = document.getElementById("petType") ? document.getElementById("petType").value : '';
@@ -324,18 +361,18 @@ $(document).ready(function() {
 		let filterType1 = document.getElementById("filterType1") ? document.getElementById("filterType1").value : '';
 		let filterType2 = document.getElementById("filterType2") ? document.getElementById("filterType2").value : '';
 		let proName = document.getElementById("proName") ? document.getElementById("proName").value : '';
-		let proDiscount= document.getElementById("proDiscount") ? document.getElementById("proDiscount").value : '';
+		let proDiscount = document.getElementById("proDiscount") ? document.getElementById("proDiscount").value : '';
 		let productStatus = document.querySelector('input[name="productStatus"]:checked').value; // 선택된 라디오 버튼 값
 		const options = getOptionValues();
-		
+
 		console.log(options);
-		
-		if(petType === "" || proType === "" || proDetailType === "" || proName === "" || proDiscount === "" || options.some(opt => opt.price === "" || opt.count === "")){
+
+		if (petType === "" || proType === "" || proDetailType === "" || proName === "" || proDiscount === "" || options.some(opt => opt.price === "" || opt.count === "")) {
 			alert('상품등록 필수 항목을 채워주세요.\n(펫타입, 상품종류, 상품타입, 상품명, 할인율, 옵션최소 1개)');
 			return;
 		}
 
-		
+
 		// FormData에 추가
 		// 옵션 값을 가져와서 FormData에 추가
 		// options 배열을 JSON 문자열로 변환하여 추가
@@ -394,6 +431,17 @@ $(document).ready(function() {
 
 	});
 
+	
+	
+	// 수정 버튼 이벤트 바인딩
+			    $('#modify-btn').on('click', function() {
+			        const proCode = $(this).data('product-code');
+			        loadCouponForEdit(proCode); // 수정할 쿠폰 로드
+					
+					// 모달에 proCode를 저장하고 버튼 텍스트를 '수정'으로 설정
+				    $('#registerCouponBtn').text('수정하기');
+				    $('#productModal').data('proCode', proCode).show();
+			    });
 
 
 

@@ -103,6 +103,7 @@
 	</div>
 	
 	<!-- 상품 등록 모달창 -->
+	<form id="productModalPg">
 <div id="productModal" class="modal" style="display: none;">
     <div class="modal-content">
     <h3 class="modal-title">상품등록</h3>
@@ -144,20 +145,21 @@
         </div>
         <div class="input-group">
 		    <label>대표이미지 <br /> (최대 5장)</label>
-		    
 		    <input type="file" id="proMainImages" accept="image/*" multiple >
-		</div>
-        <div class="input-group">
-		    <label></label>
+		    <button class=" " type="button" onclick="document.getElementById('proMainImages').click()">+</button>
 		    <div id="mainImagePreview" class="image-preview"></div>
 		</div>
         <div class="input-group">
+		    <label></label>
+		</div>
+        <div class="input-group">
 		    <label>상세이미지<br />(최대 10장)</label>
-		    <input type="file" id="proDesImages" accept="image/*" multiple>
+		    <input type="file" id="proDesImages" accept="image/*" multiple style="display:none;">
+		    <button type="button" onclick="document.getElementById('proDesImages').click()">+</button>
+		    <div id="desImagePreview" class="image-preview"></div>
 		</div>
         <div class="input-group">
 		    <label ></label>
-		    <div id="desImagePreview" class="image-preview"></div>
 		</div>
       	<div class="input-group">
             <label for="proDiscount">할인율</label>
@@ -190,7 +192,7 @@
         <button type="button" id="registerProductBtn" ></button>
     </div>
 </div>
-
+</form>
 
 </body>
 </html>

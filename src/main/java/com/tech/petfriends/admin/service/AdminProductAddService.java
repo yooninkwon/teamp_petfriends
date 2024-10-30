@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ public class AdminProductAddService implements AdminServiceInterface {
 		this.adminProductDao = adminProductDao;
 	}
 
+	@Transactional
 	@Override
 	public void execute(Model model) {
 		// 모델에서 데이터 가져오기
@@ -75,8 +77,8 @@ public class AdminProductAddService implements AdminServiceInterface {
 	    //이미지 등록
 		adminProductDao.adminProductImgAdd(proCode,savedMainImageNames,savedDesImageNames);
 		
-		int x=1;
 		// 옵션 리스트를 반복하며 각 옵션을 DB에 추가
+		int x=1;
 	    for (Map<String, Object> option : optionList) {
 	        String optionName = (String) option.get("name"); // 옵션명 추출
 	        int optionPrice = Integer.parseInt(option.get("price").toString()); // 가격 추출

@@ -154,7 +154,7 @@ label {
 	position: relative;
 	margin: 3% auto; /* 중앙 정렬 */
 	padding: 40px;
-	width: 800px;
+	width: 1000px;
 	max-height: 700px; /* 최대 높이 설정 */
 	background-color: #f4f4f4;
 	text-align: left;
@@ -238,6 +238,7 @@ label {
 
 #proMainImages, #proDesImages {
 	all: unset; /* 모든 스타일 초기화 */
+	display: none;
 }
 
 .proEx {
