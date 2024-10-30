@@ -1,5 +1,6 @@
 package com.tech.petfriends.helppetf.mapper;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -22,4 +23,15 @@ public interface HelpPetfDao {
 	public PethotelIntroDto pethotelIntro();
 
 	public PethotelInfoDto pethotelInfo();
+
+	public int pethotelReverseRequestPets(String hph_reserve_no, String hphp_reserve_pet_no, String hphp_pet_name,
+			String hphp_pet_type, String hphp_pet_birth, String hphp_pet_gender, String hphp_pet_weight,
+			String hphp_pet_neut, String hphp_pet_comment);
+
+	public int pethotelReverseRequestMem(String hph_reserve_no, String mem_code, String hph_numof_pet,
+			Date hph_start_date, Date hph_end_date);
+
+	public void pethotelReserveErrorPet(String hph_reserve_no);
+	
+	public void pethotelReserveErrorMem(String hph_reserve_no);
 }
