@@ -18,7 +18,28 @@
             var replyForm = document.getElementById("replyForm-" + commentId);
             replyForm.style.display = replyForm.style.display === "none" || replyForm.style.display === "" ? "block" : "none";
         }
+        
+        function toggleLike(boardNo, liked) {
+            $.ajax({
+                url: "/community/updateLike",
+                type: "POST",
+                data: { board_no: boardNo, liked: liked },
+                success: function(updatedLikes) {
+                    $("#like-count").text(updatedLikes);
+                    $("#like-button").text(liked ? "❤️" : "🤍");
+                    $("#like-button").attr("onclick", "toggleLike(" + boardNo + ", " + !liked + ")");
+                },
+                error: function() {
+                    alert("오류가 발생했습니다.");
+                }
+            });
+        }
+        
+        
     </script>
+
+
+
 </head>
 <body>
 
@@ -37,7 +58,9 @@
 <div class="post-footer">
     <!-- 왼쪽 끝에 위치할 댓글 및 좋아요 버튼 -->
     <div class="left-buttons">
-        <span>❤️ ${contentView.board_likes}</span>
+        <span>${contentView.board_likes}</span>
+        <button id="like-button" onclick="toggleLike(${contentView.board_no}, false)">🤍</button>
+       
         <span>💬 <button onclick="toggleComments()" class="main_comment-button">댓글</button> ${contentView.board_comment_count}</span>
     </div>
 
@@ -60,9 +83,6 @@
     <div id="commentsSection" class="comment-section" style="display: none;">
         <h3>댓글 목록</h3>
       
-      <c:if test="${not empty errorMessage}">
-    <div class="error-message">${errorMessage}</div>
-	</c:if>
       
         
      <c:forEach var="comment" items="${commentList}">
@@ -77,11 +97,11 @@
         <!-- 댓글 삭제 버튼: 현재 로그인한 사용자와 댓글 작성자가 같을 경우만 보이기 -->
         <%-- <c:if test="${sessionScope.loggedInUserId == comment.user_id}"> --%>
             <form action="/community/replyDelete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')">
-                <input type="hidden" name="comment_no" value="${commentReply.comment_no}">
+                <input type="hidden" name="comment_no" value="${comment.comment_no}">
                 <input type="hidden" name="board_no" value="${contentView.board_no}">
-				<input type="hidden" name="parent_comment_no" value="${commentReply.parent_comment_no}">
-				<input type="hidden" name="comment_level" value="${commentReply.comment_level}">
-				<input type="hidden" name="comment_order_no" value="${commentReply.comment_order_no}">
+				<input type="hidden" name="parent_comment_no" value="${comment.parent_comment_no}">
+				<input type="hidden" name="comment_level" value="${comment.comment_level}">
+				<input type="hidden" name="comment_order_no" value="${comment.comment_order_no}">
 				<button type="submit" class="delete-button">삭제</button>
             </form>
       <%--   </c:if> --%>
@@ -154,5 +174,10 @@
 <footer>
     <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </footer>
+
+
+
+
+
 </body>
 </html>

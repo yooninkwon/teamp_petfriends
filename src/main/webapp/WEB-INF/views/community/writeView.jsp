@@ -18,9 +18,14 @@
     <h3>글쓰기</h3>
 
     <form id="postForm" action="${pageContext.request.contextPath}/community/write" method="post" enctype="multipart/form-data" class="write-form" onsubmit="return validateForm()">
-        <label for="user_id">이름</label>
-        <input type="text" id="user_id" name="user_id" placeholder="이름을 입력하세요" required>
-
+       <input type="hidden" name="mem_code" value=" ${sessionScope.loginUser.mem_code}">
+       <input type="hidden" name="mem_nick" value=" ${sessionScope.loginUser.mem_nick}">
+      
+       <div class="form-group">
+        <label for="user_id"> 작성자:  ${sessionScope.loginUser.mem_nick} </label>
+       </div>
+       
+        
         <label for="b_cate_no">카테고리</label>
         <select id="b_cate_no" name="b_cate_no" required>
             <option value="">카테고리를 선택하세요</option>
@@ -28,7 +33,8 @@
                 <option value="${category.b_cate_no}">${category.b_cate_name}</option>
             </c:forEach>
         </select>
-
+	
+        
         <label for="file" class="image-label">사진업로드</label>
         <input type="file" id="file" name="file" multiple>
 
@@ -48,6 +54,7 @@
         </div>
 			<div class="button-container">
         <input type="button" id="previewButton" class="btn submit-btn" value="내용 미리보기">
+        
         <input type="submit" id="submit-btn" class="btn submit-btn" value="작성 완료">
     	</div>
     </form>

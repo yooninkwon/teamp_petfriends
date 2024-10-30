@@ -1,7 +1,5 @@
 package com.tech.petfriends.community.controller;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tech.petfriends.community.dto.CCategoryDto;
-import com.tech.petfriends.community.dto.CCommentDto;
 import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.mapper.IDao;
 import com.tech.petfriends.community.service.CCategoryService;
@@ -29,8 +25,8 @@ import com.tech.petfriends.community.service.CDeleteService;
 import com.tech.petfriends.community.service.CDownloadService;
 import com.tech.petfriends.community.service.CModifyService;
 import com.tech.petfriends.community.service.CPostListService;
-import com.tech.petfriends.community.service.CReplyDeleteService;
 import com.tech.petfriends.community.service.CServiceInterface;
+import com.tech.petfriends.community.service.CUpdateLikeService;
 import com.tech.petfriends.community.service.CWriteService;
 
 
@@ -181,7 +177,40 @@ public String replyDelete(HttpServletRequest request, Model model) {
     System.out.println("replyDelete");
     model.addAttribute("request", request);
 
-    serviceInterface = new CReplyDeleteService(iDao);
+    String board_no = request.getParameter("board_no");
+	String comment_no = request.getParameter("comment_no");
+//	String user_id = request.getParameter("user_id");
+//	String comment_content = request.getParameter("comment_content");
+	String parent_comment_no = request.getParameter("parent_comment_no");
+	String comment_level = request.getParameter("comment_level");
+	String comment_order_no = request.getParameter("comment_order_no");
+	
+	
+    // 댓글 삭제 시도
+    int rn = iDao.replyDelete(comment_no, parent_comment_no, comment_level, comment_order_no);
+    if (rn == 0) {
+        // 삭제 실패 (상위 댓글이 존재)
+    	System.out.println("댓글 삭제 실패");
+    	model.addAttribute("msg", "이 댓글은 상위 댓글을 가지고 있어 삭제할 수 없습니다.");
+    	model.addAttribute("url", "/community/contentView?board_no=" + board_no);
+    	return "/community/alert";
+     
+    } else {
+        // 삭제 성공
+    	System.out.println("댓글 삭제 성공");
+        iDao.stepInit(comment_no,parent_comment_no, comment_level);        
+        model.addAttribute("msg", "댓글이 삭제됐습니다.");	        
+        model.addAttribute("url", "/community/contentView?board_no=" + board_no);
+        return "/community/alert";
+    }
+}
+
+	@PostMapping("/updateLike")
+	public String updateLike(HttpServletRequest request, Model model) {
+    System.out.println("updateLike");
+    model.addAttribute("request", request);
+
+    serviceInterface = new CUpdateLikeService(iDao);
     serviceInterface.execute(model);
 
     return "redirect:/community/contentView?board_no=" + request.getParameter("board_no");

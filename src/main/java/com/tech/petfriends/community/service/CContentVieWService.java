@@ -25,6 +25,7 @@ public class CContentVieWService implements CServiceInterface{
 		HttpServletRequest request = (HttpServletRequest) m.get("request");
 		
 		String board_no = request.getParameter("board_no");
+		String comment_no = request.getParameter("comment_no");
 		String parent_comment_no = request.getParameter("parent_comment_no");
 		
 		CDto dto = iDao.contentView(board_no);
@@ -39,6 +40,7 @@ public class CContentVieWService implements CServiceInterface{
     	ArrayList<CCommentDto> commentReplyList = iDao.commentReplyList(board_no);
         model.addAttribute("commentReplyList", commentReplyList);
 	
+   
 	}
 
 }

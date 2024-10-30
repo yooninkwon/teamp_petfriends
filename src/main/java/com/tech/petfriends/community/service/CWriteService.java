@@ -24,13 +24,15 @@ public class CWriteService implements CServiceInterface {
 		Map<String, Object> m = model.asMap();
 		MultipartHttpServletRequest mtfRequest = (MultipartHttpServletRequest) m.get("request");
 
-		String cname = mtfRequest.getParameter("user_id");
-		String ctitle = mtfRequest.getParameter("board_title");
-		String ccontent = mtfRequest.getParameter("board_content");
+		
+		String mem_nick = mtfRequest.getParameter("mem_nick");
+		String mem_code = mtfRequest.getParameter("mem_code");
+		String board_title = mtfRequest.getParameter("board_title");
+		String board_content = mtfRequest.getParameter("board_content");
 		int b_cate_no = Integer.parseInt(mtfRequest.getParameter("b_cate_no"));
 
 		// 게시글 작성
-		iDao.write(cname, ctitle, ccontent, b_cate_no);
+		iDao.write(mem_nick, mem_code, board_title, board_content, b_cate_no);
 
 		// 방금 작성한 게시글의 id 가져오기
 		int board_no = iDao.selBid();
