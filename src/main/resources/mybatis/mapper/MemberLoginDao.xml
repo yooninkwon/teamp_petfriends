@@ -40,6 +40,11 @@
     	SELECT COUNT(*) FROM MEMBER WHERE mem_email = #{email}
 	</select>
 	
+	<!-- 정보변경시 연락처 중복 조회 -->
+	<select id="isTellDuplicate" resultType="int" parameterType="String">
+    	SELECT COUNT(*) FROM MEMBER WHERE mem_tell = #{tell}
+	</select>
+	
 	<!-- 아이디찾기 -->
 	<select id="findUserId" parameterType="String" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
 	    SELECT mem_code, mem_email, mem_name

@@ -26,6 +26,9 @@ public interface MemberMapper {
     // 이메일 중복 검사
     int isEmailDuplicate(String email);
     
+    // 연락처 중복 검사
+    int isTellDuplicate(String tell);
+    
     // 비밀번호 변경
     void updatePassword(String email, String encryptedPassword);
     
@@ -34,4 +37,5 @@ public interface MemberMapper {
 
     // 로그인 회원 등급 정보 검색
 	GradeDto getGradeByMemberCode(String mem_code);
+
 }

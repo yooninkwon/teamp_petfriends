@@ -1,6 +1,9 @@
 package com.tech.petfriends.mypage.controller;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tech.petfriends.admin.dto.CouponDto;
@@ -189,15 +193,33 @@ public class MyPageController {
 	@GetMapping("/setting")
 	public String setting(Model model, HttpSession session) {
 		
-		String kakaoApiKey = apikeyConfig.getKakaoApikey();
 		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
 		ArrayList<MemberAddressDto> address = mypageDao.getAddrByMemberCode(loginUser.getMem_code());
 		
-		model.addAttribute("kakaoApi",kakaoApiKey);
 		model.addAttribute("loginUser",loginUser);
 		model.addAttribute("address",address);
 		
 		return "mypage/setting";
+	}
+	
+	@GetMapping("/setting/tellChange")
+	public String tellChange(Model model, HttpSession session) {
+		return "/mypage/popup/tellChange";
+	}
+	
+	@PostMapping("/setting/updatePhoneNumber")
+	@ResponseBody
+	public String updatePhoneNumber(@RequestParam String phoneNumber, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+	    
+	    mypageDao.updatePhoneNumber(loginUser.getMem_code(), phoneNumber);
+	    
+	    // 세션에 최신화된 연락처 정보를 반영
+	    loginUser.setMem_tell(phoneNumber);
+	    session.setAttribute("loginUser", loginUser);
+
+	    return "redirect:/mypage/popup/tellChange";
 	}
 	
 	@GetMapping("/setting/addressChange")
@@ -210,12 +232,86 @@ public class MyPageController {
 		
 		return "/mypage/popup/addressChange";
 	}
-	
-	@PostMapping("/mypage/setDefaultAddress")
+
+	@Transactional
+	@PostMapping("/setting/setMainAddress")
 	@ResponseBody
-	public String setDefaultAddress(HttpServletRequest request) {
+	public String setMainAddress(@RequestParam String addrCode, HttpSession session) {
 		
-	    return "redirect:/mypage/setDefaultAddress";
+	    MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+	    
+	    mypageDao.updateDefaultAddress(loginUser.getMem_code()); // 기존 기본 주소 'N'으로 변경
+	    mypageDao.setMainAddress(addrCode); // 선택 주소 'Y'로 업데이트
+	    
+	    return "redirect:/mypage/popup/addressChange";
+	}
+	
+	@PostMapping("/setting/deleteAddress")
+	@ResponseBody
+	public String deleteAddress(@RequestParam String addrCode) {
+		
+		mypageDao.deleteAddress(addrCode);
+		
+	    return "redirect:/mypage/popup/addressChange";
+	}
+	
+	@GetMapping("/setting/addressCheck")
+	public String addressCheck(Model model, HttpServletRequest request) {
+		
+		String kakaoApiKey = apikeyConfig.getKakaoApikey();
+		String roadAddr = request.getParameter("roadAddr");
+		String jibunAddr = request.getParameter("jibunAddr");
+		String postcode = request.getParameter("postcode");
+		
+		model.addAttribute("kakaoApi",kakaoApiKey);
+		model.addAttribute("roadAddr",roadAddr);
+		model.addAttribute("jibunAddr",jibunAddr);
+		model.addAttribute("postcode",postcode);
+		
+		return "/mypage/popup/addressCheck";
+	}
+	
+	@PostMapping("/setting/insertAddress")
+	@ResponseBody
+	public Map<String, Object> insertAddress(HttpServletRequest request, HttpSession session) {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		
+	    String memCode = loginUser.getMem_code();
+	    String addrPostal = request.getParameter("addrPostal");
+	    String addrLine1 = request.getParameter("addrLine1");
+	    String addrLine2 = request.getParameter("addrLine2");
+
+	    mypageDao.updateDefaultAddress(memCode);
+	    boolean success = mypageDao.insertNewAddress(UUID.randomUUID().toString(), memCode, addrPostal, addrLine1, addrLine2);
+
+	    response.put("success", success);
+	    
+	    return response;
+	}
+	
+	@PostMapping("/updateMember")
+	public String updateMember(HttpServletRequest request, HttpSession session) {
+		
+	    MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+	    loginUser.setMem_email(request.getParameter("mem_email"));
+	    loginUser.setMem_name(request.getParameter("mem_name"));
+	    loginUser.setMem_nick(request.getParameter("mem_nick"));
+	    
+	 // 날짜 형식 변환
+	    try {
+	        loginUser.setMem_birth(Date.valueOf(LocalDate.parse(request.getParameter("mem_birth"), DateTimeFormatter.ofPattern("yyyyMMdd"))));
+	    } catch (DateTimeParseException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    mypageDao.updateMemberInfo(loginUser);
+	    
+	    session.setAttribute("loginUser", loginUser);  // 세션 갱신
+	    
+	    return "redirect:/mypage/setting";
 	}
 	
 	@GetMapping("/withdrawal")
