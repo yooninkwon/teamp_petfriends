@@ -175,6 +175,14 @@ $(document).ready(function() {
 		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
 
 
+		// 옵션 필드 초기화
+		while (optionContainer.children.length > 0) {
+			optionContainer.removeChild(optionContainer.firstChild);
+		}
+
+		// 기본 옵션 필드 추가
+		optionContainer.appendChild(createNewOptionGroup()); // 기본 옵션 그룹 추가
+
 		//resetModal();
 		$('#registerProductBtn').text('등록하기');
 		document.getElementById('productModal').style.display = 'block';
@@ -184,6 +192,17 @@ $(document).ready(function() {
 
 	$('.close-btn').on('click', function() {
 		document.getElementById('productModal').style.display = 'none'; // 모달을 숨김
+		// 이미지 배열 초기화
+		mainSelectedFiles = []; // 대표 이미지 배열 초기화
+		desSelectedFiles = [];  // 상세 이미지 배열 초기화
+
+		// 미리보기 컨테이너 초기화
+		const mainImagePreview = document.getElementById('mainImagePreview');
+		const desImagePreview = document.getElementById('desImagePreview');
+
+		// 미리보기 컨테이너의 내용 지우기
+		mainImagePreview.innerHTML = '';
+		desImagePreview.innerHTML = '';
 	});
 
 
@@ -207,48 +226,53 @@ $(document).ready(function() {
 
 			const reader = new FileReader();
 			reader.onload = function(e) {
-				const imgContainer = document.createElement('div');
-				imgContainer.style.position = 'relative';
-				imgContainer.style.display = 'inline-block';
-				imgContainer.style.marginLeft = '10px'; // 간격 추가
-
-				const img = document.createElement('img');
-				img.src = e.target.result;
-				img.style.width = '60px';
-				img.style.height = '60px';
-				img.style.objectFit = 'cover';
-				img.style.borderRadius = '8px'; // 이미지 모서리 둥글게 설정
-
-				const deleteButton = document.createElement('span');
-				deleteButton.innerText = '×';
-				deleteButton.style.position = 'absolute';
-				deleteButton.style.top = '-3px';
-				deleteButton.style.right = '-3px';
-				deleteButton.style.width = '15px';
-				deleteButton.style.height = '15px';
-				deleteButton.style.borderRadius = '50%';
-				deleteButton.style.backgroundColor = 'white';
-				deleteButton.style.color = 'black';
-				deleteButton.style.fontSize = '16px';
-				deleteButton.style.display = 'flex';
-				deleteButton.style.alignItems = 'center';
-				deleteButton.style.justifyContent = 'center';
-				deleteButton.style.cursor = 'pointer';
-				deleteButton.style.boxShadow = '0 0 3px rgba(0, 0, 0, 0.3)'; // 약간의 그림자 추가
-				deleteButton.onclick = () => {
-					imgContainer.remove();
-					selectedFiles.splice(selectedFiles.indexOf(file), 1);  // 배열에서 파일 제거
-				};
-
-				imgContainer.appendChild(img);
-				imgContainer.appendChild(deleteButton);
-				previewContainer.appendChild(imgContainer);
+				addImagePreview(e.target.result, file, selectedFiles, previewContainer);
 			};
 			reader.readAsDataURL(file);
 		});
 
 		// 파일 입력 초기화
 		event.target.value = '';
+	}
+
+	// 이미지 미리보기 추가 함수
+	function addImagePreview(imgSrc, file, selectedFiles, previewContainer) {
+		const imgContainer = document.createElement('div');
+		imgContainer.style.position = 'relative';
+		imgContainer.style.display = 'inline-block';
+		imgContainer.style.marginLeft = '10px'; // 간격 추가
+
+		const img = document.createElement('img');
+		img.src = imgSrc;
+		img.style.width = '60px';
+		img.style.height = '60px';
+		img.style.objectFit = 'cover';
+		img.style.borderRadius = '8px'; // 이미지 모서리 둥글게 설정
+
+		const deleteButton = document.createElement('span');
+		deleteButton.innerText = '×';
+		deleteButton.style.position = 'absolute';
+		deleteButton.style.top = '-3px';
+		deleteButton.style.right = '-3px';
+		deleteButton.style.width = '15px';
+		deleteButton.style.height = '15px';
+		deleteButton.style.borderRadius = '50%';
+		deleteButton.style.backgroundColor = 'white';
+		deleteButton.style.color = 'black';
+		deleteButton.style.fontSize = '16px';
+		deleteButton.style.display = 'flex';
+		deleteButton.style.alignItems = 'center';
+		deleteButton.style.justifyContent = 'center';
+		deleteButton.style.cursor = 'pointer';
+		deleteButton.style.boxShadow = '0 0 3px rgba(0, 0, 0, 0.3)'; // 약간의 그림자 추가
+		deleteButton.onclick = () => {
+			imgContainer.remove();
+			selectedFiles.splice(selectedFiles.indexOf(file), 1);  // 배열에서 파일 제거
+		};
+
+		imgContainer.appendChild(img);
+		imgContainer.appendChild(deleteButton);
+		previewContainer.appendChild(imgContainer);
 	}
 
 	// 대표이미지 이벤트 핸들러
@@ -260,6 +284,7 @@ $(document).ready(function() {
 	document.getElementById('proDesImages').addEventListener('change', function(event) {
 		handleFileSelect(event, 10, desSelectedFiles, 'desImagePreview');
 	});
+
 
 
 
@@ -279,7 +304,8 @@ $(document).ready(function() {
 
 	function addOptionLine() {
 		const optionGroup = document.querySelector('.input-group2');
-		const newOptionGroup = optionGroup.cloneNode(true);
+		// 기존 옵션 그룹이 없으면 새로운 옵션 그룹 생성
+		const newOptionGroup = optionGroup ? optionGroup.cloneNode(true) : createNewOptionGroup();
 
 		newOptionGroup.querySelectorAll('input').forEach(input => input.value = "");
 
@@ -313,6 +339,37 @@ $(document).ready(function() {
 				removeButton.style.display = 'inline-block'; // 그 외 줄은 삭제 버튼 보이기
 			}
 		});
+	}
+
+	// 새로운 옵션 그룹 생성 함수
+	function createNewOptionGroup(option = {}) {
+		const optionGroup = document.createElement('div');
+		optionGroup.className = 'input-group2';
+		optionGroup.innerHTML = `
+	        <label id="options"></label>
+	        <span for="optName">옵션명 <input type="text" class="optName" value="${option.proopt_name || ''}"></span>
+	        <span for="optPrice">판매가 <input type="number" class="optPrice" value="${option.proopt_price || ''}">원</span>
+	        <span for="optCnt">재고수량 <input type="number" class="optCnt" value="${option.proopt_stock || ''}">개</span>
+	        <button type="button" class="add-option">+</button>
+	        <button type="button" class="remove-option" style="display: inline-block;">-</button>
+	    `;
+		return optionGroup;
+	}
+
+	// AJAX로 받은 데이터로 옵션 추가
+	function addOptionsToForm(options) {
+		// 현재 옵션 필드를 모두 제거하고 새로 추가할 준비
+		while (optionContainer.children.length > 0) {
+			optionContainer.removeChild(optionContainer.firstChild);
+		}
+
+		// 각 옵션에 대해 필드 추가
+		options.forEach(option => {
+			const optionGroup = createNewOptionGroup(option); // 새 옵션 그룹 생성
+			optionContainer.appendChild(optionGroup);
+		});
+
+		updateButtons(); // 버튼 상태 업데이트
 	}
 
 
@@ -411,7 +468,7 @@ $(document).ready(function() {
 
 
 
-
+		//이부분에ㅁㄴ엄누ㅗㅠ아ㅓㄴㅁ유ㅜ라ㅓㄴㅁ우ㅠ라ㅓㄴㅁ우ㅠㅏ러누ㅠㅇ마ㅓ루ㅠㄴㅁ아ㅓ류ㅜ
 
 
 
@@ -431,18 +488,86 @@ $(document).ready(function() {
 
 	});
 
-	
-	
-	// 수정 버튼 이벤트 바인딩
-			    $('#modify-btn').on('click', function() {
-			        const proCode = $(this).data('product-code');
-			        loadCouponForEdit(proCode); // 수정할 쿠폰 로드
-					
-					// 모달에 proCode를 저장하고 버튼 텍스트를 '수정'으로 설정
-				    $('#registerCouponBtn').text('수정하기');
-				    $('#productModal').data('proCode', proCode).show();
-			    });
 
 
+	// 페이지가 로드된 후에 이벤트를 바인딩합니다.
+	$(document).on('click', '#modify-btn', function() {
+		const proCode = $(this).data('product-code'); // 클릭한 버튼의 data 속성에서 값 가져오기
+		loadProductForEdit(proCode); // 수정할 상품 로드
+		// 모달에 proCode를 저장하고 버튼 텍스트를 '수정'으로 설정
+		$('#registerProductBtn').text('수정하기');
+		$('#productModal').data('proCode', proCode).show(); // 모달 열기
+	});
+
+	// 수정할 쿠폰 로드 함수
+	function loadProductForEdit(proCode) {
+		$.ajax({
+			url: `/admin/product/detail?proCode=` + proCode, // 쿠폰 정보를 가져올 URL
+			method: 'GET',
+			success: function(data) {
+				// 모달에 기존 쿠폰 정보 표시
+				document.getElementById('petType').value = data.pro.pro_pets;
+				document.getElementById('proType').value = data.pro.pro_type;
+				document.getElementById('proDetailType').value = data.pro.pro_category;
+				document.getElementById('filterType1').value = data.pro.pro_filter1;
+				document.getElementById('filterType2').value = data.pro.pro_filter2;
+				document.getElementById('proName').value = data.pro.pro_name;
+				document.getElementById('proDiscount').value = data.pro.pro_discount;
+
+				// 판매상태에 해당하는 라디오 버튼 체크
+				const statusRadios = document.querySelectorAll('input[name="productStatus"]');
+				statusRadios.forEach(radio => {
+					if (radio.value === data.pro.pro_onoff) {
+						radio.checked = true; // pro_onoff와 일치하는 버튼 체크
+					}
+				});
+
+
+				addOptionsToForm(data.opt); // 예시 데이터에서 opt 속성 사용
+
+				// 기존 메인 이미지 미리보기
+				const mainImages = [
+					data.img.main_img1,
+					data.img.main_img2,
+					data.img.main_img3,
+					data.img.main_img4,
+					data.img.main_img5
+				];
+
+				mainImages.forEach((img, index) => {
+					if (img) {
+						const imgSrc = `/static/Images/ProductImg/MainImg/${img}`;
+						mainSelectedFiles.push(imgSrc); // 배열에 추가
+						addImagePreview(imgSrc, img, mainSelectedFiles, document.getElementById('mainImagePreview'));
+					}
+				});
+
+				// 기존 상세 이미지 미리보기
+				const desImages = [
+					data.img.des_img1,
+					data.img.des_img2,
+					data.img.des_img3,
+					data.img.des_img4,
+					data.img.des_img5,
+					data.img.des_img6,
+					data.img.des_img7,
+					data.img.des_img8,
+					data.img.des_img9,
+					data.img.des_img10
+				];
+
+				desImages.forEach(img => {
+					if (img) {
+						const imgSrc = `/static/Images/ProductImg/DesImg/${img}`;
+						desSelectedFiles.push(imgSrc); // 배열에 추가
+						addImagePreview(imgSrc, img, desSelectedFiles, document.getElementById('desImagePreview'));
+					}
+				});
+			},
+			error: function(xhr, status, error) {
+				alert('상품 정보를 가져오는데 오류가 발생했습니다.');
+			}
+		});
+	}
 
 });

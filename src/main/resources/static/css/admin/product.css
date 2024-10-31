@@ -230,9 +230,18 @@ label {
     margin-left: 5px; /* 버튼 간의 간격 추가 */
 }
 
+.imgAdd {
+	width: 30px;
+	font-size: 20px; /* 글자 크기 조정 */
+}
 
-
-
+#proName{
+	width: 520px;
+}
+#proDiscount{
+	width: 50px;
+	
+}
 
 
 
