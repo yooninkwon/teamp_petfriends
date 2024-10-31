@@ -60,7 +60,7 @@ $(document).ready(function() {
 		const itemsPerPage = 10; // 페이지 당 item 수
 		let currentPage = 1;
 		let totalItems = 0;
-		let couponList = []; // 데이터 저장할 배열
+		let productsList = []; // 데이터 저장할 배열
 		let currPageGroup = 1;
 		let totalPages = 0;
 
@@ -208,6 +208,7 @@ $(document).ready(function() {
 
 	let mainSelectedFiles = [];  // 대표이미지 파일 배열
 	let desSelectedFiles = [];   // 상세이미지 파일 배열
+	let removeFiles = []; //삭제된 파일 배열
 
 	// 미리보기 생성 함수
 	function handleFileSelect(event, maxFiles, selectedFiles, previewContainerId) {
@@ -268,6 +269,12 @@ $(document).ready(function() {
 		deleteButton.onclick = () => {
 			imgContainer.remove();
 			selectedFiles.splice(selectedFiles.indexOf(file), 1);  // 배열에서 파일 제거
+			// 중복 확인 후 추가
+			// 기존 이미지 경로만 삭제 배열에 추가
+			if (typeof file === 'string' && !removeFiles.includes(file)) {
+				removeFiles.push(file);  // 경로를 삭제 배열에 추가	
+				console.log(removeFiles);  // 배열의 내용을 콘솔에 출력
+			}
 		};
 
 		imgContainer.appendChild(img);
@@ -347,9 +354,9 @@ $(document).ready(function() {
 		optionGroup.className = 'input-group2';
 		optionGroup.innerHTML = `
 	        <label id="options"></label>
-	        <span for="optName">옵션명 <input type="text" class="optName" value="${option.proopt_name || ''}"></span>
-	        <span for="optPrice">판매가 <input type="number" class="optPrice" value="${option.proopt_price || ''}">원</span>
-	        <span for="optCnt">재고수량 <input type="number" class="optCnt" value="${option.proopt_stock || ''}">개</span>
+	        <span for="optName">옵션명 <input type="text" id="optName" value="${option.proopt_name || ''}"></span>
+	        <span for="optPrice">판매가 <input type="number" id="optPrice" value="${option.proopt_price || ''}">원</span>
+	        <span for="optCnt">재고수량 <input type="number" id="optCnt" value="${option.proopt_stock || ''}">개</span>
 	        <button type="button" class="add-option">+</button>
 	        <button type="button" class="remove-option" style="display: inline-block;">-</button>
 	    `;
@@ -391,7 +398,7 @@ $(document).ready(function() {
 			});
 		});
 
-		console.log(options); // 옵션 값 확인
+
 		return options;
 	}
 
@@ -410,6 +417,8 @@ $(document).ready(function() {
 		desSelectedFiles.forEach(file => {
 			formData.append('desImages', file); // 키값 'desImages'로 추가
 		});
+
+
 
 		// 각 입력 필드의 값을 가져오기
 		let petType = document.getElementById("petType") ? document.getElementById("petType").value : '';
@@ -444,29 +453,73 @@ $(document).ready(function() {
 		formData.append('proDiscount', proDiscount);
 		formData.append('productStatus', productStatus);
 
-		// AJAX 요청
-		$.ajax({
-			url: '/admin/product/add', // 등록할 URL
-			method: 'POST',
-			data: formData,
-			contentType: false, // contentType을 false로 설정
-			processData: false, // processData를 false로 설정
-			success: function(response) {
-				// 성공적으로 등록된 경우 처리
-				alert('제품이 등록되었습니다.');
-				$('#productModal').hide();
-			},
-			error: function(xhr, status, error) {
-				logger.error("상품 등록 중 오류 발생", error);
-				console.error('Error registering product:', error);
-				alert('제품 등록에 실패했습니다.');
-			}
-		});
+		let registerType = document.getElementById("registerProductBtn").innerText;
+		if (registerType === '등록하기') {
+			// AJAX 요청 상품등록하기
+			$.ajax({
+				url: '/admin/product/add', // 등록할 URL
+				method: 'POST',
+				data: formData,
+				contentType: false, // contentType을 false로 설정
+				processData: false, // processData를 false로 설정
+				success: function(response) {
+					// 성공적으로 등록된 경우 처리
+					alert('제품이 등록되었습니다.');
+					$('#productModal').hide();
+				},
+				error: function(xhr, status, error) {
+					logger.error("상품 등록 중 오류 발생", error);
+					console.error('Error registering product:', error);
+					alert('제품 등록에 실패했습니다.');
+				}
+			});
+		}
+
+		if (registerType === '수정하기') {
+			// 최종 선택된 대표 이미지 파일을 FormData에 추가
+			removeFiles.forEach(file => {
+				formData.append('removeImages', file); // 키값 'mainImages'로 추가
+			});
+
+			// AJAX 요청 상품등록하기
+			$.ajax({
+				url: '/admin/product/modify', // 등록할 URL
+				method: 'POST',
+				data: formData,
+				contentType: false, // contentType을 false로 설정
+				processData: false, // processData를 false로 설정
+				success: function(response) {
+					// 성공적으로 등록된 경우 처리
+					alert('제품 정보가 수정되었습니다.');
+					$('#productModal').hide();
+				},
+				error: function(xhr, status, error) {
+					logger.error("상품 등록 중 오류 발생", error);
+					console.error('Error registering product:', error);
+					alert('제품 수정에 실패했습니다.');
+				}
+			});
+		}
 
 
 
 
 
+
+
+
+
+
+
+
+
+		// 기존 미리보기 이미지 초기화
+		document.getElementById('mainImagePreview').innerHTML = ''; // 대표 이미지 미리보기 초기화
+		document.getElementById('desImagePreview').innerHTML = '';  // 상세 이미지 미리보기 초기화
+
+		// 선택된 파일 배열 초기화
+		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
+		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
 
 		//이부분에ㅁㄴ엄누ㅗㅠ아ㅓㄴㅁ유ㅜ라ㅓㄴㅁ우ㅠ라ㅓㄴㅁ우ㅠㅏ러누ㅠㅇ마ㅓ루ㅠㄴㅁ아ㅓ류ㅜ
 
@@ -492,19 +545,31 @@ $(document).ready(function() {
 
 	// 페이지가 로드된 후에 이벤트를 바인딩합니다.
 	$(document).on('click', '#modify-btn', function() {
+		// 기존 미리보기 이미지 초기화
+		document.getElementById('mainImagePreview').innerHTML = ''; // 대표 이미지 미리보기 초기화
+		document.getElementById('desImagePreview').innerHTML = '';  // 상세 이미지 미리보기 초기화
+
+		// 선택된 파일 배열 초기화
+		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
+		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
+		removeFiles = []; //삭제된 파일 배열 초기화
+
 		const proCode = $(this).data('product-code'); // 클릭한 버튼의 data 속성에서 값 가져오기
 		loadProductForEdit(proCode); // 수정할 상품 로드
+		// 선택된 파일 배열 초기화
+
 		// 모달에 proCode를 저장하고 버튼 텍스트를 '수정'으로 설정
 		$('#registerProductBtn').text('수정하기');
 		$('#productModal').data('proCode', proCode).show(); // 모달 열기
 	});
 
-	// 수정할 쿠폰 로드 함수
+	// 수정할 상품 로드 함수
 	function loadProductForEdit(proCode) {
 		$.ajax({
-			url: `/admin/product/detail?proCode=` + proCode, // 쿠폰 정보를 가져올 URL
+			url: `/admin/product/detail?proCode=` + proCode, // 상품 정보를 가져올 URL
 			method: 'GET',
 			success: function(data) {
+				console.log(data);
 				// 모달에 기존 쿠폰 정보 표시
 				document.getElementById('petType').value = data.pro.pro_pets;
 				document.getElementById('proType').value = data.pro.pro_type;
