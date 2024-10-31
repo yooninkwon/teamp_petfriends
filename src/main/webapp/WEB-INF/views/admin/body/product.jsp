@@ -146,7 +146,7 @@
         <div class="input-group">
 		    <label>대표이미지 <br /> (최대 5장)</label>
 		    <input type="file" id="proMainImages" accept="image/*" multiple >
-		    <button class=" " type="button" onclick="document.getElementById('proMainImages').click()">+</button>
+		    <button class="imgAdd" type="button" onclick="document.getElementById('proMainImages').click()">+</button>
 		    <div id="mainImagePreview" class="image-preview"></div>
 		</div>
         <div class="input-group">
@@ -155,16 +155,16 @@
         <div class="input-group">
 		    <label>상세이미지<br />(최대 10장)</label>
 		    <input type="file" id="proDesImages" accept="image/*" multiple style="display:none;">
-		    <button type="button" onclick="document.getElementById('proDesImages').click()">+</button>
+		    <button class="imgAdd" type="button" onclick="document.getElementById('proDesImages').click()">+</button>
 		    <div id="desImagePreview" class="image-preview"></div>
 		</div>
         <div class="input-group">
 		    <label ></label>
 		</div>
       	<div class="input-group">
-            <label for="proDiscount">할인율</label>
+            <label for="proDiscount">할인율(%)</label>
             <input type="number" id="proDiscount">
-            <span class="proEx" >%</span>
+            
         </div>
         <div id="option-container">
 	        <div class="input-group2">

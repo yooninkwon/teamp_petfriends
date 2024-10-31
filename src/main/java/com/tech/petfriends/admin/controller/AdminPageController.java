@@ -1,6 +1,7 @@
 package com.tech.petfriends.admin.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import com.tech.petfriends.admin.mapper.AdminProductDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminProductAddService;
+import com.tech.petfriends.admin.service.AdminProductDetailService;
 import com.tech.petfriends.admin.service.AdminProductListService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
 import com.tech.petfriends.notice.dao.NoticeDao;
@@ -193,6 +195,25 @@ public class AdminPageController {
 		adminServInter.execute(model);
 		
 	}
+	
+	@GetMapping("/product/detail")
+	@ResponseBody
+	public Map<String, Object> productDetail(HttpServletRequest request, Model model) {
+		
+		String proCode = request.getParameter("proCode");
+		model.addAttribute("proCode",proCode);
+		
+		adminServInter = new AdminProductDetailService(adminProductDao);
+		adminServInter.execute(model);
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put("pro", model.getAttribute("pro"));
+		data.put("img", model.getAttribute("img"));
+		data.put("opt", model.getAttribute("opt"));
+		
+		return data;
+	}
+	
 
 	@GetMapping("/customer_status")
 	public String customer_status() {
