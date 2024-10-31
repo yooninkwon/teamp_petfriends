@@ -6,12 +6,14 @@
 	<select id="getPetteacherList" resultType="com.tech.petfriends.helppetf.dto.PetteacherDto">
 		SELECT * FROM HELP_PETTEACHER
 		<where>
+			<!-- 동물종류 필터 -->
 			<choose>
 				<when test="type == '전체'">HPT_HIT >= 0</when>
 				<when test="type == '고양이'">HPT_PETTYPE = '고양이'</when>
 				<when test="type == '강아지'">HPT_PETTYPE = '강아지'</when>
 				<when test="type == '기타 동물'">HPT_PETTYPE = '기타 동물'</when>
 			</choose>
+			<!-- 카테고리 필터 -->
 			<choose>
 				<when test="category == '전체'">AND HPT_SEQ >= 0</when>
 				<when test="category == '훈련'">AND HPT_CATEGORY = '훈련'</when>
@@ -22,6 +24,7 @@
 				<when test="category == '생활'">AND HPT_CATEGORY = '생활'</when>
 			</choose>
 		</where>
+		<!-- 정렬 -->
 		<choose>
 			<when test="sort == '최신순'">ORDER BY HPT_RGEDATE DESC</when>
 			<when test="sort == '오래된순'">ORDER BY HPT_RGEDATE ASC</when>
@@ -95,4 +98,55 @@
 		INFO_LINE15 = #{info_line15}, 
 		INFO_LINE16 = #{info_line16}
 	</update>
+	<select id="adminPethotelReserveData" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
+		SELECT * FROM HELP_PETHOTEL_MEM 
+		<where>
+			<!-- 예약상태 필터 -->
+			<choose>
+				<when test="reserveType == '전체'">HPH_NUMOF_PET >= 0</when>
+				<when test="reserveType != '전체'">HPH_STATUS = #{reserveType}</when>
+			</choose>
+			<!-- 기간 필터 -->
+ 			<if test="(startDate != null and startDate != '') or (endDate != null and endDate != '')">
+	            <choose>
+	            	<when test="startDate != null and endDate == null">
+	            		AND HPH_START_DATE >= #{startDate}
+	            	</when>
+	            	<when test="startDate == null and endDate != null">
+	            		AND HPH_END_DATE >= #{endDate}
+	            	</when>
+	            	<when test="startDate != null and endDate != null">
+	            		AND HPH_START_DATE IS NOT NULL
+	            	</when>
+	            </choose>
+        	</if>
+			
+			<!-- 여기 더 채워야함 필터링 -->
+			
+		</where>
+	</select>
+	<select id="adminPethotelReservePets" resultType="com.tech.petfriends.helppetf.dto.PethotelFormDataDto">
+		SELECT * FROM HELP_PETHOTEL_PETS
+		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
+	</select>
+	
+	<select id="adminPethotelReserveMem" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
+		SELECT * FROM HELP_PETHOTEL_MEM
+		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

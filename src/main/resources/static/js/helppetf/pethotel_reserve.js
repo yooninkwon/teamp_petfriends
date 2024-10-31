@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			formDataObj[petHiddenVal].hphp_pet_gender = petGender;
 			formDataObj[petHiddenVal].hphp_pet_weight = petWeight;
 			formDataObj[petHiddenVal].hphp_pet_neut = petNeutered;
-			formDataObj[petHiddenVal].hphp_pet_comment = petMessage;
+			formDataObj[petHiddenVal].hphp_comment = petMessage;
 
 			petHiddenVal = Number(petHiddenVal) + 1;
 			document.getElementById('pet-form-no').value = petHiddenVal;
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			//	 <button class="delete-button">X</button> ` 를 삽입
 			newPet.innerHTML = `
             <span class="pet-name">${petName}</span>
-            <button class="delete-button">X</button>
+            <button class="delete-button" style="padding: 1px 1px 1px 1px;">X</button>
 			<input type="hidden" id="objIndexNo" value="${petHiddenVal}" />`;
 
 			petSection.insertBefore(newPet, addPetButton); // petSection(.pet-wrapper) 속의 addPetButton 앞에 newPet을 삽입
@@ -119,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	}
 	function showReserveDonePage(data) {
-		console.log('showReserveDonePage()');		
 		
 		document.getElementById('c-ontainer').style.display = 'none';
 		document.getElementById('reserve-done').style.display = 'block';
@@ -142,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			post += '<tr><th>번호</th><th>이름</th><th>종류</th><th>생일</th><th>성별</th><th>체중</th><th>중성화</th><th>전달사항</th></tr>';
 			post +=	'<tr><td>' + pet.hphp_reserve_pet_no + '</td><td>' + pet.hphp_pet_name + '</td><td>' + pet.hphp_pet_type;
 			post += '</td><td>' + pet.hphp_pet_birth + '</td><td>' + pet.hphp_pet_gender + '</td><td>' + pet.hphp_pet_weight;
-			post += '</td><td>' + pet.hphp_pet_neut + '</td><td>' + pet.hphp_pet_comment + '</td>';
+			post += '</td><td>' + pet.hphp_pet_neut + '</td><td>' + pet.hphp_comment + '</td>';
 			post +=	'</tr>';
 		});
 		

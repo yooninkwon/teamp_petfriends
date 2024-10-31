@@ -8,43 +8,8 @@
 	text-align: left;
 }
 
-.tab-section {
-	display: flex;
-	justify-content: flex-start;
-	background-color: #efefef;
-}
-a {
-	color: #000;
-	text-decoration: none;
-}
-a:hover {
-	text-decoration: underline;
-}
-a:visited {
-	color: #000;
-	text-decoration: none;
-}
-.tab-btn {
-	padding: 10px 20px;
-	background-color: #dddddd;
-	cursor: pointer;
-	border: 2px solid white;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	font-weight: bold;
-}
-
-.tab-btn.active {
-	background-color: #545454;
-	color: white;
-}
-
 .filter-section-1 {
 	display: flex;
-}
-
-.filter-section-2 {
-	display: block;
 }
 
 .filter-title {
@@ -70,10 +35,6 @@ label {
 	margin-left: 10px;
 }
 
-/* #category { */
-/* 	margin-left: 10px; */
-/* } */
-
 .radio-group {
 	display: flex;
 	width: 100%;
@@ -89,17 +50,6 @@ label {
 	align-items: center;
 }
 
-.array-section {
-	display: flex;
-	justify-content: flex-end;
-	padding: 5px 10px;
-	background-color: white;
-}
-
-#sort-order {
-	height: 30px;
-}
-
 #search-order {
 	height: 25px;
 	margin-left: 10px;
@@ -113,7 +63,7 @@ input[type="text"] {
 	margin: 0 5px;
 }
 
-.petteacher-list {
+.pethotel-reserve-list {
 	width: 100%;
 	border-collapse: collapse;
 }
@@ -122,115 +72,15 @@ input[type="text"] {
 	background-color: #dddddd;
 }
 
-.petteacher-list th, td {
+.pethotel-reserve-list th, td {
 	border: 1px solid #cdcdcd;
 	padding: 5px;
 	text-align: center;
 	font-size: 14px;
 }
 
-/* 모달창 */
-.modal {
-	position: fixed;
-	z-index: 9999;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.4); /* 반투명 검정 배경 */
-}
-
-.modal-content {
-	position: relative;
-	margin: 10% auto; /* 중앙 정렬 */
-	padding: 40px;
-	width: 600px;
-	background-color: #f4f4f4;
-	text-align: left;
-}
-
-.close-btn {
-	position: absolute;
-	right: 20px;
-	top: 15px;
-	cursor: pointer;
-}
-
-.input-group {
-	display: flex;
-	margin: 5px;
-	height: 30px;
-}
-
-.input-group label {
-	width: 120px;
-	font-weight: bold;
-}
-
-.input-group input {
-	width: 200px;
-	padding: 5px;
-	border: 1px solid #ccc;
-	font-size: 15px;
-}
-
-.input-group select {
-	width: 100px;
-	padding: 5px;
-	border: 1px solid #ccc;
-	font-size: 15px;
-	margin-right: 5px;
-}
-
-.cpType-group {
-	display: flex;
-	gap: 20px;
-	margin: 5px;
-}
-
-.cpType-group label {
-	font-size: 16px;
-	cursor: pointer;
-}
-
-.cpType-group input {
-	margin-right: 5px;
-}
-
-#sameAsEndDate {
-	width: 40px;
-	height: 20px;
-}
-
-#discountUnit {
-	font-size: 17px;
-	margin-left: 5px;
-}
-
-#registerPetteacherBtn {
-	width: 100%;
-	padding: 10px;
-	margin-top: 15px;
-	background-color: #555;
-	color: white;
-	font-size: 16px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: background-color 0.3s ease;
-}
-
-#registerPetteacherBtn:hover {
-	background-color: #333;
-}
-
 /* 페이지네이션 */
-.petteacher-list-container {
-	position: relative;
-	min-height: calc(100vh - 245px);
-}
-
-.member-petteacher-list-container {
+.pethotel-reserve-list-container {
 	position: relative;
 	min-height: calc(100vh - 280px);
 }
@@ -261,4 +111,17 @@ input[type="text"] {
 #pagination a.active {
 	background-color: #545454;
 	color: white;
+}
+#reserveDetailButtons {
+	padding-left: 5px;
+	padding-right: 0px;
+}
+
+#goBack {
+	margin-right: 72%;
+}
+
+#goBack, #reserveSubmit {
+	
+	padding: 10px;
 }

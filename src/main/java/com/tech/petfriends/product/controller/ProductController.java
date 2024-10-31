@@ -59,7 +59,8 @@ public class ProductController {
 		productService.execute(model);
 		
 		// model에서 "list" 속성 가져오기
-        List<ProductListViewDto> productList = (List<ProductListViewDto>) model.asMap().get("list");
+        @SuppressWarnings("unchecked")
+		List<ProductListViewDto> productList = (List<ProductListViewDto>) model.asMap().get("list");
 		
 		return ResponseEntity.ok(productList);
 	}
@@ -148,6 +149,7 @@ public class ProductController {
 		productService = new ProductDetailReviewListService(productDao);
 		productService.execute(model);
 		
+		@SuppressWarnings("unchecked")
 		List<ProductDetailReviewListDto> reviewList = (List<ProductDetailReviewListDto>) model.getAttribute("reviewList");
 		
 		return reviewList;
@@ -174,6 +176,7 @@ public class ProductController {
 		productService = new ProductSearchListService(productDao);
 		productService.execute(model);
 		
+		@SuppressWarnings("unchecked")
 		List<ProductListViewDto> searchList =  (List<ProductListViewDto>) model.getAttribute("searchList");
 		
 		return searchList;

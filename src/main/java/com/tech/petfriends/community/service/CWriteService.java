@@ -71,9 +71,7 @@ public class CWriteService implements CServiceInterface {
 	    String changeFile = null;
 	    
 	    List<MultipartFile> fileList = mtfRequest.getFiles("file");
-	    if (originalFile != null && !originalFile.isEmpty()) 
-	    
-	    {
+	    if (originalFile != null && !originalFile.isEmpty()) {
 	        for (MultipartFile mf : fileList) {
 	            originalFile = mf.getOriginalFilename();
 	            System.out.println("original: " + originalFile);

@@ -1,17 +1,11 @@
 package com.tech.petfriends.community.service;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.tech.petfriends.community.dto.CCategoryDto;
-import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.mapper.IDao;
 
 public class CUpdateLikeService implements CServiceInterface {

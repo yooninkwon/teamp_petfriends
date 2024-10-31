@@ -1,10 +1,8 @@
 package com.tech.petfriends.join.controller;
 
 import java.util.HashMap;
-
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,22 +16,23 @@ import net.nurigo.sdk.message.service.DefaultMessageService;
 @RestController
 public class SmsController {
 
-    private final DefaultMessageService messageService;
-    private final ApikeyConfig apikeyConfig;
+    private DefaultMessageService messageService;
+    private ApikeyConfig apikeyConfig;
 
     // 생성자 주입으로 ApikeyConfig 주입
-    @Autowired
     public SmsController(ApikeyConfig apikeyConfig) {
-        this.apikeyConfig = apikeyConfig;
-        String coolApi = apikeyConfig.getCoolApikey();
-        String coolSecret = apikeyConfig.getCoolSecretkey();
-        this.messageService = NurigoApp.INSTANCE.initialize(coolApi, coolSecret, "https://api.coolsms.co.kr");
+        this.apikeyConfig = apikeyConfig;     		
     }
 
     @PostMapping("/send-sms")
     public HashMap<String, String> sendSms(@RequestParam("phoneNumber") String phoneNumber) {
         System.out.println("인증번호");
-
+        
+        // API Key 
+        String coolApi = apikeyConfig.getCoolApikey();
+        String coolSecret = apikeyConfig.getCoolSecretkey();
+        this.messageService = NurigoApp.INSTANCE.initialize(coolApi, coolSecret, "https://api.coolsms.co.kr");  
+                
         // 인증번호 생성
         String authCode = generateAuthCode();
 

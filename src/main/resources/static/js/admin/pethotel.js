@@ -1,4 +1,17 @@
 /**
+ * 이 스크립트는 펫호텔의 소개글과 이용안내글을 
+ * 관리자페이지에서 열람하고 수정 할 수 있는 스크립트이다.
+ * 
+ * 각 탭의 내용을 페이지를 fetch를 이용하여
+ * redirect 없이 이동할 수 있고
+ * 수정 버튼을 눌러 수정이 가능하다.
+ * 
+ * 각 칼럼의 내용을 개별적으로 수정할 수 있으며
+ * 수정을 완료한 뒤 오브젝트 형식으로 서버에 전송하여
+ * 데이터베이스에 데이터를 전송한다.
+ * 
+ * 데이터베이스에 전송된 내용이 반영된 뒤,
+ * 펫호텔 view 페이지에서도 수정된 내용이 보여진다.
  * 
  */
 
@@ -39,7 +52,7 @@ $(document).ready(function() {
 		loadInfoData();
 	});
 
-	// Intro 탭 데이터 로드 함수
+	// Introduction 탭 데이터 로드 함수
 	function loadIntroData() {
 
 		fetchData();
@@ -57,7 +70,8 @@ $(document).ready(function() {
 				}
 			});
 		}
-
+		
+		// 로드된 데이터 화면에 배치
 		function displayItems(data) {
 			let post = '';
 
@@ -78,14 +92,15 @@ $(document).ready(function() {
 			$('#intro').html(post);
 			// intro edit 버튼 이벤트리스너
 			$('#intro_edit_button').on('click', function() {
-				introEditButton(data);
+				displayForIntroEdit(data);
 			});
 		}
 
 	}
-
+	
+	// Information 탭 클릭시 데이터 로드
 	function loadInfoData() {
-
+	
 		fetchData();
 
 		function fetchData() {
@@ -101,7 +116,8 @@ $(document).ready(function() {
 				}
 			});
 		}
-
+		
+		// 로드된 데이터 화면에 배치
 		function displayItems(data) {
 			let post = '';
 
@@ -133,44 +149,7 @@ $(document).ready(function() {
 		}
 
 	}
-	
-	// 수정버튼 클릭시 - Intro
-	function introEditButton(data) {
-		displayForIntroEdit(data);
-	}
-
-	function displayForIntroEdit(data) {
-
-		let post = '';
-		// input 태그로 변환
-		//intro
-		post += '<div id="intro_edit_button_div"><button id="intro_edit_submit_button">수정 완료</button></div>'
-		post += '<div class="top-section"><div class="text-content"><h1>펫호텔 서비스를 소개합니다!</h1><p>';
-		post += '<input type="text" id="intro_line1" value="' + data.intro_line1 + '" /><br /> ';
-		post += '<input type="text" id="intro_line2" value="' + data.intro_line2 + '" /> <br />';
-		post += '<input type="text" id="intro_line3" value="' + data.intro_line3 + '" /></p><p>반려 동물 호텔, <strong>펫호텔</strong> 서비스는 <br />';
-		post += '<input type="text" id="intro_line4" value="' + data.intro_line4 + '" /><br />';
-		post += '<input type="text" id="intro_line5" value="' + data.intro_line5 + '" /></p></div>';
-		//info
-		post += '<div class="middle-section"><h2>이용안내</h2><ul><li>'
-		post += '<input type="text" id="intro_line6" value="' + data.intro_line6 + '" /></li><li>'
-		post += '<input type="text" id="intro_line7" value="' + data.intro_line7 + '" /><br /><span class="small_text">'
-		post += '<input type="text" id="intro_line8" value="' + data.intro_line8 + '" /></span></li><li>'
-		post += '<input type="text" id="intro_line9" value="' + data.intro_line9 + '" /></li></div>'
-
-		$('#intro').html(post);
 		
-		// 수정완료 버튼 이벤트리스너
-		$('#intro_edit_submit_button').on('click', function() {
-			introEditSubmitButton(data);
-		});
-	}
-
-	// 수정버튼 클릭시 - Info
-	function infoEditButton(data) {
-		infoEditButton(data);
-	}
-	
 	function infoEditButton(data) {
 
 		let post = '';
@@ -202,7 +181,34 @@ $(document).ready(function() {
 		});
 	}
 	
+	function displayForIntroEdit(data) {
+
+			let post = '';
+			// input 태그로 변환
+			//intro
+			post += '<div id="intro_edit_button_div"><button id="intro_edit_submit_button">수정 완료</button></div>'
+			post += '<div class="top-section"><div class="text-content"><h1>펫호텔 서비스를 소개합니다!</h1><p>';
+			post += '<input type="text" id="intro_line1" value="' + data.intro_line1 + '" /><br /> ';
+			post += '<input type="text" id="intro_line2" value="' + data.intro_line2 + '" /> <br />';
+			post += '<input type="text" id="intro_line3" value="' + data.intro_line3 + '" /></p><p>반려 동물 호텔, <strong>펫호텔</strong> 서비스는 <br />';
+			post += '<input type="text" id="intro_line4" value="' + data.intro_line4 + '" /><br />';
+			post += '<input type="text" id="intro_line5" value="' + data.intro_line5 + '" /></p></div>';
+			post += '<div class="middle-section"><h2>이용안내</h2><ul><li>'
+			post += '<input type="text" id="intro_line6" value="' + data.intro_line6 + '" /></li><li>'
+			post += '<input type="text" id="intro_line7" value="' + data.intro_line7 + '" /><br /><span class="small_text">'
+			post += '<input type="text" id="intro_line8" value="' + data.intro_line8 + '" /></span></li><li>'
+			post += '<input type="text" id="intro_line9" value="' + data.intro_line9 + '" /></li></div>'
+
+			$('#intro').html(post);
+			
+			// 수정완료 버튼 이벤트리스너
+			$('#intro_edit_submit_button').on('click', function() {
+				introEditSubmitButton(data);
+			});
+		}
+	
 	// intro 수정 완료 버튼 클릭시
+	// object에 각 라인의 value값을 저장한다
 	function introEditSubmitButton() {
 		const pethotelIntroData = {
 			intro_line1: document.getElementById('intro_line1').value,
@@ -220,7 +226,7 @@ $(document).ready(function() {
 			url: `/admin/pethotel_admin_intro_dataForEdit`,
 			method: "PUT",
 			contentType: 'application/json',
-			data: JSON.stringify(pethotelIntroData),
+			data: JSON.stringify(pethotelIntroData), // object를 전송하여 DB 수정
 			success: function() {
 				alert('게시물이 성공적으로 수정되었습니다.');
 				loadIntroData();
@@ -233,6 +239,7 @@ $(document).ready(function() {
 	}
 	
 	// info 수정 완료 버튼 클릭시
+	// object에 각 라인의 value값을 저장한다
 	function infoEditSubmitButton() {
 		const pethotelIntroData = {
 			info_line1: document.getElementById('info_line1').value,
@@ -257,7 +264,7 @@ $(document).ready(function() {
 			url: `/admin/pethotel_admin_info_dataForEdit`,
 			method: "PUT",
 			contentType: 'application/json',
-			data: JSON.stringify(pethotelIntroData),
+			data: JSON.stringify(pethotelIntroData), // object를 전송하여 DB 수정
 			success: function() {
 				alert('게시물이 성공적으로 수정되었습니다.');
 				loadInfoData();

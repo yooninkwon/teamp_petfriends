@@ -1,9 +1,6 @@
 package com.tech.petfriends.community.mapper;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
