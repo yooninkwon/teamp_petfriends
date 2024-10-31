@@ -10,13 +10,25 @@
 	    SELECT * FROM NOTICE WHERE NOTICE_SHOW = 'Y' ORDER BY NOTICE_NO DESC
 	</select>
 	
+	<!-- 이벤트 전체 리스트 -->
+	<select id="EventAdminList" resultType="com.tech.petfriends.notice.dto.EventDto">
+	    SELECT * FROM EVENT ORDER BY EVENT_NO DESC
+	</select>
+	
 	<!-- 공지사항 전체 리스트 -->
 	<select id="NoticeAdminList" resultType="com.tech.petfriends.notice.dto.NoticeDto">
 	    SELECT * FROM NOTICE ORDER BY NOTICE_NO DESC
 	</select>
   
+  	<!-- 공지사항 작성 -->
   	<insert id="NoticeWrite">
-  		INSERT INTO NOTICE VALUES(NOTICE_SEQ.NEXTVAL,#{notice_title},#{notice_content},SYSDATE,0,'Y')
+  		INSERT INTO NOTICE VALUES(NOTICE_SEQ.NEXTVAL,#{notice_title},#{notice_content},SYSDATE,0,#{show})
+  	</insert>
+  	
+  	<!-- 이벤트 작성 -->
+  	<insert id="EventWrite">
+  		INSERT INTO EVENT VALUES(EVENT_SEQ.NEXTVAL, #{title},
+  		#{content}, 0, SYSDATE, #{startDate}, #{endDate}, #{thumbnailFileName}, #{slideImgFileName}, #{show})
   	</insert>
   
   </mapper>

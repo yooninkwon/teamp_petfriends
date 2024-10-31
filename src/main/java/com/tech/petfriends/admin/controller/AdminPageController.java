@@ -1,5 +1,7 @@
 package com.tech.petfriends.admin.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +27,13 @@ import com.tech.petfriends.admin.dto.ProductListDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
+import com.tech.petfriends.admin.service.AdminNoticeWriteService;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminProductAddService;
 import com.tech.petfriends.admin.service.AdminProductListService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
 import com.tech.petfriends.notice.dao.NoticeDao;
+import com.tech.petfriends.notice.dto.EventDto;
 import com.tech.petfriends.notice.dto.NoticeDto;
 
 @Controller
@@ -222,6 +226,8 @@ public class AdminPageController {
 	public String Notice(Model model) {
 		ArrayList<NoticeDto> noticeAdminList = noticeDao.NoticeAdminList();
         model.addAttribute("noticeAdminList", noticeAdminList);
+        ArrayList<EventDto> eventAdminList = noticeDao.EventAdminList();
+        model.addAttribute("eventAdminList", eventAdminList);
 		
 		return "admin/notice";
 	}
@@ -233,21 +239,18 @@ public class AdminPageController {
 	}
 	
 	@PostMapping("/notice_write_service")
-	public String Notice_write_service(HttpServletRequest request, Model model) {
-		String notice_title = request.getParameter("notice_title");
-		String notice_content = request.getParameter("notice_content");
-		String category = request.getParameter("category");
-		
-		if (category == "공지사항") {
-			category = "NOTICE";
-		} else {
-			category = "event";
-		}
-		
-		noticeDao.NoticeWrite(notice_title,notice_content);
-		System.out.println("글 작성 완료");
-		
-		return "admin/notice_write";
+	public String Notice_write_service(HttpServletRequest request, 
+	                                   @RequestParam("thumbnail") MultipartFile thumbnail,
+	                                   @RequestParam("slideImg") MultipartFile slideImg, 
+	                                   Model model) {
+	    model.addAttribute("request", request);
+	    model.addAttribute("thumbnail", thumbnail);
+	    model.addAttribute("slideImg", slideImg);
+
+	    AdminNoticeWriteService adminNoticeWriteService = new AdminNoticeWriteService(noticeDao);
+	    adminNoticeWriteService.execute(model);
+
+	    return "redirect:/admin/notice";
 	}
 
 	@GetMapping("/sales")
