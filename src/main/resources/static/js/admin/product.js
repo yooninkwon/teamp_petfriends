@@ -173,6 +173,9 @@ $(document).ready(function() {
 		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
 		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
 		removeFiles = []; //삭제된 파일 배열 초기화
+		btnArray1 = [];
+		btnArray2 = [];
+		btnArray3 = [];
 
 
 		// 옵션 필드 초기화
@@ -196,6 +199,9 @@ $(document).ready(function() {
 		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
 		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
 		removeFiles = []; //삭제된 파일 배열 초기화
+		btnArray1 = [];
+		btnArray2 = [];
+		btnArray3 = [];
 
 		// 미리보기 컨테이너 초기화
 		const mainImagePreview = document.getElementById('mainImagePreview');
@@ -210,6 +216,10 @@ $(document).ready(function() {
 	let mainSelectedFiles = [];  // 대표이미지 파일 배열
 	let desSelectedFiles = [];   // 상세이미지 파일 배열
 	let removeFiles = []; //삭제된 파일 배열
+	let btnArray1 = [];
+	let btnArray2 = [];
+	let btnArray3 = [];
+
 
 	// 미리보기 생성 함수
 	function handleFileSelect(event, maxFiles, selectedFiles, previewContainerId) {
@@ -228,7 +238,7 @@ $(document).ready(function() {
 
 			const reader = new FileReader();
 			reader.onload = function(e) {
-				addImagePreview(e.target.result, file, selectedFiles, previewContainer);
+				addImagePreview(e.target.result, file, selectedFiles, previewContainer, btnArray1);
 			};
 			reader.readAsDataURL(file);
 		});
@@ -237,8 +247,9 @@ $(document).ready(function() {
 		event.target.value = '';
 	}
 
+
 	// 이미지 미리보기 추가 함수
-	function addImagePreview(imgSrc, file, selectedFiles, previewContainer) {
+	function addImagePreview(imgSrc, file, selectedFiles, previewContainer, btnArray) {
 		const imgContainer = document.createElement('div');
 		imgContainer.style.position = 'relative';
 		imgContainer.style.display = 'inline-block';
@@ -267,22 +278,39 @@ $(document).ready(function() {
 		deleteButton.style.justifyContent = 'center';
 		deleteButton.style.cursor = 'pointer';
 		deleteButton.style.boxShadow = '0 0 3px rgba(0, 0, 0, 0.3)'; // 약간의 그림자 추가
+
+		btnArray.push(deleteButton);
+
 		deleteButton.onclick = () => {
-			imgContainer.remove();  // 이미지 컨테이너 제거
+			imgContainer.remove(); // 이미지 컨테이너 제거
 
-			// 파일의 이름으로 인덱스 찾기
-			const fileIndex = selectedFiles.findIndex(selectedFile => selectedFile.name === file.name);
+			// btnArray에서 deleteButton의 인덱스 찾기
+			const btnIndex = btnArray.indexOf(deleteButton);
+			
+			// selectedFiles에서 삭제할 파일 이름 가져오기
+			const removedFile = selectedFiles[btnIndex]; // 삭제할 파일 이름 가져오기
+			
 
-			// 중복 확인 후 추가
-			if (fileIndex !== -1) {
-				// selectedFiles[fileIndex]가 문자열인지 확인
-				if (typeof selectedFiles[fileIndex] === 'string' && !removeFiles.includes(selectedFiles[fileIndex])) {
-					removeFiles.push(selectedFiles[fileIndex]);  // 문자열을 삭제 배열에 추가
-					console.log(removeFiles);  // 배열의 내용을 콘솔에 출력
-				}
+			// 문자열인지 확인 후 removeFiles 배열에 추가
+			if (typeof removedFile === 'string') {
+				removeFiles.push(removedFile);
+			} else {
+				console.log("삭제할 파일이 문자열이 아닙니다.");
 			}
 
-			selectedFiles.splice(fileIndex, 1);
+			// selectedFiles 배열에서 삭제할 파일의 인덱스 찾기
+			const fileIndex = selectedFiles.indexOf(removedFile);
+
+			// fileIndex가 유효한지 확인
+			if (fileIndex !== -1) {
+				// 해당 파일 제거
+				selectedFiles.splice(fileIndex, 1);
+				
+			} else {
+				console.log("해당 파일이 배열에 없습니다.");
+			}
+			// btnArray에서 삭제된 버튼도 제거
+			btnArray.splice(btnIndex, 1);
 
 		};
 
@@ -558,7 +586,9 @@ $(document).ready(function() {
 		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
 		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
 		removeFiles = []; //삭제된 파일 배열 초기화
-
+		btnArray1 = [];
+		btnArray2 = [];
+		btnArray3 = [];
 		//이부분에ㅁㄴ엄누ㅗㅠ아ㅓㄴㅁ유ㅜ라ㅓㄴㅁ우ㅠ라ㅓㄴㅁ우ㅠㅏ러누ㅠㅇ마ㅓ루ㅠㄴㅁ아ㅓ류ㅜ
 
 
@@ -641,7 +671,8 @@ $(document).ready(function() {
 					if (img) {
 						const imgSrc = `/static/Images/ProductImg/MainImg/${img}`;
 						mainSelectedFiles.push(imgSrc); // 배열에 추가
-						addImagePreview(imgSrc, img, mainSelectedFiles, document.getElementById('mainImagePreview'));
+
+						addImagePreview(imgSrc, img, mainSelectedFiles, document.getElementById('mainImagePreview'), btnArray2);
 					}
 				});
 
@@ -663,7 +694,8 @@ $(document).ready(function() {
 					if (img) {
 						const imgSrc = `/static/Images/ProductImg/DesImg/${img}`;
 						desSelectedFiles.push(imgSrc); // 배열에 추가
-						addImagePreview(imgSrc, img, desSelectedFiles, document.getElementById('desImagePreview'));
+
+						addImagePreview(imgSrc, img, desSelectedFiles, document.getElementById('desImagePreview'), btnArray3);
 					}
 				});
 			},
