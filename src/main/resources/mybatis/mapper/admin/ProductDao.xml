@@ -100,4 +100,34 @@
 		WHERE
 			PRO_CODE = #{proCode}
 	</select>
+	
+	<update id="adminProductProModify">
+		UPDATE 
+			PRODUCT
+		SET
+			PRO_NAME = #{proName},
+			PRO_PETS = #{petType},
+			PRO_TYPE = #{proType},
+			PRO_CATEGORY = #{proDetailType},
+			PRO_FILTER1 = #{filterType1},
+			PRO_FILTER2 = #{filterType2},
+			PRO_DISCOUNT = #{proDiscount},
+			PRO_ONOFF = #{productStatus}
+		WHERE
+			PRO_CODE = #{proCode}
+	</update>
+	
+	<delete id="adminProductOptDelete">
+		DELETE FROM
+			PRODUCT_OPTION
+		WHERE
+			PRO_CODE = #{proCode}
+	</delete>
+	
+	<delete id="adminProductImgDelete">
+		DELETE FROM
+			PRODUCT_IMAGE
+		WHERE
+			PRO_CODE = #{proCode}
+	</delete>
 </mapper>

@@ -30,5 +30,12 @@ public interface AdminProductDao {
 
 	List<ProductDetailOptDto> adminDetailOpt(String proCode);
 
+	void adminProductProModify(String proCode, String proName, String petType, String proType, String proDetailType,
+			String filterType1, String filterType2, int proDiscount, String productStatus);
+
+	void adminProductOptDelete(String proCode);
+
+	void adminProductImgDelete(String proCode);
+
 	
 }

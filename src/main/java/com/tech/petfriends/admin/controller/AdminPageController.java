@@ -221,7 +221,9 @@ public class AdminPageController {
 				 	@RequestParam Map<String, Object> data,
 			        @RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
 			        @RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
-			        @RequestParam(value = "removeImages", required = false) MultipartFile[] removeImages,
+			        @RequestParam(value = "removeImages", required = false) String[] removeImages,
+			        @RequestParam(value = "mainImagesPath", required = false) List<String> mainImagesPath,
+			        @RequestParam(value = "desImagesPath", required = false) List<String> desImagesPath,
 			        @RequestParam(value = "options") String options,
 			        Model model) {
 			
@@ -231,6 +233,8 @@ public class AdminPageController {
 		    model.addAttribute("desImages", desImages);
 		    model.addAttribute("removeImages", removeImages);
 		    model.addAttribute("options", options);
+		    model.addAttribute("mainImagesPath", mainImagesPath);
+		    model.addAttribute("desImagesPath", desImagesPath);
 			
 			adminServInter = new AdminProductModifyService(adminProductDao);
 			adminServInter.execute(model);

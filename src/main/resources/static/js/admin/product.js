@@ -170,9 +170,9 @@ $(document).ready(function() {
 		document.getElementById('mainImagePreview').innerHTML = ''; // 대표 이미지 미리보기 초기화
 		document.getElementById('desImagePreview').innerHTML = '';  // 상세 이미지 미리보기 초기화
 
-		// 선택된 파일 배열 초기화
 		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
 		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
+		removeFiles = []; //삭제된 파일 배열 초기화
 
 
 		// 옵션 필드 초기화
@@ -193,8 +193,9 @@ $(document).ready(function() {
 	$('.close-btn').on('click', function() {
 		document.getElementById('productModal').style.display = 'none'; // 모달을 숨김
 		// 이미지 배열 초기화
-		mainSelectedFiles = []; // 대표 이미지 배열 초기화
-		desSelectedFiles = [];  // 상세 이미지 배열 초기화
+		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
+		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
+		removeFiles = []; //삭제된 파일 배열 초기화
 
 		// 미리보기 컨테이너 초기화
 		const mainImagePreview = document.getElementById('mainImagePreview');
@@ -267,14 +268,22 @@ $(document).ready(function() {
 		deleteButton.style.cursor = 'pointer';
 		deleteButton.style.boxShadow = '0 0 3px rgba(0, 0, 0, 0.3)'; // 약간의 그림자 추가
 		deleteButton.onclick = () => {
-			imgContainer.remove();
-			selectedFiles.splice(selectedFiles.indexOf(file), 1);  // 배열에서 파일 제거
+			imgContainer.remove();  // 이미지 컨테이너 제거
+
+			// 파일의 이름으로 인덱스 찾기
+			const fileIndex = selectedFiles.findIndex(selectedFile => selectedFile.name === file.name);
+
 			// 중복 확인 후 추가
-			// 기존 이미지 경로만 삭제 배열에 추가
-			if (typeof file === 'string' && !removeFiles.includes(file)) {
-				removeFiles.push(file);  // 경로를 삭제 배열에 추가	
-				console.log(removeFiles);  // 배열의 내용을 콘솔에 출력
+			if (fileIndex !== -1) {
+				// selectedFiles[fileIndex]가 문자열인지 확인
+				if (typeof selectedFiles[fileIndex] === 'string' && !removeFiles.includes(selectedFiles[fileIndex])) {
+					removeFiles.push(selectedFiles[fileIndex]);  // 문자열을 삭제 배열에 추가
+					console.log(removeFiles);  // 배열의 내용을 콘솔에 출력
+				}
 			}
+
+			selectedFiles.splice(fileIndex, 1);
+
 		};
 
 		imgContainer.appendChild(img);
@@ -408,16 +417,41 @@ $(document).ready(function() {
 		// FormData 객체 생성
 		const formData = new FormData();
 
+
+		// 경로와 파일 객체를 저장할 새로운 배열
+		const mainImagePaths = [];
+		const desImagePaths = [];
+
 		// 최종 선택된 대표 이미지 파일을 FormData에 추가
-		mainSelectedFiles.forEach(file => {
-			formData.append('mainImages', file); // 키값 'mainImages'로 추가
+		mainSelectedFiles.forEach(item => {
+			if (typeof item === 'string') {
+				// item이 문자열인 경우, 즉 이미지 경로인 경우
+				mainImagePaths.push(item); // 경로 추가
+			} else {
+				// item이 파일 객체인 경우
+				formData.append('mainImages', item); // 파일 추가
+			}
 		});
 
 		// 최종 선택된 상세 이미지 파일을 FormData에 추가
-		desSelectedFiles.forEach(file => {
-			formData.append('desImages', file); // 키값 'desImages'로 추가
+		desSelectedFiles.forEach(item => {
+			if (typeof item === 'string') {
+				// item이 문자열인 경우, 즉 이미지 경로인 경우
+				desImagePaths.push(item); // 경로 추가
+			} else {
+				// item이 파일 객체인 경우
+				formData.append('desImages', item); // 파일 추가
+			}
 		});
 
+		// 이미지 경로를 FormData에 추가
+		mainImagePaths.forEach(path => {
+			formData.append('mainImagesPath', path); // 경로 추가
+		});
+
+		desImagePaths.forEach(path => {
+			formData.append('desImagesPath', path); // 경로 추가
+		});
 
 
 		// 각 입력 필드의 값을 가져오기
@@ -481,6 +515,9 @@ $(document).ready(function() {
 				formData.append('removeImages', file); // 키값 'mainImages'로 추가
 			});
 
+			const savedProCode = $('#productModal').data('proCode'); // 저장된 proCode 값 가져오기
+			formData.append('proCode', savedProCode); // FormData에 추가
+
 			// AJAX 요청 상품등록하기
 			$.ajax({
 				url: '/admin/product/modify', // 등록할 URL
@@ -520,6 +557,7 @@ $(document).ready(function() {
 		// 선택된 파일 배열 초기화
 		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
 		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
+		removeFiles = []; //삭제된 파일 배열 초기화
 
 		//이부분에ㅁㄴ엄누ㅗㅠ아ㅓㄴㅁ유ㅜ라ㅓㄴㅁ우ㅠ라ㅓㄴㅁ우ㅠㅏ러누ㅠㅇ마ㅓ루ㅠㄴㅁ아ㅓ류ㅜ
 
@@ -592,11 +630,11 @@ $(document).ready(function() {
 
 				// 기존 메인 이미지 미리보기
 				const mainImages = [
-					data.img.main_img1,
-					data.img.main_img2,
-					data.img.main_img3,
-					data.img.main_img4,
-					data.img.main_img5
+					data.img ? data.img.main_img1 : null,
+					data.img ? data.img.main_img2 : null,
+					data.img ? data.img.main_img3 : null,
+					data.img ? data.img.main_img4 : null,
+					data.img ? data.img.main_img5 : null
 				];
 
 				mainImages.forEach((img, index) => {
@@ -609,16 +647,16 @@ $(document).ready(function() {
 
 				// 기존 상세 이미지 미리보기
 				const desImages = [
-					data.img.des_img1,
-					data.img.des_img2,
-					data.img.des_img3,
-					data.img.des_img4,
-					data.img.des_img5,
-					data.img.des_img6,
-					data.img.des_img7,
-					data.img.des_img8,
-					data.img.des_img9,
-					data.img.des_img10
+					data.img ? data.img.des_img1 : null,
+					data.img ? data.img.des_img2 : null,
+					data.img ? data.img.des_img3 : null,
+					data.img ? data.img.des_img4 : null,
+					data.img ? data.img.des_img5 : null,
+					data.img ? data.img.des_img6 : null,
+					data.img ? data.img.des_img7 : null,
+					data.img ? data.img.des_img8 : null,
+					data.img ? data.img.des_img9 : null,
+					data.img ? data.img.des_img10 : null
 				];
 
 				desImages.forEach(img => {
