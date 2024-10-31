@@ -52,10 +52,17 @@ $(document).ready(function() {
 	$('#searchBtn').click(function() {
 		loadProductList();
 	});
+	
+	// 드롭다운이 변경될 때 loadProductList 호출
+	$('#pro_onoff').change(function() {
+		// 검색 필드 초기화
+				$('#search-filter').val('');
+	    loadProductList();
+	});
 
 
 
-	// 쿠폰 등록 탭 데이터 로드 함수
+	// 상품 탭 데이터 로드 함수
 	function loadProductList() {
 		const itemsPerPage = 10; // 페이지 당 item 수
 		let currentPage = 1;
@@ -68,7 +75,7 @@ $(document).ready(function() {
 		let proType = $('input[name="pro-filter"]:checked').val();
 		let detailType = $('input[name="type-DF"]:checked, input[name="type-DS"]:checked, input[name="type-DG"]:checked, input[name="type-CF"]:checked, input[name="type-CS"]:checked, input[name="type-CG"]:checked').val() || null;
 		let searchType = $('#search-filter').val() || null;
-
+		let proOnOff = $('#pro_onoff').val();
 
 
 		fetchData(currentPage, currPageGroup);
@@ -82,7 +89,8 @@ $(document).ready(function() {
 					petType,
 					proType,
 					detailType,
-					searchType
+					searchType,
+					proOnOff
 				}),
 				success: function(products) {
 					productsList = products;

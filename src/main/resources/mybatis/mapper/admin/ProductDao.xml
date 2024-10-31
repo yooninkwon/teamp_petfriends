@@ -13,7 +13,7 @@
 		FROM
 			PRODUCT
 		WHERE
-			PRO_ONOFF IN ('판매', '품절', '정지')
+			PRO_ONOFF = #{proOnOff}
 		<if	test="petType != '전체'">
 		AND
 			PRO_PETS = #{petType}

@@ -14,7 +14,7 @@ import com.tech.petfriends.admin.dto.ProductListDto;
 public interface AdminProductDao {
 	
 	//어드민 상품리스트 불러오기
-	ArrayList<ProductListDto> adminProductList(String petType, String proType, String detailType, String searchType);
+	ArrayList<ProductListDto> adminProductList(String petType, String proType, String detailType, String searchType, String proOnOff);
 
 	//어드민 상품등록
 	void adminProductAdd(String proCode, String proName, String petType, String proType, String proDetailType,
