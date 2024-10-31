@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	savePetButton.addEventListener('click', () => {
 		let petHiddenVal = document.getElementById('pet-form-no').value; // form의 히든값을 저장
 		const petName = document.getElementById('pet-name').value; // form의 동물이름을 저장
-		const petType = document.getElementById('pet-type').value; // form의 동물타입을 저장
+		const petType = document.querySelector('[name="pet-type"]').value; // form의 동물타입을 저장
 		const petBirth = document.getElementById('pet-birth-date').value; // form의 동물생일을 저장
-		const petGender = document.getElementById('pet-gender').value; // form의 동물생일을 저장
+		const petGender = document.querySelector('[name="pet-gender"]').value; // form의 동물성별을 저장
 		const petWeight = document.getElementById('pet-weight').value; // form의 동물무게를 저장
-		const petNeutered = document.getElementById('pet-neutered').value; // form의 동물중성화 여부를 저장
+		const petNeutered = document.querySelector('[name="pet-neutered"]').value; // form의 동물중성화 여부를 저장
 		const petMessage = document.getElementById('pet-message').value; // form의 전달사항을 저장
 
 		if (petName) {
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			formDataObj[petHiddenVal].hphp_pet_gender = petGender;
 			formDataObj[petHiddenVal].hphp_pet_weight = petWeight;
 			formDataObj[petHiddenVal].hphp_pet_neut = petNeutered;
-			formDataObj[petHiddenVal].hphp_pet_comment = petMessage;
+			formDataObj[petHiddenVal].hphp_comment = petMessage;
 
 			petHiddenVal = Number(petHiddenVal) + 1;
 			document.getElementById('pet-form-no').value = petHiddenVal;
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			//	 <button class="delete-button">X</button> ` 를 삽입
 			newPet.innerHTML = `
             <span class="pet-name">${petName}</span>
-            <button class="delete-button">X</button>
+            <button class="delete-button" style="padding: 1px 1px 1px 1px;">X</button>
 			<input type="hidden" id="objIndexNo" value="${petHiddenVal}" />`;
 
 			petSection.insertBefore(newPet, addPetButton); // petSection(.pet-wrapper) 속의 addPetButton 앞에 newPet을 삽입
@@ -119,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	}
 	function showReserveDonePage(data) {
-		console.log('showReserveDonePage()');		
 		
 		document.getElementById('c-ontainer').style.display = 'none';
 		document.getElementById('reserve-done').style.display = 'block';
@@ -142,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			post += '<tr><th>번호</th><th>이름</th><th>종류</th><th>생일</th><th>성별</th><th>체중</th><th>중성화</th><th>전달사항</th></tr>';
 			post +=	'<tr><td>' + pet.hphp_reserve_pet_no + '</td><td>' + pet.hphp_pet_name + '</td><td>' + pet.hphp_pet_type;
 			post += '</td><td>' + pet.hphp_pet_birth + '</td><td>' + pet.hphp_pet_gender + '</td><td>' + pet.hphp_pet_weight;
-			post += '</td><td>' + pet.hphp_pet_neut + '</td><td>' + pet.hphp_pet_comment + '</td>';
+			post += '</td><td>' + pet.hphp_pet_neut + '</td><td>' + pet.hphp_comment + '</td>';
 			post +=	'</tr>';
 		});
 		

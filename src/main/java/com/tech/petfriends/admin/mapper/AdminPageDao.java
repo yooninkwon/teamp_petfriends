@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
+import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 
 @Mapper
@@ -37,4 +39,11 @@ public interface AdminPageDao {
 			String info_line5, String info_line6, String info_line7, String info_line8, String info_line9,
 			String info_line10, String info_line11, String info_line12, String info_line13, String info_line14,
 			String info_line15, String info_line16);
+
+	ArrayList<PethotelMemDataDto> adminPethotelReserveData(String reserveType, String searchOrder, String startDate, String endDate,
+			String memberCode, String reserveCode);
+	
+	ArrayList<PethotelFormDataDto> adminPethotelReservePets(String hph_reserve_no);
+	
+	PethotelMemDataDto adminPethotelReserveMem(String hph_reserve_no);
 }

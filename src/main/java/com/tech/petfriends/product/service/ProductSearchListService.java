@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 
 import com.tech.petfriends.product.dao.ProductDao;
 import com.tech.petfriends.product.dto.ProductListViewDto;
-import com.tech.petfriends.product.dto.ProductSearchReviewRank10Dto;
 
 public class ProductSearchListService implements ProductService {
 

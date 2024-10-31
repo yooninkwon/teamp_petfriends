@@ -1,8 +1,6 @@
 package com.tech.petfriends.helppetf.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.helppetf.dto.AdoptionSelectedAnimalDto;
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
-import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.AdoptionGetJson;
@@ -27,7 +23,6 @@ import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
 import com.tech.petfriends.helppetf.service.PethotelReserveService;
 import com.tech.petfriends.helppetf.service.PetteacherService;
 import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
-import com.tech.petfriends.login.dto.MemberLoginDto;
 
 import reactor.core.publisher.Mono;
 
@@ -52,25 +47,10 @@ public class HelpPetfRestController {
 	@PostMapping("/pothotel/pethotel_reserve_data")
 	public String pethotelReserveData(@RequestBody ArrayList<PethotelFormDataDto> formList, HttpServletRequest request,
 			Model model, HttpSession session) throws Exception {
-		model.addAttribute("formList", formList);
-		model.addAttribute("request", request);
-		model.addAttribute("session", session);
+		
+		PethotelReserveService helpService = new PethotelReserveService(helpDao);
 
-		PethotelReserveService helpServiceInterface = new PethotelReserveService(helpDao);
-		helpServiceInterface.execute(model);
-		
-		@SuppressWarnings("unchecked")
-		ArrayList<PethotelFormDataDto> nrFormList = (ArrayList<PethotelFormDataDto>) model.getAttribute("nullRemovedFormList");
-		PethotelMemDataDto mem_Dto = (PethotelMemDataDto) model.getAttribute("mem_Dto");
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("nrFormList", nrFormList);
-		map.put("mem_Dto", mem_Dto);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-        String jsonData = objectMapper.writeValueAsString(map);
-		
-		return jsonData;
+		return helpService.execute(model, session, request, formList);
 	}
 
 	@GetMapping("/adoption/getJson")

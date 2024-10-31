@@ -235,7 +235,6 @@ $(document).ready(function() {
 		} else if (actionType === '수정') {
 			// 수정 처리
 			const hpt_seq = $('#petteacherModal').data('hpt_seq');
-			console.log(hpt_seq);
 			$.ajax({
 				url: `/admin/petteacher_admin_data_forEdit?hpt_seq=` + hpt_seq,
 				method: 'PUT',

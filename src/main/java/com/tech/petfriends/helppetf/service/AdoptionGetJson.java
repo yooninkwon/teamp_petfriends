@@ -64,17 +64,22 @@ public class AdoptionGetJson {
 		String addParameters = apikey + upr_cd + org_cd + upKind + kind + extraParam;
 
 		/**
-		 * 비동기적으로 JSON 데이터를 API로부터 받아옴 Mono 객체를 리턴 리액티브 프로그래밍에서 비동기적으로 반환되는 하나의 데이터 스트림을
-		 * 의미함
+		 * 비동기적으로 JSON 데이터를 API로부터 받아옴 Mono 객체를 리턴 리액티브 프로그래밍에서 
+		 * 비동기적으로 반환되는 하나의 데이터 스트림을 의미함
 		 * 
-		 * 설명: .get() : http get 요청 보냄 .retrieve() : 서버로부터 응답 받아옴 .onStatus() : 4xx, 5xx
+		 * 작동 : .get() : http get 요청 보냄 .retrieve() : 서버로부터 응답 받아옴 .onStatus() : 4xx, 5xx
 		 * 오류일 시 예외 발생 .bodyToMono(String.class) : 응답 본문을 String으로 받음
 		 * 
 		 * * 파싱 -> .map(json -> ... )} : parsingJsonObject() 메서드 호출하여 json을
-		 * HelpPetfAdoptionItemsVo타입으로 변환 변환 성공 - ResponseEntity 객체를 생성하여 성공
-		 * 상태(HttpStatus.OK)와 함께 반환 예외 발생시 - 빈 리스트를 가진 HelpPetfAdoptionItemsVo를 생성하고, 내부
-		 * 서버 오류 상태로 반환
 		 * 
+		 * @return
+		 * HelpPetfAdoptionItemsVo타입으로 변환 변환 성공 - ResponseEntity 객체를 생성하여 성공
+		 * 상태(HttpStatus.OK)와 함께 반환
+		 * 
+		 * @return
+		 * 예외 발생시 - 빈 리스트를 가진 HelpPetfAdoptionItemsVo를 생성하고, 내부 서버 오류 상태로 반환
+		 * 
+		 * @return
 		 * .onErrorReturn(...) : 요청 중 에러가 발생할 경우, INTERNAL_SERVER_ERROR 상태와 함께 에러 메시지를
 		 * 반환
 		 */

@@ -1,6 +1,5 @@
 package com.tech.petfriends.community.service;
 
-import java.sql.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
