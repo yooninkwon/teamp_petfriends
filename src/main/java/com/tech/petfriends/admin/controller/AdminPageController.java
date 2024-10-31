@@ -167,6 +167,7 @@ public class AdminPageController {
 		adminServInter = new AdminProductListService(adminProductDao);
 		adminServInter.execute(model);
 		
+		@SuppressWarnings("unchecked")
 		List<ProductListDto> productList = (List<ProductListDto>) model.getAttribute("productList");
 		
 		return productList;

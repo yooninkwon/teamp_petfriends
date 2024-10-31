@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	savePetButton.addEventListener('click', () => {
 		let petHiddenVal = document.getElementById('pet-form-no').value; // form의 히든값을 저장
 		const petName = document.getElementById('pet-name').value; // form의 동물이름을 저장
-		const petType = document.getElementById('pet-type').value; // form의 동물타입을 저장
+		const petType = document.querySelector('[name="pet-type"]').value; // form의 동물타입을 저장
 		const petBirth = document.getElementById('pet-birth-date').value; // form의 동물생일을 저장
-		const petGender = document.getElementById('pet-gender').value; // form의 동물생일을 저장
+		const petGender = document.querySelector('[name="pet-gender"]').value; // form의 동물성별을 저장
 		const petWeight = document.getElementById('pet-weight').value; // form의 동물무게를 저장
-		const petNeutered = document.getElementById('pet-neutered').value; // form의 동물중성화 여부를 저장
+		const petNeutered = document.querySelector('[name="pet-neutered"]').value; // form의 동물중성화 여부를 저장
 		const petMessage = document.getElementById('pet-message').value; // form의 전달사항을 저장
 
 		if (petName) {

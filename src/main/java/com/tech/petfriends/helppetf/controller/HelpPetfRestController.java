@@ -27,7 +27,6 @@ import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
 import com.tech.petfriends.helppetf.service.PethotelReserveService;
 import com.tech.petfriends.helppetf.service.PetteacherService;
 import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
-import com.tech.petfriends.login.dto.MemberLoginDto;
 
 import reactor.core.publisher.Mono;
 
