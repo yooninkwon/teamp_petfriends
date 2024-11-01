@@ -72,14 +72,16 @@
 		MEM_NICK, 
 		HPH_NUMOF_PET, 
 		HPH_START_DATE, 
-		HPH_END_DATE)
+		HPH_END_DATE,
+		HPH_REG_DATE)
 		VALUES
 		(#{hph_reserve_no}, 
 		#{mem_code}, 
 		#{mem_nick}, 
 		#{hph_numof_pet}, 
 		TO_DATE(#{hph_start_date}, 'yyyy-MM-dd'), 
-		TO_DATE(#{hph_end_date}, 'yyyy-MM-dd'))
+		TO_DATE(#{hph_end_date}, 'yyyy-MM-dd'),
+		SYSDATE)
 	</insert>
 	<delete id="pethotelReserveErrorPet">
 		DELETE FROM HELP_PETHOTEL_PETS 

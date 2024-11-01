@@ -14,6 +14,7 @@ public class PethotelMemDataDto {
 	private String hph_approval_date;
 	private String hph_status;
 	private String hph_refusal_reason;
+	private String hph_rge_date;
 
 	public void setHph_reserve_no(String hph_reserve_no) {
 		this.hph_reserve_no = hph_reserve_no;
@@ -41,8 +42,14 @@ public class PethotelMemDataDto {
 		this.hph_end_date = substr_end_date;
 	}
 
+	public void setHph_rge_date(String hph_rge_date) {
+		String substr_rge_date = hph_rge_date.substring(0, 10);
+		this.hph_rge_date = substr_rge_date;
+	}
+
 	public void setHph_approval_date(String hph_approval_date) {
-		this.hph_approval_date = hph_approval_date;
+		String substr_approval_date = hph_approval_date.substring(0, 10);
+		this.hph_approval_date = substr_approval_date;
 	}
 
 	public void setHph_status(String hph_status) {
@@ -52,4 +59,5 @@ public class PethotelMemDataDto {
 	public void setHph_refusal_reason(String hph_refusal_reason) {
 		this.hph_refusal_reason = hph_refusal_reason;
 	}
+	
 }

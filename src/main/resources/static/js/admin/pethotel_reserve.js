@@ -10,8 +10,10 @@ $(document).ready(function() {
 	loadPethotelReserveData();
 
 	function loadPethotelReserveData() {
-
-		const itemsPerPage = 15; // 페이지 당 item 수
+		let hph_refusal_reason = '-';
+		let currStatus = '';
+		let currReserveNo = '';
+		const itemsPerPage = 10; // 페이지 당 item 수
 		let currentPage = 1;
 		let totalItems = 0;
 		let reserveList = []; // 데이터 저장할 배열
@@ -77,7 +79,7 @@ $(document).ready(function() {
 				lists += '<td><button class="btn-style detail-btn" id="button' + memSelectDto.hph_reserve_no + '">';
 				lists += '상세정보 조회 </button></td></tr>';
 			});
-				$('#pethotel-reserve-table-body').html(lists);
+			$('#pethotel-reserve-table-body').html(lists);
 			// 상세조회 버튼 클릭 시, 각 버튼의 ID에서 예약번호 추출함
 			$(document).on('click', '.detail-btn', function() {
 				const hph_reserve_no = $(this).attr('id').split('button')[1];  // 버튼 ID에서 예약 번호 추출
@@ -121,7 +123,8 @@ $(document).ready(function() {
 
 				let memPost = '';
 				let lists = '';
-
+				currStatus = data.reserveMem.hph_status;
+				currReserveNo = data.reserveMem.hph_reserve_no;
 				// 멤버
 				let approval_date = '';
 				if (data.reserveMem.hph_approval_date === null) {
@@ -156,7 +159,7 @@ $(document).ready(function() {
 					lists += '</tr>';
 
 				}
-
+				$('input[name="reserve_status_set"][value="' + currStatus + '"]').prop("checked", true);
 				$('#reserveDetailMem').html(memPost);
 				$('#reserveDetailList').html(lists);
 			}
@@ -199,16 +202,72 @@ $(document).ready(function() {
 				setupPagination(currentPage, currPageGroup);
 			});
 		}
+
+		// 상세페이지의 예약 상태 변경 라디오버튼 중 거절 버튼 클릭시
+		$('input[name="reserve_status_set"][value="거절"]').on('change', function() {
+			openModal();
+		});
+
+		// 거절 사유 작성하는 창 열기
+		function openModal() {
+			document.getElementById('reasonModal').style.display = 'block';
+
+		}
 		
+		// 예약 거절 창의 예약상태변경 버튼 클릭 시
+		$(document).on('click', '#reserveSubmit_refusal', function() {
+			////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////여기하던중임/////////////////////////////////////////////////////////
+			///////////////////거절버튼클릭시///////////////////////////////////////////////////////
+			///////////////////나오는 창에서 있는///////////////////////////////////////////////////
+			///////////////////저장?버튼을 클릭했을 때//////////////////////////////////////////////
+			///////////////////거절하는 함수 만들기/////////////////////////////////////////////////
+			///////////////거절창 버튼 ID: reserveSubmit_refusal////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////////			
+		});
+
 		// 예약 상세페이지의 예약상태변경 버튼 클릭 시
 		$(document).on('click', '#reserveSubmit', function() {
 			let statusVal = $(`input[name="reserve_status_set"]:checked`).val()
-			if(statusVal != null) {
-				console.log(statusVal)
+			let statusObj = {
+				'hph_reserve_no': currReserveNo,
+				'hph_status': statusVal,
+				'hph_refusal_reason': hph_refusal_reason
+				
+				// 거절메세지 담아 보내기
+			}
+			if (statusVal === currStatus) {
+				alert('변동사항이 없습니다.')
+			} else {
+				fetchDataForStatus(statusObj)
 			}
 		});
 
-		// 상세조회 버튼 클릭 시, 각 버튼의 ID에서 예약번호 추출함
+		function fetchDataForStatus(statusObj) {
+
+			fetch('/admin/pethotel_reserve_update', {
+				method: 'POST',
+				headers: {
+					"Content-Type": 'application/json'
+				},
+				body: JSON.stringify(statusObj)
+			})
+				.then(response => {
+					if (response.ok) {
+						console.log('Data successfully sent to server');
+						alert('예약 상태 변경이 완료되었습니다.');
+						location.replace(location.href);
+
+					} else {
+						console.error('Failed to send data');
+					}
+				})
+				.catch(error => {
+					console.error('Error: ', error)
+				});
+		}
+
+		// 목록으로 버튼: 새로고침
 		$(document).on('click', '#goBack', function() {
 			location.replace(location.href);
 		});
@@ -222,13 +281,13 @@ $(document).ready(function() {
 				memberCode: '',
 				reserveCode: ''
 			};
-			
+
 			$(`input[name="reserve-type-filter"][value="전체"]`).prop('checked', true);
 			$('#start-date').val('');
 			$('#end-date').val('');
 			$('#search-mem-code').val('');
 			$('#search-reserve-code').val('');
-			
+
 			fetchData(currentPage, currPageGroup, filterParam);
 		});
 

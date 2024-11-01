@@ -131,6 +131,7 @@
         	<!-- 예약 코드 -->
 			<if test="reserveCode != '' and memberCode != null"> AND HPH_RESERVE_NO = #{reserveCode} </if>
 		</where>
+		ORDER BY HPH_RGE_DATE DESC
 	</select>
 	<select id="adminPethotelReservePets" resultType="com.tech.petfriends.helppetf.dto.PethotelFormDataDto">
 		SELECT * FROM HELP_PETHOTEL_PETS
@@ -142,18 +143,21 @@
 		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
 	</select>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	<update id="adminPethotelReserveUpdate">
+		UPDATE HELP_PETHOTEL_MEM 
+		SET 
+		HPH_STATUS = #{hph_status} 
+		<if test="hph_status == '신청중'">
+			, HPH_APPROVAL_DATE = null 
+		</if>
+		<if test="hph_status == '승인'">
+			, HPH_APPROVAL_DATE = SYSDATE 
+		</if>
+		<if test="hph_status == '거절'">
+			, HPH_REFUSAL_REASON = #{hph_refusal_reason}
+		</if>
+		WHERE 
+		HPH_RESERVE_NO = #{hph_reserve_no} 
+	</update>
 	
 </mapper>
