@@ -129,7 +129,7 @@ $(document).ready(function() {
 
 				// 멤버
 				let approval_date = '';
-				if (data.reserveMem.hph_approval_date == null) {
+				if (data.reserveMem.hph_approval_date === null) {
 					approval_date = '-';
 				} else {
 					approval_date = data.reserveMem.hph_approval_date;
@@ -166,20 +166,7 @@ $(document).ready(function() {
 				$('#reserveDetailList').html(lists);
 			}
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		
 		// 페이징
 		function setupPagination(currentPage, currPageGroup) {
 			const maxPagesToShow = 10;
@@ -217,5 +204,9 @@ $(document).ready(function() {
 				setupPagination(currentPage, currPageGroup);
 			});
 		}
+		// 상세조회 버튼 클릭 시, 각 버튼의 ID에서 예약번호 추출함
+		$(document).on('click', '#goBack', function() {
+			console.log('111');
+		});
 	}
 });
