@@ -18,6 +18,8 @@ public interface IDao {
 	
 	public void imgWrite(int board_no, String originalFile, String changeFile,String repImgOriginal, String repImgChange);
 
+	public CDto getPetIMG(String mem_code);
+	
 	public int selBid();
 
 	public CDto contentView(String board_no); 
@@ -32,10 +34,10 @@ public interface IDao {
 
 	public void delete(int board_no);
 
-	public void comment(String board_no, String comment_no, String user_id, String comment_content,
+	public void comment(String board_no, String comment_no, String mem_nick, String comment_content,
 			String parent_comment_no, String comment_level, String comment_order_no);
 
-	public void commentReply(String board_no,String user_id, String comment_content,
+	public void commentReply(String board_no,String mem_nick, String comment_content,
 			String parent_comment_no, String comment_level, String comment_order_no);
 	
 	public void commentShape(String parent_comment_no, String comment_level);
@@ -48,7 +50,6 @@ public interface IDao {
 
 	public int replyDelete(String comment_no, String parent_comment_no, String comment_level, String comment_order_no);
 	
-
 	public void addLike (String board_no,String user_id);
 	
 	public void removeLike (String board_no,String user_id);

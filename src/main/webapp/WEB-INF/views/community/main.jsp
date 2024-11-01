@@ -53,7 +53,7 @@
 				<ul>
 					<li><a href="/community/contentView">
 							<div class="image-container">
-								<img src="/static/Images/community_img/hot_issue1.jpg"
+								<img src="/static/Images/communityorign_img/hot_issue1.jpg"
 									alt="핫토픽 1 이미지" />
 								<div class="overlay">
 									<p>언박싱이 언제나 최고야! 짜릿해</p>
@@ -62,7 +62,7 @@
 					</a></li>
 					<li><a href="#">
 							<div class="image-container">
-								<img src="/static/Images/community_img/hot_issue2.jpg"
+								<img src="/static/Images/communityorign/hot_issue2.jpg"
 									alt="핫토픽 2 이미지" />
 								<div class="overlay">
 									<p>설레는 기념품 언박싱 하기!</p>
@@ -71,7 +71,7 @@
 					</a></li>
 					<li><a href="#">
 							<div class="image-container">
-								<img src="/static/Images/community_img/hot_issue3.jpg"
+								<img src="/static/Images/communityorign/hot_issue3.jpg"
 									alt="핫토픽 3 이미지" />
 								<div class="overlay">
 									<p>아빠랑 딸이랑 자전거 언박싱~</p>
@@ -86,26 +86,25 @@
 
 			<div class="sidebar">
 				<div class="ad-banner">
-					<a href=""> <img src="/static/Images/community_img/ad1.jpg"
-						alt="광고 배너" />
+					<a href=""> <img
+						src="/static/Images/communityorign_img/ad1.jpg" alt="광고 배너" />
 					</a>
 				</div>
 
 				<div class="post-header">
 					<div class="profile-info">
-						<img src="<c:url value='/static/Images/pet/${pets.pet_img }' />"
-							alt="Profile Image" class="profile-image"> <span
-							class="user-name">${sessionScope.loginUser.mem_nick}</span>
-						<c:if test="${sessionScope.loginUser eq null }">
-							<a href="#" class="login-button">로그인</a>
+						
+						<c:if test="${sessionScope.loginUser ne null}">
+							<img src="/static/Images/pet/${getpetimg.pet_img}"
+								alt="Profile Image" class="profile-image">
+							<span class="user-name">${sessionScope.loginUser.mem_nick}</span>
+							<a href="/mypage/logout" class="logout-button">로그아웃</a>
 						</c:if>
-						<c:if test="${sessionScope.loginUser ne null }">
-							<a href="#" class="login-button">로그아웃</a>
+					
+						<c:if test="${sessionScope.loginUser eq null}">
+							<a href="/login/loginPage" class="login-button">로그인</a>
 						</c:if>
-							
-							
-
-
+					
 					</div>
 				</div>
 
@@ -114,7 +113,15 @@
 
 				<ul class="sidebar-menu">
 					<li><a href="#">내 피드</a></li>
-					<li><a href="/community/writeView">글쓰기</a></li>
+					<c:if test="${sessionScope.loginUser ne null}">
+						<!-- 로그인이 되어 있을 때 글쓰기 페이지로 이동 -->
+						<li><a href="/community/writeView">글쓰기</a></li>
+					</c:if>
+
+					<c:if test="${sessionScope.loginUser eq null}">
+						<!-- 로그인이 되어 있지 않을 때 알림창을 띄움 -->
+						<li><a href="/community/writeView" onclick="alert('로그인이 필요합니다'); return false;">글쓰기</a></li>
+					</c:if>
 					<li><a href="#">내 소식</a></li>
 					<li><a href="#">내 활동</a></li>
 					<li><a href="#">이웃 목록</a></li>
@@ -131,8 +138,8 @@
 					<p>나의 특별한 여행지에서의 영상도 보여드릴게요!</p>
 				</div>
 				<div class="ad-banner">
-					<a href=""> <img src="/static/Images/community_img/ad1.jpg"
-						alt="광고 배너" />
+					<a href=""> <img
+						src="/static/Images/communityorign_img/ad1.jpg" alt="광고 배너" />
 					</a>
 				</div>
 			</div>
@@ -155,23 +162,23 @@
 				<div class="story-container">
 
 					<li class="story-item"><a href="#"> <img
-							src="/static/Images/community_img/story1.jpeg" alt="스토리 이미지 1"
-							class="story-image" />
+							src="/static/Images/communityorign_img/story1.jpeg"
+							alt="스토리 이미지 1" class="story-image" />
 							<p>살구언니</p>
 					</a></li>
 					<li class="story-item"><a href="#"> <img
-							src="/static/Images/community_img/story2.jpeg" alt="스토리 이미지 2"
-							class="story-image" />
+							src="/static/Images/communityorign_img/story2.jpeg"
+							alt="스토리 이미지 2" class="story-image" />
 							<p>코댕이네</p>
 					</a></li>
 					<li class="story-item"><a href="#"> <img
-							src="/static/Images/community_img/story3.jpeg" alt="스토리 이미지 3"
-							class="story-image" />
+							src="/static/Images/communityorign_img/story3.jpeg"
+							alt="스토리 이미지 3" class="story-image" />
 							<p>버디언니</p>
 					</a></li>
 					<li class="story-item"><a href="#"> <img
-							src="/static/Images/community_img/story4.jpeg" alt="스토리 이미지 4"
-							class="story-image" />
+							src="/static/Images/communityorign_img/story4.jpeg"
+							alt="스토리 이미지 4" class="story-image" />
 							<p>토리누나</p>
 					</a></li>
 
@@ -184,36 +191,36 @@
 				<ul>
 
 					<li><a href="#" class="category-button" data-cate-no="0">
-							<img src="/static/Images/community_img/category0.png" alt="" />
+							<img src="/static/Images/communityorign_img/category0.png" alt="" />
 							<p>전체</p>
 					</a></li>
 
 					<li><a href="#" class="category-button" data-cate-no="1">
-							<img src="/static/Images/community_img/category1.png" alt="" />
+							<img src="/static/Images/communityorign_img/category1.png" alt="" />
 							<p>육아꿀팁</p>
 					</a></li>
 					<li><a href="#" class="category-button" data-cate-no="2">
-							<img src="/static/Images/community_img/category2.png" alt="" />
+							<img src="/static/Images/communityorign_img/category2.png" alt="" />
 							<p>내새꾸자랑</p>
 					</a></li>
 					<li><a href="#" class="category-button" data-cate-no="3">
-							<img src="/static/Images/community_img/category3.png" alt="" />
+							<img src="/static/Images/communityorign_img/category3.png" alt="" />
 							<p>펫테리어</p>
 					</a></li>
 					<li><a href="#" class="category-button" data-cate-no="4">
-							<img src="/static/Images/community_img/category4.png" alt="" />
+							<img src="/static/Images/communityorign_img/category4.png" alt="" />
 							<p>펫션쇼</p>
 					</a></li>
 					<li><a href="#" class="category-button" data-cate-no="5">
-							<img src="/static/Images/community_img/category5.png" alt="" />
+							<img src="/static/Images/communityorign_img/category5.png" alt="" />
 							<p>집사일기</p>
 					</a></li>
 					<li><a href="#" class="category-button" data-cate-no="6">
-							<img src="/static/Images/community_img/category6.png" alt="" />
+							<img src="/static/Images/communityorign_img/category6.png" alt="" />
 							<p>육아질문</p>
 					</a></li>
 					<li><a href="#" class="category-button" data-cate-no="7">
-							<img src="/static/Images/community_img/category7.png" alt="" />
+							<img src="/static/Images/communityorign_img/category7.png" alt="" />
 							<p>수의사상담</p>
 					</a></li>
 

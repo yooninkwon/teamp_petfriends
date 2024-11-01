@@ -1,9 +1,11 @@
 package com.tech.petfriends.community.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,11 +44,14 @@ public class CommunityController {
 	
 	//커뮤니티 페이지로 이동
 	@GetMapping("/main")
-	public String communityMain(HttpServletRequest request, Model model) {
+	public String communityMain(HttpSession session,HttpServletRequest request, Model model) {
 		System.out.println("community_main() ctr");
+		model.addAttribute("session", session);
+		model.addAttribute("request", request);
+		
 		serviceInterface = new CPostListService(iDao);
 		serviceInterface.execute(model); 
-	
+		
 		return "/community/main";
 	}
 	
@@ -67,10 +72,12 @@ public class CommunityController {
 		System.out.println("community_write");
 		model.addAttribute("request", mtfRequest);
 		 
+		model.addAttribute("msg", "게시글이 작성됐습니다.");	        
+		model.addAttribute("url", "/community/main");
 		serviceInterface = new CWriteService(iDao);
 		serviceInterface.execute(model);
 		
-		return "redirect:/community/main";
+		return "/community/alert";
 
 	}
 
