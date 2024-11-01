@@ -28,25 +28,7 @@
             replyForm.style.display = replyForm.style.display === "none" || replyForm.style.display === "" ? "block" : "none";
         }
         
-        function toggleLike(boardNo, liked, mem_nick) {
-            $.ajax({
-                url: "/community/updateLike",
-                type: "POST",
-                data: { 
-                    board_no: boardNo,
-                    liked: liked,
-                    mem_nick: mem_nick // mem_nick 값 추가
-                },
-                success: function(updatedLikes) {
-                    $("#like-count").text(updatedLikes);
-                    $("#like-button").text(liked ? "❤️" : "🤍");
-                    $("#like-button").attr("onclick", "toggleLike(" + boardNo + ", " + !liked + ", '" + mem_nick + "')");
-                },
-                error: function() {
-                    alert("오류가 발생했습니다.");
-                }
-            });
-        }
+      
 		
 		function checkLoginAndFocus(textarea) {
 		      var isLoggedIn = ${sessionScope.loginUser != null ? 'true' : 'false'};
@@ -59,6 +41,49 @@
 		      }
 		  }
         
+	
+		function updateLike(boardNo) {
+		    var isLoggedIn = ${sessionScope.loginUser != null ? 'true' : 'false'};
+
+		    if (!isLoggedIn) {
+		        alert("로그인이 필요합니다.");
+		        return;  // 로그인되지 않은 상태에서는 좋아요 기능을 사용하지 않음
+		    }
+
+		    var mem = mem_code: "${sessionScope.loginUser.mem_code}";
+		    
+		    console.log(mem);
+		    
+		    var data = {
+		        mem_code: "${sessionScope.loginUser.mem_code}",
+		        mem_nick: "${sessionScope.loginUser.mem_nick}",
+		        board_no: boardNo
+		    };
+
+		    fetch('/community/updateLike', {
+		        method: 'POST',
+		        headers: {
+		            'Content-Type': 'application/json',
+		        },
+		        body: JSON.stringify(data),
+		    })
+		    .then(response => {
+		        if (response.ok) {
+		            return response.json();
+		        } else {
+		            throw new Error('Network response was not ok.');
+		        }
+		    })
+		    .then(data => {
+		        // 성공적으로 좋아요가 업데이트되었음을 처리
+		        console.log('Success:', data);
+		        // 여기서 좋아요 수 업데이트 등의 처리를 할 수 있습니다.
+		    })
+		    .catch((error) => {
+		        console.error('Error:', error);
+		    });
+		}
+			
     </script>
 
 
@@ -84,12 +109,8 @@
 			<!-- 왼쪽 끝에 위치할 댓글 및 좋아요 버튼 -->
 			<div class="left-buttons">
 				<span>${contentView.board_likes}</span>
-			<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
-				<button id="like-button"				
-					onclick="toggleLike(${contentView.board_no}, false)">🤍</button>
-
-				<span>💬
-					
+			<button id="like-button" onclick="updateLike(${contentView.board_no})">🤍</button>
+				<span>💬				
 					<button onclick="toggleComments()" class="main_comment-button">댓글</button>
 					${contentView.board_comment_count}
 				</span>
@@ -155,6 +176,7 @@
 					<div id="replyForm-${comment.comment_no}" class="reply-section"
 						style="display: none;">
 						<form action="/community/commentReply" method="post" >
+							<input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
 							<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
 							<input type="hidden" name="board_no" value="${contentView.board_no}"> 
 								<input type="hidden" name="comment_no" value="${comment.comment_no}"> 
@@ -189,7 +211,8 @@
 									<c:if test="${sessionScope.loginUser.mem_nick == commentReply.user_id}">
 									<form action="/community/replyDelete" method="post"
 										onsubmit="return confirm('정말 삭제하시겠습니까?')">
-
+										<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
+										<input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
 										<input type="hidden" name="comment_no"
 											value="${commentReply.comment_no}"> <input
 											type="hidden" name="board_no" value="${contentView.board_no}">
@@ -207,6 +230,7 @@
 									class="reply-section" style="display: none;">
 									<form action="/community/commentReply" method="post">
 									<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
+									<input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
 										<input type="hidden" name="board_no"
 											value="${contentView.board_no}"> <input type="hidden"
 											name="comment_no" value="${commentReply.comment_no}">
@@ -230,6 +254,8 @@
 			<!-- 댓글 작성 폼 -->
 			<div class="comment-input">
 				<form action="/community/comment" method="post" >
+					
+					<input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
 					<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
 					<input type="hidden" name="board_no"
 						value="${contentView.board_no}">

@@ -30,17 +30,18 @@ public class CUpdateLikeService implements CServiceInterface {
 	
 		String board_no = request.getParameter("board_no");
 		String mem_nick = request.getParameter("mem_nick");
+		String mem_code = request.getParameter("mem_code");		
 		String created_date = request.getParameter("created_date");
 		
 	    // likes 변수를 Int로 받아온 후 boolean으로 변환
-		 int likesCount = iDao.isLiked(board_no, mem_nick); // int 타입으로 받아옴
+		 int likesCount = iDao.isLiked(board_no, mem_nick, mem_code ); // int 타입으로 받아옴
 		 boolean likes = (likesCount > 0); // 0보다 크면 true, 아니면 false
 	    
 		
 	    if (likes) {
-	        iDao.removeLike(board_no, mem_nick); // 좋아요 취소
+	        iDao.removeLike(board_no, mem_nick, mem_code); // 좋아요 취소
 	    } else {
-	        iDao.addLike(board_no, mem_nick); // 좋아요 추가
+	        iDao.addLike(board_no, mem_nick, mem_code); // 좋아요 추가
 	        
 	    }
 		
