@@ -35,10 +35,10 @@ public interface IDao {
 	public void delete(int board_no);
 
 	public void comment(String board_no, String comment_no, String mem_nick, String comment_content,
-			String parent_comment_no, String comment_level, String comment_order_no);
+			String parent_comment_no, String comment_level, String comment_order_no, String mem_code);
 
 	public void commentReply(String board_no,String mem_nick, String comment_content,
-			String parent_comment_no, String comment_level, String comment_order_no);
+			String parent_comment_no, String comment_level, String comment_order_no, String mem_code);
 	
 	public void commentShape(String parent_comment_no, String comment_level);
 	
@@ -50,11 +50,11 @@ public interface IDao {
 
 	public int replyDelete(String comment_no, String parent_comment_no, String comment_level, String comment_order_no);
 	
-	public void addLike (String board_no,String mem_nick);
+	public void addLike (String board_no,String mem_nick, String mem_code);
 	
-	public void removeLike (String board_no,String mem_nick);
+	public void removeLike (String board_no,String mem_nick, String mem_code);
 	
-	public int isLiked (String board_no,String mem_nick);
+	public int isLiked (String board_no,String mem_nick, String mem_code);
 
 	public void write(String mem_nick, String mem_code, String board_title, String board_content, int b_cate_no);
 	

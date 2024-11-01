@@ -9,8 +9,8 @@
 		resultType="com.tech.petfriends.community.dto.CDto">
 		SELECT CD.*, RCI.*, MP.PET_IMG 
 		FROM COMMUNITY_BOARD CD
-		INNER JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
-		INNER JOIN MEMBER_PET MP ON CD.MEM_CODE = MP.MEM_CODE
+		JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
+		JOIN MEMBER_PET MP ON CD.MEM_CODE = MP.MEM_CODE
 		WHERE MP.PET_MAIN = 'Y'
 		ORDER BY CD.BOARD_NO DESC
 	</select>
@@ -106,20 +106,18 @@
 	<insert id="comment">
 		INSERT INTO COMMUNITY_COMMENT (COMMENT_NO, BOARD_NO, USER_ID,
 		COMMENT_CONTENT, CREATED_DATE, PARENT_COMMENT_NO, COMMENT_LEVEL,
-		COMMENT_ORDER_NO, EDITED_DATE)
+		COMMENT_ORDER_NO, EDITED_DATE, MEM_CODE)
 		VALUES (COMMUNITY_COMMENT_SEQ.NEXTVAL, #{board_no}, #{mem_nick},
-		#{comment_content}, SYSDATE, COMMUNITY_COMMENT_SEQ.CURRVAL,0,0, SYSDATE)
+		#{comment_content}, SYSDATE, COMMUNITY_COMMENT_SEQ.CURRVAL,0,0, SYSDATE, #{mem_code})
 	</insert>
 
 	<select id="commentList"
 		resultType="com.tech.petfriends.community.dto.CCommentDto">
 		SELECT DISTINCT CC.*, MP.PET_IMG
 		FROM COMMUNITY_COMMENT CC
-		JOIN COMMUNITY_BOARD CB ON CC.BOARD_NO = CB.BOARD_NO
-		JOIN MEMBER_PET MP ON CB.MEM_CODE = MP.MEM_CODE
+		JOIN MEMBER_PET MP ON CC.MEM_CODE = MP.MEM_CODE
 		WHERE CC.COMMENT_LEVEL = 0 
 		AND CC.BOARD_NO = #{board_no}
-		AND MP.PET_IMG IS NOT NULL
 		AND MP.PET_MAIN = 'Y'
 		ORDER BY CC.COMMENT_NO
 	</select>
@@ -127,21 +125,19 @@
 	<insert id="commentReply">
 		INSERT INTO COMMUNITY_COMMENT (COMMENT_NO, BOARD_NO, USER_ID,
 		COMMENT_CONTENT, CREATED_DATE, PARENT_COMMENT_NO, COMMENT_LEVEL,
-		COMMENT_ORDER_NO, EDITED_DATE)
+		COMMENT_ORDER_NO, EDITED_DATE, MEM_CODE)
 		VALUES (COMMUNITY_COMMENT_SEQ.NEXTVAL, #{board_no}, #{mem_nick},
 		#{comment_content}, SYSDATE, #{parent_comment_no}, #{comment_level} + 1,
-		#{comment_order_no} + 1, SYSDATE)
+		#{comment_order_no} + 1, SYSDATE, #{mem_code})
 	</insert>
 
 	<select id="commentReplyList"
 		resultType="com.tech.petfriends.community.dto.CCommentDto">
 		SELECT CC.*, MP.PET_IMG
 		FROM COMMUNITY_COMMENT CC
-		JOIN COMMUNITY_BOARD CB ON CC.BOARD_NO = CB.BOARD_NO
-		JOIN MEMBER_PET MP ON CB.MEM_CODE = MP.MEM_CODE
+		JOIN MEMBER_PET MP ON CC.MEM_CODE = MP.MEM_CODE
 		WHERE CC.COMMENT_LEVEL >= 1 
 		AND CC.BOARD_NO = #{board_no}
-		AND MP.PET_IMG IS NOT NULL		
 		AND MP.PET_MAIN = 'Y'
 		ORDER BY CC.COMMENT_LEVEL
 	</select>
@@ -175,19 +171,18 @@
 
 	<insert id="addLike">
 		INSERT INTO COMMUNITY_LIKES 
-		(LIKE_ID, BOARD_NO, USER_ID, CREATED_DATE) 
-		VALUES (COMMUNITY_LIKES_SEQ.NEXTVAL, #{board_no}, #{mem_nick}, SYSDATE)
+		(LIKE_ID, BOARD_NO, USER_ID, CREATED_DATE, MEM_CODE) 
+		VALUES (COMMUNITY_LIKES_SEQ.NEXTVAL, #{board_no}, #{mem_nick}, SYSDATE, #{mem_code})
 	</insert>
 
 	<delete id="removeLike">
 		DELETE FROM COMMUNITY_LIKES 
-		WHERE board_no = #{board_no} AND user_id = #{mem_nick}
+		WHERE board_no = #{board_no} AND MEM_CODE = #{mem_code}
 	</delete>
 
 	<select id="isLiked" resultType="int">
 		SELECT COUNT(*) FROM COMMUNITY_LIKES 
-		WHERE board_no = #{board_no} AND user_id =
-		#{mem_nick}
+		WHERE board_no = #{board_no} AND MEM_CODE = #{mem_code}
 	</select>
 
 </mapper>

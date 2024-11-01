@@ -17,5 +17,5 @@ public class CLikesDto {
 	private int board_no;
 	private String user_id;
 	private Date created_date;
-
+	private String mem_code;
 }
