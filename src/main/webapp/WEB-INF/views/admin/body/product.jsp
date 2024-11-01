@@ -69,6 +69,12 @@
 	        <input type="button" value="검색" class="btn-style" id="searchBtn"/>
 	    </div>
 		<div class="array-section">
+		<!-- 상품상태 필터 드롭다운 -->
+	        <select id="pro_onoff">
+	            <option value="판매">판매중</option>
+	            <option value="정지">정지</option>
+	            <option value="품절">품절</option>
+	        </select>
 		    <!-- 신규등록 버튼 -->
 		    <button id="new-pro-btn" class="btn-style">상품등록</button>
 		</div>

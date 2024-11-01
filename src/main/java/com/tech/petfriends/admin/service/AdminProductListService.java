@@ -21,6 +21,7 @@ public class AdminProductListService implements AdminServiceInterface {
 		String proType = (String) model.getAttribute("proType");
 		String detailType = (String) model.getAttribute("detailType");
 		String searchType = (String) model.getAttribute("searchType");
+		String proOnOff = (String) model.getAttribute("proOnOff");
 		
 		if(detailType == null) {
 			detailType="";
@@ -31,7 +32,7 @@ public class AdminProductListService implements AdminServiceInterface {
 		
 		System.out.println(petType + proType + detailType + searchType);
 		
-		List<ProductListDto> productList = adminProductDao.adminProductList(petType,proType,detailType,searchType);
+		List<ProductListDto> productList = adminProductDao.adminProductList(petType,proType,detailType,searchType,proOnOff);
 		model.addAttribute("productList",productList);
 	}
 

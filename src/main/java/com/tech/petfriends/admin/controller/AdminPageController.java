@@ -30,6 +30,7 @@ import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminProductAddService;
 import com.tech.petfriends.admin.service.AdminProductDetailService;
 import com.tech.petfriends.admin.service.AdminProductListService;
+import com.tech.petfriends.admin.service.AdminProductModifyService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
 import com.tech.petfriends.notice.dao.NoticeDao;
 import com.tech.petfriends.notice.dto.NoticeDto;
@@ -213,6 +214,33 @@ public class AdminPageController {
 		
 		return data;
 	}
+	
+	//관리자페이지 상품 등록
+		@PostMapping("/product/modify")
+		@ResponseBody
+		 public void productModify(
+				 	@RequestParam Map<String, Object> data,
+			        @RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
+			        @RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
+			        @RequestParam(value = "removeImages", required = false) String[] removeImages,
+			        @RequestParam(value = "mainImagesPath", required = false) List<String> mainImagesPath,
+			        @RequestParam(value = "desImagesPath", required = false) List<String> desImagesPath,
+			        @RequestParam(value = "options") String options,
+			        Model model) {
+			
+			// Model에 데이터 추가
+			model.addAllAttributes(data);
+		    model.addAttribute("mainImages", mainImages);
+		    model.addAttribute("desImages", desImages);
+		    model.addAttribute("removeImages", removeImages);
+		    model.addAttribute("options", options);
+		    model.addAttribute("mainImagesPath", mainImagesPath);
+		    model.addAttribute("desImagesPath", desImagesPath);
+			
+			adminServInter = new AdminProductModifyService(adminProductDao);
+			adminServInter.execute(model);
+			
+		}
 	
 
 	@GetMapping("/customer_status")

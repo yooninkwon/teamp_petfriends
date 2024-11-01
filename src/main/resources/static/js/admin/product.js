@@ -52,15 +52,22 @@ $(document).ready(function() {
 	$('#searchBtn').click(function() {
 		loadProductList();
 	});
+	
+	// 드롭다운이 변경될 때 loadProductList 호출
+	$('#pro_onoff').change(function() {
+		// 검색 필드 초기화
+				$('#search-filter').val('');
+	    loadProductList();
+	});
 
 
 
-	// 쿠폰 등록 탭 데이터 로드 함수
+	// 상품 탭 데이터 로드 함수
 	function loadProductList() {
 		const itemsPerPage = 10; // 페이지 당 item 수
 		let currentPage = 1;
 		let totalItems = 0;
-		let couponList = []; // 데이터 저장할 배열
+		let productsList = []; // 데이터 저장할 배열
 		let currPageGroup = 1;
 		let totalPages = 0;
 
@@ -68,7 +75,7 @@ $(document).ready(function() {
 		let proType = $('input[name="pro-filter"]:checked').val();
 		let detailType = $('input[name="type-DF"]:checked, input[name="type-DS"]:checked, input[name="type-DG"]:checked, input[name="type-CF"]:checked, input[name="type-CS"]:checked, input[name="type-CG"]:checked').val() || null;
 		let searchType = $('#search-filter').val() || null;
-
+		let proOnOff = $('#pro_onoff').val();
 
 
 		fetchData(currentPage, currPageGroup);
@@ -82,7 +89,8 @@ $(document).ready(function() {
 					petType,
 					proType,
 					detailType,
-					searchType
+					searchType,
+					proOnOff
 				}),
 				success: function(products) {
 					productsList = products;
@@ -170,9 +178,12 @@ $(document).ready(function() {
 		document.getElementById('mainImagePreview').innerHTML = ''; // 대표 이미지 미리보기 초기화
 		document.getElementById('desImagePreview').innerHTML = '';  // 상세 이미지 미리보기 초기화
 
-		// 선택된 파일 배열 초기화
 		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
 		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
+		removeFiles = []; //삭제된 파일 배열 초기화
+		btnArray1 = [];
+		btnArray2 = [];
+		btnArray3 = [];
 
 
 		// 옵션 필드 초기화
@@ -193,8 +204,12 @@ $(document).ready(function() {
 	$('.close-btn').on('click', function() {
 		document.getElementById('productModal').style.display = 'none'; // 모달을 숨김
 		// 이미지 배열 초기화
-		mainSelectedFiles = []; // 대표 이미지 배열 초기화
-		desSelectedFiles = [];  // 상세 이미지 배열 초기화
+		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
+		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
+		removeFiles = []; //삭제된 파일 배열 초기화
+		btnArray1 = [];
+		btnArray2 = [];
+		btnArray3 = [];
 
 		// 미리보기 컨테이너 초기화
 		const mainImagePreview = document.getElementById('mainImagePreview');
@@ -208,6 +223,11 @@ $(document).ready(function() {
 
 	let mainSelectedFiles = [];  // 대표이미지 파일 배열
 	let desSelectedFiles = [];   // 상세이미지 파일 배열
+	let removeFiles = []; //삭제된 파일 배열
+	let btnArray1 = [];
+	let btnArray2 = [];
+	let btnArray3 = [];
+
 
 	// 미리보기 생성 함수
 	function handleFileSelect(event, maxFiles, selectedFiles, previewContainerId) {
@@ -226,7 +246,7 @@ $(document).ready(function() {
 
 			const reader = new FileReader();
 			reader.onload = function(e) {
-				addImagePreview(e.target.result, file, selectedFiles, previewContainer);
+				addImagePreview(e.target.result, file, selectedFiles, previewContainer, btnArray1);
 			};
 			reader.readAsDataURL(file);
 		});
@@ -235,8 +255,9 @@ $(document).ready(function() {
 		event.target.value = '';
 	}
 
+
 	// 이미지 미리보기 추가 함수
-	function addImagePreview(imgSrc, file, selectedFiles, previewContainer) {
+	function addImagePreview(imgSrc, file, selectedFiles, previewContainer, btnArray) {
 		const imgContainer = document.createElement('div');
 		imgContainer.style.position = 'relative';
 		imgContainer.style.display = 'inline-block';
@@ -265,9 +286,40 @@ $(document).ready(function() {
 		deleteButton.style.justifyContent = 'center';
 		deleteButton.style.cursor = 'pointer';
 		deleteButton.style.boxShadow = '0 0 3px rgba(0, 0, 0, 0.3)'; // 약간의 그림자 추가
+
+		btnArray.push(deleteButton);
+
 		deleteButton.onclick = () => {
-			imgContainer.remove();
-			selectedFiles.splice(selectedFiles.indexOf(file), 1);  // 배열에서 파일 제거
+			imgContainer.remove(); // 이미지 컨테이너 제거
+
+			// btnArray에서 deleteButton의 인덱스 찾기
+			const btnIndex = btnArray.indexOf(deleteButton);
+			
+			// selectedFiles에서 삭제할 파일 이름 가져오기
+			const removedFile = selectedFiles[btnIndex]; // 삭제할 파일 이름 가져오기
+			
+
+			// 문자열인지 확인 후 removeFiles 배열에 추가
+			if (typeof removedFile === 'string') {
+				removeFiles.push(removedFile);
+			} else {
+				console.log("삭제할 파일이 문자열이 아닙니다.");
+			}
+
+			// selectedFiles 배열에서 삭제할 파일의 인덱스 찾기
+			const fileIndex = selectedFiles.indexOf(removedFile);
+
+			// fileIndex가 유효한지 확인
+			if (fileIndex !== -1) {
+				// 해당 파일 제거
+				selectedFiles.splice(fileIndex, 1);
+				
+			} else {
+				console.log("해당 파일이 배열에 없습니다.");
+			}
+			// btnArray에서 삭제된 버튼도 제거
+			btnArray.splice(btnIndex, 1);
+
 		};
 
 		imgContainer.appendChild(img);
@@ -347,9 +399,9 @@ $(document).ready(function() {
 		optionGroup.className = 'input-group2';
 		optionGroup.innerHTML = `
 	        <label id="options"></label>
-	        <span for="optName">옵션명 <input type="text" class="optName" value="${option.proopt_name || ''}"></span>
-	        <span for="optPrice">판매가 <input type="number" class="optPrice" value="${option.proopt_price || ''}">원</span>
-	        <span for="optCnt">재고수량 <input type="number" class="optCnt" value="${option.proopt_stock || ''}">개</span>
+	        <span for="optName">옵션명 <input type="text" id="optName" value="${option.proopt_name || ''}"></span>
+	        <span for="optPrice">판매가 <input type="number" id="optPrice" value="${option.proopt_price || ''}">원</span>
+	        <span for="optCnt">재고수량 <input type="number" id="optCnt" value="${option.proopt_stock || ''}">개</span>
 	        <button type="button" class="add-option">+</button>
 	        <button type="button" class="remove-option" style="display: inline-block;">-</button>
 	    `;
@@ -391,7 +443,7 @@ $(document).ready(function() {
 			});
 		});
 
-		console.log(options); // 옵션 값 확인
+
 		return options;
 	}
 
@@ -401,15 +453,42 @@ $(document).ready(function() {
 		// FormData 객체 생성
 		const formData = new FormData();
 
+
+		// 경로와 파일 객체를 저장할 새로운 배열
+		const mainImagePaths = [];
+		const desImagePaths = [];
+
 		// 최종 선택된 대표 이미지 파일을 FormData에 추가
-		mainSelectedFiles.forEach(file => {
-			formData.append('mainImages', file); // 키값 'mainImages'로 추가
+		mainSelectedFiles.forEach(item => {
+			if (typeof item === 'string') {
+				// item이 문자열인 경우, 즉 이미지 경로인 경우
+				mainImagePaths.push(item); // 경로 추가
+			} else {
+				// item이 파일 객체인 경우
+				formData.append('mainImages', item); // 파일 추가
+			}
 		});
 
 		// 최종 선택된 상세 이미지 파일을 FormData에 추가
-		desSelectedFiles.forEach(file => {
-			formData.append('desImages', file); // 키값 'desImages'로 추가
+		desSelectedFiles.forEach(item => {
+			if (typeof item === 'string') {
+				// item이 문자열인 경우, 즉 이미지 경로인 경우
+				desImagePaths.push(item); // 경로 추가
+			} else {
+				// item이 파일 객체인 경우
+				formData.append('desImages', item); // 파일 추가
+			}
 		});
+
+		// 이미지 경로를 FormData에 추가
+		mainImagePaths.forEach(path => {
+			formData.append('mainImagesPath', path); // 경로 추가
+		});
+
+		desImagePaths.forEach(path => {
+			formData.append('desImagesPath', path); // 경로 추가
+		});
+
 
 		// 각 입력 필드의 값을 가져오기
 		let petType = document.getElementById("petType") ? document.getElementById("petType").value : '';
@@ -444,30 +523,80 @@ $(document).ready(function() {
 		formData.append('proDiscount', proDiscount);
 		formData.append('productStatus', productStatus);
 
-		// AJAX 요청
-		$.ajax({
-			url: '/admin/product/add', // 등록할 URL
-			method: 'POST',
-			data: formData,
-			contentType: false, // contentType을 false로 설정
-			processData: false, // processData를 false로 설정
-			success: function(response) {
-				// 성공적으로 등록된 경우 처리
-				alert('제품이 등록되었습니다.');
-				$('#productModal').hide();
-			},
-			error: function(xhr, status, error) {
-				logger.error("상품 등록 중 오류 발생", error);
-				console.error('Error registering product:', error);
-				alert('제품 등록에 실패했습니다.');
-			}
-		});
+		let registerType = document.getElementById("registerProductBtn").innerText;
+		if (registerType === '등록하기') {
+			// AJAX 요청 상품등록하기
+			$.ajax({
+				url: '/admin/product/add', // 등록할 URL
+				method: 'POST',
+				data: formData,
+				contentType: false, // contentType을 false로 설정
+				processData: false, // processData를 false로 설정
+				success: function(response) {
+					// 성공적으로 등록된 경우 처리
+					alert('제품이 등록되었습니다.');
+					$('#productModal').hide();
+				},
+				error: function(xhr, status, error) {
+					logger.error("상품 등록 중 오류 발생", error);
+					console.error('Error registering product:', error);
+					alert('제품 등록에 실패했습니다.');
+				}
+			});
+		}
+
+		if (registerType === '수정하기') {
+			// 최종 선택된 대표 이미지 파일을 FormData에 추가
+			removeFiles.forEach(file => {
+				formData.append('removeImages', file); // 키값 'mainImages'로 추가
+			});
+
+			const savedProCode = $('#productModal').data('proCode'); // 저장된 proCode 값 가져오기
+			formData.append('proCode', savedProCode); // FormData에 추가
+
+			// AJAX 요청 상품등록하기
+			$.ajax({
+				url: '/admin/product/modify', // 등록할 URL
+				method: 'POST',
+				data: formData,
+				contentType: false, // contentType을 false로 설정
+				processData: false, // processData를 false로 설정
+				success: function(response) {
+					// 성공적으로 등록된 경우 처리
+					alert('제품 정보가 수정되었습니다.');
+					$('#productModal').hide();
+				},
+				error: function(xhr, status, error) {
+					logger.error("상품 등록 중 오류 발생", error);
+					console.error('Error registering product:', error);
+					alert('제품 수정에 실패했습니다.');
+				}
+			});
+		}
 
 
 
 
 
 
+
+
+
+
+
+
+
+		// 기존 미리보기 이미지 초기화
+		document.getElementById('mainImagePreview').innerHTML = ''; // 대표 이미지 미리보기 초기화
+		document.getElementById('desImagePreview').innerHTML = '';  // 상세 이미지 미리보기 초기화
+
+		// 선택된 파일 배열 초기화
+		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
+		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
+		removeFiles = []; //삭제된 파일 배열 초기화
+		btnArray1 = [];
+		btnArray2 = [];
+		btnArray3 = [];
 		//이부분에ㅁㄴ엄누ㅗㅠ아ㅓㄴㅁ유ㅜ라ㅓㄴㅁ우ㅠ라ㅓㄴㅁ우ㅠㅏ러누ㅠㅇ마ㅓ루ㅠㄴㅁ아ㅓ류ㅜ
 
 
@@ -492,19 +621,31 @@ $(document).ready(function() {
 
 	// 페이지가 로드된 후에 이벤트를 바인딩합니다.
 	$(document).on('click', '#modify-btn', function() {
+		// 기존 미리보기 이미지 초기화
+		document.getElementById('mainImagePreview').innerHTML = ''; // 대표 이미지 미리보기 초기화
+		document.getElementById('desImagePreview').innerHTML = '';  // 상세 이미지 미리보기 초기화
+
+		// 선택된 파일 배열 초기화
+		mainSelectedFiles = []; // 대표이미지 파일 배열 초기화
+		desSelectedFiles = [];  // 상세이미지 파일 배열 초기화
+		removeFiles = []; //삭제된 파일 배열 초기화
+
 		const proCode = $(this).data('product-code'); // 클릭한 버튼의 data 속성에서 값 가져오기
 		loadProductForEdit(proCode); // 수정할 상품 로드
+		// 선택된 파일 배열 초기화
+
 		// 모달에 proCode를 저장하고 버튼 텍스트를 '수정'으로 설정
 		$('#registerProductBtn').text('수정하기');
 		$('#productModal').data('proCode', proCode).show(); // 모달 열기
 	});
 
-	// 수정할 쿠폰 로드 함수
+	// 수정할 상품 로드 함수
 	function loadProductForEdit(proCode) {
 		$.ajax({
-			url: `/admin/product/detail?proCode=` + proCode, // 쿠폰 정보를 가져올 URL
+			url: `/admin/product/detail?proCode=` + proCode, // 상품 정보를 가져올 URL
 			method: 'GET',
 			success: function(data) {
+				console.log(data);
 				// 모달에 기존 쿠폰 정보 표시
 				document.getElementById('petType').value = data.pro.pro_pets;
 				document.getElementById('proType').value = data.pro.pro_type;
@@ -527,40 +668,42 @@ $(document).ready(function() {
 
 				// 기존 메인 이미지 미리보기
 				const mainImages = [
-					data.img.main_img1,
-					data.img.main_img2,
-					data.img.main_img3,
-					data.img.main_img4,
-					data.img.main_img5
+					data.img ? data.img.main_img1 : null,
+					data.img ? data.img.main_img2 : null,
+					data.img ? data.img.main_img3 : null,
+					data.img ? data.img.main_img4 : null,
+					data.img ? data.img.main_img5 : null
 				];
 
 				mainImages.forEach((img, index) => {
 					if (img) {
 						const imgSrc = `/static/Images/ProductImg/MainImg/${img}`;
 						mainSelectedFiles.push(imgSrc); // 배열에 추가
-						addImagePreview(imgSrc, img, mainSelectedFiles, document.getElementById('mainImagePreview'));
+
+						addImagePreview(imgSrc, img, mainSelectedFiles, document.getElementById('mainImagePreview'), btnArray2);
 					}
 				});
 
 				// 기존 상세 이미지 미리보기
 				const desImages = [
-					data.img.des_img1,
-					data.img.des_img2,
-					data.img.des_img3,
-					data.img.des_img4,
-					data.img.des_img5,
-					data.img.des_img6,
-					data.img.des_img7,
-					data.img.des_img8,
-					data.img.des_img9,
-					data.img.des_img10
+					data.img ? data.img.des_img1 : null,
+					data.img ? data.img.des_img2 : null,
+					data.img ? data.img.des_img3 : null,
+					data.img ? data.img.des_img4 : null,
+					data.img ? data.img.des_img5 : null,
+					data.img ? data.img.des_img6 : null,
+					data.img ? data.img.des_img7 : null,
+					data.img ? data.img.des_img8 : null,
+					data.img ? data.img.des_img9 : null,
+					data.img ? data.img.des_img10 : null
 				];
 
 				desImages.forEach(img => {
 					if (img) {
 						const imgSrc = `/static/Images/ProductImg/DesImg/${img}`;
 						desSelectedFiles.push(imgSrc); // 배열에 추가
-						addImagePreview(imgSrc, img, desSelectedFiles, document.getElementById('desImagePreview'));
+
+						addImagePreview(imgSrc, img, desSelectedFiles, document.getElementById('desImagePreview'), btnArray3);
 					}
 				});
 			},
