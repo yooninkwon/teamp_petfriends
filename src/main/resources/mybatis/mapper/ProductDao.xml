@@ -188,10 +188,8 @@
             GRADE.G_RATE
         FROM
             GRADE
-        INNER JOIN 
-            MEMBER ON GRADE.G_NO = MEMBER.G_NO
         WHERE
-            MEMBER.G_NO= (SELECT G_NO FROM MEMBER WHERE MEM_CODE=#{mem_code})
+            GRADE.G_NO= (SELECT G_NO FROM MEMBER WHERE MEM_CODE=#{mem_code})
 	</select>
 	
 	<!-- 제품상세페이지 장바구니담기 인서트 -->
