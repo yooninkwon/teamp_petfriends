@@ -1,4 +1,9 @@
 $(document).ready(function() {
+	//sub메뉴바 클릭 활성화
+	$(document).ready(function() {
+	    $('#productPetItem').addClass('selected');
+	});
+	
 	// 라디오 버튼이 변경될 때마다 실행
 	$('input[type="radio"]').change(function() {
 		// 선택된 petType과 proType 값 확인
@@ -300,6 +305,19 @@ $(document).ready(function() {
 		window.location.href = `/product/productDetail?code=${productCode}`;
 	});
 
+	
+	// filterOnOff 클릭 시 filter 요소 보이기/숨기기
+	   document.querySelector('.filterOnOff').addEventListener('click', function() {
+	       const filterContainer = document.querySelector('.filter');
+	       
+	       // display 속성 토글
+	       if (filterContainer.style.display === 'none' || filterContainer.style.display === '') {
+	           filterContainer.style.display = 'block'; // 필터 창 열기
+	       } else {
+	           filterContainer.style.display = 'none'; // 필터 창 닫기
+	       }
+	   });
+	
 	
 	
 	

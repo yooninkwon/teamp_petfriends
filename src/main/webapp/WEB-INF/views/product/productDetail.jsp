@@ -38,6 +38,7 @@
 </head>
 <!-- 헤더 -->
 <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+<jsp:include page="/WEB-INF/views/include_jsp/product_sub_navbar.jsp" />
 <body>
 
 
