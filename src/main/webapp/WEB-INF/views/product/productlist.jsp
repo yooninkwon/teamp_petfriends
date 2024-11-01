@@ -15,56 +15,65 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/static/js/product/ProductList.js"></script>
 
+
 </head>
 
 <body>
-
 	<!-- 헤더 -->
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+	<jsp:include page="/WEB-INF/views/include_jsp/product_sub_navbar.jsp" />
 
 	<form class="menubar">
 		<!-- 강아지 또는 고양이 선택 -->
 		<div class="firsttype">
-			<label> <input type="radio" name="petType" value="dog" checked>강아지</label>
-			<label> <input type="radio" name="petType" value="cat">고양이</label>
+			<label class="category-btn"> <input type="radio" name="petType" value="dog" checked>강아지</label>
+			<label class="category-btn"> <input type="radio" name="petType" value="cat">고양이</label>
 			<span id="line">|</span>
 		<!-- 사료 / 간식 / 용품 선택 -->
-			<label> <input type="radio" name="proType" value="food" checked >사료</label>
-			<label> <input type="radio" name="proType" value="snack">간식</label>
-			<label> <input type="radio" name="proType" value="goods">용품</label>
+			<label class="category-btn"> <input type="radio" name="proType" value="food" checked >사료</label>
+			<label class="category-btn"> <input type="radio" name="proType" value="snack">간식</label>
+			<label class="category-btn"> <input type="radio" name="proType" value="goods">용품</label>
 		</div>
 
 		<div class="thirdtype">
 			<div id="df">
-			<label> <input type="radio" name="dfoodType" value="dfoodtype1" checked>습식사료</label>
-			<label> <input type="radio" name="dfoodType" value="dfoodtype2">소프트사료</label>
-			<label> <input type="radio" name="dfoodType" value="dfoodtype3">건식사료</label>
+			<label class="category-btn"> <input type="radio" name="dfoodType" value="dfoodtype1" checked>습식사료</label>
+			<label class="category-btn"> <input type="radio" name="dfoodType" value="dfoodtype2">소프트사료</label>
+			<label class="category-btn"> <input type="radio" name="dfoodType" value="dfoodtype3">건식사료</label>
 			</div>
 			<div id="ds">
-			<label> <input type="radio" name="dsnackType" value="dsnacktype1" >수제간식</label>
-			<label> <input type="radio" name="dsnackType" value="dsnacktype2">껌</label>
-			<label> <input type="radio" name="dsnackType" value="dsnacktype3">사시미/육포</label>
+			<label class="category-btn"> <input type="radio" name="dsnackType" value="dsnacktype1" >수제간식</label>
+			<label class="category-btn"> <input type="radio" name="dsnackType" value="dsnacktype2">껌</label>
+			<label class="category-btn"> <input type="radio" name="dsnackType" value="dsnacktype3">사시미/육포</label>
 			</div>
 			<div id="dg">
-			<label> <input type="radio" name="dgoodsType" value="dgoodstype1" >배변용품</label>
-			<label> <input type="radio" name="dgoodsType" value="dgoodstype2">장난감</label>
+			<label class="category-btn"> <input type="radio" name="dgoodsType" value="dgoodstype1" >배변용품</label>
+			<label class="category-btn"> <input type="radio" name="dgoodsType" value="dgoodstype2">장난감</label>
 			</div>
 			<div id="cf">
-			<label> <input type="radio" name="cfoodType" value="cfoodtype1" >주식캔</label>
-			<label> <input type="radio" name="cfoodType" value="cfoodtype2">파우치</label>
-			<label> <input type="radio" name="cfoodType" value="cfoodtype3">건식사료</label>
+			<label class="category-btn"> <input type="radio" name="cfoodType" value="cfoodtype1" >주식캔</label>
+			<label class="category-btn"> <input type="radio" name="cfoodType" value="cfoodtype2">파우치</label>
+			<label class="category-btn"> <input type="radio" name="cfoodType" value="cfoodtype3">건식사료</label>
 			</div>
 			<div id="cs">
-			<label> <input type="radio" name="csnackType" value="csnacktype1" >간식캔</label>
-			<label> <input type="radio" name="csnackType" value="csnacktype2">동결건조</label>
-			<label> <input type="radio" name="csnackType" value="csnacktype3">스낵</label>
+			<label class="category-btn"> <input type="radio" name="csnackType" value="csnacktype1" >간식캔</label>
+			<label class="category-btn"> <input type="radio" name="csnackType" value="csnacktype2">동결건조</label>
+			<label class="category-btn"> <input type="radio" name="csnackType" value="csnacktype3">스낵</label>
 			</div>
 			<div id="cg">
-			<label> <input type="radio" name="cgoodsType" value="cgoodstype1" >낚시대/레이져</label>
-			<label> <input type="radio" name="cgoodsType" value="cgoodstype2">스크래쳐/박스</label>
+			<label class="category-btn"> <input type="radio" name="cgoodsType" value="cgoodstype1" >낚시대/레이져</label>
+			<label class="category-btn"> <input type="radio" name="cgoodsType" value="cgoodstype2">스크래쳐/박스</label>
 			</div>
 		</div>
-		<div class="filter">
+		<div class="filterOnOff">
+			<img src="/static/Images/ProductImg/ProImg/filterimg.png" alt="" />
+			<span>필터로 내새꾸 선물 고르기~</span>
+		
+		</div>
+		
+		
+		
+		<div class="filter" style="display: none;">
 			<div id="option_price">
 			<span>가격</span>
 			<label> <input type="checkbox" name="priceOption" value="priceopt1" >1만원미만</label>

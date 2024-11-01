@@ -1,72 +1,155 @@
-.menubar{
-	margin: 0 0 0 50px; /* 헤더에 가려서 내림 */
+.menubar {
+	display: grid;
+	grid-template-columns: repeat(1, 1400px); /* 4개씩 나열 */
+	grid-gap: 10px; /* 각 아이템 간의 간격 */
+	margin: 0 auto; /* 중앙 정렬을 위한 마진 */
+	width: 1150px;
+	user-select: none; /* 텍스트 선택 방지 */
 }
 
+/* 라디오 버튼 숨기기 */
+.category-btn input[type="radio"] {
+	display: none;
+}
+
+/* 라벨을 버튼처럼 보이게 스타일링 */
+.category-btn {
+	display: inline-block;
+	padding: 5px 10px;
+	margin: 0 5px;
+	border-radius: 20px; /* 둥근 버튼 효과 */
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+/* 마우스 오버 시 효과 */
+.category-btn:hover {
+	background-color: #ff4081; /* 마우스 오버 시 배경색 */
+	color: white;
+}
+/* 선택된 라디오 버튼 스타일 */
+.category-btn:has(input[type="radio"]:checked) {
+	background-color: #ff4081; /* 선택된 상태의 배경색 */
+	color: white;
+}
+
+#line {
+	color: lightgray;
+}
+
+.thirdtype {
+	width: 1150px;
+	background-color: #f4eded;
+}
+
+.filterOnOff {
+	width: 225px;
+	cursor: pointer;
+}
+
+.filter {
+	
+	display: grid; /* 그리드 레이아웃 사용 */
+	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	/* 최소 150px로 자동 열 생성 */
+	gap: 20px; /* 그리드 항목 간의 간격 */
+}
+
+.filter>div {
+	display: flex; /* 각 필터 그룹을 플렉스로 설정 */
+	flex-direction: row; /* 항목을 가로로 정렬 */
+	margin-right: 20px; /* 오른쪽 여백 추가 */
+}
+
+.filter>div>span {
+	margin-bottom: 10px; /* 제목과 체크박스 간의 간격 */
+	flex-direction: column; /* 항목을 세로로 정렬 */
+}
+
+.filter>div label {
+	margin-bottom: 5px; /* 각 체크박스와 라디오 버튼 간의 간격 */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #product-List {
-    display: grid;
-    grid-template-columns: repeat(4, 240px); /* 4개씩 나열 */
-    grid-gap: 20px; /* 각 아이템 간의 간격 */
-    justify-content: center; /* 가운데 정렬 */
-    margin: 0 auto; /* 중앙 정렬을 위한 마진 */
+	display: grid;
+	grid-template-columns: repeat(4, 240px); /* 4개씩 나열 */
+	grid-gap: 60px; /* 각 아이템 간의 간격 */
+	justify-content: center; /* 가운데 정렬 */
+	margin: 0 auto; /* 중앙 정렬을 위한 마진 */
 }
 
 .product-Item {
-    width: 240px; /* 고정된 너비 */
-    height: auto; /* 높이는 콘텐츠에 따라 자동으로 조정 */
-    text-align: center;
-    overflow: hidden; /* 내용이 넘치지 않도록 설정 */
+	width: 240px; /* 고정된 너비 */
+	height: auto; /* 높이는 콘텐츠에 따라 자동으로 조정 */
+	text-align: center;
+	overflow: hidden; /* 내용이 넘치지 않도록 설정 */
 }
 
 .product-Item img {
-    width: 100%; /* 이미지가 아이템의 너비에 맞게 조정 */
-    height: auto; /* 이미지 비율 유지 */
-    display: block; /* 이미지 아래 여백 제거 */
+	width: 100%; /* 이미지가 아이템의 너비에 맞게 조정 */
+	height: auto; /* 이미지 비율 유지 */
+	display: block; /* 이미지 아래 여백 제거 */
 }
 
 .sold-out-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
-    color: white;
-    font-size: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    z-index: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
+	color: white;
+	font-size: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
+	z-index: 0;
 }
 
 .product-image-wrapper {
-    position: relative;
+	position: relative;
 }
 
 .star {
-    font-size: 16px;
-    color: #f5c518;  /* 노란색 */
-    position: relative;
-    display: inline-block;
+	font-size: 16px;
+	color: #f5c518; /* 노란색 */
+	position: relative;
+	display: inline-block;
 }
 
 .star.half {
-    background: linear-gradient(90deg, #f5c518 50%, #ddd 50%);  /* 반쪽 노란 별 */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+	background: linear-gradient(90deg, #f5c518 50%, #ddd 50%); /* 반쪽 노란 별 */
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 .star.gray {
-    color: #ddd;  /* 회색 */
+	color: #ddd; /* 회색 */
 }
 
 .product-Item {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 #proClick {
 	text-decoration: none; /* 기존 언더라인 제거 */
-	color: rgb(251, 0, 88)  !important;
+	color: rgb(251, 0, 88) !important;
 	box-shadow: 0 3px 0 rgb(251, 0, 88); /* 밑에 그림자를 이용한 언더라인 */
 	padding-bottom: 10px;
 }
