@@ -65,7 +65,6 @@
 	</form>
 </div>
 
-<script src="/static/js/mypage/setting.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll(".form-row input").forEach(input => {
@@ -76,5 +75,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script>
+<script src="/static/js/mypage/setting.js"></script>
 </body>
 </html>

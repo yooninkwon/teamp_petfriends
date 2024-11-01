@@ -33,7 +33,6 @@
     <button class="confirm-address-btn" id="addrcom">이 주소가 확실해요</button>
 </div>
 
-<script src="/static/js/mypage/setting.js"></script>
 <script>
 $(document).ready(function() {
     $('#addrcom').on('click', function() {
@@ -57,5 +56,6 @@ $(document).ready(function() {
     });
 });
 </script>
+<script src="/static/js/mypage/setting.js"></script>
 </body>
 </html>

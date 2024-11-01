@@ -4,6 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.tech.petfriends.mypage.dao.MypageDao">
+	
+	<insert id="insertMyPet" parameterType="com.tech.petfriends.mypage.dto.MyPetDto">
+		INSERT INTO MEMBER_PET (PET_CODE, MEM_CODE, PET_TYPE, PET_NAME, PET_IMG, PET_BREED,
+		PET_BIRTH, PET_GENDER, PET_WEIGHT, PET_NEUT, PET_FORM, PET_CARE, PET_ALLERGY, PET_MAIN)
+		VALUES (#{pet_code}, #{mem_code}, #{pet_type}, #{pet_name}, #{pet_img}, #{pet_breed}, #{pet_birth}, #{pet_gender},
+		#{pet_weight}, #{pet_neut}, #{pet_form}, #{pet_care}, #{pet_allergy}, #{pet_main})
+	</insert>
 
     <select id="getPetsByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyPetDto">
 		SELECT *
@@ -15,7 +22,7 @@
 	<update id="removeMainPet">
 		UPDATE MEMBER_PET
 		SET PET_MAIN='N'
-		WHERE PET_CODE=#{param1}
+		WHERE PET_MAIN='Y' AND MEM_CODE=#{param1}
 	</update>
 	
 	<update id="setMainPet">
@@ -24,11 +31,44 @@
 		WHERE PET_CODE=#{param1}
 	</update>
 	
+	<select id="getBreedOptionByType" resultType="String">
+		SELECT PB_OPTION
+		FROM PET_BREED
+		WHERE PB_TYPE=#{petType}
+	</select>
+	
+	<insert id="insertPet" parameterType="com.tech.petfriends.mypage.dto.MyPetDto">
+	    INSERT INTO MEMBER_PET
+	    VALUES (
+	        #{pet_code}, #{mem_code}, #{pet_type}, #{pet_name}, #{pet_img}, #{pet_breed}, #{pet_birth}, 
+	        #{pet_gender}, #{pet_weight}, #{pet_neut}, #{pet_form}, #{pet_care}, #{pet_allergy}, 'Y'
+	    )
+	</insert>
+	
 	<select id="getInfoByPetCode" resultType="com.tech.petfriends.mypage.dto.MyPetDto">
 		SELECT *
 		FROM MEMBER_PET
 		WHERE PET_CODE=#{param1}
 	</select>
+	
+	<update id="modifyPetByPetCode">
+    	UPDATE MEMBER_PET
+		SET PET_NAME = #{pet_name},
+		    PET_IMG = #{pet_img},
+		    PET_GENDER = #{pet_gender},
+		    PET_WEIGHT = #{pet_weight},
+		    PET_NEUT = #{pet_neut},
+		    PET_FORM = #{pet_form},
+		    PET_CARE = #{pet_care},
+		    PET_ALLERGY = #{pet_allergy}
+		WHERE PET_CODE=#{pet_code}
+	</update>
+	
+	<delete id="deletePetByPetCode">
+	    DELETE
+	    FROM MEMBER_PET
+	    WHERE PET_CODE=#{petCode}
+	</delete>
 	
 	<select id="getAllCoupon" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT *
@@ -58,13 +98,6 @@
 	<insert id="insertCouponByCouponNo">
 		INSERT INTO MEMBER_COUPON_BRIDGE
 		VALUES(#{param1},#{param2},#{param3},SYSDATE,NULL,NULL)
-	</insert>
-	
-	<insert id="insertMyPet" parameterType="com.tech.petfriends.mypage.dto.MyPetDto">
-		INSERT INTO MEMBER_PET (PET_CODE, MEM_CODE, PET_TYPE, PET_NAME, PET_IMG, PET_BREED,
-		PET_BIRTH, PET_GENDER, PET_WEIGHT, PET_NEUT, PET_FORM, PET_CARE, PET_ALLERGY, PET_MAIN)
-		VALUES (#{pet_code}, #{mem_code}, #{pet_type}, #{pet_name}, #{pet_img}, #{pet_breed}, #{pet_birth}, #{pet_gender},
-		#{pet_weight}, #{pet_neut}, #{pet_form}, #{pet_care}, #{pet_allergy}, #{pet_main})
 	</insert>
 	
 	<select id="getAddrByMemberCode" resultType="com.tech.petfriends.login.dto.MemberAddressDto">
