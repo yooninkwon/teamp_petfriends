@@ -50,11 +50,11 @@ public interface IDao {
 
 	public int replyDelete(String comment_no, String parent_comment_no, String comment_level, String comment_order_no);
 	
-	public void addLike (String board_no,String user_id);
+	public void addLike (String board_no,String mem_nick);
 	
-	public void removeLike (String board_no,String user_id);
+	public void removeLike (String board_no,String mem_nick);
 	
-	public int isLiked (String board_no,String user_id);
+	public int isLiked (String board_no,String mem_nick);
 
 	public void write(String mem_nick, String mem_code, String board_title, String board_content, int b_cate_no);
 	
