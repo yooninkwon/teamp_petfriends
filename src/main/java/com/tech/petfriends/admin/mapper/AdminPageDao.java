@@ -40,7 +40,7 @@ public interface AdminPageDao {
 			String info_line10, String info_line11, String info_line12, String info_line13, String info_line14,
 			String info_line15, String info_line16);
 
-	ArrayList<PethotelMemDataDto> adminPethotelReserveData(String reserveType, String searchOrder, String startDate, String endDate,
+	ArrayList<PethotelMemDataDto> adminPethotelReserveData(String reserveType, String startDate, String endDate,
 			String memberCode, String reserveCode);
 	
 	ArrayList<PethotelFormDataDto> adminPethotelReservePets(String hph_reserve_no);

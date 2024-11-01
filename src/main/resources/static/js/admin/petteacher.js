@@ -143,36 +143,13 @@ $(document).ready(function() {
 			});
 		}
 
-		// 필터링 관련 코드 
-		$('#petteacher-filter input[name="pet-type-filter"]').on('change', function() {
-			// 동물 종류 필터가 변할때마다 그에 맞는 데이터 불러옴
+		// 필터링 코드 
+		$('#filters').on('change', function() {
+			// 필터 div의 필터 input 값이 변할때마다 그에 맞는 데이터 불러옴
 			filterParam = {
 				type: $('input[name="pet-type-filter"]:checked').val(),
 				category: $('input[name="category-filter"]:checked').val(),
 				sort: $('#sort-order').val()
-			};
-
-			fetchData(currentPage, currPageGroup, filterParam);
-		});
-
-		$('#category-filter input[name="category-filter"]').on('change', function() {
-			// 카테고리 필터가 변할때마다 그에 맞는 데이터 불러옴
-			filterParam = {
-				type: $('input[name="pet-type-filter"]:checked').val(),
-				category: $('input[name="category-filter"]:checked').val(),
-				sort: $('#sort-order').val()
-			};
-
-			fetchData(currentPage, currPageGroup, filterParam);
-		});
-
-
-		$('#sort-order').on('change', function() {
-			// 등록일자 필터가 변할때마다 그에 맞는 데이터 불러옴
-			filterParam = {
-				type: $('input[name="pet-type-filter"]:checked').val(),
-				category: $('input[name="category-filter"]:checked').val(),
-				sort: $(this).val()
 			};
 
 			fetchData(currentPage, currPageGroup, filterParam);

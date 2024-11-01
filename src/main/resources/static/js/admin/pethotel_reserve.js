@@ -21,7 +21,6 @@ $(document).ready(function() {
 		// 필터 기본 값
 		let filterParam = {
 			reserveType: '전체',
-			searchOrder: '전체',
 			startDate: '',
 			endDate: '',
 			memberCode: '',
@@ -75,16 +74,12 @@ $(document).ready(function() {
 				lists += '<td>' + memSelectDto.hph_status + '</td>';
 				lists += '<td>' + approval_date + '</td>';
 				lists += '<td>' + memSelectDto.hph_refusal_reason + '</td>';
-				lists += '<td><button class="btn-style" id="button' + memSelectDto.hph_reserve_no + '">';
+				lists += '<td><button class="btn-style detail-btn" id="button' + memSelectDto.hph_reserve_no + '">';
 				lists += '상세정보 조회 </button></td></tr>';
-
-
-				$('#pethotel-reserve-table-body').html(lists);
-
-
 			});
+				$('#pethotel-reserve-table-body').html(lists);
 			// 상세조회 버튼 클릭 시, 각 버튼의 ID에서 예약번호 추출함
-			$(document).on('click', '.btn-style', function() {
+			$(document).on('click', '.detail-btn', function() {
 				const hph_reserve_no = $(this).attr('id').split('button')[1];  // 버튼 ID에서 예약 번호 추출
 				loadReserveDetailData(hph_reserve_no);
 			});
@@ -95,9 +90,9 @@ $(document).ready(function() {
 		// 예약정보 상세조회
 		function loadReserveDetailData(hph_reserve_no) {
 
-			fetchData()
+			fetchDataForDetail()
 
-			function fetchData() {
+			function fetchDataForDetail() {
 				const url = `/admin/pethotel_admin_reserve_detail?hph_reserve_no=${hph_reserve_no}`;
 
 				fetch(url, {
@@ -129,7 +124,7 @@ $(document).ready(function() {
 
 				// 멤버
 				let approval_date = '';
-				if (data.reserveMem.hph_approval_date == null) {
+				if (data.reserveMem.hph_approval_date === null) {
 					approval_date = '-';
 				} else {
 					approval_date = data.reserveMem.hph_approval_date;
@@ -166,19 +161,6 @@ $(document).ready(function() {
 				$('#reserveDetailList').html(lists);
 			}
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 		// 페이징
 		function setupPagination(currentPage, currPageGroup) {
@@ -217,5 +199,53 @@ $(document).ready(function() {
 				setupPagination(currentPage, currPageGroup);
 			});
 		}
+		
+		// 예약 상세페이지의 예약상태변경 버튼 클릭 시
+		$(document).on('click', '#reserveSubmit', function() {
+			let statusVal = $(`input[name="reserve_status_set"]:checked`).val()
+			if(statusVal != null) {
+				console.log(statusVal)
+			}
+		});
+
+		// 상세조회 버튼 클릭 시, 각 버튼의 ID에서 예약번호 추출함
+		$(document).on('click', '#goBack', function() {
+			location.replace(location.href);
+		});
+
+		// 필터 초기화 버튼 클릭 핸들러
+		$(document).on('click', '#filterReset', function() {
+			let filterParam = {
+				reserveType: '전체',
+				startDate: '',
+				endDate: '',
+				memberCode: '',
+				reserveCode: ''
+			};
+			
+			$(`input[name="reserve-type-filter"][value="전체"]`).prop('checked', true);
+			$('#start-date').val('');
+			$('#end-date').val('');
+			$('#search-mem-code').val('');
+			$('#search-reserve-code').val('');
+			
+			fetchData(currentPage, currPageGroup, filterParam);
+		});
+
+
+		// 필터링 
+		$('#pethotelRegister').on('change', function() {
+			filterParam = {
+				reserveType: $('input[name="reserve-type-filter"]:checked').val(),
+				startDate: $('#start-date').val(),
+				endDate: $('#end-date').val(),
+				memberCode: $('#search-mem-code').val(),
+				reserveCode: $('#search-reserve-code').val()
+			};
+			fetchData(currentPage, currPageGroup, filterParam);
+		});
+
+
+
 	}
 });

@@ -103,26 +103,33 @@
 		<where>
 			<!-- 예약상태 필터 -->
 			<choose>
-				<when test="reserveType == '전체'">HPH_NUMOF_PET >= 0</when>
-				<when test="reserveType != '전체'">HPH_STATUS = #{reserveType}</when>
+				<when test="reserveType == '전체'">HPH_STATUS IS NOT NULL</when>
+				<when test="reserveType == '신청중'">HPH_STATUS = '신청중'</when>
+				<when test="reserveType == '승인'">HPH_STATUS = '승인'</when>
+				<when test="reserveType == '거절'">HPH_STATUS = '거절'</when>
 			</choose>
+			
 			<!-- 기간 필터 -->
  			<if test="(startDate != null and startDate != '') or (endDate != null and endDate != '')">
 	            <choose>
-	            	<when test="startDate != null and endDate == null">
-	            		AND HPH_START_DATE >= #{startDate}
+	            	<when test="(startDate != null and startDate != '') and (endDate == null or endDate == '')">
+	            		AND HPH_START_DATE &gt;= TO_DATE(#{startDate}, 'YYYY/MM/DD')
 	            	</when>
-	            	<when test="startDate == null and endDate != null">
-	            		AND HPH_END_DATE >= #{endDate}
+	            	<when test="(endDate != null and endDate != '') and (startDate == null or startDate == '')">
+	            		AND HPH_END_DATE &lt;= TO_DATE(#{endDate}, 'YYYY/MM/DD')
 	            	</when>
-	            	<when test="startDate != null and endDate != null">
-	            		AND HPH_START_DATE IS NOT NULL
+	            	<when test="(startDate != null and endDate != null) or (startDate != '' and endDate != '')">
+	            		AND HPH_START_DATE &gt;= TO_DATE(#{startDate}, 'YYYY/MM/DD')
+	            		AND HPH_END_DATE &lt;= TO_DATE(#{endDate}, 'YYYY/MM/DD')
 	            	</when>
 	            </choose>
         	</if>
-			
-			<!-- 여기 더 채워야함 필터링 -->
-			
+        	
+        	<!-- 멤버 코드 -->
+			<if test="memberCode != '' and memberCode != null"> AND MEM_CODE = #{memberCode} </if>
+
+        	<!-- 예약 코드 -->
+			<if test="reserveCode != '' and memberCode != null"> AND HPH_RESERVE_NO = #{reserveCode} </if>
 		</where>
 	</select>
 	<select id="adminPethotelReservePets" resultType="com.tech.petfriends.helppetf.dto.PethotelFormDataDto">
