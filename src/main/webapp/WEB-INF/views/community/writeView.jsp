@@ -11,6 +11,70 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
+
+
+
+
+<body>
+
+<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+
+<div class="container">
+    <h3>글쓰기</h3>
+
+    <form id="postForm" action="${pageContext.request.contextPath}/community/write" method="post" enctype="multipart/form-data" class="write-form" onsubmit="return validateForm()">
+       <input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
+       <input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
+       <input type="hidden" name="pet_img" value="${postList.pet_img}">
+      
+       <div class="form-group">
+        <label for="user_id"> 작성자: ${sessionScope.loginUser.mem_nick} </label>
+       </div>
+       
+        
+        <label for="b_cate_no">카테고리</label>
+        <select id="b_cate_no" name="b_cate_no" required>
+            <option value="">카테고리를 선택하세요</option>
+            <c:forEach var="category" items="${category}">
+                <option value="${category.b_cate_no}">${category.b_cate_name}</option>
+            </c:forEach>
+        </select>
+	
+        
+        <label for="file" class="image-label">사진업로드</label>
+        <input type="file" id="file" name="file" multiple>
+
+        <label for="board_title">제목</label>
+        <input type="text" id="board_title" name="board_title" placeholder="제목을 입력하세요" required>
+
+        <label for="board_content">내용</label>
+        <textarea id="board_content" name="board_content" placeholder="내용을 입력하세요" required></textarea>
+
+        <label for="repfile" class="image-label">대표이미지</label>
+        <input type="file" id="repfile" name="repfile" onchange="previewRepImage(event)">
+
+		
+		<!-- 대표 이미지 미리보기 -->
+        <div id="repImagePreview" class="post-image" style="max-width: 100%; height: auto; margin-top: 10px;">
+            <img id="previewImage" src="" alt="대표 이미지 미리보기" style="max-width: 100%; height: auto; display: none;">
+        </div>
+			<div class="button-container">
+        <input type="button" id="previewButton" class="btn submit-btn" value="내용 미리보기">
+        
+        <input type="submit" id="submit-btn" class="btn submit-btn" value="작성 완료">
+    	</div>
+    </form>
+
+    <!-- 미리보기 팝업 -->
+    <div id="previewPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center;">
+        <div class="popup-content" style="background: white; padding: 20px; border-radius: 5px;">
+            <h4>미리보기</h4>
+            <div id="preview" class="preview-area"></div>
+            <input type="button" id="closePreview" class="btn" value="닫기">
+        </div>
+    </div>
+</div>
+
 <script>
     // CKEditor 초기화
     CKEDITOR.replace('board_content', {
@@ -86,69 +150,6 @@
         return true; 
     }     
 </script>
-
-
-
-<body>
-
-<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
-
-<div class="container">
-    <h3>글쓰기</h3>
-
-    <form id="postForm" action="${pageContext.request.contextPath}/community/write" method="post" enctype="multipart/form-data" class="write-form" onsubmit="return validateForm()">
-       <input type="hidden" name="mem_code" value=" ${sessionScope.loginUser.mem_code}">
-       <input type="hidden" name="mem_nick" value=" ${sessionScope.loginUser.mem_nick}">
-      
-       <div class="form-group">
-        <label for="user_id"> 작성자:  ${sessionScope.loginUser.mem_nick} </label>
-       </div>
-       
-        
-        <label for="b_cate_no">카테고리</label>
-        <select id="b_cate_no" name="b_cate_no" required>
-            <option value="">카테고리를 선택하세요</option>
-            <c:forEach var="category" items="${category}">
-                <option value="${category.b_cate_no}">${category.b_cate_name}</option>
-            </c:forEach>
-        </select>
-	
-        
-        <label for="file" class="image-label">사진업로드</label>
-        <input type="file" id="file" name="file" multiple>
-
-        <label for="board_title">제목</label>
-        <input type="text" id="board_title" name="board_title" placeholder="제목을 입력하세요" required>
-
-        <label for="board_content">내용</label>
-        <textarea id="board_content" name="board_content" placeholder="내용을 입력하세요" required></textarea>
-
-        <label for="repfile" class="image-label">대표이미지</label>
-        <input type="file" id="repfile" name="repfile" onchange="previewRepImage(event)">
-
-		
-		<!-- 대표 이미지 미리보기 -->
-        <div id="repImagePreview" class="post-image" style="max-width: 100%; height: auto; margin-top: 10px;">
-            <img id="previewImage" src="" alt="대표 이미지 미리보기" style="max-width: 100%; height: auto; display: none;">
-        </div>
-			<div class="button-container">
-        <input type="button" id="previewButton" class="btn submit-btn" value="내용 미리보기">
-        
-        <input type="submit" id="submit-btn" class="btn submit-btn" value="작성 완료">
-    	</div>
-    </form>
-
-    <!-- 미리보기 팝업 -->
-    <div id="previewPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center;">
-        <div class="popup-content" style="background: white; padding: 20px; border-radius: 5px;">
-            <h4>미리보기</h4>
-            <div id="preview" class="preview-area"></div>
-            <input type="button" id="closePreview" class="btn" value="닫기">
-        </div>
-    </div>
-</div>
-
-
 
 <footer>
 <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />

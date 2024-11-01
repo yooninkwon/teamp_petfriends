@@ -40,6 +40,7 @@ public class CContentVieWService implements CServiceInterface{
     	ArrayList<CCommentDto> commentReplyList = iDao.commentReplyList(board_no);
         model.addAttribute("commentReplyList", commentReplyList);
 	
+      
    
 	}
 

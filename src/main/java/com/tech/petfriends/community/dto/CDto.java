@@ -16,7 +16,7 @@ public class CDto {
 
     private int board_no;
     private int b_cate_no;
-    private String u_no;
+    private String mem_code;
     private String user_id;
     private String board_title;
     private int board_password;
@@ -37,6 +37,9 @@ public class CDto {
 	private String orepfile; // 대표 이미지 원본 파일 이름
 	private String chrepfile; // 대표 이미지변경 파일 이름
 
+	// member_pet  테이블
+	private String pet_img;
+	private String pet_main;
 
 }
 

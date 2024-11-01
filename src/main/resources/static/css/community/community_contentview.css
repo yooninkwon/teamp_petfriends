@@ -23,8 +23,8 @@ body {
     display: flex;
     justify-content: center; /* 중앙 정렬 */
     margin: 30px 0; /* 상하 여백 설정 */
+	align-items: center;
 }
-
 
 .post-footer {
     display: flex;
@@ -120,6 +120,7 @@ body {
 .user-name {
     font-weight: bold;
     color: #333;
+    margin-right: 20px; /* 이름과 날짜 사이의 간격 조정 */
 }
 
 .comment-content {
@@ -239,5 +240,12 @@ body {
 
 .comment-button:hover, .delete-button:hover {
     background-color: #ffe5ee; /* 마우스 오버시 배경색 */
+}
+
+.profile-image {
+    width: 50px; /* 원하는 너비 */
+    height: 50px; /* 원하는 높이 */
+    border-radius: 50%; /* 원형으로 만들고 싶다면 추가 */
+    margin-right: 10px; /* 이미지와 이름 사이의 간격 조정 */
 }
 

@@ -23,5 +23,6 @@ public class CCommentDto {
 	private int comment_order_no; 
 	private Date edited_date;
 	
+	private String pet_img;
 	
 }

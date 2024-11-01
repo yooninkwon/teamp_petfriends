@@ -4,21 +4,34 @@
 
 <!-- 게시글 목록 가져오기 -->
 <mapper namespace="com.tech.petfriends.community.mapper.IDao">
+	
 	<select id="getPostList"
 		resultType="com.tech.petfriends.community.dto.CDto">
-		SELECT * FROM COMMUNITY_BOARD CD
-		JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO ORDER BY
-		CD.BOARD_NO DESC
+		SELECT CD.*, RCI.*, MP.PET_IMG 
+		FROM COMMUNITY_BOARD CD
+		INNER JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
+		INNER JOIN MEMBER_PET MP ON CD.MEM_CODE = MP.MEM_CODE
+		WHERE MP.PET_MAIN = 'Y'
+		ORDER BY CD.BOARD_NO DESC
 	</select>
+
+	
+	<select id="getPetIMG"
+		resultType="com.tech.petfriends.community.dto.CDto">
+		SELECT PET_IMG FROM MEMBER_PET
+		WHERE MEM_CODE = #{mem_code} 
+		AND PET_MAIN = 'Y' 		
+	</select> 
+	
 
 	<insert id="write">
 		INSERT INTO COMMUNITY_BOARD (BOARD_NO,
-		B_CATE_NO, U_NO, USER_ID,
+		B_CATE_NO, MEM_CODE, USER_ID,
 		BOARD_TITLE, BOARD_PASSWORD, BOARD_CONTENT, BOARD_CREATED, BOARD_MODIFIED,
 		BOARD_VIEWS,BOARD_TAG, BOARD_LIKES, BOARD_COMMENT_COUNT)
 		VALUES
 		(COMMUNITY_BOARD_SEQ.NEXTVAL, #{b_cate_no},#{mem_code}, #{mem_nick}, #{board_title},
-		1234, #{board_content},SYSDATE, SYSDATE, 3, 'tag1', 1, 0)
+		1234, #{board_content},SYSDATE, null, 3, 'tag1', 1, 0)
 	</insert>
 
 	<select id="selBid" resultType="_int">
@@ -34,13 +47,13 @@
 		#{changeFile}, #{repImgOriginal}, #{repImgChange})
 	</insert>
 
-
 	<select id="contentView"
-		resultType="com.tech.petfriends.community.dto.CDto">
-		SELECT * FROM COMMUNITY_BOARD CD
-		JOIN RE_CBOARD_IMAGE RCI ON
-		CD.BOARD_NO = RCI.BOARD_NO
-		WHERE CD.BOARD_NO = #{param1}
+		resultType="com.tech.petfriends.community.dto.CDto">		
+		SELECT CD.*, RCI.*, MP.PET_IMG 
+		FROM COMMUNITY_BOARD CD
+		INNER JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
+		INNER JOIN MEMBER_PET MP ON CD.MEM_CODE = MP.MEM_CODE
+		WHERE CD.BOARD_NO = #{board_no} AND MP.PET_MAIN = 'Y'
 	</select>
 
 
@@ -94,32 +107,41 @@
 		INSERT INTO COMMUNITY_COMMENT (COMMENT_NO, BOARD_NO, USER_ID,
 		COMMENT_CONTENT, CREATED_DATE, PARENT_COMMENT_NO, COMMENT_LEVEL,
 		COMMENT_ORDER_NO, EDITED_DATE)
-		VALUES (COMMUNITY_COMMENT_SEQ.NEXTVAL, #{board_no}, 111,
+		VALUES (COMMUNITY_COMMENT_SEQ.NEXTVAL, #{board_no}, #{mem_nick},
 		#{comment_content}, SYSDATE, COMMUNITY_COMMENT_SEQ.CURRVAL,0,0, SYSDATE)
 	</insert>
 
 	<select id="commentList"
 		resultType="com.tech.petfriends.community.dto.CCommentDto">
-		SELECT * FROM COMMUNITY_COMMENT
-		WHERE COMMENT_LEVEL = 0
-		ORDER BY COMMENT_NO
+		SELECT DISTINCT CC.*, MP.PET_IMG
+		FROM COMMUNITY_COMMENT CC
+		JOIN COMMUNITY_BOARD CB ON CC.BOARD_NO = CB.BOARD_NO
+		JOIN MEMBER_PET MP ON CB.MEM_CODE = MP.MEM_CODE
+		WHERE CC.COMMENT_LEVEL = 0 
+		AND CC.BOARD_NO = #{board_no}
+		AND MP.PET_IMG IS NOT NULL
+		ORDER BY CC.COMMENT_NO
 	</select>
 
 	<insert id="commentReply">
 		INSERT INTO COMMUNITY_COMMENT (COMMENT_NO, BOARD_NO, USER_ID,
 		COMMENT_CONTENT, CREATED_DATE, PARENT_COMMENT_NO, COMMENT_LEVEL,
 		COMMENT_ORDER_NO, EDITED_DATE)
-		VALUES (COMMUNITY_COMMENT_SEQ.NEXTVAL, #{board_no}, 111,
+		VALUES (COMMUNITY_COMMENT_SEQ.NEXTVAL, #{board_no}, #{mem_nick},
 		#{comment_content}, SYSDATE, #{parent_comment_no}, #{comment_level} + 1,
 		#{comment_order_no} + 1, SYSDATE)
 	</insert>
 
 	<select id="commentReplyList"
 		resultType="com.tech.petfriends.community.dto.CCommentDto">
-		SELECT * FROM COMMUNITY_COMMENT
-		WHERE COMMENT_LEVEL >= 1
-		AND BOARD_NO = #{board_no}
-		ORDER BY COMMENT_LEVEL
+		SELECT CC.*, MP.PET_IMG
+		FROM COMMUNITY_COMMENT CC
+		JOIN COMMUNITY_BOARD CB ON CC.BOARD_NO = CB.BOARD_NO
+		JOIN MEMBER_PET MP ON CB.MEM_CODE = MP.MEM_CODE
+		WHERE CC.COMMENT_LEVEL >= 1 
+		AND CC.BOARD_NO = #{board_no}
+		AND MP.PET_IMG IS NOT NULL		
+		ORDER BY CC.COMMENT_LEVEL
 	</select>
 
 	<update id="commentShape">
