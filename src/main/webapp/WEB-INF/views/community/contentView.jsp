@@ -28,15 +28,19 @@
             replyForm.style.display = replyForm.style.display === "none" || replyForm.style.display === "" ? "block" : "none";
         }
         
-        function toggleLike(boardNo, liked) {
+        function toggleLike(boardNo, liked, mem_nick) {
             $.ajax({
                 url: "/community/updateLike",
                 type: "POST",
-                data: { board_no: boardNo, liked: liked },
+                data: { 
+                    board_no: boardNo,
+                    liked: liked,
+                    mem_nick: mem_nick // mem_nick 값 추가
+                },
                 success: function(updatedLikes) {
                     $("#like-count").text(updatedLikes);
                     $("#like-button").text(liked ? "❤️" : "🤍");
-                    $("#like-button").attr("onclick", "toggleLike(" + boardNo + ", " + !liked + ")");
+                    $("#like-button").attr("onclick", "toggleLike(" + boardNo + ", " + !liked + ", '" + mem_nick + "')");
                 },
                 error: function() {
                     alert("오류가 발생했습니다.");
@@ -80,10 +84,12 @@
 			<!-- 왼쪽 끝에 위치할 댓글 및 좋아요 버튼 -->
 			<div class="left-buttons">
 				<span>${contentView.board_likes}</span>
-				<button id="like-button"
+			<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
+				<button id="like-button"				
 					onclick="toggleLike(${contentView.board_no}, false)">🤍</button>
 
 				<span>💬
+					
 					<button onclick="toggleComments()" class="main_comment-button">댓글</button>
 					${contentView.board_comment_count}
 				</span>
@@ -227,9 +233,19 @@
 					<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
 					<input type="hidden" name="board_no"
 						value="${contentView.board_no}">
+					
+					<c:if test="${sessionScope.loginUser ne null}">
 					<textarea name="comment_content" placeholder="댓글을 입력하세요..."
-						required onclick="checkLoginAndFocus(this)"> </textarea>
-					<button type="submit" >댓글 달기</button>
+						required onclick="checkLoginAndFocus(this)"></textarea>	
+					<button type="submit" >댓글 달기</button>					
+					</c:if>
+					
+					<c:if test="${sessionScope.loginUser eq null}">				
+					<textarea name="comment_content" placeholder="로그인이 필요합니다."
+						required onclick="checkLoginAndFocus(this)"></textarea>	
+					</c:if>				
+				
+				
 				</form>
 			</div>
 		</div>

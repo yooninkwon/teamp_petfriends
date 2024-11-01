@@ -120,6 +120,7 @@
 		WHERE CC.COMMENT_LEVEL = 0 
 		AND CC.BOARD_NO = #{board_no}
 		AND MP.PET_IMG IS NOT NULL
+		AND MP.PET_MAIN = 'Y'
 		ORDER BY CC.COMMENT_NO
 	</select>
 
@@ -141,6 +142,7 @@
 		WHERE CC.COMMENT_LEVEL >= 1 
 		AND CC.BOARD_NO = #{board_no}
 		AND MP.PET_IMG IS NOT NULL		
+		AND MP.PET_MAIN = 'Y'
 		ORDER BY CC.COMMENT_LEVEL
 	</select>
 
@@ -174,18 +176,18 @@
 	<insert id="addLike">
 		INSERT INTO COMMUNITY_LIKES 
 		(LIKE_ID, BOARD_NO, USER_ID, CREATED_DATE) 
-		VALUES (COMMUNITY_LIKES_SEQ.NEXTVAL, #{board_no}, #{user_id}, SYSDATE)
+		VALUES (COMMUNITY_LIKES_SEQ.NEXTVAL, #{board_no}, #{mem_nick}, SYSDATE)
 	</insert>
 
 	<delete id="removeLike">
 		DELETE FROM COMMUNITY_LIKES 
-		WHERE board_no = #{board_no} AND user_id = #{user_id}
+		WHERE board_no = #{board_no} AND user_id = #{mem_nick}
 	</delete>
 
 	<select id="isLiked" resultType="int">
 		SELECT COUNT(*) FROM COMMUNITY_LIKES 
 		WHERE board_no = #{board_no} AND user_id =
-		#{user_id}
+		#{mem_nick}
 	</select>
 
 </mapper>
