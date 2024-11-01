@@ -16,21 +16,20 @@
 	<div id="tab1">
 		<div id="pethotelRegister">
 			<div class="filter-section" id="reserve-filter">
-				<div class="radio-group">
+				<div class="radio-div">
 					<div class="filter-title">예약 상태</div>
-					<label><input type="radio" name="reserve-type-filter"
-						value="전체" checked> 전체</label> <label><input type="radio"
-						name="reserve-type-filter" value="신청중"> 신청중</label> <label><input
-						type="radio" name="reserve-type-filter" value="승인"> 승인</label> <label><input
-						type="radio" name="reserve-type-filter" value="거절"> 거절</label>
+					<label><input class="radio-group" type="radio" name="reserve-type-filter" value="전체" checked> 전체</label>
+					<label><input class="radio-group" type="radio" name="reserve-type-filter" value="신청중"> 신청중</label>
+					<label><input class="radio-group" type="radio" name="reserve-type-filter" value="승인"> 승인</label>
+					<label><input class="radio-group" type="radio" name="reserve-type-filter" value="거절"> 거절</label>
+					<button id="filterReset" class="btn-style">필터 초기화</button>
 				</div>
 			</div>
 			<div class="filter-section">
 				<div class="date-group">
 					<div class="filter-title">조회기간</div>
-					<label><input type="date" id="start-date">부터</label> <label><input
-						type="date" id="end-date">까지</label>
-					<button id="reset-date" class="btn-style">조회</button>
+					<label><input type="date" id="start-date">부터</label> 
+					<label><input type="date" id="end-date">까지</label>
 				</div>
 			</div>
 			<div class="filter-section">
@@ -38,7 +37,6 @@
 					<div class="filter-title">검색</div>
 					<label>회원코드<input type="text" id="search-mem-code"></label>
 					<label>예약코드<input type="text" id="search-reserve-code"></label>
-					<button id="search-btn" class="btn-style">조회</button>
 				</div>
 			</div>
 		</div>
@@ -73,8 +71,9 @@
 	<div id="reserveDetailModal" style="display: none;">
 		<div id="reserveDetailButtons" class="title">
 			<button id="goBack" class="btn-style">목록으로</button>
-			<label><input type="radio" name="reserve_status" value="승인" /> 승인</label>
-			<label><input type="radio" name="reserve_status" value="거절" /> 거절</label>
+			<label><input type="radio" name="reserve_status_set" value="신청중" /> 신청중</label>
+			<label><input type="radio" name="reserve_status_set" value="승인" /> 승인</label>
+			<label><input type="radio" name="reserve_status_set" value="거절" /> 거절</label>
 			<button id="reserveSubmit" class="btn-style">예약 상태 변경</button>
 		</div>
 		<div id="reserveDetailMemTable">

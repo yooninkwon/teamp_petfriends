@@ -15,7 +15,7 @@
 .filter-title {
 	width: 150px;
 	height: 100%;
-	padding: 5px 30px;
+	padding: 6px 30px 7px 30px;
 	background-color: #dddddd;
 	font-size: 14px;
 	font-weight: bold;
@@ -35,7 +35,16 @@ label {
 	margin-left: 10px;
 }
 
+#filterReset {
+	margin-left: 65px;
+	padding: 2px 15px;
+}
+
 .radio-group {
+	border: 2px solid white;
+	background-color: #efefef;
+}
+.radio-div {
 	display: flex;
 	width: 100%;
 	border: 2px solid white;
@@ -113,12 +122,18 @@ input[type="text"] {
 	color: white;
 }
 #reserveDetailButtons {
-	padding-left: 5px;
-	padding-right: 0px;
+	display: flex;
+    padding-left: 5px;
+    padding-right: 0px;
+    justify-content: space-between;
 }
 
 #goBack {
-	margin-right: 72%;
+	margin-right: 65%;
+}
+
+#reserveSubmit {
+	margin-right: 15px;
 }
 
 #goBack, #reserveSubmit {

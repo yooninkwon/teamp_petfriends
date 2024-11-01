@@ -24,13 +24,12 @@ public class AdminPethotelDataService implements AdminServiceInterface {
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		
 		String reserveType = request.getParameter("reserveType");
-		String searchOrder = request.getParameter("searchOrder");
 		String startDate = request.getParameter("startDate");
 		String endDate = request.getParameter("endDate");
 		String memberCode = request.getParameter("memberCode");
 		String reserveCode = request.getParameter("reserveCode");
-
-		ArrayList<PethotelMemDataDto> memSelectDto = adminDao.adminPethotelReserveData(reserveType, searchOrder, startDate, endDate, memberCode, reserveCode);
+		
+		ArrayList<PethotelMemDataDto> memSelectDto = adminDao.adminPethotelReserveData(reserveType, startDate, endDate, memberCode, reserveCode);
 		model.addAttribute("memSelectDto", memSelectDto);
 
 	}
