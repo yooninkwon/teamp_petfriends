@@ -166,6 +166,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             authCode = data.authCode; // 인증번호 저장
+			console.log(authCode);
             alert("인증번호가 발송되었습니다.");
             document.getElementById("phoneNumberDisabled").disabled = true; // 번호 입력 수정 불가능하게 설정
             document.getElementById("codelabel").hidden = false; // 숨기기 취소
