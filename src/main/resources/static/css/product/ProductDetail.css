@@ -175,6 +175,18 @@
 	
 }
 
+.recProduct > * {
+    transition: transform 0.3s ease; /* 부드러운 확대 효과를 위해 트랜지션 추가 */
+}
+
+.recProduct > *:hover {
+    transform: scale(1.05); /* 아이템을 1.1배로 확대 */
+}
+.recProduct :hover .recProName{
+	color : #ff4081;
+	font-weight: bold;
+}
+
 .recProduct {
     display: flex; /* Flexbox 활성화 */
     flex-wrap: wrap; /* 아이템이 공간을 초과할 경우 줄 바꿈 */

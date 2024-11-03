@@ -129,7 +129,7 @@
 				   	    	        <img src="/static/Images/ProductImg/MainImg/\${product.main_img1}"/>
 									\${soldOutOverlay} <!-- 품절 표시 -->
 				                </div>
-				                <h3>\${product.pro_name}</h3>
+				                <h3 class="searchProName">\${product.pro_name}</h3>
 								<span class="searchPrice">\${(product.proopt_price).toLocaleString()}원</span> <br />
 				                <span class="searchDiscount">\${product.pro_discount}%</span> 
 				                <span class="searchFPrice">\${(product.proopt_finalprice).toLocaleString()}원</span>

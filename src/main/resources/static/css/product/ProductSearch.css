@@ -76,6 +76,9 @@
     overflow: hidden; /* 내용이 넘치지 않도록 설정 */
     font-size: 14px; /* 기본 폰트 크기를 줄임 */
 }
+.search-Item:hover .searchProName{
+	color : #ff4081;
+}
 
 .search-image-wrapper {
     position: relative; /* 품절 오버레이를 위한 설정 */

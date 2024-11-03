@@ -151,7 +151,7 @@
 							<div class="recproduct-image-wrapper">
 								<img src="/static/images/ProductImg/MainImg/${recPro.main_img1}" />
 							</div>
-							<span>${recPro.pro_name}</span> <br /> 
+							<span class="recProName">${recPro.pro_name}</span> <br /> 
 							<span id="proPrice">
 							<fmt:formatNumber value="${recPro.proopt_price}" pattern="#,###"/>원
 							</span> <br /> 
