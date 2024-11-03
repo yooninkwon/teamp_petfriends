@@ -43,7 +43,9 @@ public class CPostListService implements CServiceInterface{
         model.addAttribute("postList", postList); // 모델에 게시글 리스트 추가
 	
     
-		
+        ArrayList<CDto> getHotTopicList = iDao.getHotTopicList();
+        model.addAttribute("getHotTopicList",getHotTopicList);
+        		
 		
 		
 		

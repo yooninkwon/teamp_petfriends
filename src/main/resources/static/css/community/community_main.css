@@ -121,7 +121,8 @@ a:hover  {
 .overlay p {
     color: rgba(255, 255, 255, 0.9);
     font-size: 18px; /* 글씨 크기 */
-	
+	text-align: center; /* 텍스트 중앙 정렬 */
+	margin: 10px; /* 기본 마진 */
 }
 
 .container-box {

@@ -1,0 +1,155 @@
+@charset "UTF-8";
+
+
+
+tml, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box; /* 패딩 포함 너비 계산 */
+	justify-content: space-between;
+	}
+
+/* 메인 영역 설정 */
+.my_feed {
+     flex: 3; /* 메인 영역이 남은 너비를 차지 */
+    padding: 20px;
+    background-color: #fff;
+}
+
+
+#content {
+	text-align: center;
+}
+
+
+
+/* 사이드바 */
+
+.sidebar {
+	flex: 1;
+	width: 100%;
+	 position: relative; /* 사이드바를 메인 영역 옆에 정렬 */
+    top: 20px; /* 헤더의 높이에 따라 조정 */
+
+    background-color: #fff; /* 배경색 */
+    padding: 20px; /* 내부 여백 */
+    border: 1px solid #ccc; /* 테두리 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    border: 5px solid #ffe5ee;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: flex-start; /* 제목을 왼쪽 정렬 */
+    align-items: center; /* 중앙 정렬 */
+    width: 100%; /* 사이드바의 너비를 100%로 설정 */
+}
+
+.sidebar-header h2 {
+    font-size: 20px; /* 제목 크기 */
+   	 padding: 10px;/* 기본 여백 제거 */
+}
+
+.login-button {
+    background-color: #ff4081 !important; /* 버튼 배경색 */
+    color: white !important; /* 텍스트 색상 */
+    padding: 10px 15px !important; /* 내부 여백 */
+    border-color: none !important; /* 테두리 제거 */
+    border-radius: 5px !important; /* 모서리 둥글게 */
+    cursor: pointer !important; /* 마우스 포인터 변경 */
+    display: flex !important;
+    align-items: center !important; /* 수직 중앙 정렬 */
+    justify-content: center !important; /* 수평 중앙 정렬 */
+    width: 320px !important;
+    height: 50px !important;
+    margin: auto !important;
+    text-align: center !important; /* 텍스트 가운데 정렬 */
+	font-size: 20px !important;
+	font-weight: bold !important;
+}
+
+.logout-button {
+    background-color: #ff4081 !important; /* 버튼 색상 */
+    color: white !important; /* 텍스트 색상 */
+    padding: 10px 15px !important; /* 내부 여백 */
+    border: none !important;/* 테두리 제거 */
+    border-radius: 5px !important; /* 모서리 둥글게 */
+    cursor: pointer !important; /* 마우스 포인터 변경 */
+    display: flex !important;
+    align-items: center !important;
+    margin-left: auto !important;
+	float: right !important;
+}
+
+.sidebar-menu {
+    list-style-type: none; /* 리스트 스타일 제거 */
+    padding: 0; /* 패딩 제거 */
+    margin: 20px 0; /* 위아래 여백 추가 */
+}
+
+.sidebar-menu li {
+    margin: 10px 0; /* 각 항목 사이 여백 추가 */
+}
+
+.sidebar-menu a {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: #333; /* 링크 색상 */
+}
+
+.sidebar-notice {
+    background-color: #f9f9f9; /* 배경색 설정 */
+    padding: 10px; /* 내부 여백 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    margin: 20px 0; /* 위아래 여백 추가 */
+    max-height: 200px; /* 최대 높이 설정 (원하는 높이로 조정 가능) */
+    overflow-y: auto; /* 세로 스크롤바 추가 */
+}
+
+.sidebar-notice h3 {
+    margin: 0; /* 기본 여백 제거 */
+}
+
+.sidebar-from {
+    margin: 20px 0; /* 위아래 여백 추가 */
+}
+
+.sidebar-from h4 {
+    margin: 0; /* 기본 여백 제거 */
+}
+
+.ad-banner {
+    text-align: center; /* 중앙 정렬 */
+    margin-top: 0px; /* 위쪽 여백 추가 */
+}
+
+.ad-banner img {
+    width: 100%; /* 광고 배너 너비 */
+    height: auto; /* 비율에 맞춰 자동 높이 조절 */
+	margin-bottom: 10px;
+}
+
+.profile-container {
+    display: flex; /* 수평으로 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    margin-bottom: 20px; /* 아래 여백 추가 */
+}
+
+.profile-image {
+    width: 50px; /* 프로필 이미지 너비 */
+    height: 50px; /* 프로필 이미지 높이 */
+    border-radius: 50%; /* 원형으로 만들기 */
+    margin-right: 10px; /* 이미지와 텍스트 사이 간격 */
+}
+
+.profile-text {
+    font-size: 18px; /* 텍스트 크기 조정 */
+    color: #333; /* 텍스트 색상 */
+}

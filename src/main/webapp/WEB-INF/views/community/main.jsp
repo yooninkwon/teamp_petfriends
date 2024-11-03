@@ -44,41 +44,26 @@
 		<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
 		<main>
-
-
 			<!-- 핫토픽 섹션 -->
 			<section class="hot-topics">
-				<h3>오늘의 핫이슈!</h3>
-
-				<ul>
-					<li><a href="/community/contentView">
-							<div class="image-container">
-								<img src="/static/Images/communityorign_img/hot_issue1.jpg"
-									alt="핫토픽 1 이미지" />
-								<div class="overlay">
-									<p>언박싱이 언제나 최고야! 짜릿해</p>
-								</div>
-							</div>
-					</a></li>
-					<li><a href="#">
-							<div class="image-container">
-								<img src="/static/Images/communityorign/hot_issue2.jpg"
-									alt="핫토픽 2 이미지" />
-								<div class="overlay">
-									<p>설레는 기념품 언박싱 하기!</p>
-								</div>
-							</div>
-					</a></li>
-					<li><a href="#">
-							<div class="image-container">
-								<img src="/static/Images/communityorign/hot_issue3.jpg"
-									alt="핫토픽 3 이미지" />
-								<div class="overlay">
-									<p>아빠랑 딸이랑 자전거 언박싱~</p>
-								</div>
-							</div>
-					</a></li>
-				</ul>
+			   <h3>오늘의 핫이슈!</h3>
+			   <ul>
+			       <c:forEach var="hottopic" items="${getHotTopicList}" varStatus="status">
+			           <c:if test="${status.index < 4}"> <!-- 최대 4개까지만 출력 -->
+			               <li>
+			                   <a href="/community/contentView?board_no=${hottopic.board_no}">
+			                       <div class="image-container">
+			                           <img src="/static/images/community_img/${hottopic.chrepfile}"
+			                                alt="핫토픽 이미지" />
+			                           <div class="overlay">
+			                               <p>${hottopic.board_title}</p>
+			                           </div>
+			                       </div>
+			                   </a>
+			               </li>
+			           </c:if>
+			       </c:forEach>
+			   </ul>
 			</section>
 
 			<!-- 사이드바 -->
@@ -112,7 +97,14 @@
 
 
 				<ul class="sidebar-menu">
-					<li><a href="#">내 피드</a></li>
+					
+					<!--<c:if test="${sessionScope.loginUser ne null}">-->
+					<!--</c:if>
+					<c:if test="${sessionScope.loginUser eq null}">
+					    <li><a href="/community/myfeed" onclick="alert('로그인이 필요합니다'); return false;">내 피드</a></li>
+					</c:if>-->
+					
+					<li><a href="/community/myfeed/">내 피드</a></li>
 					<c:if test="${sessionScope.loginUser ne null}">
 						<!-- 로그인이 되어 있을 때 글쓰기 페이지로 이동 -->
 						<li><a href="/community/writeView">글쓰기</a></li>
