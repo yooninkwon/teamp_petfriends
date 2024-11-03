@@ -28,7 +28,7 @@
 			
 		</div>
 		<div class="top10ProductList">
-			<ol><span>펫프 인기아이템 TOP 10</span>
+			<ol><span><span style ="color : #ff4081; font-size : 18px;">TOP10</span> 펫프렌즈 인기아이템</span>
 				<c:forEach var="top10" items="${resultTen }" varStatus="status">
 					<c:if test="${status.index < 10}">
 						<li><a href="/product/productDetail?code=${top10.pro_code }">
@@ -130,10 +130,11 @@
 									\${soldOutOverlay} <!-- 품절 표시 -->
 				                </div>
 				                <h3>\${product.pro_name}</h3>
-								<p>\${product.proopt_price}원</p>
-				                <p>\${product.pro_discount}% \${product.proopt_finalprice}원</p>
+								<span class="searchPrice">\${(product.proopt_price).toLocaleString()}원</span> <br />
+				                <span class="searchDiscount">\${product.pro_discount}%</span> 
+				                <span class="searchFPrice">\${(product.proopt_finalprice).toLocaleString()}원</span>
 								<div class="rating">
-			                    \${starRatingHtml} <span>(\${product.total_reviews})</span> <!-- 별점과 리뷰 개수 -->
+			                    \${starRatingHtml} <span class="searchRevTotal">(\${(product.total_reviews).toLocaleString()})</span> <!-- 별점과 리뷰 개수 -->
 				                </div>
 				            </div>
 				        `;

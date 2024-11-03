@@ -1,9 +1,9 @@
 $(document).ready(function() {
 	//sub메뉴바 클릭 활성화
 	$(document).ready(function() {
-	    $('#productPetItem').addClass('selected');
+		$('#productPetItem').addClass('selected');
 	});
-	
+
 	// 라디오 버튼이 변경될 때마다 실행
 	$('input[type="radio"]').change(function() {
 		// 선택된 petType과 proType 값 확인
@@ -100,6 +100,13 @@ $(document).ready(function() {
 		$(".filter > div input[type='radio'], .filter > div input[type='checkbox']").prop('checked', false);
 		$('input[name="rankOption"][value="rankopt0All"]').prop('checked', true);
 	});
+
+	$('#filterClear').on('click', function() {
+	        $(".filter > div input[type='radio'], .filter > div input[type='checkbox']").prop('checked', false);
+	        $('input[name="rankOption"][value="rankopt0All"]').prop('checked', true);
+			sendAjaxRequest();
+			
+	    });
 
 	// 페이지 로드 시 초기 상태 설정
 	$('input[type="radio"]:checked').trigger('change');
@@ -270,11 +277,11 @@ $(document).ready(function() {
 	   	    	        <img src="/static/images/ProductImg/MainImg/${product.main_img1}"/>
 						${soldOutOverlay} <!-- 품절 표시 -->
 	                </div>
-	                <h3>${product.pro_name}</h3>
-					<p>${product.proopt_price}원</p>
-	                <p>${product.pro_discount}% ${product.proopt_finalprice}원</p>
+	                <div class="proName">${product.pro_name}</div>
+					<div class="proPrice">${Number(product.proopt_price).toLocaleString()}원</div>
+	                <div class="proFPriceBox"><span class="proDis">${product.pro_discount}%</span> <span class="proFPri">${Number(product.proopt_finalprice).toLocaleString()}원</span></div>
 					<div class="rating">
-                    ${starRatingHtml} <span>(${product.total_reviews})</span> <!-- 별점과 리뷰 개수 -->
+                    ${starRatingHtml} <span class="revTotal">(${product.total_reviews})</span> <!-- 별점과 리뷰 개수 -->
 	                </div>
 	            </div>
 	        `;
@@ -305,22 +312,12 @@ $(document).ready(function() {
 		window.location.href = `/product/productDetail?code=${productCode}`;
 	});
 
-	
-	// filterOnOff 클릭 시 filter 요소 보이기/숨기기
-	   document.querySelector('.filterOnOff').addEventListener('click', function() {
-	       const filterContainer = document.querySelector('.filter');
-	       
-	       // display 속성 토글
-	       if (filterContainer.style.display === 'none' || filterContainer.style.display === '') {
-	           filterContainer.style.display = 'block'; // 필터 창 열기
-	       } else {
-	           filterContainer.style.display = 'none'; // 필터 창 닫기
-	       }
-	   });
-	
-	
-	
-	
+
+
+
+
+
+
 });
 
 

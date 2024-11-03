@@ -1,4 +1,4 @@
-$(document).ready(function() {
+/*$(document).ready(function() {
 
 	console.log("Document is ready"); // 이 로그가 출력되는지 확인
 
@@ -122,4 +122,4 @@ $(document).ready(function() {
 	});
 
 
-});
+});*/
