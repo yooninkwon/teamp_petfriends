@@ -208,7 +208,16 @@ button#save-pet {
     cursor: pointer;
     margin-left: 650px;
 }
-
-.close-and-pet-button {
-/* 	margin-left: -10px; */
+.tab {
+	display: none;
 }
+.on {
+	display: block;
+}
+#selectPetsTbody {
+	background-color: #fff;
+}
+/*
+.close-and-pet-button {
+	margin-left: -10px;
+} */

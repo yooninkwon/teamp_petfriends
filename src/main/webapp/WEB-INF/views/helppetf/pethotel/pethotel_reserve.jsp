@@ -58,10 +58,10 @@
 		<div class="popup-form" id="popup-form" style="display: none;">
 			<h2>아이 등록하기</h2>
 			<button class="close-add-pet-button">닫기</button>
-			<form id="pet-form">
+			<form action="#" id="pet-form">
 				<input name="pet-form-no" type="hidden" id="pet-form-no" value="0" />
 				<p id="select_already">펫프렌즈에 등록해 두신 아이가 있으신가요?</p>
-				<button class="select-pet-button">아이 선택하기</button> <br />
+				<button id="select-pet-button">아이 선택하기</button> <br />
 
 				<label for="pet-name">이름</label> 
 				<input type="text" name="pet-name" id="pet-name" placeholder="이름 입력" class="text_input"> 
@@ -99,7 +99,26 @@
 	</div>
 	
 	
-	<div id="reserve-done" style="display: none;" class="tab">
+	<div id="select-pet-modal" class="tab">
+		<table>
+			<thead>
+				<tr>
+					<th>사진</th>
+					<th>이름</th>
+					<th>동물종류</th>
+					<th>생일</th>
+					<th>성별</th>
+					<th>체중</th>
+					<th>중성화</th>
+				</tr>
+			</thead>
+			<tbody id="selectPetsTbody">
+				
+			</tbody>
+		</table>
+	</div>
+
+	<div id="reserve-done" class="tab">
 	
 	</div>
 	

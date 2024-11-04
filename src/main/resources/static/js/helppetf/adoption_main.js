@@ -92,17 +92,6 @@ $(document).ready(function() {
 			cards += '</a></div>';
 		});
 		
-//	날짜 추가 div: 
-// 			<div class="card_date"><div class="day">1.
-//		    </div><div class="month">2.21.12</div></div>
-		
-//  	위치
-//    <div class="adoption-card"><a href="#" class="adoption-link" data-index="0">
-//    <div class="card_date"><div class="day">1.
-//    </div><div class="month">2.21.12</div></div>
-//    <img src="http://www.animal.go.kr/files/shelter/2024/10/202411031211339.jpg" alt="Pet Image"><div class="content"><h3>[개] 골든 리트리버</h3><div class="info">공고번호448567202401256</div><div class="card_list"><div class="card_title">지역</div><div class="card_desc">경상남도 창원시 의창성산구</div></div><div class="card_list"><div class="card_title">발견 장소</div><div class="card_desc">의창구 동읍 송정리 4-4</div></div><div class="card_list"><div class="card_title">성별</div><div class="card_desc">M</div></div><div class="card_list"><div class="card_title">발견 날짜</div><div class="card_desc">20241103</div></div><div class="card_list"><div class="card_title">특징</div><div class="card_desc">내장칩O (황동이), 목줄 착용, 기립불가, 보호자와 연락됨</div></div></div></a></div>
-		
-
 		$('#adoptionContainer').html(cards);
 	}
 
