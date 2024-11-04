@@ -1,8 +1,9 @@
 /**
  * 
+ * 
  */
-// 팝업 열기 및 닫기
 
+// 팝업 열기 및 닫기
 document.addEventListener('DOMContentLoaded', () => {
 
 	const addPetButton = document.querySelector('.add-pet-button'); // .add-pet-button의 태그를 찾아 반환해줌
@@ -19,15 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		addPetButton.addEventListener('click', () => {
 		popupForm.style.display = 'flex'; // 팝업을 중앙에 표시
+		pageScroll(420);
 	});
 
 	closeAddPetButton.addEventListener('click', () => {
+		pageScroll(0);
 		popupForm.style.display = 'none'; // 팝업 닫기
 		document.getElementById('pet-form').reset(); // form 초기화
 	});
 
 	// 반려동물 form 저장 버튼 클릭시
 	savePetButton.addEventListener('click', () => {
+		pageScroll(0);
+		
 		let petHiddenVal = document.getElementById('pet-form-no').value; // form의 히든값을 저장
 		const petName = document.getElementById('pet-name').value; // form의 동물이름을 저장
 		const petType = document.querySelector('[name="pet-type"]').value; // form의 동물타입을 저장
@@ -130,14 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		post += '</td><td>' + data.mem_Dto.hph_numof_pet + '</td><td>' + data.mem_Dto.hph_start_date + '</td><td>' + data.mem_Dto.hph_end_date + '</td></tr>';
 		
 		data.nrFormList.forEach(function(pet){
-//			pet.hphp_reserve_pet_no
-//			pet.hphp_pet_name
-//			pet.hphp_pet_type
-//			pet.hphp_pet_birth
-//			pet.hphp_pet_gender
-//			pet.hphp_pet_weight
-//			pet.hphp_pet_neut
-//			pet.hphp_pet_comment
 			post += '<tr><th>번호</th><th>이름</th><th>종류</th><th>생일</th><th>성별</th><th>체중</th><th>중성화</th><th>전달사항</th></tr>';
 			post +=	'<tr><td>' + pet.hphp_reserve_pet_no + '</td><td>' + pet.hphp_pet_name + '</td><td>' + pet.hphp_pet_type;
 			post += '</td><td>' + pet.hphp_pet_birth + '</td><td>' + pet.hphp_pet_gender + '</td><td>' + pet.hphp_pet_weight;
@@ -149,5 +146,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		
 		$('#reserve-done').html(post);
 	}
+	
 
+	function pageScroll(y) {
+		window.scrollTo({ top: y, behavior: 'smooth' });
+		// 함수 호출시 설정한 Y좌표로 스크롤
+	}
+	
 });

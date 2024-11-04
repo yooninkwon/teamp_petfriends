@@ -2,6 +2,7 @@ package com.tech.petfriends.admin.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,6 +24,7 @@ import com.tech.petfriends.admin.service.AdminPethotelInfoEditService;
 import com.tech.petfriends.admin.service.AdminPethotelIntroData;
 import com.tech.petfriends.admin.service.AdminPethotelIntroEditService;
 import com.tech.petfriends.admin.service.AdminPethotelReserveDetailService;
+import com.tech.petfriends.admin.service.AdminPethotelReserveUpdateService;
 import com.tech.petfriends.admin.service.AdminPetteacherDataService;
 import com.tech.petfriends.admin.service.AdminPetteacherDeleteService;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
@@ -42,6 +44,16 @@ public class AdminRestController {
 	AdminPageDao adminDao;
 
 	AdminServiceInterface adminServiceInterface;
+
+	@PostMapping("/pethotel_reserve_update")
+	public String pethotelReserveUpdate(@RequestBody Map<String, String> statusMap, HttpServletRequest request, Model model) {
+		model.addAttribute("statusMap", statusMap);
+		model.addAttribute("request", request);
+		
+		adminServiceInterface = new AdminPethotelReserveUpdateService(adminDao);
+		adminServiceInterface.execute(model);
+		return "{\"status\": \"success\"}";
+	}
 
 	@GetMapping("/pethotel_admin_reserve_detail")
 	public String pethotelReserveDetail(HttpServletRequest request, Model model) throws JsonProcessingException {

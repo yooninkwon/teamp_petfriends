@@ -46,4 +46,6 @@ public interface AdminPageDao {
 	ArrayList<PethotelFormDataDto> adminPethotelReservePets(String hph_reserve_no);
 	
 	PethotelMemDataDto adminPethotelReserveMem(String hph_reserve_no);
+
+	void adminPethotelReserveUpdate(String hph_reserve_no, String hph_status, String hph_refusal_reason);
 }

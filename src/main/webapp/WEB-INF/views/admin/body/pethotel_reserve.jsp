@@ -61,7 +61,8 @@
 					<!-- 예약 리스트 -->
 				</tbody>
 			</table>
-
+			<br /><br />
+			<br />
 			<div id="pagination">
 				<!-- 페이징 -->
 			</div>
@@ -119,7 +120,18 @@
 			</table>
 		</div>
 	</div>
-
+	
+	<div id="reasonModal" class="modal" style="display: none;">
+		 <div class="modal-content">
+		 <span class="close-btn"><i class="fa-solid fa-xmark"></i></span>
+		 	<div class="input-group">
+	            <label for="refusal_reason">거절 사유</label>
+	            <textarea name="refusal_reason" id="refusal_reason" cols="30" rows="10"></textarea>
+	            <button id="reserveSubmit_refusal" class="btn-style">예약 상태 변경</button>
+	        </div>
+		 </div>
+	</div>
+	
 	<script src="/static/js/admin/pethotel_reserve.js"></script>
 </body>
 </html>

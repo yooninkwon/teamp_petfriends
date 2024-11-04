@@ -32,10 +32,10 @@
 		WHERE HPT_SEQ = #{hpt_seq}
 	</select>
 	<select id="findUserAddr" resultType="String">
-		SELECT TEMP_ADDR
-		FROM
-		TEMP_FIND_ADDR
-		WHERE USER_ID = #{userId}
+		SELECT ADDR_LINE1 
+		FROM ADDRESS 
+		WHERE MEM_CODE = #{mem_code}
+		AND ADDR_DEFAULT = 'Y'
 	</select>
 		<select id="pethotelIntro" resultType="com.tech.petfriends.helppetf.dto.PethotelIntroDto">
 		SELECT * FROM HELP_PETHOTEL_INTRO
