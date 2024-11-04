@@ -40,7 +40,7 @@
 	        </div>
 	        
 	        <!-- 어드민 페이지 아이콘 -->
-	        <c:if test="${sessionScope.loginUser.mem_nick eq 'admin'}">
+	        <c:if test="${sessionScope.loginUser.mem_name eq '관리자'}">
 	    		<a href="<c:url value='/admin/home' />">
 	        	<img src="<c:url value='/static/Images/MainImg/admin_icon.png'/>" id="admin_icon" alt="관리자 아이콘">
 	   			</a>

@@ -171,7 +171,7 @@
     
     <div class="button-col">
 	    <input type="submit" id="submitBtn" class="nextBtn" value="저장하기"/>
-        <a href="/mypage/deletePet?petCode=${info.pet_code }" style="text-decoration: underline;">데이터 삭제하기</a>
+        <a href="/mypage/deletePet?petCode=${info.pet_code }" style="text-decoration: underline;" onclick="return confirmDelete('${info.pet_main}')">데이터 삭제하기</a>
     </div>
 </form>
 
@@ -258,6 +258,16 @@ function selectAllergyButtons(allergyData) {
             document.querySelector("#allergyInput").parentNode.insertBefore(newButton, document.getElementById("allergyInput"));
         }
     });
+}
+
+function confirmDelete(petMain) {
+    if (petMain === 'Y') {
+        alert("메인 펫은 삭제할 수 없습니다. 메인 펫 해제 후 다시 시도해 주세요.");
+        return false; // 링크 이동 중지
+    } else if (petMain === 'N') {
+        return confirm("데이터를 삭제하시겠습니까?");
+    }
+    return false; // pet_main 값이 없거나 조건에 맞지 않는 경우 이동 중지
 }
 </script>
 <script src="/static/js/mypage/petRegist.js"></script>

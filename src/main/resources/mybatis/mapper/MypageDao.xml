@@ -143,4 +143,33 @@
 		    MEM_BIRTH = #{mem_birth}
 		WHERE MEM_CODE = #{mem_code}
 	</update>
+	
+	<select id="getAllWishInfoByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyWishDto">
+		SELECT P.PRO_CODE,
+			   P.PRO_NAME,
+		       MIN(PO.PROOPT_FINALPRICE) AS MIN_PRICE,
+		       COALESCE(AVG(PR.REVIEW_RATING), 0) AS REVIEW_AVG,
+		       COUNT(PR.REVIEW_CODE) AS REVIEW_COUNT,
+		       PI.MAIN_IMG1
+		FROM MEMBER_WISHLIST W
+		JOIN PRODUCT P ON W.PRO_CODE = P.PRO_CODE
+		LEFT JOIN PRODUCT_OPTION PO ON P.PRO_CODE = PO.PRO_CODE
+		LEFT JOIN PRODUCT_IMAGE PI ON P.PRO_CODE = PI.PRO_CODE
+		LEFT JOIN PRODUCT_REVIEW PR ON P.PRO_CODE = PR.PRO_CODE
+		WHERE W.MEM_CODE = #{mem_code}
+		GROUP BY P.PRO_CODE, P.PRO_NAME, PI.MAIN_IMG1, W.WISHDATE
+		<choose>
+			<when test="sortType == '최근 추가순'">ORDER BY W.WISHDATE DESC</when>
+			<when test="sortType == '낮은가격순'">ORDER BY MIN_PRICE ASC</when>
+			<when test="sortType == '높은가격순'">ORDER BY MIN_PRICE DESC</when>
+			<when test="sortType == '리뷰 많은순'">ORDER BY REVIEW_COUNT DESC</when>
+			<when test="sortType == '리뷰 높은순'">ORDER BY REVIEW_AVG DESC</when>
+		</choose>
+	</select>
+	
+	<delete id="deleteWishByProCode">
+	    DELETE
+	    FROM MEMBER_WISHLIST
+	    WHERE MEM_CODE = #{mem_code} AND PRO_CODE = #{pro_code}
+	</delete>
 </mapper>

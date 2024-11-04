@@ -12,6 +12,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -30,12 +31,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tech.petfriends.admin.dto.CouponDto;
+import com.tech.petfriends.admin.dto.MemberCouponDto;
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dao.MypageDao;
 import com.tech.petfriends.mypage.dto.GradeDto;
+import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
+import com.tech.petfriends.mypage.dto.MyWishDto;
 
 @Controller
 @RequestMapping("/mypage")
@@ -213,7 +217,7 @@ public class MyPageController {
 		return "redirect:/mypage/mypet";
 	}
 	
-	@PostMapping("/deletePet")
+	@GetMapping("/deletePet")
 	public String deletePet(HttpServletRequest request) {
 		
 		mypageDao.deletePetByPetCode(request.getParameter("petCode"));
@@ -476,7 +480,40 @@ public class MyPageController {
 	
 	@GetMapping("/wish")
 	public String wish() {
-		return "mypage/wish";
+	    return "mypage/wish";
+	}
+
+	@GetMapping("/wish/data")
+	@ResponseBody
+	public List<MyWishDto> wishData(HttpServletRequest request, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		String sortType = request.getParameter("sort");
+
+		List<MyWishDto> myWish = mypageDao.getAllWishInfoByMemberCode(loginUser.getMem_code(), sortType);
+		
+		return myWish;
+	}
+	@GetMapping("/buyoften/data")
+	@ResponseBody
+	public List<MyOrderDto> buyoftenData(HttpServletRequest request, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		String orderable = request.getParameter("");
+		
+		List<MyOrderDto> buyoften = mypageDao.getAllOrderInfoByMemberCode(loginUser.getMem_code(), orderable);
+		
+		return buyoften;
+	}
+	
+	@GetMapping("/deleteWish")
+	public String deleteWish(HttpServletRequest request, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		
+		mypageDao.deleteWishByProCode(loginUser.getMem_code(), request.getParameter("proCode"));
+		
+		return "redirect:/mypage/wish";
 	}
 	
 	@GetMapping("/cscenter")
