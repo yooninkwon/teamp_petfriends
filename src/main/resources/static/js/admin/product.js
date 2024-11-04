@@ -503,8 +503,9 @@ $(document).ready(function() {
 
 		console.log(options);
 
-		if (petType === "" || proType === "" || proDetailType === "" || proName === "" || proDiscount === "" || options.some(opt => opt.price === "" || opt.count === "")) {
-			alert('상품등록 필수 항목을 채워주세요.\n(펫타입, 상품종류, 상품타입, 상품명, 할인율, 옵션최소 1개)');
+		if (petType === "" || proType === "" || proDetailType === "" || proName === "" || proDiscount === "" || proDiscount < 0 || 
+			proDiscount > 100 || options.some(opt => opt.price === "" || opt.count === "")) {
+			alert('상품등록 필수 항목을 채워주세요.\n(펫타입, 상품종류, 상품타입, 상품명, 할인율, 옵션최소 1개, 할인율은 0~100까지 입력가능)');
 			return;
 		}
 

@@ -169,7 +169,7 @@
 		</div>
       	<div class="input-group">
             <label for="proDiscount">할인율(%)</label>
-            <input type="number" id="proDiscount">
+            <input type="number" id="proDiscount" min="0" max="100">
             
         </div>
         <div id="option-container">

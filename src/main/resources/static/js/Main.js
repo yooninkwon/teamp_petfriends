@@ -118,6 +118,7 @@ function toggleSearchDropdown() {
     } else {
         dropdown.style.display = "none"; // 다시 클릭 시 숨김
     }
+	
 }
 
 // 응답 내 스크립트를 실행하는 함수
@@ -130,3 +131,4 @@ function executeScripts(container) {
     }
 }
    
+

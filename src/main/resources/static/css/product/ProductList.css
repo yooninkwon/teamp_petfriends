@@ -44,37 +44,85 @@
 }
 
 .filterOnOff {
-	width: 225px;
-	cursor: pointer;
+	width: 500px;
+	
 }
-
+#filterClear{
+	font-size: 12px;
+	color: #959595;
+	cursor: pointer;
+	
+}
 .filter {
 	
 	display: grid; /* 그리드 레이아웃 사용 */
-	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-	/* 최소 150px로 자동 열 생성 */
+	grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
 	gap: 20px; /* 그리드 항목 간의 간격 */
+	font-size: 12px
 }
 
 .filter>div {
 	display: flex; /* 각 필터 그룹을 플렉스로 설정 */
-	flex-direction: row; /* 항목을 가로로 정렬 */
-	margin-right: 20px; /* 오른쪽 여백 추가 */
+	flex-direction: column;
+	text-align: center; /* 모든 내용을 가운데 정렬 */
 }
 
 .filter>div>span {
-	margin-bottom: 10px; /* 제목과 체크박스 간의 간격 */
-	flex-direction: column; /* 항목을 세로로 정렬 */
+	margin-bottom: 3px; /* 제목과 체크박스 간의 간격 */
+	padding: 3px 0;
+	text-align: center;
+	
+	color: black;
+	font-weight: bold;
+	
 }
 
-.filter>div label {
-	margin-bottom: 5px; /* 각 체크박스와 라디오 버튼 간의 간격 */
+
+/* 라디오 버튼과 체크박스 숨기기 */
+.filter-btn input[type="radio"],
+.filter-btn input[type="checkbox"] {
+    display: none; /* 라디오 버튼과 체크박스 숨김 */
 }
 
+/* 라벨을 버튼처럼 보이게 스타일링 */
+.filter-btn {
+	display: inline-block;
+	padding: 1px 1px;
+	margin: 1px 5px;
+	
+	border-radius: 100px; /* 둥근 버튼 효과 */
+	color: #959595;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
 
+/* 마우스 오버 시 효과 */
+.filter-btn:hover {
+	/* border: 1px solid #ff4081; */
+	color: #ff4081;
+	font-weight: bold;
+}
+/* 선택된 라디오 버튼 또는 체크박스의 스타일 */
+.filter-btn:has(input[type="radio"]:checked),
+.filter-btn:has(input[type="checkbox"]:checked) {
+   	/* border: 1px solid #ff4081; */
+   	font-weight: bold;
+    color: #ff4081; /* 선택된 상태의 글자색 */
+}
 
+#product-Count-Box{
+	display: grid;
+	grid-template-columns: repeat(1, 1400px); /* 4개씩 나열 */
+	grid-gap: 10px; /* 각 아이템 간의 간격 */
+	margin: 20px auto; /* 중앙 정렬을 위한 마진 */
+	width: 1150px;
+	user-select: none; /* 텍스트 선택 방지 */
+}
 
-
+#product-Count{
+	font-size: 20px;
+	font-weight: bold;
+}
 
 
 
@@ -88,7 +136,7 @@
 #product-List {
 	display: grid;
 	grid-template-columns: repeat(4, 240px); /* 4개씩 나열 */
-	grid-gap: 60px; /* 각 아이템 간의 간격 */
+	gap: 30px 60px; /* 각 아이템 간의 간격 */
 	justify-content: center; /* 가운데 정렬 */
 	margin: 0 auto; /* 중앙 정렬을 위한 마진 */
 }
@@ -102,9 +150,38 @@
 
 .product-Item img {
 	width: 100%; /* 이미지가 아이템의 너비에 맞게 조정 */
-	height: auto; /* 이미지 비율 유지 */
+	height: 240px; /* 이미지 비율 유지 */
 	display: block; /* 이미지 아래 여백 제거 */
+	border-radius: 8px; /* 모서리를 둥글게 설정 */
 }
+.proName{
+	font-weight: bold;
+}
+.proPrice{
+	text-decoration: line-through; /* 가운데 줄 긋기 */
+	color: lightgray;
+	font-size: 15px;
+}
+.proDis{
+	color: red;
+	font-weight: bold;
+	font-size: 17px;
+}
+.proFPri{
+	font-weight: bold;
+	font-size: 18px;
+}
+.revTotal{
+	font-size: 14px;
+	color:gray;
+}
+
+
+
+
+
+
+
 
 .sold-out-overlay {
 	position: absolute;
@@ -120,10 +197,12 @@
 	align-items: center;
 	font-weight: bold;
 	z-index: 0;
+	border-radius: 8px; /* 모서리를 둥글게 설정 */
 }
 
 .product-image-wrapper {
 	position: relative;
+	margin-bottom: 10px;
 }
 
 .star {
@@ -145,6 +224,10 @@
 
 .product-Item {
 	cursor: pointer;
+}
+/* 마우스 오버 시 효과 */
+.product-Item:hover .proName{
+	color: #ff4081;
 }
 
 #proClick {

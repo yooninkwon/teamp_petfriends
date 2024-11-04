@@ -248,16 +248,16 @@ $(document).ready(function() {
 		const selectedOptionName = selectedOption.data('name');
 		const selectedOptionCode = selectedOption.data('code');
 		const selectedOptionStock = selectedOption.data('stock');
-
-		$('#selectedOptionPrice').text(`1개 (${selectedPrice}원)`);
+		
+		$('#selectedOptionPrice').text(`1개 (${Number(selectedPrice).toLocaleString()}원)`);
 		$('#optionCodeInput').val(selectedCode);
 		$('#selectedOptionText').text(selectedOptionName); // 옵션 이름 업데이트
 		opt_code.value = selectedOptionCode;
 		$('#quantityInput').attr('max', selectedOptionStock);
-		$('#quantityMaxText').text(`최대 ${selectedOptionStock}개`); // 화면에 재고 표시
+		$('#quantityMaxText').text(`최대 ${Number(selectedOptionStock).toLocaleString()}개`); // 화면에 재고 표시
 
 		updateFinalPrice(selectedPrice);
-
+		
 	});
 
 
@@ -272,7 +272,8 @@ $(document).ready(function() {
 	function updateFinalPrice(selectedPrice) {
 		const quantity = $('#quantityInput').val();
 		const finalPrice = selectedPrice * quantity;
-		$('#finalPrice').text(`총 가격: ${finalPrice}원`);
+		$('#finalPrice').html(`총 수량 ${Number(quantity).toLocaleString()}개 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ${Number(finalPrice).toLocaleString()}원`);
 	}
 
 	//리뷰갯수 게이지
