@@ -3,6 +3,7 @@ package com.tech.petfriends.admin.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,9 @@ import com.tech.petfriends.admin.service.AdminNoticeEditService;
 import com.tech.petfriends.admin.service.AdminNoticeWriteService;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminProductAddService;
+import com.tech.petfriends.admin.service.AdminProductDetailService;
 import com.tech.petfriends.admin.service.AdminProductListService;
+import com.tech.petfriends.admin.service.AdminProductModifyService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
 import com.tech.petfriends.notice.dao.NoticeDao;
 import com.tech.petfriends.notice.dto.EventDto;
@@ -172,6 +175,7 @@ public class AdminPageController {
 		adminServInter = new AdminProductListService(adminProductDao);
 		adminServInter.execute(model);
 		
+		@SuppressWarnings("unchecked")
 		List<ProductListDto> productList = (List<ProductListDto>) model.getAttribute("productList");
 		
 		return productList;
@@ -197,6 +201,52 @@ public class AdminPageController {
 		adminServInter.execute(model);
 		
 	}
+	
+	@GetMapping("/product/detail")
+	@ResponseBody
+	public Map<String, Object> productDetail(HttpServletRequest request, Model model) {
+		
+		String proCode = request.getParameter("proCode");
+		model.addAttribute("proCode",proCode);
+		
+		adminServInter = new AdminProductDetailService(adminProductDao);
+		adminServInter.execute(model);
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put("pro", model.getAttribute("pro"));
+		data.put("img", model.getAttribute("img"));
+		data.put("opt", model.getAttribute("opt"));
+		
+		return data;
+	}
+	
+	//관리자페이지 상품 등록
+		@PostMapping("/product/modify")
+		@ResponseBody
+		 public void productModify(
+				 	@RequestParam Map<String, Object> data,
+			        @RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
+			        @RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
+			        @RequestParam(value = "removeImages", required = false) String[] removeImages,
+			        @RequestParam(value = "mainImagesPath", required = false) List<String> mainImagesPath,
+			        @RequestParam(value = "desImagesPath", required = false) List<String> desImagesPath,
+			        @RequestParam(value = "options") String options,
+			        Model model) {
+			
+			// Model에 데이터 추가
+			model.addAllAttributes(data);
+		    model.addAttribute("mainImages", mainImages);
+		    model.addAttribute("desImages", desImages);
+		    model.addAttribute("removeImages", removeImages);
+		    model.addAttribute("options", options);
+		    model.addAttribute("mainImagesPath", mainImagesPath);
+		    model.addAttribute("desImagesPath", desImagesPath);
+			
+			adminServInter = new AdminProductModifyService(adminProductDao);
+			adminServInter.execute(model);
+			
+		}
+	
 
 	@GetMapping("/customer_status")
 	public String customer_status() {

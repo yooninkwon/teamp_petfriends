@@ -1,26 +1,37 @@
 package com.tech.petfriends.mypage.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
-import com.tech.petfriends.mypage.dto.GradeDto;
+import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
+import com.tech.petfriends.mypage.dto.MyWishDto;
 
 @Mapper
 public interface MypageDao {
+	void insertMyPet(MyPetDto pet);
 
 	ArrayList<MyPetDto> getPetsByMemberCode(String mem_code);
 
-	void removeMainPet(String previousChecked);
+	void removeMainPet(String mem_code);
 
 	void setMainPet(String newlyChecked);
+	
+	ArrayList<String> getBreedOptionByType(String petType);
 
+	void insertPet(MyPetDto myPetDto);
+	
 	MyPetDto getInfoByPetCode(String petCode);
-
+	
+	void modifyPetByPetCode(MyPetDto myPetDto);
+	
+	void deletePetByPetCode(String petCode);
+	
 	ArrayList<CouponDto> getAllCoupon();
 
 	ArrayList<CouponDto> getCouponByMemberCode(String mem_code);
@@ -44,6 +55,10 @@ public interface MypageDao {
 	boolean insertNewAddress(String addrCode, String memCode, String addrPostal, String addrLine1, String addrLine2);
 
 	void updateMemberInfo(MemberLoginDto loginUser);
+
+	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
+
+	List<MyOrderDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
 	
-	void insertMyPet(MyPetDto pet);
+	void deleteWishByProCode(String mem_code, String pro_code);
 }

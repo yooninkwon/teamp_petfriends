@@ -149,7 +149,7 @@ $(document).ready(function() {
                 paginationHtml += '<a href="#" class="page-link" data-page="next-group">다음 &raquo;</a>';
             }
 
-            $('#pagination').html(paginationHtml);
+            $('#coupon-pagination').html(paginationHtml);
 
             $('.page-link').on('click', function (event) {
                 event.preventDefault();
@@ -170,49 +170,17 @@ $(document).ready(function() {
             });
         }
 
-        // 필터링 관련 코드
-        $('#status-filter input[name="status-filter"]').on('change', function() {
-            filterParam = {
-                status: $('input[name="status-filter"]:checked').val(),
-                kind: $('input[name="kind-filter"]:checked').val(),
-                type: $('input[name="type-filter"]:checked').val(),
-                sort: $('#sort-order').val()
-            };
-			
-            fetchData(currentPage, currPageGroup, filterParam);
-        });
-
-        $('#kind-filter input[name="kind-filter"]').on('change', function() {
-            filterParam = {
-                status: $('input[name="status-filter"]:checked').val(),
+        // 필터링 코드
+	    $('#status-filter-all').on('change', function() {
+	       filterParam = {
+				status: $('input[name="status-filter"]:checked').val(),
 				kind: $('input[name="kind-filter"]:checked').val(),
                 type: $('input[name="type-filter"]:checked').val(),
                 sort: $('#sort-order').val()
-            };
-			
-            fetchData(currentPage, currPageGroup, filterParam);
-        });
-		
-        $('#type-filter input[name="type-filter"]').on('change', function() {
-            filterParam = {
-                status: $('input[name="status-filter"]:checked').val(),
-				kind: $('input[name="kind-filter"]:checked').val(),
-                type: $('input[name="type-filter"]:checked').val(),
-                sort: $('#sort-order').val()
-            };
-			
-            fetchData(currentPage, currPageGroup, filterParam);
-        });
-
-        $('#sort-order').on('change', function() {
-            filterParam = {
-                status: $('input[name="status-filter"]:checked').val(),
-                type: $('input[name="type-filter"]:checked').val(),
-                sort: $(this).val()
-            };
-			
-            fetchData(currentPage, currPageGroup, filterParam);
-        });
+	       };
+	
+	       fetchData(currentPage, currPageGroup, filterParam);
+	    });
     }
 
 	// 회원 쿠폰 탭 데이터 로드 함수
@@ -291,7 +259,7 @@ $(document).ready(function() {
                 paginationHtml += '<a href="#" class="page-link" data-page="next-group">다음 &raquo;</a>';
             }
 
-            $('#pagination').html(paginationHtml);
+            $('#memberCoupon-pagination').html(paginationHtml);
 
             $('.page-link').on('click', function (event) {
                 event.preventDefault();

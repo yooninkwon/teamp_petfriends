@@ -42,7 +42,6 @@
 	</div>
 </div>
 
-<script src="/static/js/mypage/setting.js"></script>
 <script>
 window.onbeforeunload = function() {
     if (window.opener && !window.opener.closed) {
@@ -50,5 +49,6 @@ window.onbeforeunload = function() {
     }
 };
 </script>
+<script src="/static/js/mypage/setting.js"></script>
 </body>
 </html>

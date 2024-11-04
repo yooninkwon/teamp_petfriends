@@ -43,16 +43,26 @@
 		    </div>
 		    <div class="pet-status">
 		    	<c:choose>
-		    		<c:when test="${pets.pet_care ne null }">
-		    			<c:forEach var="careItem" items="${fn:split(pets.pet_care, ',')}">
-			        		<span class="status-pill">${careItem }</span>
-		    			</c:forEach>
-		    			<span>에 신경을 쓰고 있어요.</span>
-		    		</c:when>
-		    		<c:when test="${pets.pet_care eq null }">
-		        		<span class="status-none">관심 정보가 없어요.</span>
-		    		</c:when>
-		    	</c:choose>
+			        <c:when test="${not empty pets.pet_care}">
+			            <c:set var="careItems" value="${fn:split(pets.pet_care, ',')}" />
+			            <c:choose>
+			                <c:when test="${fn:length(careItems) > 2}">
+			                    <span class="status-pill">${careItems[0]}</span>
+			                    <span class="status-pill">${careItems[1]}</span>
+			                    <span>등</span>
+			                </c:when>
+			                <c:otherwise>
+			                    <c:forEach var="careItem" items="${careItems}">
+			                        <span class="status-pill">${careItem}</span>
+			                    </c:forEach>
+			                </c:otherwise>
+			            </c:choose>
+			            <span>에 신경을 쓰고 있어요.</span>
+			        </c:when>
+			        <c:otherwise>
+			            <span class="status-none">관심 정보가 없어요.</span>
+			        </c:otherwise>
+			    </c:choose>
 		    </div>
 		    <a href="/mypage/mypet/modify?petCode=${pets.pet_code }" class="edit-button"><h4>수정하기</h4></a>
 		</div>
@@ -71,18 +81,13 @@
 
 <script>
 $(document).ready(function() {
-	var previousChecked = $('input[name="select-pet"]:checked').val();  // 기존 펫의 코드
-	
     $('input[name="select-pet"]').on('change', function() {
         var newlyChecked = $(this).val();  // 선택된 펫의 코드
 
         $.ajax({
             type: "POST",
             url: "/mypage/mypet/setMainPet",
-            data: { 
-            	newlyChecked: newlyChecked,
-                previousChecked: previousChecked
-            },
+            data: {newlyChecked: newlyChecked},
             success: function() {
                 // 성공 시 페이지 새로고침
                 location.reload();

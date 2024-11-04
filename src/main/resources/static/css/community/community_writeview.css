@@ -1,199 +1,286 @@
 @charset "UTF-8";
 
-  body {
-        font-family: 'Nanum Gothic', sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-   		margin-top: 100px;
-    }
-    .container {
-        width: 60%;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    	
-    }
-    h3 {
-        font-size: 24px;
-        color: #333;
-        padding-bottom: 20px;
-        border-bottom: 2px solid #eee;
-    }
-    .write-form {
-        width: 100%;
-        margin: 20px 0;
-    }
-    
-    
-    
-    .write-form input[type="text"], .write-form textarea {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-    .write-form textarea {
-        height: 1000px;
-  		
-    }
-    .write-form input[type="file"] {
-        display: block;
-        margin-bottom: 20px;
-    }
-    .write-form input[type="submit"] {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    .write-form input[type="submit"]:hover {
-        background-color: #0056b3;
-    }
-    
-    .board_content{
-   		text-align: center;
-    }
-    
-    .preview-area {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-top: 10px;
-        height: 1200px;
-        overflow-y: auto;     
-        background-color: #f9f9f9;
-    	text-align: center;
-    }
+body {
+	font-family: 'Nanum Gothic', sans-serif;
+	background-color: #f4f4f4;
+	margin: 0;
+	padding: 0;
+	margin-top: 100px;
+}
 
-            /* 팝업 스타일 */
-    #previewPopup {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.8);
-        color: black;
-        display: none; /* 기본적으로 숨김 */
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-    }
-    .popup-content {
-        background: #333;
-        padding: 20px;
-        border-radius: 10px;
-        width: 80%;
-        max-height: 80%;
-        overflow-y: auto;
-    }    
-    
+.container {
+	width: 60%;
+	margin: 0 auto;
+	background-color: #fff;
+	padding: 20px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+h3 {
+	font-size: 24px;
+	color: #333;
+	padding-bottom: 20px;
+	border-bottom: 2px solid #eee;
+}
+
+.write-form {
+	width: 100%;
+	margin: 20px 0;
+}
+
+
+
+.write-form input[type="text"],
+.write-form textarea {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+.write-form textarea {
+	height: 1000px;
+
+}
+
+.write-form input[type="file"] {
+	display: block;
+	margin-bottom: 20px;
+}
+
+.write-form input[type="submit"] {
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.write-form input[type="submit"]:hover {
+	background-color: #0056b3;
+}
+
+.board_content {
+	text-align: center;
+}
+
+.preview-area {
+	border: 1px solid #ccc;
+	padding: 10px;
+	margin-top: 10px;
+	height: 1200px;
+	overflow-y: auto;
+	background-color: #f9f9f9;
+	text-align: center;
+}
+
+/* 팝업 스타일 */
+#previewPopup {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.8);
+	color: black;
+	display: none;
+	/* 기본적으로 숨김 */
+	align-items: center;
+	justify-content: center;
+	z-index: 9999;
+}
+
+.popup-content {
+	background: #333;
+	padding: 20px;
+	border-radius: 10px;
+	width: 80%;
+	max-height: 80%;
+	overflow-y: auto;
+}
+
 .btn {
-    padding: 12px 24px; /* 버튼 안쪽 여백 크기 조정 */
-    border: none; /* 기본 테두리 제거 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    cursor: pointer; /* 마우스 포인터 변경 */
-    font-size: 16px; /* 글자 크기 조정 */
-    transition: background-color 0.3s; /* 배경색 변화 애니메이션 */
-    margin-top: 10px; /* 버튼 간격 조정 */
+	padding: 12px 24px;
+	/* 버튼 안쪽 여백 크기 조정 */
+	border: none;
+	/* 기본 테두리 제거 */
+	border-radius: 5px;
+	/* 모서리 둥글게 */
+	cursor: pointer;
+	/* 마우스 포인터 변경 */
+	font-size: 16px;
+	/* 글자 크기 조정 */
+	transition: background-color 0.3s;
+	/* 배경색 변화 애니메이션 */
+	margin-top: 10px;
+	/* 버튼 간격 조정 */
 }
 
 /* 내용 미리보기 버튼 스타일 */
 .submit-btn {
-    background-color: #ff4081; 
-    color: white; /* 글자 색상 */
+	background-color: #ff4081;
+	color: white;
+	/* 글자 색상 */
 }
 
 .submit-btn:hover {
-    background-color: #ffe5ee; 
+	background-color: #ffe5ee;
 }
 
 /* 작성 완료 버튼 스타일 */
 #submit-btn {
-    background-color: #ff4081; 
-    color: white; /* 글자 색상 */
+	background-color: #ff4081;
+	color: white;
+	/* 글자 색상 */
 }
 
 #submit-btn:hover {
-    background-color: #ffe5ee; 
+	background-color: #ffe5ee;
 }
 
 /* 닫기 버튼 스타일 */
 #closePreview {
-    background-color: #ff4081;
-    color: white; /* 글자 색상 */
+	background-color: #ff4081;
+	color: white;
+	/* 글자 색상 */
 }
 
 #closePreview:hover {
-    background-color: #ffe5ee; 
+	background-color: #ffe5ee;
 }
 
 /* 파일 선택 버튼 스타일 */
 input[type="file"] {
-    padding: 10px; /* 여백 조정 */
-    border: 1px solid #ddd; /* 테두리 추가 */
-    border-radius: 4px; /* 모서리 둥글게 */
-    cursor: pointer; /* 마우스 포인터 변경 */
-    background-color: #ffe5ee; /* 배경 색상 */
-    color: #333; /* 글자 색상 */
+	padding: 10px;
+	/* 여백 조정 */
+	border: 1px solid #ddd;
+	/* 테두리 추가 */
+	border-radius: 4px;
+	/* 모서리 둥글게 */
+	cursor: pointer;
+	/* 마우스 포인터 변경 */
+	background-color: #ffe5ee;
+	/* 배경 색상 */
+	color: #333;
+	/* 글자 색상 */
 }
 
 /* 카테고리 레이블 스타일 */
 .write-form label[for="b_cate_no"] {
-    font-weight: bold; /* 글자 두께 */
-    display: block; /* 블록 요소로 표시 */
-    margin-bottom: 5px; /* 아래쪽 여백 */
-    color: #555; /* 글자 색상 */
+	font-weight: bold;
+	/* 글자 두께 */
+	display: block;
+	/* 블록 요소로 표시 */
+	margin-bottom: 5px;
+	/* 아래쪽 여백 */
+	color: #555;
+	/* 글자 색상 */
 }
 
 /* 카테고리 드롭다운 스타일 */
 .write-form select#b_cate_no {
-    width: 100%; /* 전체 너비 사용 */
-    padding: 10px; /* 안쪽 여백 */
-    margin-bottom: 15px; 
-    border: 2px solid #ff4081; /* 강조된 테두리 색상 */
-    border-radius: 4px; /* 모서리 둥글게 */
-    box-sizing: border-box; /* 박스 크기 계산 */
-    background-color: #f9f9f9; /* 배경색 */
-    color: #333; /* 글자 색상 */
-    font-size: 16px; /* 글자 크기 */
-    transition: border-color 0.3s, background-color 0.3s; /* 테두리 및 배경색 변화 애니메이션 */
+	width: 100%;
+	/* 전체 너비 사용 */
+	padding: 10px;
+	/* 안쪽 여백 */
+	margin-bottom: 15px;
+	border: 2px solid #ff4081;
+	/* 강조된 테두리 색상 */
+	border-radius: 4px;
+	/* 모서리 둥글게 */
+	box-sizing: border-box;
+	/* 박스 크기 계산 */
+	background-color: #f9f9f9;
+	/* 배경색 */
+	color: #333;
+	/* 글자 색상 */
+	font-size: 16px;
+	/* 글자 크기 */
+	transition: border-color 0.3s, background-color 0.3s;
+	/* 테두리 및 배경색 변화 애니메이션 */
 }
 
 /* 포커스 시 테두리 색상 변경 */
 .write-form select#b_cate_no:focus {
-    border-color: #0056b3; /* 포커스 시 테두리 색상 변경 */
-    background-color: #ffffff; /* 포커스 시 배경색 변경 */
-    outline: none; /* 포커스 아웃라인 제거 */
+	border-color: #0056b3;
+	/* 포커스 시 테두리 색상 변경 */
+	background-color: #ffffff;
+	/* 포커스 시 배경색 변경 */
+	outline: none;
+	/* 포커스 아웃라인 제거 */
 }
 
 
 .post-image {
-    position: relative; /* 자식 요소의 절대 위치 지정을 위한 상대적 위치 */
-    margin: 5px 0; /* 상하 마진 추가 */
+	position: relative;
+	/* 자식 요소의 절대 위치 지정을 위한 상대적 위치 */
+	margin: 5px 0;
+	/* 상하 마진 추가 */
 }
 
 .post-image img {
-    width: 100px;
-    height: auto;
-    margin-bottom: 40px; /* 이미지와 새 이미지 업로드 필드 간격 */
+	width: 100px;
+	height: auto;
+	margin-bottom: 40px;
+	/* 이미지와 새 이미지 업로드 필드 간격 */
 }
 
-.write-form label[for="file"]{
-    margin-top: 20px; /* 위쪽 간격 */
-    margin-bottom: 5px; /* 아래쪽 간격 */
-    display: block; /* label과 input을 블록으로 표시하여 줄 바꿈 */
+.write-form label[for="file"] {
+	margin-top: 20px;
+	/* 위쪽 간격 */
+	margin-bottom: 5px;
+	/* 아래쪽 간격 */
+	display: block;
+	/* label과 input을 블록으로 표시하여 줄 바꿈 */
 }
 
 
 /* 대표 이미지 업로드와 현재 대표 이미지 간격 줄이기 */
 label[for="newImage"] {
-    margin-bottom: 5px; /* 기본 마진값에서 줄여서 설정 */
+	margin-bottom: 5px;
+	/* 기본 마진값에서 줄여서 설정 */
+}
+
+
+.button-container {
+	display: flex;
+	/* Flexbox 사용 */
+	justify-content: space-between;
+	/* 버튼 사이의 공간을 최대화하여 오른쪽 끝 정렬 */
+	margin-top: 20px;
+	/* 버튼과 다른 요소 사이의 여백 추가 */
+}
+
+.form-group {
+	margin-bottom: 15px;
+	/* 원하는 간격으로 조정 */
+	font-size: 15px;
+	color: #333;
+	font-weight: bold;
+	padding-bottom: 20px;
+	border-bottom: 2px solid #eee;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+}
+
+.profile-image {
+    width: 50px; /* 이미지 크기 조절 */
+    height: auto; /* 비율 유지 */
+    border-radius: 50%; /* 원형 이미지 (선택 사항) */
+    margin-right: 10px; /* 이미지와 글씨 사이 간격 */
+}
+
+.author-label {
+    font-size: 18px; /* 글씨 크기 조정 */
+    font-weight: bold; /* 글씨 두께 조정 (선택 사항) */
+    /* 추가 스타일이 필요하면 여기서 설정 가능 */
 }
 
 

@@ -13,7 +13,7 @@
 		FROM
 			PRODUCT
 		WHERE
-			PRO_ONOFF IN ('판매', '품절', '정지')
+			PRO_ONOFF = #{proOnOff}
 		<if	test="petType != '전체'">
 		AND
 			PRO_PETS = #{petType}
@@ -67,4 +67,67 @@
 			(#{optionName}, #{optionPrice}, #{optionCount},
 			#{proCode}, #{finalPrice}, #{optCode})
 	</insert>
+	
+	<select id="adminDetatilPro"
+		resultType="com.tech.petfriends.admin.dto.ProductDetailProDto">
+		SELECT 
+			PRO_CODE, PRO_NAME, PRO_PETS, PRO_TYPE, PRO_CATEGORY,
+			PRO_FILTER1, PRO_FILTER2, PRO_DISCOUNT, PRO_ONOFF
+		FROM
+			PRODUCT
+		WHERE
+			PRO_CODE = #{proCode}
+	</select>
+	
+	<select id="adminDetailImg"
+		resultType="com.tech.petfriends.admin.dto.ProductDetailImgDto">
+		SELECT 
+			MAIN_IMG1, MAIN_IMG2, MAIN_IMG3, MAIN_IMG4, MAIN_IMG5,
+			DES_IMG1, DES_IMG2, DES_IMG3, DES_IMG4, DES_IMG5, DES_IMG6,
+			DES_IMG7, DES_IMG8, DES_IMG9, DES_IMG10
+		FROM
+			PRODUCT_IMAGE
+		WHERE
+			PRO_CODE = #{proCode}
+	</select>
+	
+	<select id="adminDetailOpt"
+		resultType="com.tech.petfriends.admin.dto.ProductDetailOptDto">
+		SELECT 
+			PROOPT_NAME, PROOPT_PRICE, PROOPT_STOCK
+		FROM
+			PRODUCT_OPTION
+		WHERE
+			PRO_CODE = #{proCode}
+	</select>
+	
+	<update id="adminProductProModify">
+		UPDATE 
+			PRODUCT
+		SET
+			PRO_NAME = #{proName},
+			PRO_PETS = #{petType},
+			PRO_TYPE = #{proType},
+			PRO_CATEGORY = #{proDetailType},
+			PRO_FILTER1 = #{filterType1},
+			PRO_FILTER2 = #{filterType2},
+			PRO_DISCOUNT = #{proDiscount},
+			PRO_ONOFF = #{productStatus}
+		WHERE
+			PRO_CODE = #{proCode}
+	</update>
+	
+	<delete id="adminProductOptDelete">
+		DELETE FROM
+			PRODUCT_OPTION
+		WHERE
+			PRO_CODE = #{proCode}
+	</delete>
+	
+	<delete id="adminProductImgDelete">
+		DELETE FROM
+			PRODUCT_IMAGE
+		WHERE
+			PRO_CODE = #{proCode}
+	</delete>
 </mapper>

@@ -1,8 +1,9 @@
 /**
  * 
+ * 
  */
-// 팝업 열기 및 닫기
 
+// 팝업 열기 및 닫기
 document.addEventListener('DOMContentLoaded', () => {
 
 	const addPetButton = document.querySelector('.add-pet-button'); // .add-pet-button의 태그를 찾아 반환해줌
@@ -19,22 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		addPetButton.addEventListener('click', () => {
 		popupForm.style.display = 'flex'; // 팝업을 중앙에 표시
+		pageScroll(420);
 	});
 
 	closeAddPetButton.addEventListener('click', () => {
+		pageScroll(0);
 		popupForm.style.display = 'none'; // 팝업 닫기
 		document.getElementById('pet-form').reset(); // form 초기화
 	});
 
 	// 반려동물 form 저장 버튼 클릭시
 	savePetButton.addEventListener('click', () => {
+		pageScroll(0);
+		
 		let petHiddenVal = document.getElementById('pet-form-no').value; // form의 히든값을 저장
 		const petName = document.getElementById('pet-name').value; // form의 동물이름을 저장
-		const petType = document.getElementById('pet-type').value; // form의 동물타입을 저장
+		const petType = document.querySelector('[name="pet-type"]').value; // form의 동물타입을 저장
 		const petBirth = document.getElementById('pet-birth-date').value; // form의 동물생일을 저장
-		const petGender = document.getElementById('pet-gender').value; // form의 동물생일을 저장
+		const petGender = document.querySelector('[name="pet-gender"]').value; // form의 동물성별을 저장
 		const petWeight = document.getElementById('pet-weight').value; // form의 동물무게를 저장
-		const petNeutered = document.getElementById('pet-neutered').value; // form의 동물중성화 여부를 저장
+		const petNeutered = document.querySelector('[name="pet-neutered"]').value; // form의 동물중성화 여부를 저장
 		const petMessage = document.getElementById('pet-message').value; // form의 전달사항을 저장
 
 		if (petName) {
@@ -55,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			formDataObj[petHiddenVal].hphp_pet_gender = petGender;
 			formDataObj[petHiddenVal].hphp_pet_weight = petWeight;
 			formDataObj[petHiddenVal].hphp_pet_neut = petNeutered;
-			formDataObj[petHiddenVal].hphp_pet_comment = petMessage;
+			formDataObj[petHiddenVal].hphp_comment = petMessage;
 
 			petHiddenVal = Number(petHiddenVal) + 1;
 			document.getElementById('pet-form-no').value = petHiddenVal;
@@ -65,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			//	 <button class="delete-button">X</button> ` 를 삽입
 			newPet.innerHTML = `
             <span class="pet-name">${petName}</span>
-            <button class="delete-button">X</button>
+            <button class="delete-button" style="padding: 1px 1px 1px 1px;">X</button>
 			<input type="hidden" id="objIndexNo" value="${petHiddenVal}" />`;
 
 			petSection.insertBefore(newPet, addPetButton); // petSection(.pet-wrapper) 속의 addPetButton 앞에 newPet을 삽입
@@ -119,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	}
 	function showReserveDonePage(data) {
-		console.log('showReserveDonePage()');		
 		
 		document.getElementById('c-ontainer').style.display = 'none';
 		document.getElementById('reserve-done').style.display = 'block';
@@ -131,18 +135,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		post += '</td><td>' + data.mem_Dto.hph_numof_pet + '</td><td>' + data.mem_Dto.hph_start_date + '</td><td>' + data.mem_Dto.hph_end_date + '</td></tr>';
 		
 		data.nrFormList.forEach(function(pet){
-//			pet.hphp_reserve_pet_no
-//			pet.hphp_pet_name
-//			pet.hphp_pet_type
-//			pet.hphp_pet_birth
-//			pet.hphp_pet_gender
-//			pet.hphp_pet_weight
-//			pet.hphp_pet_neut
-//			pet.hphp_pet_comment
 			post += '<tr><th>번호</th><th>이름</th><th>종류</th><th>생일</th><th>성별</th><th>체중</th><th>중성화</th><th>전달사항</th></tr>';
 			post +=	'<tr><td>' + pet.hphp_reserve_pet_no + '</td><td>' + pet.hphp_pet_name + '</td><td>' + pet.hphp_pet_type;
 			post += '</td><td>' + pet.hphp_pet_birth + '</td><td>' + pet.hphp_pet_gender + '</td><td>' + pet.hphp_pet_weight;
-			post += '</td><td>' + pet.hphp_pet_neut + '</td><td>' + pet.hphp_pet_comment + '</td>';
+			post += '</td><td>' + pet.hphp_pet_neut + '</td><td>' + pet.hphp_comment + '</td>';
 			post +=	'</tr>';
 		});
 		
@@ -150,5 +146,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		
 		$('#reserve-done').html(post);
 	}
+	
 
+	function pageScroll(y) {
+		window.scrollTo({ top: y, behavior: 'smooth' });
+		// 함수 호출시 설정한 Y좌표로 스크롤
+	}
+	
 });

@@ -12,7 +12,7 @@
 
 $(document).ready(function() {
 
-	const itemsPerPage = 6; // 페이지 당 item 수 = 6
+	const itemsPerPage = 8; // 페이지 당 item 수 = 6
 	let currentPage = 1; // 현재 표시되는 페이지
 	let totalItems = 0; // 총 item 수 초기화
 	let petteacherList; // ArrayList를 담을 변수
@@ -71,10 +71,10 @@ $(document).ready(function() {
 			cards += '<img src="https://i.ytimg.com/vi/' + ylist.hpt_yt_videoid + '/hqdefault.jpg" alt="비디오 썸네일" class="video-thumbnail">';
 			cards += '<div class="content">';
 			cards += '<h3 class="info">' + ylist.hpt_title + '</h3>';
-			cards += '<p>' + ylist.hpt_exp + '</p>';
-			cards += '<p><strong>' + ylist.hpt_channal + '</strong></p>';
-			cards += '<p class="views-date"><strong>조회수 </strong>' + ylist.hpt_hit + '회</p>';
-			cards += '<p><strong>등록일</strong> ' + ylist.hpt_rgedate + '</p>';
+			cards += '<div><div><span>' + ylist.hpt_channal + '</span></div>';
+			cards += '<div class="video_desc">' + ylist.hpt_exp + '</div></div>';
+			cards += '<div class="flex"><div><span>등록일 </span>' + ylist.hpt_rgedate + '</div>';
+			cards += '<div class="views-date"><span>조회수 </span>' + ylist.hpt_hit + '회</div></div>';
 			cards += '</div>';
 			cards += '</a></div>';
 		});
@@ -134,6 +134,7 @@ $(document).ready(function() {
 		event.preventDefault(); // 기본 form 제출 동작 방지 (기본 링크를 이것으로 대체함)
 		formParam = $('#filter_form form').serialize(); // form 데이터 시리얼라이즈
 		currentPage = 1; // 필터링 시 페이지를 1로 리셋
+		console.log(formParam)
 		fetchData(currentPage, currPageGroup, formParam); // 필터 데이터를 포함해서 fetchData 호출
 	});
 
@@ -141,6 +142,9 @@ $(document).ready(function() {
 	$('#filterReset').on('click', function() {
 		$("#petType option:eq(0)").prop("selected", true);
 		$("#category option:eq(0)").prop("selected", true);
+		console.log(formParam);
+		formParam = '';
+		console.log(formParam);
 		fetchData(currentPage, currPageGroup, formParam); // 필터 데이터를 포함해서 fetchData 호출
 	});
 	

@@ -1,7 +1,6 @@
 package com.tech.petfriends.notice.controller;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 

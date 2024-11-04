@@ -1,4 +1,11 @@
 $(document).ready(function() {
+
+	//sub메뉴바 클릭 활성화
+	$(document).ready(function() {
+		$('#productPetItem').addClass('selected');
+	});
+
+
 	let currentIndex = 0; // 현재 이미지 인덱스
 
 	// 만약 이미지가 하나 이하라면 버튼을 숨김
@@ -241,16 +248,16 @@ $(document).ready(function() {
 		const selectedOptionName = selectedOption.data('name');
 		const selectedOptionCode = selectedOption.data('code');
 		const selectedOptionStock = selectedOption.data('stock');
-
-		$('#selectedOptionPrice').text(`1개 (${selectedPrice}원)`);
+		
+		$('#selectedOptionPrice').text(`1개 (${Number(selectedPrice).toLocaleString()}원)`);
 		$('#optionCodeInput').val(selectedCode);
 		$('#selectedOptionText').text(selectedOptionName); // 옵션 이름 업데이트
 		opt_code.value = selectedOptionCode;
 		$('#quantityInput').attr('max', selectedOptionStock);
-		$('#quantityMaxText').text(`최대 ${selectedOptionStock}개`); // 화면에 재고 표시
+		$('#quantityMaxText').text(`최대 ${Number(selectedOptionStock).toLocaleString()}개`); // 화면에 재고 표시
 
 		updateFinalPrice(selectedPrice);
-
+		
 	});
 
 
@@ -265,7 +272,8 @@ $(document).ready(function() {
 	function updateFinalPrice(selectedPrice) {
 		const quantity = $('#quantityInput').val();
 		const finalPrice = selectedPrice * quantity;
-		$('#finalPrice').text(`총 가격: ${finalPrice}원`);
+		$('#finalPrice').html(`총 수량 ${Number(quantity).toLocaleString()}개 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ${Number(finalPrice).toLocaleString()}원`);
 	}
 
 	//리뷰갯수 게이지
@@ -381,16 +389,21 @@ $(document).ready(function() {
 
 			// 반려동물 이미지
 			cards += '<div class="reviewFirst">'
-			if(rlist.pet_img){
-			cards += '<img src="/static/Images/pet/' + rlist.pet_img + '" class="petImage">';
-			}else {
-			cards += '<img src="/static/Images/pet/noPetImg.jpg" class="petImage">';
+			if (rlist.pet_img) {
+				cards += '<img src="/static/Images/pet/' + rlist.pet_img + '" class="petImage">';
+			} else {
+				cards += '<img src="/static/Images/pet/noPetImg.jpg" class="petImage">';
 			}
-			
+
 			// 작성자 이름
 			cards += '<div class="reviewAuthor">';
-			cards += '<strong>' + rlist.pet_name + '</strong>'; // 작성자 이름
+			if (rlist.pet_name) {
+				cards += '<strong>' + rlist.pet_name + '</strong>'; // 작성자 이름
+			} else {
+				cards += '<strong>펫아무개</strong>'; // 작성자 이름
+			}
 			cards += '</div>';
+			console.log(rlist.pet_name);
 
 			// 리뷰 평점
 			cards += '<div class="reviewRating">';
@@ -403,7 +416,7 @@ $(document).ready(function() {
 			cards += '</div>';
 			cards += '</div>';
 
-		
+
 
 			// 리뷰 이미지
 			cards += '<div class="reviewImages">';
@@ -484,29 +497,33 @@ $(document).ready(function() {
 
 	// 이미지 클릭 이벤트 추가
 	document.addEventListener('click', function(event) {
-	    if (event.target.closest('.reviewImages')) {
-	        const clickedImage = event.target;
-	        if (clickedImage.classList.contains('reviewImage')) {
-	            // 클릭한 이미지 크기 조정
-	            if (clickedImage.classList.contains('large')) {
-	                clickedImage.classList.remove('large'); // 큰 이미지 클래스를 제거
-	            } else {
-	                const images = clickedImage.closest('.reviewImages').querySelectorAll('.reviewImage');
-	                images.forEach(img => img.classList.remove('large')); // 다른 이미지에서 큰 클래스 제거
-	                clickedImage.classList.add('large'); // 클릭한 이미지에 큰 클래스 추가
-	            }
-	        }
-	    }
+		if (event.target.closest('.reviewImages')) {
+			const clickedImage = event.target;
+			if (clickedImage.classList.contains('reviewImage')) {
+				// 클릭한 이미지 크기 조정
+				if (clickedImage.classList.contains('large')) {
+					clickedImage.classList.remove('large'); // 큰 이미지 클래스를 제거
+				} else {
+					const images = clickedImage.closest('.reviewImages').querySelectorAll('.reviewImage');
+					images.forEach(img => img.classList.remove('large')); // 다른 이미지에서 큰 클래스 제거
+					clickedImage.classList.add('large'); // 클릭한 이미지에 큰 클래스 추가
+				}
+			}
+		}
 	});
 
 	// 스크롤 이벤트 추가
 	window.addEventListener('scroll', function() {
-	    const largeImages = document.querySelectorAll('.reviewImage.large');
-	    largeImages.forEach(img => img.classList.remove('large')); // 스크롤 시 모든 큰 이미지 클래스 제거
+		const largeImages = document.querySelectorAll('.reviewImage.large');
+		largeImages.forEach(img => img.classList.remove('large')); // 스크롤 시 모든 큰 이미지 클래스 제거
 	});
 
 
-
+	document.getElementById('contentBtn').addEventListener('click', function () {
+	        const productDetails = document.getElementById('productInfoPg');
+	        const isExpanded = productDetails.classList.toggle('expanded');
+	        this.textContent = isExpanded ? '상품 설명 접기 ▲' : '상품 설명 펼쳐보기 ▼';
+	    });
 
 
 

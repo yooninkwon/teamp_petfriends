@@ -8,7 +8,13 @@
     <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
     <link rel="stylesheet" href="/static/css/community/community_writeview.css">
     <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
+
+
+
+
+
 <body>
 
 <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
@@ -17,9 +23,19 @@
     <h3>글쓰기</h3>
 
     <form id="postForm" action="${pageContext.request.contextPath}/community/write" method="post" enctype="multipart/form-data" class="write-form" onsubmit="return validateForm()">
-        <label for="user_id">이름</label>
-        <input type="text" id="user_id" name="user_id" placeholder="이름을 입력하세요" required>
-
+       <input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
+       <input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
+       <input type="hidden" name="pet_img" value="${getpetimg.pet_img}">
+     
+      
+	   <div class="form-group">
+	       <div class="profile-info">
+	           <img src="/static/Images/pet/${getpetimg.pet_img}" alt="프로필 이미지 1" class="profile-image" />
+	           <label for="user_id" class="author-label">${sessionScope.loginUser.mem_nick}</label>
+	       </div>
+	   </div>
+       
+        
         <label for="b_cate_no">카테고리</label>
         <select id="b_cate_no" name="b_cate_no" required>
             <option value="">카테고리를 선택하세요</option>
@@ -27,7 +43,8 @@
                 <option value="${category.b_cate_no}">${category.b_cate_name}</option>
             </c:forEach>
         </select>
-
+	
+        
         <label for="file" class="image-label">사진업로드</label>
         <input type="file" id="file" name="file" multiple>
 
@@ -45,9 +62,11 @@
         <div id="repImagePreview" class="post-image" style="max-width: 100%; height: auto; margin-top: 10px;">
             <img id="previewImage" src="" alt="대표 이미지 미리보기" style="max-width: 100%; height: auto; display: none;">
         </div>
-
+			<div class="button-container">
         <input type="button" id="previewButton" class="btn submit-btn" value="내용 미리보기">
+        
         <input type="submit" id="submit-btn" class="btn submit-btn" value="작성 완료">
+    	</div>
     </form>
 
     <!-- 미리보기 팝업 -->
@@ -133,7 +152,7 @@
             return false; 
         }
         return true; 
-    }
+    }     
 </script>
 
 <footer>

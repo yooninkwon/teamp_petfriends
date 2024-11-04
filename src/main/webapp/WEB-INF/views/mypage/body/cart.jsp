@@ -10,6 +10,6 @@
 </title>
 </head>
 <body>
-내 새꾸
+<h2>장바구니</h2>
 </body>
 </html>

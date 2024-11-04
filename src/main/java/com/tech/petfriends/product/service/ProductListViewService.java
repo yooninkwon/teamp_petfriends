@@ -16,7 +16,7 @@ public class ProductListViewService implements ProductService {
 	public ProductListViewService(ProductDao productDao) {
 		this.productDao = productDao;
 	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(Model model) {
 		// ajax에서 보낸 카테고리,필터값 받기

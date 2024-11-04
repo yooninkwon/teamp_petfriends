@@ -19,7 +19,6 @@ import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.login.util.PasswordEncryptionService;
 import com.tech.petfriends.member.service.MemberService;
-import com.tech.petfriends.mypage.dao.MypageDao;
 import com.tech.petfriends.mypage.dto.GradeDto;
 
 @Controller

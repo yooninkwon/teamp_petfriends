@@ -20,14 +20,13 @@
 		});
 	</script>
 	<!-- 안내 텍스트 -->
-	<br />
+	<!-- margin-top 줄일것 0 -->
 	<div id="infoText">${selectedAnimal.orgNm }에 있는
 		${selectedAnimal.careNm }에서 보호중인 동물이에요.</div>
 
 	<!-- 동물 이미지 섹션 -->
 	<div id="animalImages">
-		<img src="${selectedAnimal.filename }" alt="Animal Image 1" /> <img
-			src="${selectedAnimal.popfile }" alt="Animal Image 3" />
+		<img src="${selectedAnimal.popfile }" alt="Animal Image" />
 	</div>
 
 	<!-- 상세 정보 테이블 -->

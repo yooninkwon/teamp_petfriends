@@ -12,13 +12,16 @@
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 	<jsp:include page="/WEB-INF/views/include_jsp/helppetf_sub_navbar.jsp" />
 	<script>
+		var mem_login = '${sessionScope.loginUser.mem_nick }';
 		$(document).ready(
+				
 				function() {
 					document.getElementById('${main_navbar_id }').classList
 							.add('selected');
 					document.getElementById('${sub_navbar_id }').classList
 							.add('selected');
 				});
+		
 	</script>
 	<div class="container">
 		<div class="top-section">
@@ -54,10 +57,19 @@
 			<a href="http://172.16.4.10:5500/" 
 			onclick="window.open(this.href, '_blank', 'status=no ,location=no, directoryies=no, resizable=no, scrollbars=yes, titlebar=no,width=430, height=330'); return false;" class="button" id="left">
 			펫캠 보기</a> 
-			<a href="/helppetf/pethotel/pethotel_reserve" class="button" id="right">예약하러 가기</a>
+			<a href="#" class="button" id="right">예약하러 가기</a>
 		</div>
 	</div>
-
+	
+		<!-- 로그인이 필요합니다 팝업 -->
+	<div id="loginPopup" class="popup-overlay">
+		<div class="popup-content-login">
+			<p>로그인이 필요해요</p>
+			<button id="loginBtn" class="popup-btn">로그인 하러가기</button>
+			<button id="closeBtn" class="popup-btn">닫기</button>
+		</div>
+	</div>
+	<script src="/static/js/helppetf/pethotel_main.js"></script>
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>

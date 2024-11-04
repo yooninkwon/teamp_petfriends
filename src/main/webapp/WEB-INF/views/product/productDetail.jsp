@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,6 +39,7 @@
 </head>
 <!-- 헤더 -->
 <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+<jsp:include page="/WEB-INF/views/include_jsp/product_sub_navbar.jsp" />
 <body>
 
 
@@ -55,12 +57,16 @@
 			<div class="data-container">
 				<span class="data-petType">${product.pro_pets } 전용</span> &nbsp; <span
 					class="data-proType">${product.pro_type } /
-					${product.pro_category }</span> <br /> <span class="data-proName">${product.pro_name }</span>
-				<br /> <span class="data-reviewAverage">${reviewRank.average_rating}</span>
-				<span class="data-reviewCount">${reviewRank.total_reviews}개
-					후기</span> <br /> <span class="data-proDiscount">${product.pro_discount}%</span>
-				<span class="data-proPrice">${productOption.proopt_price }원</span> <br />
-				<span class="data-proFinalPrice">${productOption.proopt_finalprice }원</span>
+					${product.pro_category }</span> <br /> <br /> 
+				<span class="data-proName">${product.pro_name }</span> <br />
+				<span class="data-reviewAverage">${reviewRank.average_rating}</span>
+				<span class="data-reviewCount">
+					 <fmt:formatNumber value="${reviewRank.total_reviews}" pattern="#,###"/>개 후기</span> <br /><br /> 
+				<span class="data-proDiscount">${product.pro_discount}%</span> 
+				<span class="data-proPrice">
+					<fmt:formatNumber value="${productOption.proopt_price }" pattern="#,###"/>원</span> <br /> 
+				<span class="data-proFinalPrice">
+					<fmt:formatNumber value="${productOption.proopt_finalprice }" pattern="#,###"/>원</span>
 				<br />
 
 				<!-- 비로그인 시 예상 적립금 0.5% 적용 -->
@@ -70,10 +76,10 @@
 					value="${productOption.proopt_finalprice != null ? productOption.proopt_finalprice : 0}" />
 				<c:set var="estimatedReward"
 					value="${(finalPrice * effectiveRate / 100).intValue()}" />
-				<span class="data-memGrade">예상 적립금 ${estimatedReward}원</span> <br />
+				<span class="data-memGrade">(예상 적립금 <span class="gradePoint"> ${estimatedReward}원</span>)</span> <br /> <br />
 
 				<!-- 상품 옵션 선택창  -->
-				<label for="productOptions">옵션 선택</label> <select
+				<label class="data-proType" for="productOptions">옵션 선택 &nbsp;</label> <select
 					id="productOptions" name="proOption">
 					<c:forEach var="option" items="${productOptionList}"
 						varStatus="status">
@@ -92,7 +98,7 @@
 								<c:set var="priceDifference" value="${currentPrice - basePrice}" />
 								<c:choose>
 									<c:when test="${priceDifference > 0}">
-		                        +${priceDifference}원
+		                        + <fmt:formatNumber value="${priceDifference}" pattern="#,###"/>원
 		                    </c:when>
 									<c:when test="${priceDifference < 0}">
 		                        ${priceDifference}원
@@ -108,7 +114,9 @@
 						<!-- 재고량 합산 -->
 					</c:forEach>
 				</select>
+				<br /> <br />
 				<div class="data-line"></div>
+				
 				<div class="putBtn">
 					<button id="wishListBtn" data-product-code="${product.pro_code }"
 						data-mem-code="${sessionScope.loginUser.mem_code }">
@@ -143,9 +151,14 @@
 							<div class="recproduct-image-wrapper">
 								<img src="/static/images/ProductImg/MainImg/${recPro.main_img1}" />
 							</div>
-							<span>${recPro.pro_name}</span> <br /> <span>${recPro.proopt_price}원</span>
-							<br /> <span>${recPro.pro_discount}%
-								${recPro.proopt_finalprice}원</span>
+							<span class="recProName">${recPro.pro_name}</span> <br /> 
+							<span id="proPrice">
+							<fmt:formatNumber value="${recPro.proopt_price}" pattern="#,###"/>원
+							</span> <br /> 
+							<span id="proDis">${recPro.pro_discount}%</span>
+							<span id="proFpri">
+							<fmt:formatNumber value="${recPro.proopt_finalprice}" pattern="#,###"/>원
+							</span>
 							<div class="recRating">
 								<span class="data-reviewAverage2"
 									data-average-rating="${recPro.average_rating}"></span> <span>(${recPro.total_reviews})</span>
@@ -163,7 +176,7 @@
 
 		<!-- 제품설명이미지 -->
 		<div class="detailInfo">
-			<div class="productInfo">
+			<div class="productInfo" id="productInfoPg">
 				<span class="detailMent">펫프 <span style="color: #ff4081;">Check</span>
 					Point
 				</span> <br /> <img class="checkImg"
@@ -180,6 +193,7 @@
 				</div>
 			</div>
 		</div>
+		<div id="contentBtn">상품 설명 펼쳐보기 ▼</div>
 
 		<!-- 구분선 -->
 		<div class="line"></div>
@@ -242,9 +256,11 @@
 			</div>
 		</div>
 
+	<br />
 		<!-- 리뷰 리스트 -->
 		<!-- 리뷰리스트 옵션설정 / 최신순,높은평점순,낮은평점순 -->
 		<div class="reviewListBox">
+		<div>
 			<select name="reviewOption" id="reviewOption"
 				data-procode="${product.pro_code }"
 				data-totalReviews="${reviewRank.total_reviews}">
@@ -252,13 +268,15 @@
 				<option value="rankAsc">낮은평점순</option>
 				<option value="dateDesc">최신순</option>
 			</select>
+			</div>
 		</div>
 
 		<!-- 리뷰리스트 -->
 		<div class="reviewContentListContainer"></div>
+		<br />
 		<!-- 리뷰리스트 페이징 번호 -->
 		<div class="reviewListPagination"></div>
-
+		<br />
 
 
 
@@ -285,13 +303,18 @@
 	<form action="/product/productDetailCart" method="post">
 		<div id="cartPopup" class="popup-overlay">
 			<div class="popup-content-cart">
-				<span>${product.pro_name}</span> <span id="selectedOptionText">
-				</span>
-				<p id="selectedOptionPrice"></p>
+				<span id="selectedPro">${product.pro_name}</span> <span id="selectedOptionText"></span>
+				<br /> <br />
+				
+				<span id="selectedOptionPrice"></span>
 				<!-- 가격을 표시할 요소 추가 -->
-				<span id="quantityMaxText"></span> <input type="number"
+				 <input type="number"
 					id="quantityInput" name="quantity" min="1" value="1"
-					onkeydown="return false;" /> <span id="finalPrice"></span> <br />
+					onkeydown="return false;" />
+					<span id="quantityMaxText"></span>
+					<br /> <br />
+					<span id="finalPrice"></span> 
+					<br /> <br />
 				<button type="submit" id="addCartBtn" class="popup-btn">장바구니
 					담기</button>
 				<button type="button" id="closeCartBtn" class="popup-btn">닫기</button>
