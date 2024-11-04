@@ -271,7 +271,6 @@ html, body {
 #bestProPrice {
 	text-decoration: line-through; /* 가운데 줄 긋기 */
 	color: lightgray;
-	
 }
 
 #bestProFpri {
@@ -394,45 +393,15 @@ html, body {
 	animation: dropdownSlide 0.3s ease forwards; /* 드롭다운 애니메이션 */
 }
 
-@
-keyframes dropdownSlide { 0% {
-	opacity: 0;
-	transform: translateY(-20px); /* 위에서 시작 */
-}
-
-100
-
-
-%
-{
-opacity
-
-
-:
-
-
-1
-;
-
-
-transform
-
-
-:
-
-
-translateY
-(
-
-
-0
-
-
-)
-; /* 원래 위치로 이동 */
-
-
-}
+@keyframes dropdownSlide { 
+	0% {
+		opacity: 0;
+		transform: translateY(-20px); /* 위에서 시작 */
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0); /* 원래 위치로 이동 */
+	}
 }
 #search_icontag {
 	line-height: 0; /* 텍스트 줄 높이 제거 */
