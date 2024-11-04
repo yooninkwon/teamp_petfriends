@@ -1,13 +1,16 @@
 package com.tech.petfriends.mypage.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
+import com.tech.petfriends.mypage.dto.MyWishDto;
 
 @Mapper
 public interface MypageDao {
@@ -52,4 +55,10 @@ public interface MypageDao {
 	boolean insertNewAddress(String addrCode, String memCode, String addrPostal, String addrLine1, String addrLine2);
 
 	void updateMemberInfo(MemberLoginDto loginUser);
+
+	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
+
+	List<MyOrderDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
+	
+	void deleteWishByProCode(String mem_code, String pro_code);
 }

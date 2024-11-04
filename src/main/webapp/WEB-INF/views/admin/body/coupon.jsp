@@ -25,37 +25,39 @@
 <!-- 쿠폰 등록 -->
 <div id="couponRegister" class="tab-content">
 	<!-- 필터링 영역 -->
-	<div class="filter-section-1" id="status-filter">
-	    <div class="radio-group">
-	        <div class="filter-title">발급 상태</div>
-	        <label><input type="radio" name="status-filter" value="전체" checked> 전체</label>
-	        <label><input type="radio" name="status-filter" value="발급중"> 발급중</label>
-	        <label><input type="radio" name="status-filter" value="예정"> 예정</label>
-	        <label><input type="radio" name="status-filter" value="종료"> 종료</label>
-	    </div>
-	    <div class="radio-group" id="kind-filter">
-	        <div class="filter-title">쿠폰 종류</div>
-	        <label><input type="radio" name="kind-filter" value="전체" checked> 전체</label>
-	        <label><input type="radio" name="kind-filter" value="P"> 일반</label>
-	        <label><input type="radio" name="kind-filter" value="G"> 등급</label>
-	    </div>
-	    <div class="radio-group" id="type-filter">
-	        <div class="filter-title">할인 타입</div>
-	        <label><input type="radio" name="type-filter" value="전체" checked> 전체</label>
-	        <label><input type="radio" name="type-filter" value="A"> 할인액</label>
-	        <label><input type="radio" name="type-filter" value="R"> 할인율</label>
-	    </div>
-	</div>
-	
-	<div class="array-section">
-	    <!-- 정렬 드롭다운 -->
-        <select id="sort-order">
-            <option value="최신순">최신순</option>
-            <option value="발급순">발급순</option>
-            <option value="사용액순">사용액순</option>
-        </select>
-	    <!-- 신규등록 버튼 -->
-	    <button id="new-coupon-btn" class="btn-style">신규등록</button>
+	<div id="regist-status-filter">
+		<div class="filter-section-1" id="status-filter">
+		    <div class="radio-group">
+		        <div class="filter-title">발급 상태</div>
+		        <label><input type="radio" name="status-filter" value="전체" checked> 전체</label>
+		        <label><input type="radio" name="status-filter" value="발급중"> 발급중</label>
+		        <label><input type="radio" name="status-filter" value="예정"> 예정</label>
+		        <label><input type="radio" name="status-filter" value="종료"> 종료</label>
+		    </div>
+		    <div class="radio-group" id="kind-filter">
+		        <div class="filter-title">쿠폰 종류</div>
+		        <label><input type="radio" name="kind-filter" value="전체" checked> 전체</label>
+		        <label><input type="radio" name="kind-filter" value="P"> 일반</label>
+		        <label><input type="radio" name="kind-filter" value="G"> 등급</label>
+		    </div>
+		    <div class="radio-group" id="type-filter">
+		        <div class="filter-title">할인 타입</div>
+		        <label><input type="radio" name="type-filter" value="전체" checked> 전체</label>
+		        <label><input type="radio" name="type-filter" value="A"> 할인액</label>
+		        <label><input type="radio" name="type-filter" value="R"> 할인율</label>
+		    </div>
+		</div>
+		
+		<div class="array-section">
+		    <!-- 정렬 드롭다운 -->
+	        <select id="sort-order">
+	            <option value="최신순">최신순</option>
+	            <option value="발급순">발급순</option>
+	            <option value="사용액순">사용액순</option>
+	        </select>
+		    <!-- 신규등록 버튼 -->
+		    <button id="new-coupon-btn" class="btn-style">신규등록</button>
+		</div>
 	</div>
 	
 	<!-- 리스트 영역 -->
@@ -80,16 +82,15 @@
 		    </tbody>
 		</table>
 		
-		<div id="pagination">
-			<!-- 페이징 -->
-		</div>
+		<!-- 페이징 -->
+		<div id="coupon-pagination" class="pagination"></div>
 	</div>
 </div>
 
 <!-- 회원쿠폰현황 -->
 <div id="couponStatus" class="tab-content" style="display: none;">
     <!-- 필터링 영역 -->
-	<div class="filter-section-2">
+	<div class="filter-section-2" id="memCoupon-status-filter">
         <!-- 쿠폰 상태 체크박스 필터 -->
 	    <div class="filter-section-1">
 	        <div class="checkbox-group">
@@ -146,9 +147,8 @@
 		    </tbody>
 		</table>
 		
-		<div id="pagination">
-			<!-- 페이징 -->
-		</div>
+		<!-- 페이징 -->
+		<div id="memberCoupon-pagination" class="pagination"></div>
 	</div>
 </div>
 

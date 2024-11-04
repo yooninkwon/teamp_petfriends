@@ -86,7 +86,7 @@ async function requestCode() {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ 'phoneNumber': phoneNumber })
     });
-    const { authCode } = await smsRes.json();
+    const data = await smsRes.json();
 	authCode = data.authCode;
     alert("인증번호가 발송되었습니다.");
     console.log(authCode);
