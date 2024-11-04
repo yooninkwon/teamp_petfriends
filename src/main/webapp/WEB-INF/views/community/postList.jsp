@@ -11,13 +11,15 @@
 </head>
 <body>
 	<div id="postContainer">
+
 		<c:forEach items="${postList }" var="post">
 			<article class="post-card">
 				<div class="post-header">
-					<a href="/community/contentView?board_no=${post.board_no}"
-						class="profile-link">
-						<div class="profile-info">
+					<input type="hidden" name="mem_code" value="${post.mem_code}">
 
+
+					<a href="/community/myfeed/${post.mem_code}" class="profile-link">
+						<div class="profile-info">
 							<img src="/static/Images/pet/${post.pet_img}" alt="프로필 이미지 1"
 								class="profile-image" /> <span class="user-name">${post.user_id }</span>
 					</a> <span class="post-time">${post.board_created}</span>
@@ -32,7 +34,6 @@
 						escapeXml="false" />
 				</div>
 	</div>
-
 	<img
 		src="${pageContext.request.contextPath}/static/images/community_img/${post.chrepfile}"
 		alt="포스트 1 이미지" class="post-image" />

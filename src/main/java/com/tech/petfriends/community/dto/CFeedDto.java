@@ -11,12 +11,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-public class CLikesDto {
-
-	private int like_id;
+public class CFeedDto {
+	
+	private int feed_no;
+	private String mem_code;
 	private int board_no;
 	private String user_id;
-	private Date created_date;
-	private String mem_code;
-
 }

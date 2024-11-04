@@ -7,22 +7,23 @@
 	
 	<select id="getPostList"
 		resultType="com.tech.petfriends.community.dto.CDto">
-		SELECT CD.*, RCI.*, MP.PET_IMG 
+		SELECT CD.*, RCI.*, COALESCE(MP.PET_IMG, 'noPetImg.jpg') AS PET_IMG
 		FROM COMMUNITY_BOARD CD
 		JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
-		JOIN MEMBER_PET MP ON CD.MEM_CODE = MP.MEM_CODE
-		WHERE MP.PET_MAIN = 'Y'
+		LEFT JOIN MEMBER_PET MP ON CD.MEM_CODE = MP.MEM_CODE AND MP.PET_MAIN = 'Y'
 		ORDER BY CD.BOARD_NO DESC
 	</select>
 
 	
 	<select id="getPetIMG"
 		resultType="com.tech.petfriends.community.dto.CDto">
-		SELECT PET_IMG FROM MEMBER_PET
+		SELECT PET_IMG 
+		FROM MEMBER_PET
 		WHERE MEM_CODE = #{mem_code} 
 		AND PET_MAIN = 'Y' 		
 	</select> 
 	
+
 
 	<insert id="write">
 		INSERT INTO COMMUNITY_BOARD (BOARD_NO,
@@ -49,11 +50,11 @@
 
 	<select id="contentView"
 		resultType="com.tech.petfriends.community.dto.CDto">		
-		SELECT CD.*, RCI.*, MP.PET_IMG 
+		SELECT CD.*, RCI.*, COALESCE(MP.PET_IMG, 'noPetImg.jpg') AS PET_IMG 
 		FROM COMMUNITY_BOARD CD
-		INNER JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
-		INNER JOIN MEMBER_PET MP ON CD.MEM_CODE = MP.MEM_CODE
-		WHERE CD.BOARD_NO = #{board_no} AND MP.PET_MAIN = 'Y'
+		LEFT JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
+		LEFT JOIN MEMBER_PET MP ON CD.MEM_CODE = MP.MEM_CODE AND MP.PET_MAIN = 'Y'
+		WHERE CD.BOARD_NO = #{board_no}
 	</select>
 
 
@@ -99,9 +100,12 @@
 		WHERE BOARD_NO = #{board_no}
 	</update>
 
+	
+	
 	<delete id="delete">
 		DELETE FROM COMMUNITY_BOARD WHERE BOARD_NO = #{board_no}
 	</delete>
+
 
 	<insert id="comment">
 		INSERT INTO COMMUNITY_COMMENT (COMMENT_NO, BOARD_NO, USER_ID,
@@ -201,20 +205,28 @@
 	</select>
 	
 	<insert id="addFeed">
-	INSERT INTO COMMUNITY_FEED (FEED_NO,MEM_CODE, BOARD_NO, USER_ID)
-	VALUES (COMMUNITY_FEED_SEQ.NEXTVAL, #{mem_code},#{board_no},#{mem_nick})
+	INSERT INTO COMMUNITY_FEED (FEED_NO, MEM_CODE, BOARD_NO, USER_ID)
+	VALUES (COMMUNITY_FEED_SEQ.NEXTVAL, #{mem_code}, #{board_no}, #{mem_nick})
 	</insert>
 
 
 	<select id="myFeedList"
-		resultType="com.tech.petfriends.community.dto.CDto">
-		SELECT CD.*, RCI.*, MP.PET_IMG , CF.*
-		FROM COMMUNITY_BOARD CD
-		JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
-		JOIN MEMBER_PET MP ON CD.MEM_CODE = MP.MEM_CODE
-		JOIN COMMUNITY_FEED CF ON CD.BOARD_NO = CF.BOARD_NO
-		WHERE MP.PET_MAIN = 'Y' AND CF.MEM_CODE = #{mem_code} AND CF.USER_ID = #{user_id} 
-		ORDER BY CD.BOARD_NO DESC
+	resultType="com.tech.petfriends.community.dto.CDto">
+	SELECT CD.*, RCI.*, COALESCE(MP.PET_IMG, 'noPetImg.jpg') AS PET_IMG, CF.*, CF.USER_ID
+	FROM COMMUNITY_BOARD CD
+	LEFT JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
+	LEFT JOIN MEMBER_PET MP ON CD.MEM_CODE = MP.MEM_CODE AND MP.PET_MAIN = 'Y'
+	LEFT JOIN COMMUNITY_FEED CF ON CD.BOARD_NO = CF.BOARD_NO
+	WHERE CD.MEM_CODE = #{mem_code}
+	ORDER BY CD.BOARD_NO DESC
 	</select>
 
+	<select id="myFeedName"
+	resultType="com.tech.petfriends.community.dto.CDto">
+	SELECT MEM_NICK
+	FROM MEMBER 
+	WHERE MEM_CODE = #{mem_code}
+	</select>
+
+	
 </mapper>

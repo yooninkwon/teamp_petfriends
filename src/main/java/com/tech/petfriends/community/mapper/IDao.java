@@ -3,6 +3,7 @@ package com.tech.petfriends.community.mapper;
 import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.tech.petfriends.community.dto.CCategoryDto;
 import com.tech.petfriends.community.dto.CCommentDto;
@@ -34,6 +35,8 @@ public interface IDao {
 
 	public void delete(int board_no);
 
+	public void deleteFeedBoard(int board_no);
+
 	public void comment(String board_no, String comment_no, String mem_nick, String comment_content,
 			String parent_comment_no, String comment_level, String comment_order_no, String mem_code);
 
@@ -64,6 +67,11 @@ public interface IDao {
 	
 	public void addFeed(String mem_code, int board_no, String mem_nick);
 	
-	public ArrayList<CDto> myFeedList();
+	public ArrayList<CDto> myFeedList(String mem_code);
+
+	public CDto myFeedName (String mem_code);
+
+
+
 }
 

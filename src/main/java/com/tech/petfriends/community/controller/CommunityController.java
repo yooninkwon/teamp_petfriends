@@ -28,7 +28,7 @@ import com.tech.petfriends.community.service.CContentViewService;
 import com.tech.petfriends.community.service.CDeleteService;
 import com.tech.petfriends.community.service.CDownloadService;
 import com.tech.petfriends.community.service.CModifyService;
-import com.tech.petfriends.community.service.CMyFeed;
+import com.tech.petfriends.community.service.CMyFeedService;
 import com.tech.petfriends.community.service.CPostListService;
 import com.tech.petfriends.community.service.CServiceInterface;
 import com.tech.petfriends.community.service.CUpdateLikeService;
@@ -239,9 +239,11 @@ public String replyDelete(HttpServletRequest request, Model model) {
 	public String myfeed(@PathVariable String mem_code,
 			HttpSession session,HttpServletRequest request,Model model) {
 		model.addAttribute("request",request);
-		model.addAttribute("mem_code", mem_code);
-
-	    serviceInterface = new CMyFeed(iDao);
+		model.addAttribute("mem_code", mem_code);	
+		model.addAttribute("session", session);
+		System.out.println(mem_code);
+		
+		serviceInterface = new CMyFeedService(iDao);
 	    serviceInterface.execute(model);
 		
 		return "/community/myfeed";
