@@ -10,7 +10,6 @@ import com.tech.petfriends.index.dto.IndexProductDto;
 @Mapper
 public interface IndexDao {
 
-	public void execute(Model model);
 
 	public List<IndexProductDto> indexProductListDog();
 
