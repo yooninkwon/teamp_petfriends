@@ -57,14 +57,14 @@
 			<div class="data-container">
 				<span class="data-petType">${product.pro_pets } 전용</span> &nbsp; <span
 					class="data-proType">${product.pro_type } /
-					${product.pro_category }</span> <br /> <br />
+					${product.pro_category }</span> <br /> <br /> 
 				<span class="data-proName">${product.pro_name }</span> <br />
 				<span class="data-reviewAverage">${reviewRank.average_rating}</span>
 				<span class="data-reviewCount">
 					 <fmt:formatNumber value="${reviewRank.total_reviews}" pattern="#,###"/>개 후기</span> <br /><br /> 
 				<span class="data-proDiscount">${product.pro_discount}%</span> 
 				<span class="data-proPrice">
-					<fmt:formatNumber value="${productOption.proopt_price }" pattern="#,###"/>원</span> <br /> <br />
+					<fmt:formatNumber value="${productOption.proopt_price }" pattern="#,###"/>원</span> <br /> 
 				<span class="data-proFinalPrice">
 					<fmt:formatNumber value="${productOption.proopt_finalprice }" pattern="#,###"/>원</span>
 				<br />
