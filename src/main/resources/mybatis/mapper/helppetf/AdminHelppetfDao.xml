@@ -149,11 +149,14 @@
 		HPH_STATUS = #{hph_status} 
 		<if test="hph_status == '신청중'">
 			, HPH_APPROVAL_DATE = null 
+			, HPH_REFUSAL_REASON = '-'
 		</if>
 		<if test="hph_status == '승인'">
 			, HPH_APPROVAL_DATE = SYSDATE 
+			, HPH_REFUSAL_REASON = '-'
 		</if>
 		<if test="hph_status == '거절'">
+			, HPH_APPROVAL_DATE = null 
 			, HPH_REFUSAL_REASON = #{hph_refusal_reason}
 		</if>
 		WHERE 

@@ -216,14 +216,14 @@ $(document).ready(function() {
 		
 		// 예약 거절 창의 예약상태변경 버튼 클릭 시
 		$(document).on('click', '#reserveSubmit_refusal', function() {
-			////////////////////////////////////////////////////////////////////////////////////////
-			///////////////////여기하던중임/////////////////////////////////////////////////////////
-			///////////////////거절버튼클릭시///////////////////////////////////////////////////////
-			///////////////////나오는 창에서 있는///////////////////////////////////////////////////
-			///////////////////저장?버튼을 클릭했을 때//////////////////////////////////////////////
-			///////////////////거절하는 함수 만들기/////////////////////////////////////////////////
-			///////////////거절창 버튼 ID: reserveSubmit_refusal////////////////////////////////////
-			////////////////////////////////////////////////////////////////////////////////////////			
+			hph_refusal_reason = $('textarea[name="refusal_reason"]').val();
+			console.log(hph_refusal_reason);
+			let statusObj = {
+				'hph_reserve_no': currReserveNo,
+				'hph_status': '거절',
+				'hph_refusal_reason': hph_refusal_reason
+			}
+			fetchDataForStatus(statusObj);
 		});
 
 		// 예약 상세페이지의 예약상태변경 버튼 클릭 시
@@ -232,14 +232,12 @@ $(document).ready(function() {
 			let statusObj = {
 				'hph_reserve_no': currReserveNo,
 				'hph_status': statusVal,
-				'hph_refusal_reason': hph_refusal_reason
-				
-				// 거절메세지 담아 보내기
+				'hph_refusal_reason': '-'
 			}
 			if (statusVal === currStatus) {
 				alert('변동사항이 없습니다.')
 			} else {
-				fetchDataForStatus(statusObj)
+				fetchDataForStatus(statusObj);
 			}
 		});
 

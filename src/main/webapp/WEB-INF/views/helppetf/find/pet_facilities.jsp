@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,13 +18,38 @@
 			document.getElementById('${sub_navbar_id }').classList.add('selected');
 		});
 	</script>
+	<div class="my_adress">
+		<div class="my_adress_wrap">
+		<div class="my_adress_box">
+		<c:choose>
+			<c:when test="${mem_nick eq null }">
+				<span class="user_nickname">로그인</span> 하시면 <span class="current_address">배송지로 저장되어 있는 주소</span>로 주변 동물병원을 찾아보실 수 있습니다.
+			</c:when>
+			<c:otherwise>				
+				<span class="user_nickname">${mem_nick }</span>님의 주소는 <span class="current_address">${userAddr }</span> 입니다. 주소를 기반으로 주변 동물병원을 찾아볼게요.
+			</c:otherwise>
+		</c:choose>
+		</div>
+		<button class="search_btn">다른 주소로 찾아보기</button>
+		<div class="change_adress_wrap">
+			<div class="title">주소</div>
+			<div class="search_wrap">
+				<div class="search_input"></div>
+				<ul class="search_list"></ul>
+			</div>
+			<button class="change_search_btn">검색</button>
+		</div>
+	</div>
+	</div>
 	<div class="map_wrap">
-		<div id="map"
+		<div>
+			<div id="map"
 			style="width: 1000px; height: 500px; position: relative; overflow: hidden;"></div>
 
-		<div id="menu_wrap" class="bg_white">
-			<ul id="placesList"></ul>
-			<div id="pagination"></div>
+			<div id="menu_wrap" class="bg_white">
+				<ul id="placesList"></ul>
+				<div id="pagination"></div>
+			</div>
 		</div>
 	</div>
 
@@ -79,24 +105,7 @@
 		var infowindow = new kakao.maps.InfoWindow({
 			zIndex : 1
 		});
-
-		// 키워드로 장소를 검색합니다
-		//		searchPlaces();
-
-		// 키워드 검색을 요청하는 함수입니다
-		//		function searchPlaces() {
-		//
-		//			var keyword = document.getElementById('keyword').value;
-		//
-		//			if (!keyword.replace(/^\s+|\s+$/g, '')) {
-		//				// alert('키워드를 입력해주세요!');
-		//				return false;
-		//			}
-		//
-		// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-		//			ps.keywordSearch(keyword, placesSearchCB);
-		//		}
-
+		
 		// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
 		function placesSearchCB(data, status, pagination) {
 			if (status === kakao.maps.services.Status.OK) {
@@ -104,7 +113,6 @@
 				// 정상적으로 검색이 완료됐으면
 				// 검색 목록과 마커를 표출합니다
 				displayPlaces(data);
-
 				// 페이지 번호를 표출합니다
 				displayPagination(pagination);
 
@@ -135,12 +143,12 @@
 			removeMarker();
 
 			for (var i = 0; i < places.length; i++) {
-
 				// 마커를 생성하고 지도에 표시합니다
 				var placePosition = new kakao.maps.LatLng(places[i].y,
-						places[i].x), marker = addMarker(placePosition, i), itemEl = getListItem(
-						i, places[i]); // 검색 결과 항목 Element를 생성합니다
-
+						places[i].x), marker = addMarker(placePosition, i), 
+						itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+				
+						
 				// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
 				// LatLngBounds 객체에 좌표를 추가합니다
 				bounds.extend(placePosition);
@@ -182,11 +190,11 @@
 		// 검색결과 항목을 Element로 반환하는 함수입니다
 		// TODO : 검색결과 항목에 링크 걸기
 		function getListItem(index, places) {
-
 			var el = document.createElement('li'), itemStr = '<span class="markerbg marker_'
 					+ (index + 1)
 					+ '"></span>'
 					+ '<div class="info">'
+					+ '<a href="https://place.map.kakao.com/' + places.id + '" target="_blank">'
 					+ '   <h5>' + places.place_name + '</h5>';
 
 			if (places.road_address_name) {
@@ -281,6 +289,12 @@
 				el.removeChild(el.lastChild);
 			}
 		}
+		
+		$('.search_btn').on('click', function(){
+			const adress_wrap = $('.change_adress_wrap').get(0);
+			adress_wrap.classList.toggle('on');
+		});
+		// 주소검색을 넣기
 	</script>
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>

@@ -69,21 +69,39 @@ $(document).ready(function() {
 		const visibleItems = adoptionItems.slice(start, end);
 		// item 객체의 정보를 테이블로 출력
 		let cards = '';
+
 		$.each(visibleItems, function(index, item) {
+			let day = item.happenDt.substr(6, 2);
+			let month = item.happenDt.substr(4, 2);
+			let year = item.happenDt.substr(0, 4);
+			console.log('day: ',day,'|| year: ',year,'|| month: ',month)
 			// 인덱스가 0~79 이므로 페이지가 넘어가도 인덱스 번호가 정상적으로 불러와지도록 현재 페이지의 시작 인덱스 번호를 더해준다
 			cards += '<div class="adoption-card"><a href="#" class="adoption-link" data-index="' + (start + index) + '">';
+			cards += '<div class="card_date"><div class="day">' + day ;
+			cards += '</div><div class="month">' + year + '-' + month + '</div></div>';
 			cards += '<img src="' + item.popfile + '" alt="Pet Image" />';
 			cards += '<div class="content">';
 			cards += '<h3>' + item.kindCd + '</h3>';
-			cards += '<p class="info">공고번호: ' + item.desertionNo + '</p>';
-			cards += '<p><strong>지역:</strong> ' + item.orgNm + '</p>';
-			cards += '<p><strong>발견 장소:</strong> ' + item.happenPlace + '</p>';
-			cards += '<p><strong>성별:</strong> ' + item.sexCd + '</p>';
-			cards += '<p><strong>발견 날짜:</strong> ' + item.happenDt + '</p>';
-			cards += '<p><strong>특징:</strong> ' + item.specialMark + '</p>';
+			cards += '<div class="info">공고번호' + item.desertionNo + '</div>';
+			cards += '<div class="card_list"><div class="card_title">지역</div><div class="card_desc">' + item.orgNm + '</div></div>';
+			cards += '<div class="card_list"><div class="card_title">발견 장소</div><div class="card_desc">' + item.happenPlace + '</div></div>';
+			cards += '<div class="card_list"><div class="card_title">성별</div><div class="card_desc">' + item.sexCd + '</div></div>';
+			cards += '<div class="card_list"><div class="card_title">발견 날짜</div><div class="card_desc">' + item.happenDt + '</div></div>';
+			cards += '<div class="card_list"><div class="card_title">특징</div><div class="card_desc">' + item.specialMark + '</div></div>';
 			cards += '</div>';
 			cards += '</a></div>';
 		});
+		
+//	날짜 추가 div: 
+// 			<div class="card_date"><div class="day">1.
+//		    </div><div class="month">2.21.12</div></div>
+		
+//  	위치
+//    <div class="adoption-card"><a href="#" class="adoption-link" data-index="0">
+//    <div class="card_date"><div class="day">1.
+//    </div><div class="month">2.21.12</div></div>
+//    <img src="http://www.animal.go.kr/files/shelter/2024/10/202411031211339.jpg" alt="Pet Image"><div class="content"><h3>[개] 골든 리트리버</h3><div class="info">공고번호448567202401256</div><div class="card_list"><div class="card_title">지역</div><div class="card_desc">경상남도 창원시 의창성산구</div></div><div class="card_list"><div class="card_title">발견 장소</div><div class="card_desc">의창구 동읍 송정리 4-4</div></div><div class="card_list"><div class="card_title">성별</div><div class="card_desc">M</div></div><div class="card_list"><div class="card_title">발견 날짜</div><div class="card_desc">20241103</div></div><div class="card_list"><div class="card_title">특징</div><div class="card_desc">내장칩O (황동이), 목줄 착용, 기립불가, 보호자와 연락됨</div></div></div></a></div>
+		
 
 		$('#adoptionContainer').html(cards);
 	}

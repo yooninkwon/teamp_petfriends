@@ -36,8 +36,6 @@
 			<label for="start-date">예약 기간</label>
 			<div class="date-selection">
 				<form action="#" id="start-end-date">
-					<!-- @@@ 이 곳에 input type hidden으로 필요한 유저 정보들 담아 받아오기 -->
-					<!-- 유저정보도 같이 넘기는 것에 DTO 사용 고려해 볼 것 -->
 					<!-- 날짜 최소 최대 설정하기 (스크립트) -->
 					<input name="start-date" type="date" id="start-date" class="date-input"> 부터 
 					<input name="end-date" type="date" id="end-date" class="date-input"> 까지
@@ -68,7 +66,7 @@
 				<label for="pet-name">이름</label> 
 				<input type="text" name="pet-name" id="pet-name" placeholder="이름 입력" class="text_input"> 
 				<br />
-				<label>동물 종류</label>
+				<span>동물 종류</span>
 				<input type="radio" id="pet-type1" name="pet-type" value="고양이" class="radio_button"> 
 				<label for="pet-type1">고양이</label>
 				<input type="radio" id="pet-type2" name="pet-type" value="강아지" class="radio_button">
@@ -77,7 +75,7 @@
 				<label for="pet-birth-date">생일</label>
 				<input name="pet-birth-date" type="date" id="pet-birth-date"> 
 				<br />
-				<label>성별</label> 
+				<span>성별</span> 
 				<input type="radio" id="pet-gender1" name="pet-gender" value="M" class="radio_button"> 
 				<label for="pet-gender1">M </label>
 				<input type="radio" id="pet-gender2" name="pet-gender" value="F" class="radio_button">
@@ -86,7 +84,7 @@
 				<label for="pet-weight">체중</label> 
 				<input name="pet-weight" type="number" id="pet-weight" placeholder="Kg"> 
 				<br />
-				<label>중성화</label> 
+				<span>중성화</span> 
 				<input type="radio" id="pet-neutered1" name="pet-neutered" value="Y" class="radio_button"> 
 				<label for="pet-neutered1">Y </label> 
 				<input type="radio" id="pet-neutered2" name="pet-neutered" value="N" class="radio_button"> 
@@ -99,7 +97,13 @@
 			</form>
 		</div>
 	</div>
-	<div id="reserve-done" style="display: none;" class="tab"></div>
+	
+	
+	<div id="reserve-done" style="display: none;" class="tab">
+	
+	</div>
+	
+	
 	<script src="/static/js/helppetf/pethotel_reserve.js"></script>
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>

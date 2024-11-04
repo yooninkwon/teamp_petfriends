@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>펫티쳐</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
+<link rel="stylesheet" href="/static/css/helppetf/petteacher
+_detail.css" />
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
@@ -17,57 +19,27 @@
 			document.getElementById('${sub_navbar_id }').classList.add('selected');
 		});
 	</script>
-	<a href="/helppetf/petteacher/petteacher_main">목록으로</a>
-	<table width="500" border="1">
-		<tr>
-			<td>번호</td>
-			<td>${dto.hpt_seq }</td>
-		</tr>
-		<tr>
-			<td>조회수</td>
-			<td>${dto.hpt_hit }</td>
-		</tr>
-		<tr>
-			<td>설명</td>
-			<td>${dto.hpt_exp }</td>
-		</tr>
-		<tr>
-			<td>제목</td>
-			<td>${dto.hpt_title }</td>
-		</tr>
-		<tr>
-			<td>내용</td>
-			<td>${dto.hpt_content }</td>
-		</tr>
-		<tr>
-			<td>Video ID</td>
-			<td>${dto.hpt_yt_videoid }</td>
-		</tr>
-		<tr>
-			<td>펫 타입</td>
-			<td>${dto.hpt_pettype }</td>
-		</tr>
-		<tr>
-			<td>카테고리</td>
-			<td>${dto.hpt_category }</td>
-		</tr>
-		<tr>
-			<td>업로드날짜</td>
-			<td>${dto.hpt_rgedate }</td>
-		</tr>
-		<tr>
-			<td>썸네일</td>
-			<td><img
-				src="https://i.ytimg.com/vi/${dto.hpt_yt_videoid }/mqdefault.jpg"
-				alt="썸네일" /></td>
-		</tr>
-		<tr>
-			<td>동영상</td>
-			<td>
+	
+	<div class="content_wrap">
+		<a class="back_list_btn _content_detail_btn" href="/helppetf/petteacher/petteacher_main">목록으로</a>
+		<div class="content_header">
+			<div class="title_wrap">
+				<div class="content_num">No.${dto.hpt_seq }</div>
+				<div class="content_title">${dto.hpt_title }</div>
+				<div class="content_view">${dto.hpt_hit } views</div>
+			</div>
+			<div class="tag_wrap">
+				<div class="kategorie">#<span>${dto.hpt_pettype }</span> #<span>${dto.hpt_category }</span></div>
+				<div class="content_date">${dto.hpt_rgedate }</div>
+			</div>
+		</div>
+		<div class="content_main">
+
+			<div class="content_video">
 				<!-- 1. 영상이 노출될 영역을 확보한다. 
     			 api가 제대로 작동하면 <div>에 자동으로 <iframe> 태그가 load될 것 이다. -->
 				<div id="player"></div> <script>
-					// 2. 이 코드는 Iframe Player API를 비동기적으로 로드한다. @필수
+					// 2. 이 코드는 Iframe Player API를 비동기적으로 로드한다.
 					var tag = document.createElement('script');
 
 					tag.src = "https://www.youtube.com/iframe_api";
@@ -80,9 +52,8 @@
 					var player;
 					function onYouTubeIframeAPIReady() {
 						player = new YT.Player('player', {
-							height : '360', //변경가능-영상 높이
-							width : '640', //변경가능-영상 너비
-							//videoId : '0RqbZt_TZkY', //변경-영상ID
+							height : '450', //변경가능-영상 높이
+							width : '800', //변경가능-영상 너비
 							videoId : v_id, //변경-영상ID
 							playerVars : {
 								'rel' : 0, //연관동영상 표시여부(0:표시안함)
@@ -92,7 +63,6 @@
 								'loop' : 0, //반복재생여부(1:반복재생 함)
 								'playsinline' : 1
 							//iOS환경에서 전체화면으로 재생하지 않게
-							/*  'playlist' : 'M7lc1UVf-VE'   //재생할 영상 리스트 */
 							},
 							events : {
 								'onReady' : onPlayerReady, //onReady 상태일 때 작동하는 function이름
@@ -112,24 +82,28 @@
 					//    플레이어는 6초 이상 재생되고 정지되어야 한다.
 					var done = false;
 					function onPlayerStateChange(event) {
-						if (event.data == YT.PlayerState.PLAYING && !done) {
-							setTimeout(stopVideo, 6000);
-							done = true;
-						}
+// 						if (event.data == YT.PlayerState.PLAYING && !done) {
+// 							setTimeout(stopVideo, 6000);
+// 							done = true;
+// 						}
 					}
 					function stopVideo() {
-						player.stopVideo();
+// 						player.stopVideo();
 					}
 				</script>
-
-			</td>
-		</tr>
-
-		<tr>
-			<td colspan="2"><a href="/helppetf/petteacher/petteacher_main">목록으로</a>
-			</td>
-		</tr>
-	</table>
+				
+			</div>
+			<div class="content_desc _2">
+				<div>${dto.hpt_content }</div>
+			</div>
+		</div>
+		<div class="content_footer">
+			<a class="prev_content_btn _content_detail_btn" href="#;">&lt; 이전으로</a>
+			<a class="next_content_btn _content_detail_btn" href="#;">다음으로 &gt;</a>
+		</div>
+		<a class="back_list_btn _content_detail_btn" href="/helppetf/petteacher/petteacher_main">목록으로</a>
+	</div>
+	
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>

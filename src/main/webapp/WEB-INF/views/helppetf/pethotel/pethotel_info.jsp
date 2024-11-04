@@ -12,6 +12,7 @@
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 	<jsp:include page="/WEB-INF/views/include_jsp/helppetf_sub_navbar.jsp" />
 	<script>
+		var mem_login = '${sessionScope.loginUser.mem_nick }';
 		$(document).ready(function() {
 			document.getElementById('${main_navbar_id }').classList.add('selected');
 			document.getElementById('${sub_navbar_id }').classList.add('selected');
@@ -71,12 +72,23 @@
 
         <!-- 하단 버튼 -->
         <div class="bottom-section">
-            <a href="/helppetf/pethotel/pethotel_reserve" class="button">예약하러 가기</a>
+            <a href="#" id="right" class="button">예약하러 가기</a>
         </div>
     	<div class="back_link">
           	<a href="/helppetf/pethotel/pethotel_main" class="back-link">&lt; 돌아가기</a>
         </div>
     </div>
+    
+    	<!-- 로그인이 필요합니다 팝업 -->
+	<div id="loginPopup" class="popup-overlay">
+		<div class="popup-content-login">
+			<p>로그인이 필요해요</p>
+			<button id="loginBtn" class="popup-btn">로그인 하러가기</button>
+			<button id="closeBtn" class="popup-btn">닫기</button>
+		</div>
+	</div>
+    
+	<script src="/static/js/helppetf/pethotel_main.js"></script>
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>
