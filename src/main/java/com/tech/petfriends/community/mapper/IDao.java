@@ -54,11 +54,16 @@ public interface IDao {
 	
 	public void removeLike (String board_no,String mem_nick, String mem_code);
 	
-	public int isLiked (String board_no,String mem_nick, String mem_code);
+	public int isLiked (String board_no, String mem_code);
 
 	public void write(String mem_nick, String mem_code, String board_title, String board_content, int b_cate_no);
-	
 
+	public int getLikesCount(String board_no);
+
+	public ArrayList<CDto> getHotTopicList();
 	
+	public void addFeed(String mem_code, int board_no, String mem_nick);
+	
+	public ArrayList<CDto> myFeedList();
 }
 

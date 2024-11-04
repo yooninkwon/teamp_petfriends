@@ -11,80 +11,70 @@
 <link rel="stylesheet"
 	href="/static/css/community/community_contentview.css">
 <script>
-        function toggleComments() {
-            var commentsSection = document.getElementById("commentsSection");
-            commentsSection.style.display = commentsSection.style.display === "none" || commentsSection.style.display === "" ? "block" : "none";
-        }
+	   function toggleComments() {
+	        var commentsSection = document.getElementById("commentsSection");
+	        commentsSection.style.display = commentsSection.style.display === "none" || commentsSection.style.display === "" ? "block" : "none";
+	    }
 
-        function toggleReplyForm(commentId) {
-			var isLoggedIn = ${sessionScope.loginUser != null ? 'true' : 'false'};
+	    function toggleReplyForm(commentId) {
+	        var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
+	        
+	        if (isLoggedIn === "false") { // 'true' 또는 'false' 문자열로 비교
+	            alert("로그인이 필요합니다.");
+	            return;
+	        }
 
-			if (!isLoggedIn) {
-			    alert("로그인이 필요합니다.");
-			    return;  // 로그인되지 않은 상태에서는 댓글 영역 표시하지 않음
-			}
-			
 	        var replyForm = document.getElementById("replyForm-" + commentId);
-            replyForm.style.display = replyForm.style.display === "none" || replyForm.style.display === "" ? "block" : "none";
-        }
-        
-      
-		
-		function checkLoginAndFocus(textarea) {
-		      var isLoggedIn = ${sessionScope.loginUser != null ? 'true' : 'false'};
+	        replyForm.style.display = replyForm.style.display === "none" || replyForm.style.display === "" ? "block" : "none";
+	    }
 
-		      if (!isLoggedIn) {
-		          alert("로그인이 필요합니다.");
-		          textarea.blur();  // 클릭 후 textarea 포커스를 해제
-		      } else {
-		          textarea.focus();  // 로그인 상태라면 textarea에 포커스
-		      }
-		  }
-        
-	
-		function updateLike(boardNo) {
-		    var isLoggedIn = ${sessionScope.loginUser != null ? 'true' : 'false'};
+	    function checkLoginAndFocus(textarea) {
+	        var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
 
-		    if (!isLoggedIn) {
-		        alert("로그인이 필요합니다.");
-		        return;  // 로그인되지 않은 상태에서는 좋아요 기능을 사용하지 않음
-		    }
+	        if (isLoggedIn === "false") {
+	            alert("로그인이 필요합니다.");
+	            textarea.blur();
+	        } else {
+	            textarea.focus();
+	        }
+	    }
 
-		    var mem = mem_code: "${sessionScope.loginUser.mem_code}";
-		    
-		    console.log(mem);
-		    
-		    var data = {
-		        mem_code: "${sessionScope.loginUser.mem_code}",
-		        mem_nick: "${sessionScope.loginUser.mem_nick}",
-		        board_no: boardNo
-		    };
+	    function initializeLikeButton() {
+	        <!--var isliked = "${isliked}"; // 서버에서 변환된 'isliked' 값-->
+	        var likeButton = document.getElementById("like-button");
+	        likeButton.innerHTML = isliked === 1 ? "❤️" : "🤍";
+	    }
 
-		    fetch('/community/updateLike', {
-		        method: 'POST',
-		        headers: {
-		            'Content-Type': 'application/json',
-		        },
-		        body: JSON.stringify(data),
-		    })
-		    .then(response => {
-		        if (response.ok) {
-		            return response.json();
-		        } else {
-		            throw new Error('Network response was not ok.');
-		        }
-		    })
-		    .then(data => {
-		        // 성공적으로 좋아요가 업데이트되었음을 처리
-		        console.log('Success:', data);
-		        // 여기서 좋아요 수 업데이트 등의 처리를 할 수 있습니다.
-		    })
-		    .catch((error) => {
-		        console.error('Error:', error);
-		    });
-		}
-			
-    </script>
+	    function updateLike() {
+	        var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
+
+	        if (isLoggedIn === "false") {
+	            alert("로그인이 필요합니다.");
+	            return;
+	        }
+
+	        var memCode = '${sessionScope.loginUser.mem_code}';
+	        var boardNo = '${contentView.board_no}';
+	        var memName = '${sessionScope.loginUser.mem_nick}';
+
+	        var xhr = new XMLHttpRequest();
+	        xhr.open("POST", "/community/updateLike", true);
+	        xhr.setRequestHeader("Content-Type", "application/json");
+	        xhr.onreadystatechange = function () {
+	            if (xhr.readyState === 4 && xhr.status === 200) {
+	                var response = JSON.parse(xhr.responseText);
+	                var likes = response.likes;
+	                var likesCount = response.likesCount;
+
+	                document.getElementById("likes-count").innerText = likesCount;
+	                document.getElementById("like-button").innerHTML = likes ? "❤️" : "🤍";
+	            }
+	        };
+	        xhr.send(JSON.stringify({ mem_code: memCode, board_no: boardNo, mem_nick: memName }));
+	    }
+
+	    window.onload = initializeLikeButton;
+	</script>
 
 
 
@@ -108,9 +98,21 @@
 		<div class="post-footer">
 			<!-- 왼쪽 끝에 위치할 댓글 및 좋아요 버튼 -->
 			<div class="left-buttons">
-				<span>${contentView.board_likes}</span>
-			<button id="like-button" onclick="updateLike(${contentView.board_no})">🤍</button>
-				<span>💬				
+				
+					<span id="likes-count">${contentView.board_likes}</span>
+				
+					<!-- 좋아요 버튼 -->
+					            <button id="like-button" onclick="updateLike()">
+					                <c:choose>
+					                    <c:when test="${isliked == 1}">
+					                        ❤️ <!-- 채워진 하트: 이미 좋아요를 누른 경우 -->
+					                    </c:when>
+					                    <c:otherwise>
+					                        🤍 <!-- 빈 하트: 아직 좋아요를 누르지 않은 경우 -->
+					                    </c:otherwise>
+					                </c:choose>
+					            </button>
+				<span>💬	
 					<button onclick="toggleComments()" class="main_comment-button">댓글</button>
 					${contentView.board_comment_count}
 				</span>
@@ -280,9 +282,6 @@
 	<footer>
 		<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 	</footer>
-
-
-
 
 
 </body>

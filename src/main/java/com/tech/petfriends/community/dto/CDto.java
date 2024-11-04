@@ -25,10 +25,9 @@ public class CDto {
     private Timestamp board_modified;
     private int board_views;
     private String board_tag;
-//    private String board_post_img;
     private int board_likes;
     private int board_comment_count;
-//	private String board_post_unimg;
+
 	
 //    RE_CBOARD_IMAGE 테이블
 	private int rebno;

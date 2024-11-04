@@ -31,7 +31,7 @@
 		BOARD_VIEWS,BOARD_TAG, BOARD_LIKES, BOARD_COMMENT_COUNT)
 		VALUES
 		(COMMUNITY_BOARD_SEQ.NEXTVAL, #{b_cate_no},#{mem_code}, #{mem_nick}, #{board_title},
-		1234, #{board_content},SYSDATE, null, 3, 'tag1', 1, 0)
+		1234, #{board_content},SYSDATE, null, 3, 'tag1', 0, 0)
 	</insert>
 
 	<select id="selBid" resultType="_int">
@@ -182,7 +182,39 @@
 
 	<select id="isLiked" resultType="int">
 		SELECT COUNT(*) FROM COMMUNITY_LIKES 
-		WHERE board_no = #{board_no} AND MEM_CODE = #{mem_code}
+		WHERE BOARD_NO = #{board_no} AND MEM_CODE = #{mem_code}
+	</select>
+
+
+	<select id="getLikesCount" resultType="int">
+		SELECT COUNT(*) FROM COMMUNITY_LIKES 
+		WHERE BOARD_NO = #{board_no} 
+	</select>
+
+	<select id="getHotTopicList" resultType="com.tech.petfriends.community.dto.CDto">
+	SELECT CB.BOARD_NO, CB.BOARD_TITLE ,
+	        (CB.BOARD_LIKES + CB.BOARD_COMMENT_COUNT) AS TOTAL_COUNT, 
+	       RCI.CHREPFILE
+	FROM COMMUNITY_BOARD CB
+	LEFT JOIN RE_CBOARD_IMAGE RCI ON CB.BOARD_NO = RCI.BOARD_NO
+	ORDER BY TOTAL_COUNT DESC
+	</select>
+	
+	<insert id="addFeed">
+	INSERT INTO COMMUNITY_FEED (FEED_NO,MEM_CODE, BOARD_NO, USER_ID)
+	VALUES (COMMUNITY_FEED_SEQ.NEXTVAL, #{mem_code},#{board_no},#{mem_nick})
+	</insert>
+
+
+	<select id="myFeedList"
+		resultType="com.tech.petfriends.community.dto.CDto">
+		SELECT CD.*, RCI.*, MP.PET_IMG , CF.*
+		FROM COMMUNITY_BOARD CD
+		JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
+		JOIN MEMBER_PET MP ON CD.MEM_CODE = MP.MEM_CODE
+		JOIN COMMUNITY_FEED CF ON CD.BOARD_NO = CF.BOARD_NO
+		WHERE MP.PET_MAIN = 'Y' AND CF.MEM_CODE = #{mem_code} AND CF.USER_ID = #{user_id} 
+		ORDER BY CD.BOARD_NO DESC
 	</select>
 
 </mapper>

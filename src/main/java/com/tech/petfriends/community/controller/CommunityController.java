@@ -1,16 +1,19 @@
 package com.tech.petfriends.community.controller;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,17 +22,18 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.tech.petfriends.community.dto.CCategoryDto;
 import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.mapper.IDao;
-import com.tech.petfriends.community.service.CCategoryService;
 import com.tech.petfriends.community.service.CCommentReplyService;
 import com.tech.petfriends.community.service.CCommentService;
-import com.tech.petfriends.community.service.CContentVieWService;
+import com.tech.petfriends.community.service.CContentViewService;
 import com.tech.petfriends.community.service.CDeleteService;
 import com.tech.petfriends.community.service.CDownloadService;
 import com.tech.petfriends.community.service.CModifyService;
+import com.tech.petfriends.community.service.CMyFeed;
 import com.tech.petfriends.community.service.CPostListService;
 import com.tech.petfriends.community.service.CServiceInterface;
 import com.tech.petfriends.community.service.CUpdateLikeService;
 import com.tech.petfriends.community.service.CWriteService;
+import com.tech.petfriends.community.service.CWriteViewService;
 
 
 @Controller
@@ -56,10 +60,10 @@ public class CommunityController {
 	}
 	
 	@GetMapping("/writeView")
-	public String writeView(HttpServletRequest request,Model model) {
-		
+	public String writeView(HttpSession session,HttpServletRequest request,Model model) {
+		model.addAttribute("session", session);
 		model.addAttribute("request",request);
-		serviceInterface = new CCategoryService(iDao);
+		serviceInterface = new CWriteViewService(iDao);
 		serviceInterface.execute(model);
 		
 		
@@ -71,7 +75,7 @@ public class CommunityController {
 	public String communityWrite(MultipartHttpServletRequest mtfRequest, Model model) {
 		System.out.println("community_write");
 		model.addAttribute("request", mtfRequest);
-		 
+		
 		model.addAttribute("msg", "게시글이 작성됐습니다.");	        
 		model.addAttribute("url", "/community/main");
 		serviceInterface = new CWriteService(iDao);
@@ -99,12 +103,14 @@ public class CommunityController {
 
 
 @GetMapping("/contentView")
-public String contentView(HttpServletRequest request, Model model) {
+public String contentView(HttpSession session, HttpServletRequest request, Model model) {
 	System.out.println("contentView() ctr");
 	model.addAttribute("request",request);
-	serviceInterface = new CContentVieWService(iDao);
+	model.addAttribute("session", session);
+	serviceInterface = new CContentViewService(iDao);
 	serviceInterface.execute(model); 
 
+	
 	return "/community/contentView";
 	
 	}
@@ -133,12 +139,12 @@ public String modify(MultipartHttpServletRequest mtfRequest, Model model) {
 
 
 @GetMapping("/modifyView")
-public String modifyView(@RequestParam("board_no") int board_no, Model model) {
-    CDto content = iDao.contentView(Integer.toString(board_no)); // 게시글 정보를 가져옴
+public String modifyView(@RequestParam("board_no") String board_no, Model model) {
+    CDto content = iDao.contentView(board_no); // 게시글 정보를 가져옴
     model.addAttribute("contentView", content); // 게시글 정보를 모델에 담아서 JSP로 전달
-
+	
     
-    CCategoryService categoryService = new CCategoryService(iDao);
+	CWriteViewService categoryService = new CWriteViewService(iDao);
     List<CCategoryDto> categoryList = iDao.getCategoryList();
     model.addAttribute("categoryList", categoryList);
     
@@ -213,14 +219,31 @@ public String replyDelete(HttpServletRequest request, Model model) {
 }
 
 	@PostMapping("/updateLike")
-	public String updateLike(HttpServletRequest request, Model model) {
+	public ResponseEntity<Map<String, Object>> updateLike(HttpServletRequest request, Model model) {
     System.out.println("updateLike");
     model.addAttribute("request", request);
-
+    
     serviceInterface = new CUpdateLikeService(iDao);
     serviceInterface.execute(model);
-
-    return "redirect:/community/contentView?board_no=" + request.getParameter("board_no");
+      
+    
+    Map<String, Object> response = new HashMap<>();
+    response.put("likes", model.getAttribute("likes"));
+	response.put("likesCount", model.getAttribute("likesCount"));
+    
+    return ResponseEntity.ok(response); // JSON 형식으로 응답 반환
 }
 
+	
+	@RequestMapping("/myfeed/{mem_code}")
+	public String myfeed(@PathVariable String mem_code,
+			HttpSession session,HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		model.addAttribute("mem_code", mem_code);
+
+	    serviceInterface = new CMyFeed(iDao);
+	    serviceInterface.execute(model);
+		
+		return "/community/myfeed";
+	}
 }

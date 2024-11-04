@@ -32,8 +32,13 @@ public class CWriteService implements CServiceInterface {
 		// 게시글 작성
 		iDao.write(mem_nick, mem_code, board_title, board_content, b_cate_no);
 
+		// 피드로 전달
+		
 		// 방금 작성한 게시글의 id 가져오기
 		int board_no = iDao.selBid();
+		
+		iDao.addFeed(mem_code, board_no,mem_nick);
+	
 		String workPath = System.getProperty("user.dir");
 		String root = workPath + "\\src\\main\\resources\\static\\images\\community_img";
 		System.out.println(System.getProperty("user.dir"));

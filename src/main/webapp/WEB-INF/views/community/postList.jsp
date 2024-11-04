@@ -43,7 +43,7 @@
 		<div class="button-container">
 			<c:if test="${sessionScope.loginUser ne null}">
 				<c:if test="${sessionScope.loginUser.mem_code eq post.mem_code}">
-					<a href="/community/contentView?board_no=${post.board_no}"
+					<a href="/community/modifyView?board_no=${post.board_no}"
 						class="edit-button">수정</a>
 					<a href="/community/contentView?board_no=${post.board_no}"
 						class="delete-button">삭제</a>

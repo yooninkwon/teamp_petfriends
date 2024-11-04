@@ -25,11 +25,15 @@
     <form id="postForm" action="${pageContext.request.contextPath}/community/write" method="post" enctype="multipart/form-data" class="write-form" onsubmit="return validateForm()">
        <input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
        <input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
-       <input type="hidden" name="pet_img" value="${postList.pet_img}">
+       <input type="hidden" name="pet_img" value="${getpetimg.pet_img}">
+     
       
-       <div class="form-group">
-        <label for="user_id"> 작성자: ${sessionScope.loginUser.mem_nick} </label>
-       </div>
+	   <div class="form-group">
+	       <div class="profile-info">
+	           <img src="/static/Images/pet/${getpetimg.pet_img}" alt="프로필 이미지 1" class="profile-image" />
+	           <label for="user_id" class="author-label">${sessionScope.loginUser.mem_nick}</label>
+	       </div>
+	   </div>
        
         
         <label for="b_cate_no">카테고리</label>
