@@ -15,14 +15,13 @@
 <div class="title"><h3>공지사항/이벤트 관리</h3></div>
 
 <!-- 게시글 등록 -->
-<div id="petteacherRegister" class="tab-content">
+<div id="petteacherRegister">
 	<!-- 필터링 영역 -->
-    <div class="radio-group">
-        <div class="filter-title">카테고리</div>
-        <label><input type="radio" name="pet-type-filter" value="공지사항" checked> 공지사항</label>
-        <label><input type="radio" name="pet-type-filter" value="이벤트"> 이벤트</label>
-
-    </div>
+	<div class="tab-section">
+	    <button class="tab-btn active" data-tab="notice-list-container">공지사항</button>
+	    <button class="tab-btn" data-tab="event-list-container">이벤트</button>
+	</div>
+	
     <div class="search-group">
         <div class="filter-title">제목</div>
         <input type="search" name="titleSearch" id="titleSearch" />
@@ -38,44 +37,59 @@
         </select>
         
 	    <!-- 신규등록 버튼 -->
-	    <button id="newNoticeBtn" class="btn-style">선택삭제</button>
-	    <button id="newNoticeBtn" class="btn-style">모두공개</button>
-	    <button id="newNoticeBtn" class="btn-style">모두비공개</button>
+	    <button id="newNoticeBtn" class="btn-style" onclick="deleteSelectedNotices()">선택삭제</button>
+	    <button class="btn-style" onclick="setVisibilityForSelectedNotices('show')">모두공개</button>
+    	<button class="btn-style" onclick="setVisibilityForSelectedNotices('hide')">모두비공개</button>
 	    <a href="notice_write"><button id="newNoticeBtn" class="btn-style">신규등록</button></a>
 	</div>
 	
+	
+	
+	
 	<!-- 리스트 영역 -->
-	<div class="notice-list-container">
-		<table class="notice-list">
-		    <thead class="thead">
-		        <tr>
-		            <th style="width: 2%;"><input type="checkbox" /></th>
-		            <th style="width: 5%;">번호</th>
-					<th style="width: 50%;">제목</th>
-		            <th style="width: 15%;">등록일</th>
-		            <th style="width: 10%;">조회수</th>
-		            <th style="width: 5%;">공개여부</th>
-		            <th>수정 / 삭제</th>
-		        </tr>
-		    </thead>
-	        <c:forEach var="notice" items="${noticeAdminList}">
-				<tr>
-					<td><input type="checkbox" /></td>
-					<td>${notice.notice_no }</td>
-					<td id="title"><a href="/notice/noticeView">${notice.notice_title }</a></td>
-					<td>${notice.notice_date }</td>
-					<td>${notice.notice_hit }</td>
-					<td>${notice.notice_show }</td>
-					<td><input type="button" value="수정" /><input type="button" value="삭제" /></td>
-				</tr>
-			</c:forEach>
-		</table>	
-		<br /><br />
-		<br /><br />
-		<div id="pagination">
-			<!-- 페이징 -->
-		</div>
+	<div id="notice-list-container" class="notice-list-container tab-content">
+	    <!-- 공지사항 리스트 테이블 -->
+	    <table class="notice-list">
+	        <thead class="thead">
+	            <tr>
+	                <th style="width: 2%;"><input type="checkbox" class="selectAll"/></th>
+	                <th style="width: 5%;">번호</th>
+	                <th style="width: 50%;">제목</th>
+	                <th style="width: 15%;">등록일</th>
+	                <th style="width: 10%;">조회수</th>
+	                <th style="width: 5%;">공개여부</th>
+	                <th>수정 / 삭제</th>
+	            </tr>
+	        </thead>    
+	    </table>   
+	</div>
+	
+	
+	
+	<div id="event-list-container" class="event-list-container tab-content" style="display: none;">
+	    <!-- 공지사항 리스트 테이블 -->
+	    <table class="event-list">
+	        <thead class="thead">
+	            <tr>
+	                <th style="width: 2%;"><input type="checkbox" /></th>
+	                <th style="width: 5%;">번호</th>
+	                <th style="width: 30%;">제목</th>
+	                <th style="width: 10%;">이벤트 시작일</th>
+	                <th style="width: 10%;">이벤트 종료일</th>
+	                <th style="width: 10%;">등록일</th>
+	                <th style="width: 10%;">썸네일 이미지</th>
+	                <th style="width: 5%;">조회수</th>
+	                <th style="width: 5%;">공개여부</th>
+	                <th>수정 / 삭제</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        	
+	        </tbody>  
+	    </table>
 	</div>
 </div>
+
+<script src="/static/js/admin/notice.js"></script>
 </body>
 </html>

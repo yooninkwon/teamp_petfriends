@@ -66,12 +66,11 @@ public class JoinController {
         
         String phoneNumber = request.getParameter("phoneNumber");
         
-//        마이펫 등록하는동안 주석 처리
-//        int duplicateCount = memberMapper.isPhoneNumberDuplicate(phoneNumber);
-//        if (duplicateCount > 0) {
-//        	redirectAttributes.addFlashAttribute("error", "이미 가입된 정보입니다.");
-//            return "redirect:/login/loginPage";  // 중복일 경우 회원 가입 페이지로 다시 이동
-//        }
+        int duplicateCount = memberMapper.isPhoneNumberDuplicate(phoneNumber);
+        if (duplicateCount > 0) {
+        	redirectAttributes.addFlashAttribute("error", "이미 가입된 정보입니다.");
+            return "redirect:/login/loginPage";  // 중복일 경우 회원 가입 페이지로 다시 이동
+        }
         
         // UUID로 mem_code 생성
         String uniqueID = UUID.randomUUID().toString();

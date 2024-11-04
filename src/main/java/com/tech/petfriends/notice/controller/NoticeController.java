@@ -25,7 +25,7 @@ public class NoticeController {
 		model.addAttribute("main_navbar_id","noticeMain");
 		model.addAttribute("sub_navbar_id","notice_notice");
 		
-		ArrayList<NoticeDto> noticeList = noticeDao.NoticeList();
+		ArrayList<NoticeDto> noticeList = noticeDao.noticeList();
         model.addAttribute("noticeList", noticeList);
 		
 		
