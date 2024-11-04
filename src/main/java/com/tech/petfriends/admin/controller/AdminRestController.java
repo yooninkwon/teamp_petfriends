@@ -1,10 +1,12 @@
 package com.tech.petfriends.admin.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
@@ -28,6 +31,9 @@ import com.tech.petfriends.admin.service.AdminServiceInterface;
 import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
+import com.tech.petfriends.notice.dao.NoticeDao;
+import com.tech.petfriends.notice.dto.EventDto;
+import com.tech.petfriends.notice.dto.NoticeDto;
 
 @RestController
 @RequestMapping("/admin")
@@ -35,6 +41,9 @@ public class AdminRestController {
 	
 	@Autowired
 	AdminPageDao adminDao;
+	
+	@Autowired
+	NoticeDao noticeDao;
 	
 	AdminServiceInterface adminServiceInterface;
 	
@@ -124,6 +133,35 @@ public class AdminRestController {
 		
 		return "{\"status\": \"success\"}";
 	}
+	
+	@GetMapping("/notice_notice_list")
+	public ArrayList<NoticeDto> noticeNoticeList() {
+		ArrayList<NoticeDto> noticeList =  noticeDao.noticeAdminList();
+		return noticeList;
+	}
+	
+	@GetMapping("/notice_event_list")
+	public ArrayList<EventDto> noticeEventList() {
+		ArrayList<EventDto> eventList =  noticeDao.eventAdminList();
+		return eventList;
+	}
+	
+	// 공지사항 삭제 메서드
+	@DeleteMapping("/deleteNotice")
+    public ResponseEntity<String> deleteNotice(@RequestParam("id") Long noticeNo) {
+        try {
+            int isDeleted = noticeDao.deleteNotice(noticeNo);
+            if (isDeleted > 0) {
+                return ResponseEntity.ok("Notice deleted successfully.");
+            } else {
+                return ResponseEntity.status(404).body("Notice not found.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An error occurred while deleting the notice.");
+        }
+    }
+    
+    
 }
 
 

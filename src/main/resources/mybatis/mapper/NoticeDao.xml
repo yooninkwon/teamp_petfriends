@@ -5,30 +5,80 @@
   
   <mapper namespace="com.tech.petfriends.notice.dao.NoticeDao">
   	
+  	<select id="findNoticeById" parameterType="long" resultType="com.tech.petfriends.notice.dto.NoticeDto">
+  		SELECT * FROM NOTICE WHERE NOTICE_NO = #{noticeId}
+  	</select>
+  	
   	<!-- 공지사항 표시여부가 Y인 리스트 가져오기 -->
-  	<select id="NoticeList" resultType="com.tech.petfriends.notice.dto.NoticeDto">
+  	<select id="noticeList" resultType="com.tech.petfriends.notice.dto.NoticeDto">
 	    SELECT * FROM NOTICE WHERE NOTICE_SHOW = 'Y' ORDER BY NOTICE_NO DESC
 	</select>
 	
 	<!-- 이벤트 전체 리스트 -->
-	<select id="EventAdminList" resultType="com.tech.petfriends.notice.dto.EventDto">
+	<select id="eventAdminList" resultType="com.tech.petfriends.notice.dto.EventDto">
 	    SELECT * FROM EVENT ORDER BY EVENT_NO DESC
 	</select>
 	
 	<!-- 공지사항 전체 리스트 -->
-	<select id="NoticeAdminList" resultType="com.tech.petfriends.notice.dto.NoticeDto">
+	<select id="noticeAdminList" resultType="com.tech.petfriends.notice.dto.NoticeDto">
 	    SELECT * FROM NOTICE ORDER BY NOTICE_NO DESC
 	</select>
   
   	<!-- 공지사항 작성 -->
-  	<insert id="NoticeWrite">
+  	<insert id="noticeWrite">
   		INSERT INTO NOTICE VALUES(NOTICE_SEQ.NEXTVAL,#{notice_title},#{notice_content},SYSDATE,0,#{show})
   	</insert>
   	
   	<!-- 이벤트 작성 -->
-  	<insert id="EventWrite">
+  	<insert id="eventWrite">
   		INSERT INTO EVENT VALUES(EVENT_SEQ.NEXTVAL, #{title},
   		#{content}, 0, SYSDATE, #{startDate}, #{endDate}, #{thumbnailFileName}, #{slideImgFileName}, #{show})
   	</insert>
+  	
+  	<!-- 단일 삭제 -->
+  	<delete id="deleteNotice">
+  		DELETE FROM NOTICE WHERE notice_no = #{noticeNo}
+  	</delete>
+  	
+  	<!-- 선택 삭제 -->
+  	<delete id="deleteNoticesByIds" parameterType="list">
+	    DELETE FROM NOTICE WHERE notice_no IN
+	    <foreach item="id" collection="list" open="(" separator="," close=")">
+	        #{id}
+	    </foreach>
+	</delete>
+	
+	<!-- 선택 공개,비공개 -->
+	<update id="updateVisibility" parameterType="map">
+	    UPDATE NOTICE
+	    SET notice_show = 
+	        <choose>
+	            <when test="isVisible == true"> 'Y' </when>
+	            <otherwise> 'N' </otherwise>
+	        </choose>
+	    WHERE notice_no IN
+	    <foreach item="id" collection="ids" open="(" separator="," close=")">
+	        #{id}
+	    </foreach>
+	</update>
+	
+	<!-- 공지사항 수정 -->
+	<update id="noticeUpdate">
+	    UPDATE NOTICE
+	    SET NOTICE_SHOW = #{show},
+	        NOTICE_TITLE = #{title},
+	        NOTICE_CONTENT = #{content}
+	    WHERE NOTICE_NO = #{noticeId}
+	</update>
+	
+	<!-- 공지사항 검색 -->
+	<select id="searchNoticesByTitle" resultType="com.tech.petfriends.notice.dto.NoticeDto">
+	    SELECT * FROM notice WHERE notice_title LIKE '%' || #{title} || '%'
+	</select>
+	
+	<!-- 공지사항 총 개수 쿼리 -->
+	<select id="getTotalNoticeCount" resultType="int">
+	    SELECT COUNT(*) FROM notice
+	</select>
   
   </mapper>

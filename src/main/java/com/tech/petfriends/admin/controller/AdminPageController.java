@@ -27,6 +27,7 @@ import com.tech.petfriends.admin.dto.ProductListDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
+import com.tech.petfriends.admin.service.AdminNoticeEditService;
 import com.tech.petfriends.admin.service.AdminNoticeWriteService;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminProductAddService;
@@ -224,10 +225,10 @@ public class AdminPageController {
 
 	@GetMapping("/notice")
 	public String Notice(Model model) {
-		ArrayList<NoticeDto> noticeAdminList = noticeDao.NoticeAdminList();
-        model.addAttribute("noticeAdminList", noticeAdminList);
-        ArrayList<EventDto> eventAdminList = noticeDao.EventAdminList();
-        model.addAttribute("eventAdminList", eventAdminList);
+		ArrayList<NoticeDto> noticeAdminList = noticeDao.noticeAdminList();
+//        model.addAttribute("noticeAdminList", noticeAdminList);
+        ArrayList<EventDto> eventAdminList = noticeDao.eventAdminList();
+//        model.addAttribute("eventAdminList", eventAdminList);
 		
 		return "admin/notice";
 	}
@@ -252,6 +253,37 @@ public class AdminPageController {
 
 	    return "redirect:/admin/notice";
 	}
+	
+	@GetMapping("/notice_edit")
+	public String Notice_edit(@RequestParam("id") Long noticeId, Model model) {
+	    // 공지사항 데이터를 ID로 조회
+	    NoticeDto noticeDto = noticeDao.findNoticeById(noticeId);
+
+	    // 조회한 데이터를 모델에 추가하여 JSP에서 사용할 수 있게 함
+	    model.addAttribute("notice", noticeDto);
+	    
+	    // 수정 화면으로 이동
+	    return "admin/notice_edit";
+	}
+	
+	@PostMapping("/notice_edit_service")
+	public String Notice_edit_service(HttpServletRequest request, 
+	                                   Model model) {
+	    model.addAttribute("request", request);
+
+	    AdminNoticeEditService adminNoticeEditService = new AdminNoticeEditService(noticeDao);
+	    adminNoticeEditService.execute(model);
+
+	    return "redirect:/admin/notice";
+	}
+	
+	@GetMapping("/searchNotices")
+	public String searchNotices(@RequestParam("title") String title, Model model) {
+	    List<NoticeDto> noticeAdminList = noticeDao.searchNoticesByTitle(title);
+	    model.addAttribute("noticeAdminList", noticeAdminList);
+	    return "admin/notice"; // 검색 결과를 표시할 JSP 경로
+	}
+	
 
 	@GetMapping("/sales")
 	public String sales() {

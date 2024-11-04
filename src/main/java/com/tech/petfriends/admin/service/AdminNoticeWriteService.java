@@ -16,9 +16,8 @@ import com.tech.petfriends.notice.dao.NoticeDao;
 @Service
 public class AdminNoticeWriteService implements AdminServiceInterface {
 	
-	private final NoticeDao noticeDao;
+    private final NoticeDao noticeDao;
 
-    // 생성자를 통해 noticeDao 주입
     public AdminNoticeWriteService(NoticeDao noticeDao) {
         this.noticeDao = noticeDao;
     }
@@ -33,54 +32,62 @@ public class AdminNoticeWriteService implements AdminServiceInterface {
         String show = request.getParameter("notice_show");
         String title = request.getParameter("notice_title");
         String content = request.getParameter("notice_content");
-        
+
         Date startDate = null;
         Date endDate = null;
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            startDate = dateFormat.parse(request.getParameter("startDate"));
-            endDate = dateFormat.parse(request.getParameter("endDate"));
+
+            // 날짜 값이 있는 경우에만 파싱
+            String startDateStr = request.getParameter("startDate");
+            String endDateStr = request.getParameter("endDate");
+
+            if (startDateStr != null && !startDateStr.isEmpty()) {
+                startDate = dateFormat.parse(startDateStr);
+            }
+            if (endDateStr != null && !endDateStr.isEmpty()) {
+                endDate = dateFormat.parse(endDateStr);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        String uploadDir = new File("src/main/resources/static/Images/").getAbsolutePath();
         String thumbnailFileName = null;
         String slideImgFileName = null;
 
-        try {
-            File directory = new File(uploadDir);
-            if (!directory.exists()) {
-                directory.mkdirs();
+        if (!category.equals("공지사항")) { // 공지사항이 아닐 경우에만 이미지 저장
+            String uploadDir = new File("src/main/resources/static/Images/").getAbsolutePath();
+
+            try {
+                File directory = new File(uploadDir);
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+
+                // Thumbnail 이미지 저장
+                if (!thumbnail.isEmpty()) {
+                    thumbnailFileName = saveFile(thumbnail, new File(uploadDir + "/thumbnail"));
+                }
+
+                // Slide 이미지 저장
+                if (!slideImg.isEmpty()) {
+                    slideImgFileName = saveFile(slideImg, new File(uploadDir + "/slideImg"));
+                }
+
+                System.out.println("Thumbnail saved: " + thumbnailFileName);
+                System.out.println("Slide image saved: " + slideImgFileName);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                model.addAttribute("result", "파일 업로드 실패");
             }
-
-            // Thumbnail 이미지 저장
-            if (!thumbnail.isEmpty()) {
-                thumbnailFileName = saveFile(thumbnail, new File(uploadDir + "/thumbnail"));
-                
-            }
-
-            // Slide 이미지 저장
-            if (!slideImg.isEmpty()) {
-                slideImgFileName = saveFile(slideImg, new File(uploadDir + "/slideImg"));
-            }
-
-            System.out.println("Thumbnail saved: " + thumbnailFileName);
-            System.out.println("Slide image saved: " + slideImgFileName);
-            System.out.println("글 작성 완료");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            model.addAttribute("result", "파일 업로드 실패");
         }
 
-        
         if (category.equals("공지사항")) {
-        	noticeDao.NoticeWrite(show, title, content);			
-		} else {
-			noticeDao.EventWrite(show, title, content, startDate, endDate, thumbnailFileName, slideImgFileName);
-		}
-        
+            noticeDao.noticeWrite(show, title, content);
+        } else {
+            noticeDao.eventWrite(show, title, content, startDate, endDate, thumbnailFileName, slideImgFileName);
+        }
     }
 
     private String saveFile(MultipartFile file, File dir) throws IOException {

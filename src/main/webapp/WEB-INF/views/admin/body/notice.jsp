@@ -15,13 +15,13 @@
 <div class="title"><h3>공지사항/이벤트 관리</h3></div>
 
 <!-- 게시글 등록 -->
-<div id="petteacherRegister" class="tab-content">
+<div id="petteacherRegister">
 	<!-- 필터링 영역 -->
-	<div class="radio-group">
-	    <div class="filter-title">카테고리</div>
-	    <label><input type="radio" name="category-filter" value="공지사항" checked onclick="toggleNoticeList()"> 공지사항</label>
-	    <label><input type="radio" name="category-filter" value="이벤트" onclick="toggleNoticeList()"> 이벤트</label>
+	<div class="tab-section">
+	    <button class="tab-btn active" data-tab="notice-list-container">공지사항</button>
+	    <button class="tab-btn" data-tab="event-list-container">이벤트</button>
 	</div>
+	
     <div class="search-group">
         <div class="filter-title">제목</div>
         <input type="search" name="titleSearch" id="titleSearch" />
@@ -37,19 +37,22 @@
         </select>
         
 	    <!-- 신규등록 버튼 -->
-	    <button id="newNoticeBtn" class="btn-style">선택삭제</button>
-	    <button id="newNoticeBtn" class="btn-style">모두공개</button>
-	    <button id="newNoticeBtn" class="btn-style">모두비공개</button>
+	    <button id="newNoticeBtn" class="btn-style" onclick="deleteSelectedNotices()">선택삭제</button>
+	    <button class="btn-style" onclick="setVisibilityForSelectedNotices('show')">모두공개</button>
+    	<button class="btn-style" onclick="setVisibilityForSelectedNotices('hide')">모두비공개</button>
 	    <a href="notice_write"><button id="newNoticeBtn" class="btn-style">신규등록</button></a>
 	</div>
 	
+	
+	
+	
 	<!-- 리스트 영역 -->
-	<div id="notice-list-container" class="notice-list-container">
+	<div id="notice-list-container" class="notice-list-container tab-content">
 	    <!-- 공지사항 리스트 테이블 -->
 	    <table class="notice-list">
 	        <thead class="thead">
 	            <tr>
-	                <th style="width: 2%;"><input type="checkbox" /></th>
+	                <th style="width: 2%;"><input type="checkbox" class="selectAll"/></th>
 	                <th style="width: 5%;">번호</th>
 	                <th style="width: 50%;">제목</th>
 	                <th style="width: 15%;">등록일</th>
@@ -57,24 +60,15 @@
 	                <th style="width: 5%;">공개여부</th>
 	                <th>수정 / 삭제</th>
 	            </tr>
-	        </thead>
-	        <c:forEach var="notice" items="${noticeAdminList}">
-	            <tr>
-	                <td><input type="checkbox" /></td>
-	                <td>${notice.notice_no }</td>
-	                <td id="title"><a href="/notice/noticeView">${notice.notice_title }</a></td>
-	                <td>${notice.notice_date }</td>
-	                <td>${notice.notice_hit }</td>
-	                <td>${notice.notice_show }</td>
-	                <td><input type="button" value="수정" /><input type="button" value="삭제" /></td>
-	            </tr>
-	        </c:forEach>
-	    </table>
+	        </thead>    
+	    </table>   
 	</div>
 	
-	<div id="evnet-list-container" class="notice-list-container">
+	
+	
+	<div id="event-list-container" class="event-list-container tab-content" style="display: none;">
 	    <!-- 공지사항 리스트 테이블 -->
-	    <table class="notice-list">
+	    <table class="event-list">
 	        <thead class="thead">
 	            <tr>
 	                <th style="width: 2%;"><input type="checkbox" /></th>
@@ -89,23 +83,11 @@
 	                <th>수정 / 삭제</th>
 	            </tr>
 	        </thead>
-	        <c:forEach var="event" items="${eventAdminList}">
-	            <tr>
-	                <td><input type="checkbox" /></td>
-	                <td>${event.event_no }</td>
-	                <td id="title"><a href="">${event.event_title }</a></td>
-	                <td>${event.event_startdate }</td>
-	                <td>${event.event_enddate }</td>
-	                <td>${event.event_legdate }</td>
-	                <td>${event.event_thumbnail}</td>
-	                <td>${event.event_hit }</td>
-	                <td>${event.event_show }</td>
-	                <td><input type="button" value="수정" /><input type="button" value="삭제" /></td>
-	            </tr>
-	        </c:forEach>
+	        <tbody>
+	        	
+	        </tbody>  
 	    </table>
 	</div>
-	
 </div>
 
 <script src="/static/js/admin/notice.js"></script>
