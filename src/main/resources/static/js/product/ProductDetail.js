@@ -397,8 +397,13 @@ $(document).ready(function() {
 
 			// 작성자 이름
 			cards += '<div class="reviewAuthor">';
-			cards += '<strong>' + rlist.pet_name + '</strong>'; // 작성자 이름
+			if (rlist.pet_name) {
+				cards += '<strong>' + rlist.pet_name + '</strong>'; // 작성자 이름
+			} else {
+				cards += '<strong>펫아무개</strong>'; // 작성자 이름
+			}
 			cards += '</div>';
+			console.log(rlist.pet_name);
 
 			// 리뷰 평점
 			cards += '<div class="reviewRating">';
@@ -514,7 +519,11 @@ $(document).ready(function() {
 	});
 
 
-
+	document.getElementById('contentBtn').addEventListener('click', function () {
+	        const productDetails = document.getElementById('productInfoPg');
+	        const isExpanded = productDetails.classList.toggle('expanded');
+	        this.textContent = isExpanded ? '상품 설명 접기 ▲' : '상품 설명 펼쳐보기 ▼';
+	    });
 
 
 
