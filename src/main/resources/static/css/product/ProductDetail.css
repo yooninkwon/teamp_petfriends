@@ -468,9 +468,29 @@
 
 
 
-
-
-
+.productInfo{
+	max-height: 2000px;
+	overflow: hidden;
+	transition: max-height 0.5s ease;
+}
+.productInfo.expanded {
+        max-height: 100%;
+}
+#contentBtn {
+		width: 800px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        background-color: white;
+        color: #ff4081;
+        border: 2px solid #ff4081;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 15px;
+        text-align: center;
+    }
+ 
+   
 
 
 

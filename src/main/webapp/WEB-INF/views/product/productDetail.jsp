@@ -176,7 +176,7 @@
 
 		<!-- 제품설명이미지 -->
 		<div class="detailInfo">
-			<div class="productInfo">
+			<div class="productInfo" id="productInfoPg">
 				<span class="detailMent">펫프 <span style="color: #ff4081;">Check</span>
 					Point
 				</span> <br /> <img class="checkImg"
@@ -193,6 +193,7 @@
 				</div>
 			</div>
 		</div>
+		<div id="contentBtn">상품 설명 펼쳐보기 ▼</div>
 
 		<!-- 구분선 -->
 		<div class="line"></div>
