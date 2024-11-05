@@ -7,6 +7,7 @@
 <title>펫호텔</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet" href="/static/css/helppetf/pethotel_reserve.css">
+<script src="https://kit.fontawesome.com/6c32a5aaaa.js" crossorigin="anonymous"></script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
@@ -72,8 +73,8 @@
 				<input type="radio" id="pet-type2" name="pet-type" value="강아지" class="radio_button">
 				<label for="pet-type2">강아지</label>
 				<br />
-				<label for="pet-birth-date">생일</label>
-				<input name="pet-birth-date" type="date" id="pet-birth-date"> 
+				<label for="pet-birth">생일</label>
+				<input name="pet-birth" type="date" id="pet-birth"> 
 				<br />
 				<span>성별</span> 
 				<input type="radio" id="pet-gender1" name="pet-gender" value="M" class="radio_button"> 
@@ -82,7 +83,7 @@
 				<label for="pet-gender2">F </label> 
 				<br />
 				<label for="pet-weight">체중</label> 
-				<input name="pet-weight" type="number" id="pet-weight" placeholder="Kg"> 
+				<input name="pet-weight" type="text" id="pet-weight" placeholder="Kg"> 
 				<br />
 				<span>중성화</span> 
 				<input type="radio" id="pet-neutered1" name="pet-neutered" value="Y" class="radio_button"> 
@@ -99,23 +100,26 @@
 	</div>
 	
 	
-	<div id="select-pet-modal" class="tab">
-		<table>
-			<thead>
-				<tr>
-					<th>사진</th>
-					<th>이름</th>
-					<th>동물종류</th>
-					<th>생일</th>
-					<th>성별</th>
-					<th>체중</th>
-					<th>중성화</th>
-				</tr>
-			</thead>
-			<tbody id="selectPetsTbody">
-				
-			</tbody>
-		</table>
+	<div id="select-pet-modal" class="tab modal">
+		<div class="modal-content">
+			<span class="close-btn"><i class="fa-solid fa-xmark"></i></span>
+			<table>
+				<thead>
+					<tr>
+						<th class="modal-img">사진</th>
+						<th class="modal-name">이름</th>
+						<th class="modal-type">동물종류</th>
+						<th class="modal-birth">생일</th>
+						<th class="modal-gender">성별</th>
+						<th class="modal-weight">체중</th>
+						<th class="modal-neut">중성화</th>
+					</tr>
+				</thead>
+				<tbody id="selectPetsTbody">
+					
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 	<div id="reserve-done" class="tab">

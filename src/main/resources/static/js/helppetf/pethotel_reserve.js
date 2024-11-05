@@ -29,36 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		popupForm.style.display = 'none'; // 팝업 닫기
 		document.getElementById('pet-form').reset(); // form 초기화
 	});
-	
-	//".select-pet-button"클릭시
-	// 이부분 제대로 작동 안함
-	// 리다이렉트 + 폼 시리얼라이즈됨
-	$('.select-pet-button').on('click', function(event){
-		event.preventDefault();
-		console.log('a');
-		fetch('/helppetf/pethotel/pethotel_select_pet', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-			.then(response => {
-				if (response.ok) {
-					console.log('Data successfully sent to server');
-					console.log(response);
-					return response.json();
-				} else {
-					console.error('Failed to send data');
-				}
-			})
-			.then(data => {
-				console.log(data);
 
-			})
-			.catch(error => {
-				console.error('There was a problem with the fetch operation:', error);
-			});
-
+	$('.close-btn').on('click', function() {
+		closeModal();
 	});
 
 	// 반려동물 form 저장 버튼 클릭시
@@ -145,9 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
 				}
 			})
 			.then(data => {
-				console.log(data);
-
-				// 완료페이지
 				showReserveDonePage(data);
 			})
 			.catch(error => {
@@ -178,59 +148,86 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		$('#reserve-done').html(post);
 	}
-	
-	
+
 	//"#select-pet-button"클릭시
 	selectPetButton.addEventListener('click', function(event) {
 		event.preventDefault();
-		
-		console.log('a');
-		
+
 		fetch('/helppetf/pethotel/pethotel_select_pet', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
 			}
 		})
-		.then(response => {
-			if (response.ok) {
-				console.log('Data successfully sent to server');
-				return response.json();
-			} else {
-				console.error('Failed to send data');
-			}
-		})
-		.then(data => {
-			console.log(data);
-			displaySelectModal(data);
+			.then(response => {
+				if (response.ok) {
+					console.log('Data successfully sent to server');
+					return response.json();
+				} else {
+					console.error('Failed to send data');
+				}
+			})
+			.then(data => {
+				displaySelectModal(data);
 
-		})
-		.catch(error => {
-			console.error('There was a problem with the fetch operation:', error);
-		});
-		
+			})
+			.catch(error => {
+				console.error('There was a problem with the fetch operation:', error);
+			});
+
 		function displaySelectModal(data) {
 			document.getElementById('select-pet-modal').classList.add('on');
+			let petType = '';
 			let post = '';
-			data.forEach(function(pets){
-				post += '<tr><td><p style="text-align: center;"><img src="/static/Images/pet/' + pets.pet_img +'" alt="저장된 펫 이미지" width=20% height=20% /></p>';
-				post += '<td>' + pets.pet_name +'</td>';
-				post += '<td>' + pets.pet_type +'</td>';
-				post += '<td>' + pets.pet_birth +'</td>';
-				post += '<td>' + pets.pet_gender +'</td>';
-				post += '<td>' + pets.pet_weight +'</td>';
-				post += '<td>' + pets.pet_neut +'</td>';
-				
+			data.forEach(function(pets, index) {
+				if (pets.pet_type === 'C') {
+					petType = '고양이';
+				} else {
+					petType = '강아지';
+				}
+
+				post += '<tr data-index="' + index + '"><td><div style="height: 100%; width:50%;">';
+				post += '<img height="100%" width="100%" src="/static/Images/pet/' + pets.pet_img;
+				post += '" alt="저장된 펫 이미지" width=20% height=20% /></div>';
+				post += '<td>' + pets.pet_name + '</td>';
+				post += '<td>' + petType + '</td>';
+				post += '<td>' + pets.pet_birth + '</td>';
+				post += '<td>' + pets.pet_gender + '</td>';
+				post += '<td>' + pets.pet_weight + '</td>';
+				post += '<td>' + pets.pet_neut + '</td></tr>';
+
 			});
-			
+
+			$('.modal-content tbody').on('click', 'tr', function() {
+				const index = $(this).data('index');
+//				console.log(data[index])
+				var petType = '';
+				if (data[index] === 'C') {
+					petType = '고양이';
+				} else {
+					petType = '강아지';
+				}
+				$('input[name="pet-name"]').val(data[index].pet_name);
+				$('input[name="pet-birth"]').val(data[index].pet_birth);
+				$('input[name="pet-weight"]').val(data[index].pet_weight);
+				$('input[name="pet-type"][value="' + petType + '"]').attr('checked', true);
+				$('input[name="pet-neutered"][value="' + data[index].pet_neut + '"]').attr('checked', true);
+				$('input[name="pet-gender"][value="' + data[index].pet_gender + '"]').attr('checked', true);
+
+				closeModal();
+			});
+
 			document.getElementById('selectPetsTbody').innerHTML = post;
 		}
-//		Modal 창 만드는거 해야 함. 데이터 연결은 끝남
 	});
 
 	function pageScroll(y) {
 		window.scrollTo({ top: y, behavior: 'smooth' });
 		// 함수 호출시 설정한 Y좌표로 스크롤
+	}
+
+	function closeModal() {
+		$('#select-pet-modal').removeClass('on');
 	}
 
 });
