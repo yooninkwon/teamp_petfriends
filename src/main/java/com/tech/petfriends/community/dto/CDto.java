@@ -40,7 +40,13 @@ public class CDto {
 	private String pet_img;
 	private String pet_main;
 
+
+	private int feed_no;
+
+	private String mem_nick;
 }
+
+
 
 
 

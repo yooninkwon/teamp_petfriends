@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,7 +66,7 @@ public class MyPetController {
 	    try {
 	        if (petImgFile != null && !petImgFile.isEmpty()) {
 	        	// 절대경로
-		        String imagesDir = "C:\\24sts4\\project\\project_Petfriend\\src\\main\\resources\\static\\Images\\pet\\";
+		        String imagesDir = new File("src/main/resources/static/Images/pet/").getAbsolutePath();
 
 		        // 파일 이름 가져오기
 		        fileName = petImgFile.getOriginalFilename();

@@ -14,25 +14,53 @@
 <div class="container">
     <h3>신규등록</h3>
 
-    <form id="postForm" action="${pageContext.request.contextPath}/community/write" method="post" enctype="multipart/form-data" class="write-form" onsubmit="return validateForm()">
+    <form id="postForm" action="notice_write_service" method="post" enctype="multipart/form-data" class="write-form">
 
-        <label for="b_cate_no">카테고리</label>
-        <select id="b_cate_no" name="b_cate_no" required>
-            <option value="공지사항">공지사항</option>
-            <option value="이벤트">이벤트</option>
-        </select>
+        <div id="input-group">
+        	<label for="">카테고리</label> <br />
+	        <select id="category" name="category" required onchange="toggleEventGroup()">
+	            <option value="공지사항">공지사항</option>
+	            <option value="이벤트">이벤트</option>
+	        </select>
+        </div>
+        
+        <div id="event-group" style="display: none;">
+        	<label for="">이벤트 설정</label> <br />
+        	<div id="event-date">
+        		<label for="">시작날짜</label>
+		        <input type="date" name="startDate" value="" />
+		        <label for="">종료날짜</label>
+		        <input type="date" name="endDate" value="" />
+        	</div>
+	        <div id="event-file">
+	        	<label for="">메인이미지 <span style="font-size: 14px;">(700 * 400)</span></label>
+		        <input type="file" name="thumbnail" />
+		        <label for="">슬라이드 이미지 <span style="font-size: 14px;">(700 * 400)</span></label>
+		        <input type="file" name="slideImg"/>
+	        </div>
+        </div>
+        
+        <div id="input-group">
+        	<label for="">공개여부</label> <br />
+        	<select id="notice_show" name="notice_show" required>
+	            <option value="Y">공개</option>
+	            <option value="N">비공개</option>
+	        </select>
+        </div>
 
-        <label for="file" class="image-label">사진업로드</label>
-        <input type="file" id="file" name="file" multiple>
+        <div id="input-group">
+        	<label for="">제목</label> <br />
+	        <input type="text" id="notice_title" name="notice_title" placeholder="제목을 입력하세요" required>
+        </div>
+        
+        <div id="content-group">
+        	<label for="">내용</label>
+        	<textarea id="notice_content" name="notice_content" placeholder="내용을 입력하세요" required></textarea>
+        </div>
+        
 
-        <label for="board_title">제목</label>
-        <input type="text" id="board_title" name="board_title" placeholder="제목을 입력하세요" required>
-
-        <label for="board_content">내용</label>
-        <textarea id="board_content" name="board_content" placeholder="내용을 입력하세요" required></textarea>
-
-        <input type="button" id="previewButton" class="btn submit-btn" value="내용 미리보기">
-        <input type="submit" id="submit-btn" class="btn submit-btn" value="작성 완료">
+        <input type="button" id="submitBtn" value="내용 미리보기">
+        <input type="submit" id="submitBtn" value="작성 완료">
     </form>
 
     <!-- 미리보기 팝업 -->
@@ -47,14 +75,14 @@
 
 <script>
 //CKEditor 초기화
-CKEDITOR.replace('board_content', {
+CKEDITOR.replace('notice_content', {
     height: 700,
     on: {
         instanceReady: function() {
             this.dataProcessor.htmlFilter.addRules({
                 elements: {
                     img: function(el) {
-                        el.attributes.style = 'max-width:1000px;max-height:400px;width:auto;height:auto;';
+                        el.attributes.style = 'width:auto;height:auto;';
                         return el;
                     }
                 }
@@ -62,7 +90,18 @@ CKEDITOR.replace('board_content', {
         }
     }
 });
-</script>
 
+// 카테고리에 따라 이벤트 설정 보이기/숨기기
+function toggleEventGroup() {
+    var category = document.getElementById('category').value;
+    var eventGroup = document.getElementById('event-group');
+    if (category === '이벤트') {
+        eventGroup.style.display = 'block';
+    } else {
+        eventGroup.style.display = 'none';
+    }
+}
+
+</script>
 </body>
 </html>

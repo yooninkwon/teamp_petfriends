@@ -1,8 +1,7 @@
 @charset "UTF-8";
 
 
-
-tml, body {
+html, body {
     margin: 0;
     padding: 0;
     height: 100%;
@@ -10,34 +9,142 @@ tml, body {
 
 .container {
     display: flex;
-    width: 100%;
+    width: 80%; /* 전체 너비를 80%로 조정 */ 
     padding: 20px;
     box-sizing: border-box; /* 패딩 포함 너비 계산 */
-	justify-content: space-between;
-	}
+    justify-content: space-between;
+    margin: 0 auto; /* 중앙 정렬을 위해 자동 마진 추가 */
+}
 
 /* 메인 영역 설정 */
 .my_feed {
-     flex: 3; /* 메인 영역이 남은 너비를 차지 */
+    flex: 3; /* 메인 영역이 남은 너비를 차지 */
     padding: 20px;
     background-color: #fff;
 }
 
+/* 이미지 나열을 위한 스타일 추가 */
+.feed-images {
+    display: flex;
+    flex-wrap: wrap; /* 여러 줄로 나열되도록 설정 */
+    gap: 10px; /* 피드 아이템 사이의 간격 */
+}
+
+.feed-item {
+    max-width: 200px; /* 이미지의 최대 너비를 설정 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+.feed-item img {
+    width: 100%; /* 이미지를 div의 너비에 맞게 조정 */
+    height: auto; /* 비율에 맞춰 높이 자동 조정 */
+}
+
+.feed-info {
+    margin-top: 5px; /* 이미지와 제목/날짜 사이의 간격 */
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* 한 줄로 유지 */
+}
+
+.post-title {
+    font-family: 'Arial', sans-serif; /* 원하는 폰트 스타일로 변경 */
+    font-weight: bold; /* 제목을 굵게 표시 */
+    display: block; /* 블록 요소로 변경 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* 한 줄로 유지 */
+	color: #333; /* 기본 글씨 색상 */
+    text-decoration: none; /* 링크의 기본 밑줄 제거 */
+}
+
+.post-title:hover {
+        color: #ff4081; /* 호버 시 글씨 색상 변경 */
+        text-decoration: underline; /* 호버 시 밑줄 추가 */
+    }
+
+
+.post-time {
+    font-family: 'Arial', sans-serif; /* 원하는 폰트 스타일로 변경 */
+    font-size: 0.9em; /* 날짜 폰트 크기를 줄임 */
+    color: gray; /* 날짜 색상 변경 */
+}
+
 
 #content {
-	text-align: center;
+    text-align: center;
 }
+
+/* 상단 프로필 영역 스타일 */
+.profile-section {
+    position: absolute; /* 절대 위치 지정 */
+    top: 250px; /* 위쪽 여백 */
+    left: 50%; /* 중앙 정렬 */
+    transform: translateX(-50%); /* 정확한 중앙 정렬을 위한 변환 */
+    display: flex;
+    flex-direction: column; /* 세로 방향 정렬 */
+    align-items: center; /* 중앙 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    z-index: 10; /* 다른 요소보다 위에 표시 */
+	background-color: rgba(0, 0, 0, 0.7); /* 검정색 배경에 70% 투명도 */
+	padding: 15px; /* 내부 여백 추가 */
+    border-radius: 8px; /* 모서리 둥글게 */
+	width: 800px; /* 프로필 영역 너비 설정 (필요에 따라 조정) */
+    height: auto; /* 높이는 내용에 따라 자동 조정 */
+}
+
+/* 이벤트 이미지 스타일 */
+.event-image {
+    position: relative; /* 위치를 상대적으로 설정 */
+    text-align: center; /* 이미지 중앙 정렬 */
+}
+
+/* 이벤트 이미지 내부의 이미지 스타일 */
+.event-image img {
+    width: 100%; /* 전체 너비에 맞게 조정 */
+    height: auto; /* 비율에 맞게 높이 자동 조정 */
+}
+
+
+
+/* 프로필 이미지 스타일 */
+.main-profile-image {
+    width: 100px; /* 프로필 이미지 너비 */
+    height: 100px; /* 프로필 이미지 높이 */
+    border-radius: 50%; /* 둥근 형태 */
+    border: 2px solid #ff4081; /* 테두리 색상 */
+}
+
+
+/* 프로필 정보 스타일 */
+.profile-info h2 {
+    margin: 10px 0; /* 제목의 여백 */
+    font-size: 1.5em; /* 제목 크기 */
+    color: #fff; /* 제목 색상 (배경에 맞춰 조정) */
+}
+
+
+/* 프로필 메뉴 스타일 */
+.profile-menu a {
+    margin: 5px; /* 링크 사이의 여백 */
+    color: #fff; /* 링크 색상 (배경에 맞춰 조정) */
+    text-decoration: none; /* 링크의 기본 밑줄 제거 */
+    font-weight: bold; /* 링크 굵게 */
+}
+
+.profile-menu a:hover {
+    text-decoration: underline; /* 호버 시 밑줄 추가 */
+}
+
 
 
 
 /* 사이드바 */
 
 .sidebar {
-	flex: 1;
-	width: 100%;
-	 position: relative; /* 사이드바를 메인 영역 옆에 정렬 */
+	flex: 0.7;
+	position: relative; /* 사이드바를 메인 영역 옆에 정렬 */
     top: 20px; /* 헤더의 높이에 따라 조정 */
-
     background-color: #fff; /* 배경색 */
     padding: 20px; /* 내부 여백 */
     border: 1px solid #ccc; /* 테두리 */
@@ -68,7 +175,7 @@ tml, body {
     display: flex !important;
     align-items: center !important; /* 수직 중앙 정렬 */
     justify-content: center !important; /* 수평 중앙 정렬 */
-    width: 320px !important;
+    width: 240px !important;
     height: 50px !important;
     margin: auto !important;
     text-align: center !important; /* 텍스트 가운데 정렬 */

@@ -38,4 +38,6 @@ public interface MemberMapper {
     // 로그인 회원 등급 정보 검색
 	GradeDto getGradeByMemberCode(String mem_code);
 
+	void deleteWindowPro(String mem_code);
+
 }

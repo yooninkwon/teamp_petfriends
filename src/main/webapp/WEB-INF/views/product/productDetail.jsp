@@ -32,6 +32,9 @@
  // 페이지 시작시 찜된 상품 데이터 전달
     const wishResult = ${whishCheck.wishListResult };
     
+    /* 둘러본 상품 저장하기 위한 데이터가져오기 */
+    const windowMemCode = '${sessionScope.loginUser.mem_code }';
+    const windowProCode = '${product.pro_code }';
 </script>
 <script src="/static/js/product/ProductDetail.js"></script>
 
@@ -57,14 +60,14 @@
 			<div class="data-container">
 				<span class="data-petType">${product.pro_pets } 전용</span> &nbsp; <span
 					class="data-proType">${product.pro_type } /
-					${product.pro_category }</span> <br /> <br />
+					${product.pro_category }</span> <br /> <br /> 
 				<span class="data-proName">${product.pro_name }</span> <br />
 				<span class="data-reviewAverage">${reviewRank.average_rating}</span>
 				<span class="data-reviewCount">
 					 <fmt:formatNumber value="${reviewRank.total_reviews}" pattern="#,###"/>개 후기</span> <br /><br /> 
 				<span class="data-proDiscount">${product.pro_discount}%</span> 
 				<span class="data-proPrice">
-					<fmt:formatNumber value="${productOption.proopt_price }" pattern="#,###"/>원</span> <br /> <br />
+					<fmt:formatNumber value="${productOption.proopt_price }" pattern="#,###"/>원</span> <br /> 
 				<span class="data-proFinalPrice">
 					<fmt:formatNumber value="${productOption.proopt_finalprice }" pattern="#,###"/>원</span>
 				<br />
@@ -176,7 +179,7 @@
 
 		<!-- 제품설명이미지 -->
 		<div class="detailInfo">
-			<div class="productInfo">
+			<div class="productInfo" id="productInfoPg">
 				<span class="detailMent">펫프 <span style="color: #ff4081;">Check</span>
 					Point
 				</span> <br /> <img class="checkImg"
@@ -193,6 +196,7 @@
 				</div>
 			</div>
 		</div>
+		<div id="contentBtn">상품 설명 펼쳐보기 ▼</div>
 
 		<!-- 구분선 -->
 		<div class="line"></div>

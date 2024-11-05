@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,14 +10,17 @@
 <link rel="stylesheet" href="/static/css/notice/noticeView.css" />
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
-<jsp:include page="/WEB-INF/views/include_jsp/notice_sub_navbar.jsp" />
-<script>
-	$(document).ready(function() {
-		document.getElementById('${main_navbar_id }').classList.add('selected');
-		document.getElementById('${sub_navbar_id }').classList.add('selected');
-	});
-</script>
+	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+	<jsp:include page="/WEB-INF/views/include_jsp/notice_sub_navbar.jsp" />
+	<script>
+		$(document).ready(
+				function() {
+					document.getElementById('${main_navbar_id }').classList
+							.add('selected');
+					document.getElementById('${sub_navbar_id }').classList
+							.add('selected');
+				});
+	</script>
 
 	<div id="top">
 		<div id="top_top">
@@ -24,34 +28,39 @@
 				<p>제목</p>
 			</div>
 			<div id="right">
-				<p>추석연휴 배송안내</p>
+				<p>${notice.notice_title }</p>
 			</div>
 		</div>
 		<div id="top_bottom">
 			<div id="left">
-				<p>작성일 2021-09-01</p>
+				<p>작성일 ${notice.notice_date }</p>
 			</div>
 			<div id="right2">
-				<p>조회수 605</p>
+				<p>조회수 ${notice.notice_hit }</p>
 			</div>
 		</div>
-		
+
 	</div>
 	<div id="container">
 		<div id="content">
-			<p>공지사항 공지사항 공지사항 공지사항 공지사항 공지사항 공지사항 공지사항 공지사항 
-			공지사항 공지사항 공지사항 공지사항 공지사항 공지사항 공지사항</p>
+			<p>${notice.notice_content }</p>
 		</div>
 		<div id="bottom_top">
-			<input type="button" value="목록" />
+			<a href="/notice/noticePage"><input type="button" class="listBtn" value="목록" /></a>
 		</div>
 		<div id="bottom_bottom">
-			<a href="">설 연휴 배송 지연 안내</a> <br />
-			<a href="">크리스마스 이벤트 안내</a>
+			<c:if test="${nextNotice != null}">
+				<a href="/notice/noticeView?id=${nextNotice.notice_no}">다음글 || ${nextNotice.notice_no} ||
+					${nextNotice.notice_title}</a>
+			</c:if> <br />
+			<c:if test="${preNotice != null}">
+				<a href="/notice/noticeView?id=${preNotice.notice_no}">이전글 || ${preNotice.notice_no} ||
+					${preNotice.notice_title}</a>
+			</c:if>
 		</div>
 	</div>
 
 
-
+<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>

@@ -104,7 +104,7 @@
 					    <li><a href="/community/myfeed" onclick="alert('로그인이 필요합니다'); return false;">내 피드</a></li>
 					</c:if>-->
 					
-					<li><a href="/community/myfeed/">내 피드</a></li>
+					<li><a href="/community/myfeed/${sessionScope.loginUser.mem_code}">내 피드</a></li>
 					<c:if test="${sessionScope.loginUser ne null}">
 						<!-- 로그인이 되어 있을 때 글쓰기 페이지로 이동 -->
 						<li><a href="/community/writeView">글쓰기</a></li>

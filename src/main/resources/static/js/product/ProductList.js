@@ -308,7 +308,8 @@ $(document).ready(function() {
 
 	$(document).on('click', '.product-Item', function() {
 		const productCode = $(this).data('product-code'); // data-product-code 값을 가져옴
-		// productCode를 사용하여 작업 수행
+			
+		// productCode를 사용하여 제품상세페이지 이동
 		window.location.href = `/product/productDetail?code=${productCode}`;
 	});
 

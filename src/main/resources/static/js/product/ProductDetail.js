@@ -1,5 +1,24 @@
 $(document).ready(function() {
-
+	console.log(windowMemCode+'멤코드다');
+	console.log(windowProCode+'프로코드다');
+	
+	// 로그인이 되어있을때 상품상세페이지 로드시 둘러본상품목록에 추가
+	if(windowMemCode){
+		
+		$.ajax({
+		    url: '/product/productAddWindow',
+		    type: 'POST',
+		    contentType: 'application/json',
+		    data: JSON.stringify({
+		        windowMemCode,
+				windowProCode
+		    })
+		});
+		
+	}
+	
+	
+	
 	//sub메뉴바 클릭 활성화
 	$(document).ready(function() {
 		$('#productPetItem').addClass('selected');
@@ -397,8 +416,13 @@ $(document).ready(function() {
 
 			// 작성자 이름
 			cards += '<div class="reviewAuthor">';
-			cards += '<strong>' + rlist.pet_name + '</strong>'; // 작성자 이름
+			if (rlist.pet_name) {
+				cards += '<strong>' + rlist.pet_name + '</strong>'; // 작성자 이름
+			} else {
+				cards += '<strong>펫아무개</strong>'; // 작성자 이름
+			}
 			cards += '</div>';
+			console.log(rlist.pet_name);
 
 			// 리뷰 평점
 			cards += '<div class="reviewRating">';
@@ -514,7 +538,11 @@ $(document).ready(function() {
 	});
 
 
-
+	document.getElementById('contentBtn').addEventListener('click', function () {
+	        const productDetails = document.getElementById('productInfoPg');
+	        const isExpanded = productDetails.classList.toggle('expanded');
+	        this.textContent = isExpanded ? '상품 설명 접기 ▲' : '상품 설명 펼쳐보기 ▼';
+	    });
 
 
 
