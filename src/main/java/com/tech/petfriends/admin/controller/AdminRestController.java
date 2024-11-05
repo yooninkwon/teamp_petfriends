@@ -1,6 +1,7 @@
 package com.tech.petfriends.admin.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tech.petfriends.admin.dto.ACommunityDto;
+import com.tech.petfriends.admin.mapper.AdminCommuntiyDao;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
+import com.tech.petfriends.admin.service.AdminCommunityBListService;
 import com.tech.petfriends.admin.service.AdminPethotelDataService;
 import com.tech.petfriends.admin.service.AdminPethotelInfoData;
 import com.tech.petfriends.admin.service.AdminPethotelInfoEditService;
@@ -33,6 +37,8 @@ import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminPetteacherEditService;
 import com.tech.petfriends.admin.service.AdminPetteacherWriteService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
+import com.tech.petfriends.community.dto.CReportDto;
+import com.tech.petfriends.community.service.CReportService;
 import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
@@ -47,17 +53,21 @@ public class AdminRestController {
 
 	@Autowired
 	AdminPageDao adminDao;
-	
+
 	@Autowired
 	NoticeDao noticeDao;
-  
+
+	@Autowired
+	AdminCommuntiyDao CommuntiyDao;
+
 	AdminServiceInterface adminServiceInterface;
 
 	@PostMapping("/pethotel_reserve_update")
-	public String pethotelReserveUpdate(@RequestBody Map<String, String> statusMap, HttpServletRequest request, Model model) {
+	public String pethotelReserveUpdate(@RequestBody Map<String, String> statusMap, HttpServletRequest request,
+			Model model) {
 		model.addAttribute("statusMap", statusMap);
 		model.addAttribute("request", request);
-		
+
 		adminServiceInterface = new AdminPethotelReserveUpdateService(adminDao);
 		adminServiceInterface.execute(model);
 		return "{\"status\": \"success\"}";
@@ -167,33 +177,45 @@ public class AdminRestController {
 
 		return "{\"status\": \"success\"}";
 	}
-	
+
 	@GetMapping("/notice_notice_list")
 	public ArrayList<NoticeDto> noticeNoticeList() {
-		ArrayList<NoticeDto> noticeList =  noticeDao.noticeAdminList();
+		ArrayList<NoticeDto> noticeList = noticeDao.noticeAdminList();
 		return noticeList;
 	}
-	
+
 	@GetMapping("/notice_event_list")
 	public ArrayList<EventDto> noticeEventList() {
-		ArrayList<EventDto> eventList =  noticeDao.eventAdminList();
+		ArrayList<EventDto> eventList = noticeDao.eventAdminList();
 		return eventList;
 	}
-	
+
 	// 공지사항 삭제 메서드
 	@DeleteMapping("/deleteNotice")
-    public ResponseEntity<String> deleteNotice(@RequestParam("id") Long noticeNo) {
-        try {
-            int isDeleted = noticeDao.deleteNotice(noticeNo);
-            if (isDeleted > 0) {
-                return ResponseEntity.ok("Notice deleted successfully.");
-            } else {
-                return ResponseEntity.status(404).body("Notice not found.");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("An error occurred while deleting the notice.");
-        }
-    }
-    
-    
+	public ResponseEntity<String> deleteNotice(@RequestParam("id") Long noticeNo) {
+		try {
+			int isDeleted = noticeDao.deleteNotice(noticeNo);
+			if (isDeleted > 0) {
+				return ResponseEntity.ok("Notice deleted successfully.");
+			} else {
+				return ResponseEntity.status(404).body("Notice not found.");
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("An error occurred while deleting the notice.");
+		}
+	}
+
+	@PostMapping("/community")
+	public ResponseEntity<Map<String, String>> communityList(@RequestBody ACommunityDto communityDto, Model model) {
+		System.out.println("communityList");
+
+		model.addAttribute("board_no", communityDto.getBoard_no());
+		System.out.println("communityDto.getBoard_no() " + communityDto.getBoard_no());
+
+		adminServiceInterface = new AdminCommunityBListService(CommuntiyDao);
+		adminServiceInterface.execute(model);
+
+		Map<String, String> response = new HashMap<>();
+		return ResponseEntity.ok(response);
+	}
 }

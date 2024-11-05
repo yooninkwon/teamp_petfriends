@@ -88,11 +88,13 @@
 	        if (isLoggedIn === "false") { // 'true' 또는 'false' 문자열로 비교
 	            alert("로그인이 필요합니다.");
 	            return;
-		    currentCommentNo = commentNO; // 신고할 댓글 번호 저장
-		    currentReportType = reportType; // 신고 유형 저장
-		    document.getElementById("report-popup").style.display = "flex";		
+		  }
+		    
+		  currentCommentNo = commentNO; // 신고할 댓글 번호 저장
+		  currentReportType = reportType; // 신고 유형 저장
+		  document.getElementById("report-popup").style.display = "flex";		
 			
-	        }
+	        
 		
 		
 		}
