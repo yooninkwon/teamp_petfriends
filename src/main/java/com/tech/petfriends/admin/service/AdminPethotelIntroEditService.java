@@ -17,6 +17,7 @@ public class AdminPethotelIntroEditService implements AdminServiceInterface {
 	
 	@Override
 	public void execute(Model model) {
+		// RequestBody로 전달받은 DTO 추출
 		PethotelIntroDto dto = (PethotelIntroDto) model.getAttribute("dto");
 		String intro_line1 = dto.getIntro_line1();
 		String intro_line2 = dto.getIntro_line2();
@@ -27,6 +28,8 @@ public class AdminPethotelIntroEditService implements AdminServiceInterface {
 		String intro_line7 = dto.getIntro_line7();
 		String intro_line8 = dto.getIntro_line8();
 		String intro_line9 = dto.getIntro_line9();
+		
+		// 파라미터에 첨부하여 DB요청
 		adminDao.adminPethotelIntroEdit(intro_line1, intro_line2, intro_line3, intro_line4, intro_line5,
 				intro_line6, intro_line7, intro_line8, intro_line9);
 	}

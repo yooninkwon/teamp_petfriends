@@ -49,40 +49,37 @@ public class AdminRestController {
 	public String pethotelReserveUpdate(@RequestBody Map<String, String> statusMap, HttpServletRequest request, Model model) {
 		model.addAttribute("statusMap", statusMap);
 		model.addAttribute("request", request);
-		
 		adminServiceInterface = new AdminPethotelReserveUpdateService(adminDao);
 		adminServiceInterface.execute(model);
+		
 		return "{\"status\": \"success\"}";
 	}
 
 	@GetMapping("/pethotel_admin_reserve_detail")
 	public String pethotelReserveDetail(HttpServletRequest request, Model model) throws JsonProcessingException {
 		AdminPethotelReserveDetailService adminService = new AdminPethotelReserveDetailService(adminDao);
+		
 		return adminService.execute(model, request);
 	}
 
+	@SuppressWarnings("unchecked")
 	@GetMapping("/pethotel_admin_reserve")
 	public ArrayList<PethotelMemDataDto> pethotelReserveData(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		adminServiceInterface = new AdminPethotelDataService(adminDao);
 		adminServiceInterface.execute(model);
-
-		@SuppressWarnings("unchecked")
-		ArrayList<PethotelMemDataDto> memSelectDto = (ArrayList<PethotelMemDataDto>) model.getAttribute("memSelectDto");
-
-		return memSelectDto;
+		
+		return (ArrayList<PethotelMemDataDto>) model.getAttribute("memSelectDto");
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	@GetMapping("/petteacher_admin_data")
 	public List<PetteacherDto> getPetteacherData(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		adminServiceInterface = new AdminPetteacherDataService(adminDao);
 		adminServiceInterface.execute(model);
-
-		@SuppressWarnings("unchecked")
-		List<PetteacherDto> petteacherList = (List<PetteacherDto>) model.getAttribute("petteacherList");
-
-		return petteacherList;
+		
+		return (List<PetteacherDto>) model.getAttribute("petteacherList");
 	}
 
 	@GetMapping("/petteacher_admin_data_forEdit")
@@ -91,9 +88,7 @@ public class AdminRestController {
 		adminServiceInterface = new AdminPetteacherDetailService(adminDao);
 		adminServiceInterface.execute(model);
 
-		PetteacherDto dto = (PetteacherDto) model.getAttribute("dto");
-
-		return dto;
+		return (PetteacherDto) model.getAttribute("dto");
 	}
 
 	@DeleteMapping("/petteacher_admin_data_forDelete")
@@ -110,7 +105,7 @@ public class AdminRestController {
 		model.addAttribute("dto", dto);
 		adminServiceInterface = new AdminPetteacherWriteService(adminDao);
 		adminServiceInterface.execute(model);
-
+		
 		return "{\"status\": \"success\"}";
 	}
 
@@ -128,16 +123,14 @@ public class AdminRestController {
 	public PethotelIntroDto pethotelIntroData(Model model) {
 		adminServiceInterface = new AdminPethotelIntroData(adminDao);
 		adminServiceInterface.execute(model);
-		PethotelIntroDto introDto = (PethotelIntroDto) model.getAttribute("dto");
-		return introDto;
+		return (PethotelIntroDto) model.getAttribute("dto");
 	}
 
 	@GetMapping("/pethotel_info_data")
 	public PethotelInfoDto pethotelInfoData(Model model) {
 		adminServiceInterface = new AdminPethotelInfoData(adminDao);
 		adminServiceInterface.execute(model);
-		PethotelInfoDto infoDto = (PethotelInfoDto) model.getAttribute("dto");
-		return infoDto;
+		return (PethotelInfoDto) model.getAttribute("dto");
 	}
 
 	@PutMapping("/pethotel_admin_intro_dataForEdit")

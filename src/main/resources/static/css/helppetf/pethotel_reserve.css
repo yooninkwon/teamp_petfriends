@@ -249,6 +249,11 @@ button#save-pet {
 /* 	width: 60px; */
 	height: 60px;
 }	
+
+.modal-content td {
+	cursor: pointer;
+}	
+
 .close-btn {
     position: absolute;
     right: 20px;

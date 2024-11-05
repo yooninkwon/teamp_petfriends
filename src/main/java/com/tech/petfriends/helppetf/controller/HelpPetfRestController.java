@@ -34,8 +34,8 @@ public class HelpPetfRestController {
 
 	private final AdoptionGetJson adoptionGetJson;
 
-	public HelpPetfRestController(AdoptionGetJson adoptionService) {
-		this.adoptionGetJson = adoptionService;
+	public HelpPetfRestController(AdoptionGetJson adoptionGetJson) {
+		this.adoptionGetJson = adoptionGetJson;
 	}
 
 	@Autowired

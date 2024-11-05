@@ -38,8 +38,8 @@
 			<div class="date-selection">
 				<form action="#" id="start-end-date">
 					<!-- 날짜 최소 최대 설정하기 (스크립트) -->
-					<input name="start-date" type="date" id="start-date" class="date-input"> 부터 
-					<input name="end-date" type="date" id="end-date" class="date-input"> 까지
+					<input name="start-date" type="date" id="start-date" class="date-input"  max="9999-12-31" required> 부터 
+					<input name="end-date" type="date" id="end-date" class="date-input" max="9999-12-31" required> 까지
 					<!-- 날짜제한 메모: <input type="" min=""/> <!-- 장기 투숙일 수도 있으니 끝나는날짜는 제한 x -->
 				</form>
 			</div>
@@ -60,21 +60,21 @@
 			<h2>아이 등록하기</h2>
 			<button class="close-add-pet-button">닫기</button>
 			<form action="#" id="pet-form">
-				<input name="pet-form-no" type="hidden" id="pet-form-no" value="0" />
+				<input name="pet-form-no" type="hidden" id="pet-form-no" value="0" required />
 				<p id="select_already">펫프렌즈에 등록해 두신 아이가 있으신가요?</p>
 				<button id="select-pet-button">아이 선택하기</button> <br />
 
 				<label for="pet-name">이름</label> 
-				<input type="text" name="pet-name" id="pet-name" placeholder="이름 입력" class="text_input"> 
+				<input type="text" name="pet-name" id="pet-name" placeholder="이름 입력" class="text_input" required> 
 				<br />
 				<span>동물 종류</span>
-				<input type="radio" id="pet-type1" name="pet-type" value="고양이" class="radio_button"> 
+				<input type="radio" id="pet-type1" name="pet-type" value="고양이" class="radio_button" required> 
 				<label for="pet-type1">고양이</label>
-				<input type="radio" id="pet-type2" name="pet-type" value="강아지" class="radio_button">
+				<input type="radio" id="pet-type2" name="pet-type" value="강아지" class="radio_button" required>
 				<label for="pet-type2">강아지</label>
 				<br />
 				<label for="pet-birth">생일</label>
-				<input name="pet-birth" type="date" id="pet-birth"> 
+				<input name="pet-birth" type="date" id="pet-birth" max="9999-12-31"> 
 				<br />
 				<span>성별</span> 
 				<input type="radio" id="pet-gender1" name="pet-gender" value="M" class="radio_button"> 

@@ -61,9 +61,22 @@ $(document).ready(function() {
 		
 		// DB 데이터 화면에 배치하는 함수
 		function displayItems(currentPage) {
+			/**
+			 * start = ( 현재 페이지 - 1 ) * 페이지 당 아이템의 수
+			 * 	: 각 페이지당 시작 인덱스 번호 
+			 * 		-> 현재 페이지가 1인 경우 -> (1 - 1) * 10 = 0 
+			 * 		   현재 페이지가 5인 경우 -> (5 - 1) * 10 = 40
+			 * end = start + 페이지당 아이템 수
+			 *  : 각 페이지의 마지막 인덱스 번호
+			 * 		-> 현재 페이지가 1인 경우 -> 0 + 10 = 10
+			 * 		   현재 페이지가 5인 경우 -> 40 + 10 = 50
+			 */
 			const start = (currentPage - 1) * itemsPerPage;
 			const end = start + itemsPerPage;
+			// .slice(start, end)는 배열에서 start부터 end 이전까지의 아이템들을 추출
+			// start가 0이고 end가 10이라면 인덱스 [0] ~ [10] 을 저장
 			const sliceList = petteacherList.slice(start, end);
+			// item 객체의 정보를 테이블로 출력
 
 			let lists = '';
 			$.each(sliceList, function(index, plist) {

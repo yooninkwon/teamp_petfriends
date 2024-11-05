@@ -9,36 +9,21 @@ import com.tech.petfriends.helppetf.dto.AdoptionItemDto;
 
 import lombok.Data;
 
-// OpenData 보호 동물 조회 테스트 코드
-// 응답 데이터 mapping시킬 VO
-
 @Data
-// 방식 1 - deserialize 사용 방식
 /*
- * FcstItems에 Deserialize할 때, 어떤 Deserializer를 사용할지 명시해주어야 한다.
- * @JsonDeserializer 어노테이션을 추가하여 class를 설정
+ * 보호 동물 조회 API 응답 데이터를 담는 VO이다. JSON 데이터를 HelpPetfAdoptionItemsVo 
+ * 객체로 매핑할 때 AdoptionDeserializer를 통해 "item" 필드만을 매핑하도록 설정된다.
  */
 @JsonDeserialize(using = AdoptionDeserializer.class)
-//@AllArgsConstructor
 public class HelpPetfAdoptionItemsVo {
 	
-	@JsonProperty("item")
+	@JsonProperty("item") 
 	private List<AdoptionItemDto> adoptionItemDto;
 	
+	// 생성자의 매개변수 items는 AdoptionDeserializer에서 리턴해줄 때 전달받은 객체이다.
+	// Json을 트리 노드로 변환하여 "item" 필드만 저장한 객체를 
+	// AdoptionItemDto 타입의 List로 변환한 것이다.
 	public HelpPetfAdoptionItemsVo(List<AdoptionItemDto> items) {
 		this.adoptionItemDto = items;
 	}
-	
-	// 방식 2 - 어노테이션 사용 방식
-	/*
-	 * Deserializer를 재사용할 일이 많이 없거나, 
-	 * DTO마다 별도의 Deserializer가 필요한 경우 annotation을 사용해주는 방법도 있다.
-	 */
-//    @JsonCreator
-//    public HelpPetfAdoptionItemsVo(@JsonProperty("response")JsonNode node) throws JsonProcessingException {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//
-//        JsonNode itemNode = node.findValue("item");
-//        this.adoptionItemDto = Arrays.stream(objectMapper.treeToValue(itemNode, HelpPetfAdoptionItemDto[].class)).toList();
-//    }
 }

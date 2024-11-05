@@ -23,19 +23,23 @@ public class AdminPethotelReserveDetailService {
 	}
 
 	public String execute(Model model, HttpServletRequest request) throws JsonProcessingException {
-		
+		// 전달받은 예약번호 저장
 		String hph_reserve_no = request.getParameter("hph_reserve_no");
-		
-		ArrayList<PethotelFormDataDto> reservePets = adminDao.adminPethotelReservePets(hph_reserve_no);
+				
+		// 예약번호에 해당하는 "예약정보" 데이터 저장
 		PethotelMemDataDto reserveMem = adminDao.adminPethotelReserveMem(hph_reserve_no);
+		
+		// 예약번호에 해당하는 "펫 정보"들 데이터 저장
+		ArrayList<PethotelFormDataDto> reservePets = adminDao.adminPethotelReservePets(hph_reserve_no);
 		
 		Map<String, Object> map = new HashMap<>();
 		
+		// Map에 각각 데이터들 저장
 		map.put("reservePets", reservePets);
 		map.put("reserveMem", reserveMem);
 		
-		String jsonData =  new ObjectMapper().writeValueAsString(map);
-        return jsonData;
+		// Map을 json(String) 형식으로 변환하여 리턴
+        return new ObjectMapper().writeValueAsString(map);
 	}
 
 }
