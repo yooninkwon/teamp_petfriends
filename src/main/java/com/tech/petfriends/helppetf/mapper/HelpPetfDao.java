@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
+import com.tech.petfriends.mypage.dto.MyPetDto;
 
 @Mapper
 public interface HelpPetfDao {
@@ -33,4 +34,6 @@ public interface HelpPetfDao {
 	public void pethotelReserveErrorPet(String hph_reserve_no);
 	
 	public void pethotelReserveErrorMem(String hph_reserve_no);
+
+	public ArrayList<MyPetDto> pethotelSelectPet(String mem_code);
 }

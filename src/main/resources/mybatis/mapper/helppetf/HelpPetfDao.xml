@@ -89,4 +89,8 @@
 		DELETE FROM HELP_PETHOTEL_MEM
 		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
 	</delete>
+	<select id="pethotelSelectPet" resultType="com.tech.petfriends.mypage.dto.MyPetDto">
+		SELECT * FROM MEMBER_PET
+		WHERE MEM_CODE = #{mem_code}
+	</select>
 </mapper>

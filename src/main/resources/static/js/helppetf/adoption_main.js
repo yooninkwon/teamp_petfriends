@@ -11,7 +11,7 @@
  * 선택된 대분류 값에 맞춰 소분류(시/군/구, 동물 품종)가 동적으로 업데이트된다.
  * 
  * 검색 버튼을 눌러 필터링이 포함된 데이터를 불러온 이후에도 선택된 필터링은 유지된다.
- * 초기화 버튼을 눌러 필터링을 초기화할 수 있음.
+ * 초기화 버튼을 눌러 필터링을 초기화할 수 있다.
  */
 
 import { kindOptions } from '/static/js/helppetf/kind_data.js'; // 품종 데이터 Object import
@@ -65,16 +65,16 @@ $(document).ready(function() {
 		// end = 시작 인덱스번호 + itemsPerPage(8)
 		const end = start + itemsPerPage;
 		// .slice(start, end)는 배열에서 start부터 end 이전까지의 아이템들을 추출
-		// start가 0이고 end가 8이라면 인덱스 [0] ~ [7] 을 출력
+		// start가 0이고 end가 8이라면 인덱스 [0] ~ [7] 을 저장
 		const visibleItems = adoptionItems.slice(start, end);
 		// item 객체의 정보를 테이블로 출력
 		let cards = '';
 
 		$.each(visibleItems, function(index, item) {
+			// 받아온 정보의 YYYYMMDD를 각각 분리한다.
 			let day = item.happenDt.substr(6, 2);
 			let month = item.happenDt.substr(4, 2);
 			let year = item.happenDt.substr(0, 4);
-			console.log('day: ',day,'|| year: ',year,'|| month: ',month)
 			// 인덱스가 0~79 이므로 페이지가 넘어가도 인덱스 번호가 정상적으로 불러와지도록 현재 페이지의 시작 인덱스 번호를 더해준다
 			cards += '<div class="adoption-card"><a href="#" class="adoption-link" data-index="' + (start + index) + '">';
 			cards += '<div class="card_date"><div class="day">' + day ;
@@ -92,17 +92,6 @@ $(document).ready(function() {
 			cards += '</a></div>';
 		});
 		
-//	날짜 추가 div: 
-// 			<div class="card_date"><div class="day">1.
-//		    </div><div class="month">2.21.12</div></div>
-		
-//  	위치
-//    <div class="adoption-card"><a href="#" class="adoption-link" data-index="0">
-//    <div class="card_date"><div class="day">1.
-//    </div><div class="month">2.21.12</div></div>
-//    <img src="http://www.animal.go.kr/files/shelter/2024/10/202411031211339.jpg" alt="Pet Image"><div class="content"><h3>[개] 골든 리트리버</h3><div class="info">공고번호448567202401256</div><div class="card_list"><div class="card_title">지역</div><div class="card_desc">경상남도 창원시 의창성산구</div></div><div class="card_list"><div class="card_title">발견 장소</div><div class="card_desc">의창구 동읍 송정리 4-4</div></div><div class="card_list"><div class="card_title">성별</div><div class="card_desc">M</div></div><div class="card_list"><div class="card_title">발견 날짜</div><div class="card_desc">20241103</div></div><div class="card_list"><div class="card_title">특징</div><div class="card_desc">내장칩O (황동이), 목줄 착용, 기립불가, 보호자와 연락됨</div></div></div></a></div>
-		
-
 		$('#adoptionContainer').html(cards);
 	}
 
@@ -188,10 +177,8 @@ $(document).ready(function() {
 	});
 }
 
-	/** @ 필터링
-	 * 오브젝트 : 지역, 품종 데이터 저장
-	 * */
-
+	// 필터링
+	// 오브젝트 : 지역, 품종 데이터 저장 되어 있음
 	$('#upKind').on('change', function() { // id="upKind" 요소의 값이 변경될 때마다 호출
 
 		const selectedKindVal = $(this).val(); // selectedKindVal을 누른 요소의 value로 지정
@@ -261,7 +248,7 @@ $(document).ready(function() {
 		$('#kind').append(`<option value="any" selected>품종</option>`);
 		$('#kind').append(`<option value="any" selected>동물종류를 먼저 골라주세요</option>`);
 
-		// option 태그의 선택값을 인덱스넘버 0으로 바꾸기
+		// option 태그의 선택값을 인덱스넘버 0으로 바꿈
 		$("#upr_cd option:eq(0)").prop("selected", true);
 		$("#upKind option:eq(0)").prop("selected", true);
 		$("#org_cd option:eq(0)").prop("selected", true);

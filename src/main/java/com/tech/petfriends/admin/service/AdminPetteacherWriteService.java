@@ -19,8 +19,12 @@ public class AdminPetteacherWriteService implements AdminServiceInterface {
 
 	@Override
 	public void execute(Model model) {
+		// model을 Map으로 변환
 		Map<String, Object> map = model.asMap();
+		
+		// RequestBody로 전달받은 DTO 추출
 		PetteacherDto dto = (PetteacherDto) map.get("dto");
+		
 		String hpt_title = dto.getHpt_title();
 		String hpt_exp = dto.getHpt_exp();
 		String hpt_content = dto.getHpt_content();
@@ -29,6 +33,7 @@ public class AdminPetteacherWriteService implements AdminServiceInterface {
 		String hpt_category = dto.getHpt_category();
 		String hpt_channal = dto.getHpt_channal();
 		
+		// 데이터 첨부하여 DB호출, insert
 		adminDao.adminPetteacherWrite(hpt_channal, hpt_title, hpt_exp, hpt_content, 
 				hpt_yt_videoid, hpt_pettype, hpt_category);
 	}
