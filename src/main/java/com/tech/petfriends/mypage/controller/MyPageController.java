@@ -2,9 +2,6 @@ package com.tech.petfriends.mypage.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,18 +22,19 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tech.petfriends.admin.dto.CouponDto;
-import com.tech.petfriends.admin.dto.MemberCouponDto;
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dao.MypageDao;
 import com.tech.petfriends.mypage.dto.GradeDto;
+import com.tech.petfriends.mypage.dto.MyCartDto;
 import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 import com.tech.petfriends.mypage.dto.MyWishDto;
@@ -464,8 +462,79 @@ public class MyPageController {
 	}
 	
 	@GetMapping("/cart")
-	public String cart() {
+	public String cart(Model model, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		GradeDto userGrade = (GradeDto) session.getAttribute("userGrade");
+		
+		ArrayList<MemberAddressDto> address = mypageDao.getAddrByMemberCode(loginUser.getMem_code());
+		List<MyCartDto> cart = mypageDao.getCartByMemberCode(loginUser.getMem_code());
+		
+		model.addAttribute("loginUser", loginUser);
+		model.addAttribute("userGrade", userGrade);
+		model.addAttribute("address",address);
+		model.addAttribute("cart", cart);
+		
 		return "mypage/cart";
+	}
+	
+	@GetMapping("/deleteAllItem")
+	public String deleteAllItem(HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		
+		mypageDao.deleteAllCartItems(loginUser.getMem_code());
+		
+		return "redirect:/mypage/cart";
+	}
+	
+	@PostMapping("/updateQuantity")
+	@ResponseBody
+	public Map<String, Object> updateQuantity(@RequestBody Map<String, String> payload) {
+		
+		String newQuantity = payload.get("newQuantity");
+	    String cartCode = payload.get("cartCode");
+	    
+	    boolean updateSuccess = mypageDao.updateCartQuantity(newQuantity, cartCode);
+
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("success", updateSuccess);
+	    
+	    return response;
+	}
+	
+	@GetMapping("/orderThisItem")
+	public String orderThisItem(Model model, HttpServletRequest request, HttpSession session) {
+		
+		
+		
+		return "mypage/payment";
+	}
+	
+	@GetMapping("/deleteThisItem")
+	public String deleteThisItem(HttpServletRequest request) {
+		
+		String cartCode = request.getParameter("cartCode");
+		
+		mypageDao.deleteCartItem(cartCode);
+		
+		return "redirect:/mypage/cart";
+	}
+	
+	@GetMapping("/orderAllItem")
+	public String orderAllItem(Model model, HttpServletRequest request, HttpSession session) {
+		
+		
+		
+		return "mypage/payment";
+	}
+	
+	@GetMapping("/orderSelectedItem")
+	public String orderSelectedItem(Model model, HttpServletRequest request, HttpSession session) {
+		
+		
+		
+		return "mypage/payment";
 	}
 	
 	@GetMapping("/order")
@@ -494,6 +563,7 @@ public class MyPageController {
 		
 		return myWish;
 	}
+	
 	@GetMapping("/buyoften/data")
 	@ResponseBody
 	public List<MyOrderDto> buyoftenData(HttpServletRequest request, HttpSession session) {

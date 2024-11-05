@@ -802,6 +802,163 @@ h2 {
     justify-content: center;
 }
 
+/* 장바구니 */
+.cart-container {
+    padding: 20px;
+}
+.form-col {
+	display: flex;
+	text-align: center;
+    align-items: center;
+}
+.form-col input {
+	width: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.addressModifyBtn {
+	background-color: white;
+    border: black 2px solid;
+    padding: 0 5px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+.delete-all-item {
+	background-color: white;
+    border: 1px solid #ccc;
+    padding: 3px 7px;
+    border-radius: 4px;
+    margin-left: 10px;
+    color: black;
+    text-decoration: none;
+    font-size: 14px;
+}
+.cart-table, .cart-summary {
+    margin-bottom: 40px;
+    width: 100%;
+    border-collapse: collapse;
+}
+.cart-table th {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+    color: #848684;
+}
+.cart-table td {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+.cart-summary th {
+    border-top: 2px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
+}
+.cart-summary td {
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+.pro-name {
+    font-weight: bold;
+}
+.pro-option {
+    color: gray;
+}
+.pro-discount {
+	font-weight: bold;
+	font-size: 14px;
+    color: #ff4081;
+}
+.pro-price {
+	font-size: 14px;
+    color: gray;
+    text-decoration: line-through;
+}
+.pro-dis-price {
+	font-weight: bold;
+}
+.pro-accum {
+    color: #ff4081;
+    font-size: 12px;
+	font-weight: bold;
+}
+.quantity-btn {
+    background-color: white;
+    color: gray;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 0px 4px;
+    font-size: 16px;
+}
+.quantity-input {
+    width: 30px;
+    padding: 3px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+.item-total {
+	font-weight: bold;
+}
+.order-item {
+	display: inline-block;
+	width: 100px;
+	margin-bottom: 3px;
+    background-color: #ff4081;
+    color: #fff;
+    padding: 4px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+}
+.delete-item {
+	display: inline-block;
+	width: 100px;
+    background-color: white;
+    color: #ff4081;
+    padding: 3px;
+    border: 1px solid #ff4081;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+}
+#totalPoints{
+	color: #ff4081;
+}
+.button-container {
+	display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+.orderAllItem {
+	background-color: #ff4081;
+    color: #fff;
+    padding: 5px 35px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 5px;
+}
+.orderSelectedItem {
+	background-color: white;
+    color: #ff4081;
+    padding: 5px 35px;
+    border: 2px solid #ff4081;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
 /* 즐겨찾는 상품 */
 .sort-section {
     text-align: right;
@@ -870,6 +1027,7 @@ h2 {
     flex-direction: column;
 	align-items: center;
 	text-align: center;
+	margin-bottom: 30px;
 }
 #empty-list img{
 	width: 150px;

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.mypage.dto.MyCartDto;
 import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 import com.tech.petfriends.mypage.dto.MyWishDto;
@@ -55,9 +56,17 @@ public interface MypageDao {
 	boolean insertNewAddress(String addrCode, String memCode, String addrPostal, String addrLine1, String addrLine2);
 
 	void updateMemberInfo(MemberLoginDto loginUser);
+	
+	List<MyCartDto> getCartByMemberCode(String mem_code);
+	
+	void deleteAllCartItems(String mem_code);
+	
+	boolean updateCartQuantity(String newQuantity, String cartCode);
+	
+	void deleteCartItem(String cartCode);
 
 	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
-
+	
 	List<MyOrderDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
 	
 	void deleteWishByProCode(String mem_code, String pro_code);
