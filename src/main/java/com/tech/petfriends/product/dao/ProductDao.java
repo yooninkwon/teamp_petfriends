@@ -59,8 +59,17 @@ public interface ProductDao {
 
 	//검색아이콘 _ 검색제품 나열 쿼리
 	public List<ProductListViewDto> productSearchList(String searchPro);
+
+	//둘러본상품 목록에 있는지 확인하는 쿼리
+	public int productWindowConfirm(String pro_code, String mem_code);
+
+	//둘러본상품 목록에 추가
+	public void productWindowAdd(String pro_code, String mem_code);
+
+	//둘러본상품 불러오기
+	public List<ProductListViewDto> productWindowList(String mem_code);
 	
-	
+
 
 	
 	

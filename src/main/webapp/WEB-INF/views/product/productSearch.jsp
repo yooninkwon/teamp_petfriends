@@ -14,38 +14,39 @@
 
 </head>
 <body>
-	
+
 
 	<div class="searchPage">
 		<div class="searchProductList">
 			<div>
-			<input type="text" id="searchInput" value="어떤상품을 찾고있냐옹?" onclick="this.value='';" /> 
+				<input type="text" id="searchInput" value="어떤상품을 찾고있냐옹?"
+					onclick="this.value='';" />
 			</div>
-			<div id="product-Count"></div> 
-			<div class="searchList" id="searchList">
-				
-			</div>
-			
+			<div id="product-Count"></div>
+			<div class="searchList" id="searchList"></div>
+
 		</div>
 		<div class="top10ProductList">
-			<ol><span><span style ="color : #ff4081; font-size : 18px;">TOP10</span> 펫프렌즈 인기아이템</span>
+			<ol>
+				<span><span style="color: #ff4081; font-size: 18px;">TOP10</span>
+					펫프렌즈 인기아이템</span>
 				<c:forEach var="top10" items="${resultTen }" varStatus="status">
 					<c:if test="${status.index < 10}">
 						<li><a href="/product/productDetail?code=${top10.pro_code }">
-								${top10.pro_pets }
-								${top10.pro_type } 
-								${top10.pro_name } 
-						</a></li>
-						
+								${top10.pro_pets } ${top10.pro_type } ${top10.pro_name } </a></li>
+
 					</c:if>
 				</c:forEach>
 			</ol>
 		</div>
 	</div>
-	
-	
+
+
 </body>
-	<script>
+<script>
+	
+	const memCode = '${sessionScope.loginUser.mem_code }';
+
 	$(document).ready(function() {
 
 		 $('#searchInput').on('input', function() {
@@ -64,7 +65,8 @@
 				type: 'POST',
 				contentType: 'application/json',
 				data: JSON.stringify({
-					searchPro: searchPro
+					searchPro: searchPro,
+					memCode: memCode
 				}),
 				success: function(data) {
 					console.log("Response data:", data); // 데이터 로그 출력
@@ -165,7 +167,12 @@
 			window.location.href = `/product/productDetail?code=\${productCode}`;
 		});
 
-	
+		const searchInput = document.getElementById('searchInput');
+
+		//검색창 마우스 영역 벗어날시 포커스해제
+		searchInput.addEventListener('mouseleave', () => {
+	        searchInput.blur(); // 마우스가 영역을 벗어나면 포커스 해제
+	    });
 		
 
 	});

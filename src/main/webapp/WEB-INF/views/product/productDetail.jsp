@@ -32,6 +32,9 @@
  // 페이지 시작시 찜된 상품 데이터 전달
     const wishResult = ${whishCheck.wishListResult };
     
+    /* 둘러본 상품 저장하기 위한 데이터가져오기 */
+    const windowMemCode = '${sessionScope.loginUser.mem_code }';
+    const windowProCode = '${product.pro_code }';
 </script>
 <script src="/static/js/product/ProductDetail.js"></script>
 

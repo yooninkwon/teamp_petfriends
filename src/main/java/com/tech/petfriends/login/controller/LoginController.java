@@ -64,6 +64,8 @@ public class LoginController {
 
                 GradeDto userGrade = memberMapper.getGradeByMemberCode(member.getMem_code());
                 
+                memberMapper.deleteWindowPro(member.getMem_code()); //유저로그인시 둘러본상품목록 전체삭제
+                
                 session.setAttribute("loginUser", member); // 세션에 사용자 정보 저장
                 session.setAttribute("userGrade", userGrade);
                 
