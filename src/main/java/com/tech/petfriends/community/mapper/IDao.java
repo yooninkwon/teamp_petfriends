@@ -70,7 +70,10 @@ public interface IDao {
 	public ArrayList<CDto> myFeedList(String mem_code);
 
 	public CDto myFeedName (String mem_code);
+	
+	public void report(int board_no, String reporter_id, String reason, int comment_no, String report_type);
 
+	public void incrementViews(String board_no);
 
 
 }

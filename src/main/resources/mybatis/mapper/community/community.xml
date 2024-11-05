@@ -32,7 +32,7 @@
 		BOARD_VIEWS,BOARD_TAG, BOARD_LIKES, BOARD_COMMENT_COUNT)
 		VALUES
 		(COMMUNITY_BOARD_SEQ.NEXTVAL, #{b_cate_no},#{mem_code}, #{mem_nick}, #{board_title},
-		1234, #{board_content},SYSDATE, null, 3, 'tag1', 0, 0)
+		1234, #{board_content},SYSDATE, null, 0, 'tag1', 0, 0)
 	</insert>
 
 	<select id="selBid" resultType="_int">
@@ -228,5 +228,19 @@
 	WHERE MEM_CODE = #{mem_code}
 	</select>
 
+	<insert id="report">
+		INSERT INTO COMMUNITY_REPORT (REPORT_ID, BOARD_NO, REPORTER_ID,
+		REASON, REPORT_DATE, STATUS, COMMENT_NO, REPORT_TYPE)
+		VALUES
+		(COMMUNITY_REPORT_SEQ.NEXTVAL, #{board_no}, #{reporter_id}, 
+		#{reason}, SYSDATE, DEFAULT, #{comment_no}, #{report_type})
+	</insert>
+
+	<update id="incrementViews"  parameterType="String" >
+        UPDATE COMMUNITY_BOARD SET BOARD_VIEWS = BOARD_VIEWS + 1 
+        WHERE BOARD_NO = #{board_no}
+    </update>
+	
+	
 	
 </mapper>

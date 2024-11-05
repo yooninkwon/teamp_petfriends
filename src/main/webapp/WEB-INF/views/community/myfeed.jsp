@@ -19,8 +19,8 @@
 
 	
 <!-- 이벤트 이미지 -->
-<div class="event-image">
-    <img src="<c:url value='/static/Images/MainImg/event1.png'/>" alt="Event 1">
+<div class="feed-image">
+    <img src="<c:url value='/static/Images/communityorign_img/myfeed.jpg'/>" alt="Event 1">
 </div>
 
 <!-- 상단 프로필 영역 -->

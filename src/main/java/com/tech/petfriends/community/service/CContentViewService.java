@@ -28,7 +28,10 @@ public class CContentViewService implements CServiceInterface{
 		HttpSession session = (HttpSession) m.get("session");	
 		
 		String board_no = request.getParameter("board_no");
-
+		
+		
+		iDao.incrementViews(board_no);
+		
 		
         MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
 
