@@ -47,17 +47,18 @@ public class AdminRestController {
 
 	@Autowired
 	AdminPageDao adminDao;
-	
+
 	@Autowired
 	NoticeDao noticeDao;
-  
+
 	AdminServiceInterface adminServiceInterface;
 
 	@PostMapping("/pethotel_reserve_update")
-	public String pethotelReserveUpdate(@RequestBody Map<String, String> statusMap, HttpServletRequest request, Model model) {
+	public String pethotelReserveUpdate(@RequestBody Map<String, String> statusMap, HttpServletRequest request,
+			Model model) {
 		model.addAttribute("statusMap", statusMap);
 		model.addAttribute("request", request);
-		
+
 		adminServiceInterface = new AdminPethotelReserveUpdateService(adminDao);
 		adminServiceInterface.execute(model);
 		return "{\"status\": \"success\"}";
@@ -167,33 +168,75 @@ public class AdminRestController {
 
 		return "{\"status\": \"success\"}";
 	}
-	
+
 	@GetMapping("/notice_notice_list")
 	public ArrayList<NoticeDto> noticeNoticeList() {
-		ArrayList<NoticeDto> noticeList =  noticeDao.noticeAdminList();
+		ArrayList<NoticeDto> noticeList = noticeDao.noticeAdminList();
 		return noticeList;
 	}
-	
+
 	@GetMapping("/notice_event_list")
 	public ArrayList<EventDto> noticeEventList() {
-		ArrayList<EventDto> eventList =  noticeDao.eventAdminList();
+		ArrayList<EventDto> eventList = noticeDao.eventAdminList();
 		return eventList;
 	}
-	
+
 	// 공지사항 삭제 메서드
 	@DeleteMapping("/deleteNotice")
-    public ResponseEntity<String> deleteNotice(@RequestParam("id") Long noticeNo) {
-        try {
-            int isDeleted = noticeDao.deleteNotice(noticeNo);
-            if (isDeleted > 0) {
-                return ResponseEntity.ok("Notice deleted successfully.");
-            } else {
-                return ResponseEntity.status(404).body("Notice not found.");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("An error occurred while deleting the notice.");
+	public ResponseEntity<String> deleteNotice(@RequestParam("id") Long noticeNo) {
+		try {
+			int isDeleted = noticeDao.deleteNotice(noticeNo);
+			if (isDeleted > 0) {
+				return ResponseEntity.ok("Notice deleted successfully.");
+			} else {
+				return ResponseEntity.status(404).body("Notice not found.");
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("An error occurred while deleting the notice.");
+		}
+	}
+
+	// 이벤트 삭제 메서드
+	@DeleteMapping("/deleteEvent")
+	public ResponseEntity<String> deleteEvent(@RequestParam("id") Long eventNo) {
+		try {
+			int isDeleted = noticeDao.deleteEvent(eventNo);
+			if (isDeleted > 0) {
+				return ResponseEntity.ok("Event deleted successfully.");
+			} else {
+				return ResponseEntity.status(404).body("Event not found.");
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("An error occurred while deleting the Event.");
+		}
+	}
+	
+	@PostMapping("/setVisibilityForNotices")
+    public ResponseEntity<?> setVisibilityForNotices(@RequestBody Map<String, Object> request) {
+        List<Long> ids = (List<Long>) request.get("ids");
+        String visibility = (String) request.get("visibility");
+
+        if (ids != null && !ids.isEmpty()) {
+            boolean isVisible = "show".equals(visibility);
+            noticeDao.updateVisibilityNotice(ids, isVisible); // MyBatis 매퍼에서 공개 여부 업데이트
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("유효하지 않은 요청입니다.");
         }
     }
-    
-    
+	
+	@PostMapping("/setVisibilityForEvents")
+    public ResponseEntity<?> setVisibilityForEvents(@RequestBody Map<String, Object> request) {
+        List<Long> ids = (List<Long>) request.get("ids");
+        String visibility = (String) request.get("visibility");
+
+        if (ids != null && !ids.isEmpty()) {
+            boolean isVisible = "show".equals(visibility);
+            noticeDao.updateVisibilityEvent(ids, isVisible); // MyBatis 매퍼에서 공개 여부 업데이트
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("유효하지 않은 요청입니다.");
+        }
+    }
+
 }
