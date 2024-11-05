@@ -384,7 +384,7 @@ html, body {
 	border-radius: 8px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	width: 350px;
-	height: 400px;
+	height: 500px;
 	overflow-y: auto; /* 세로 스크롤바가 필요할 경우 생성 */
 	z-index: 1000;
 	padding: 16px;
