@@ -1,5 +1,6 @@
 package com.tech.petfriends.product.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -170,7 +171,7 @@ public class ProductController {
 	//헤더 검색기능 리스트불러오기 ajax
 	@PostMapping("/productSearchList")
 	@ResponseBody
-	public List<ProductListViewDto> productSearchList(@RequestBody Map<String, Object> searchPro, Model model) {
+	public Map<String, Object> productSearchList(@RequestBody Map<String, Object> searchPro, Model model) {
 		model.addAllAttributes(searchPro);
 		System.out.println("controll "+(model.getAttribute("searchPro")));
 		
@@ -179,8 +180,13 @@ public class ProductController {
 		
 		@SuppressWarnings("unchecked")
 		List<ProductListViewDto> searchList =  (List<ProductListViewDto>) model.getAttribute("searchList");
+		List<ProductListViewDto> windowList =  (List<ProductListViewDto>) model.getAttribute("windowList");
 		
-		return searchList;
+		Map<String, Object> response = new HashMap<>();
+	    response.put("searchList", searchList);
+	    response.put("windowList", windowList);
+		
+		return response;
 	}
 	
 	//해당 유저가 둘러본 상품 insert ajax

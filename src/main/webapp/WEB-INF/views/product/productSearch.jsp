@@ -24,8 +24,18 @@
 			</div>
 			<div id="product-Count"></div>
 			<div class="searchList" id="searchList"></div>
-
 		</div>
+
+		<div class="windowBox">
+			<div class="searchProLine"></div>
+
+			<div class="windowProductList">
+				<span id="windowMent">방금 본 아이템</span>
+				<div class="searchList" id="windowList"></div>
+			</div>
+		</div>
+		<div class="searchProLine"></div>
+
 		<div class="top10ProductList">
 			<ol>
 				<span><span style="color: #ff4081; font-size: 18px;">TOP10</span>
@@ -45,18 +55,37 @@
 </body>
 <script>
 	
-	const memCode = '${sessionScope.loginUser.mem_code }';
-
 	$(document).ready(function() {
-
+	
+	
+	const memCode = '${sessionScope.loginUser.mem_code }';
+	const searchPro = '';
+	const searchListContainer = $('#searchList');
+	const windowListContainer = $('#windowList');
+	
+	
+		if(!memCode){
+			document.querySelector('.windowBox').style.display = 'none';
+		}
+	
+		if(memCode){
+		windowList(); // AJAX 요청 실행
+		}
+		
 		 $('#searchInput').on('input', function() {
 		        const searchPro = $(this).val(); // 현재 입력값 가져오기
 
-		        if (searchPro) { // 검색어가 있을 때만 AJAX 요청 실행
+		        if (searchPro.length > 0) { // 검색어가 있을 때만 AJAX 요청 실행
 		            searchList(searchPro); // AJAX 요청 실행
+		        }else if(searchPro.length == 0){
+		        	$('#searchList').empty(); // ID가 searchList인 요소를 비움
+		        	$('#product-Count').empty(); // ID가 searchList인 요소를 비움
 		        }
+		       
 		    });
-
+		
+		
+			
 
 		// Ajax 요청
 		function searchList(searchPro) {
@@ -70,7 +99,35 @@
 				}),
 				success: function(data) {
 					console.log("Response data:", data); // 데이터 로그 출력
-					searchProductList(data);
+					searchProductList(data.searchList,searchListContainer);
+					
+				},
+				error: function(xhr, status, error) {
+					console.error('Error: ' + error);
+				}
+			});
+			
+		}
+		// Ajax 요청
+		function windowList() {
+			$.ajax({
+				url: '/product/productSearchList', // 서버 API URL
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					searchPro: searchPro,
+					memCode: memCode
+				}),
+				success: function(data) {
+					console.log("Response data:", data); // 데이터 로그 출력
+					
+					if(data.windowList && data.windowList.length === 0){
+						$('#windowList').append('<img src="/static/Images/ProductImg/WindowProImg/noWindowPro.jpg" style="width: 100%;" />'); // 이미지 추가
+						$('#windowList').append('<span id="noWindowPro">최근 본 상품이 없어요</span>'); // 이미지 추가
+						
+					}else{
+						searchProductList(data.windowList,windowListContainer);
+					}
 				},
 				error: function(xhr, status, error) {
 					console.error('Error: ' + error);
@@ -79,17 +136,17 @@
 			
 		}
 
-		function searchProductList(productList) {
-			// 상품 목록을 표시할 HTML 요소 선택 (예: <div id="product-list"></div>)
-			const productListContainer = $('#searchList');
+		function searchProductList(productList, container) {
+			const productListContainer = container;
 
 			// 기존의 내용을 지웁니다.
 			productListContainer.empty();
 
+			if(productListContainer == searchListContainer){
 			// 상품 개수 업데이트 (예: <div id="product-count"></div>)
 			const productCountContainer = $('#product-Count');
 			productCountContainer.text(`\${productList.length}개의 상품`);
-
+			}
 			// 품절 상품과 재고 있는 상품을 분리할 배열 생성
 			const availableProducts = [];
 			const soldOutProducts = [];

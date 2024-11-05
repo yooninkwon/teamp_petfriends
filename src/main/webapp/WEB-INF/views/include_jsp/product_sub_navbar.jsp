@@ -4,7 +4,7 @@
 <div id="sub_nav">
 	<nav>
 		<ul class="main-category">
-	      <li id="noticeMain"><span>PETFRIENDS</span></li>
+	      <li id="helpcenter"><span>PETFRIENDS</span></li>
 	      <li><span class="divider">|</span></li>
 	    </ul>
 		<ul class="sub_navbar">
