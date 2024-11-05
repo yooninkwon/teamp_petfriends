@@ -32,8 +32,11 @@ public interface NoticeDao {
 	// 공지사항 리스트 전부 가져오기
 	public ArrayList<NoticeDto> noticeAdminList();
 
+	// 이벤트 리스트 가져오기 표시여부 Y 만
+	public ArrayList<EventDto> eventList();
+	
 	// 이벤트 리스트 전부 가져오기
-	public ArrayList<EventDto> eventAdminList();
+	public ArrayList<EventDto> eventAdminList();	
 
 	// 공지사항 작성
 	public void noticeWrite(String show, String notice_title, String notice_content);

@@ -39,6 +39,7 @@
 		WHERE ROWNUM = 1
 	</select>
 
+	<!-- 공지사항 조회수 증가 -->
 	<update id="increaseNoticeHit" parameterType="int">
 		UPDATE NOTICE
 		SET
@@ -50,6 +51,13 @@
 	<select id="findEventById" parameterType="long"
 		resultType="com.tech.petfriends.notice.dto.EventDto">
 		SELECT * FROM EVENT WHERE EVENT_NO = #{eventId}
+	</select>
+
+	<!-- 이벤트 표시여부가 Y인 리스트 가져오기 -->
+	<select id="eventList"
+		resultType="com.tech.petfriends.notice.dto.EventDto">
+		SELECT * FROM EVENT WHERE EVENT_SHOW = 'Y' ORDER BY
+		EVENT_NO DESC
 	</select>
 
 	<!-- 공지사항 표시여부가 Y인 리스트 가져오기 -->

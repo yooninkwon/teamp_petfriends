@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tech.petfriends.notice.dao.NoticeDao;
+import com.tech.petfriends.notice.dto.EventDto;
 import com.tech.petfriends.notice.dto.NoticeDto;
 
 @Controller
@@ -56,6 +57,9 @@ public class NoticeController {
 	public String EventPage(HttpServletRequest request, Model model) {
 		model.addAttribute("main_navbar_id","notice");
 		model.addAttribute("sub_navbar_id","notice_event");
+		
+		ArrayList<EventDto> event = noticeDao.eventList();
+		model.addAttribute("event",event);
 		return "/notice/eventPage";
 	}
 	
