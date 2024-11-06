@@ -21,26 +21,21 @@ public class PethotelSelectPetService implements HelppetfServiceInter {
 	
 	@Override
 	public void execute(Model model) {	
+		// model을 Map으로 변환
 		Map<String, Object> map = model.asMap();
 		
+		// 세션을 추출
 		HttpSession session = (HttpSession) map.get("session");
 		
+		// 세션에서 로그인 정보를 추출
 		MemberLoginDto loginDto = (MemberLoginDto) session.getAttribute("loginUser");
 		
+		// 로그인 정보에서 멤버 코드를 저장
 		String mem_code = loginDto.getMem_code();
 		
+		// DB에 멤버코드를 전달하여 멤버가 저장한 반려동물 추출
 		ArrayList<MyPetDto> petDto = helpDao.pethotelSelectPet(mem_code);
-		
-//		String Pet_name = petDto.getPet_name();
-//		String Pet_type = petDto.getPet_type();
-//		Date Pet_birth = petDto.getPet_birth();
-//		String Pet_gender = petDto.getPet_gender();
-//		String Pet_weight = petDto.getPet_weight();
-//		String Pet_neut = petDto.getPet_neut();
-//		String Pet_img = petDto.getPet_img();
-		model.addAttribute("petDto", petDto);
-		
-		
-	}
 
+		model.addAttribute("petDto", petDto);
+	}
 }

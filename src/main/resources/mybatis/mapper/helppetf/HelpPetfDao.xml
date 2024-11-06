@@ -69,23 +69,23 @@
 		INSERT INTO HELP_PETHOTEL_MEM 
 		(HPH_RESERVE_NO, 
 		MEM_CODE, 
-		MEM_NICK, 
 		HPH_NUMOF_PET, 
 		HPH_START_DATE, 
 		HPH_END_DATE)
 		VALUES
 		(#{hph_reserve_no}, 
 		#{mem_code}, 
-		#{mem_nick}, 
 		#{hph_numof_pet}, 
 		TO_DATE(#{hph_start_date}, 'yyyy-MM-dd'), 
 		TO_DATE(#{hph_end_date}, 'yyyy-MM-dd'))
 	</insert>
 	<delete id="pethotelReserveErrorPet">
+	<!-- 예약 중 예외 발생시 데이터 제거: 조건문이 더 정교해야 할 듯 -->
 		DELETE FROM HELP_PETHOTEL_PETS 
 		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
 	</delete>
 	<delete id="pethotelReserveErrorMem">
+	<!-- 예약 중 예외 발생시 데이터 제거: 조건문이 더 정교해야 할 듯 -->
 		DELETE FROM HELP_PETHOTEL_MEM
 		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
 	</delete>

@@ -1,7 +1,6 @@
 package com.tech.petfriends.helppetf.service;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,10 +42,7 @@ public class AdoptionGetJson {
      * @throws Exception 예외 발생 시
      * 	빈 리스트를 가진 HelpPetfAdoptionItemsVo를 생성하고, 내부 서버 오류 상태를 반환
      */
-	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionData(Model model) throws Exception {
-
-		Map<String, Object> map = model.asMap();
-		HttpServletRequest request = (HttpServletRequest) map.get("request");
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionData(Model model, HttpServletRequest request) throws Exception {
 
 		// api 요청주소 End point
 		String baseUrl = "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
