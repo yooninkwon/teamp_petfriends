@@ -58,7 +58,7 @@ public class ProductSearchListService implements ProductService {
 			Map<CharSequence, Integer> productVector= createWordFrequencyVector(cleanedTotal);
 			
 			// 검색어 길이에 따른 가변 유사도 기준 설정
-			double similarityThreshold = 0.20 + (Math.min(cleanedSearchPro.length() * 0.02, 0.7));
+			double similarityThreshold = 0.2 + (Math.min(cleanedSearchPro.length() * 0.025, 0.7));
 
 			// 코사인 유사도 계산
 			double similarity = cosineSimilarity(searchProVector, productVector);

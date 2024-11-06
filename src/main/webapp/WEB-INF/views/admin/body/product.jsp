@@ -85,7 +85,7 @@
 			    <thead class="thead">
 			        <tr>
 			            
-			            <th>날짜</th>
+			            <th>등록날짜</th>
 			            <th>상품코드</th>
 			            <th>상품명</th>
 			            <th>상품타입</th>

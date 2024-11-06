@@ -26,11 +26,8 @@
 		AND
 			PRO_CATEGORY = #{detailType}
 		</if>
-		<if test="searchType != ''">
-		AND
-			PRO_NAME LIKE '%' || #{searchType} || '%'
-			
-		</if>
+		ORDER BY
+			PRO_DATE DESC
 	</select>
 
 	<!-- 어드민 상품등록 product insert -->	
