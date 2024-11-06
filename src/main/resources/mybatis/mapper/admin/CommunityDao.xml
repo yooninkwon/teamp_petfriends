@@ -6,7 +6,7 @@
 <mapper namespace="com.tech.petfriends.admin.mapper.AdminCommunityDao">
 
 
-<select id="communityList" resultType="ACommunityDto">
+<select id="communityList" resultType="com.tech.petfriends.admin.dto.ACommunityDto">
     SELECT * FROM community_board
     WHERE 1=1
       AND (#{startDate} IS NULL OR 작성일 &gt;= #{startDate})

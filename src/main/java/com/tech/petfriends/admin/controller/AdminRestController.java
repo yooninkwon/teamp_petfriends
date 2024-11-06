@@ -57,7 +57,8 @@ public class AdminRestController {
 	@Autowired
 	NoticeDao noticeDao;
 
-
+	@Autowired
+	AdminCommuntiyDao communtiyDao;
 
 	AdminServiceInterface adminServiceInterface;
 
@@ -206,7 +207,7 @@ public class AdminRestController {
 		model.addAttribute("board_no", communityDto.getBoard_no());
 		System.out.println("communityDto.getBoard_no() " + communityDto.getBoard_no());
 
-		adminServiceInterface = new AdminCommunityBListService(CommuntiyDao);
+		adminServiceInterface = new AdminCommunityBListService(communtiyDao);
 		adminServiceInterface.execute(model);
 
 		Map<String, String> response = new HashMap<>();
