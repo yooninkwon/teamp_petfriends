@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tech.petfriends.admin.mapper.AdminCommunityDao">
+
+
+<select id="communityList" resultType="ACommunityDto">
+    SELECT * FROM community_board
+    WHERE 1=1
+      AND (#{startDate} IS NULL OR 작성일 &gt;= #{startDate})
+      AND (#{endDate} IS NULL OR 작성일 &lt;= #{endDate})
+      AND (#{category} IS NULL OR 카테고리 = #{category})
+      AND (#{author} IS NULL OR 작성자 LIKE CONCAT('%', #{author}, '%'))
+      AND (#{keyword} IS NULL OR (제목 LIKE CONCAT('%', #{keyword}, '%') OR 내용 LIKE CONCAT('%', #{keyword}, '%')))
+    ORDER BY 작성일 DESC
+</select>
+
+
+
+</mapper>

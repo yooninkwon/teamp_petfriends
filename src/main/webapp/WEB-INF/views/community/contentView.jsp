@@ -39,12 +39,12 @@
 	        }
 	    }
 
-	    function initializeLikeButton() {
+/* 	    function initializeLikeButton() {
 	        <!--var isliked = "${isliked}"; // 서버에서 변환된 'isliked' 값-->
 	        var likeButton = document.getElementById("like-button");
 	        likeButton.innerHTML = isliked === 1 ? "❤️" : "🤍";
 	    }
-
+ */
 	    function updateLike() {
 	        var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
 
@@ -56,6 +56,7 @@
 	        var memCode = '${sessionScope.loginUser.mem_code}';
 	        var boardNo = '${contentView.board_no}';
 	        var memName = '${sessionScope.loginUser.mem_nick}';
+	      
 
 	        var xhr = new XMLHttpRequest();
 	        xhr.open("POST", "/community/updateLike", true);
@@ -73,8 +74,88 @@
 	        xhr.send(JSON.stringify({ mem_code: memCode, board_no: boardNo, mem_nick: memName }));
 	    }
 
-	    window.onload = initializeLikeButton;
-	</script>
+	/*     window.onload = initializeLikeButton; */
+	    
+	    /////신고기능
+		 // 팝업 열기 함수
+		let currentCommentNo;
+		let currentReportType;
+	    
+		function openReportPopup(commentNO,reportType) {
+		
+			var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
+	        
+	        if (isLoggedIn === "false") { // 'true' 또는 'false' 문자열로 비교
+	            alert("로그인이 필요합니다.");
+	            return;
+		  }
+		    
+		  currentCommentNo = commentNO; // 신고할 댓글 번호 저장
+		  currentReportType = reportType; // 신고 유형 저장
+		  document.getElementById("report-popup").style.display = "flex";		
+			
+	        
+		
+		
+		}
+		
+		// 팝업 닫기 함수
+		function closeReportPopup() {
+		    document.getElementById("report-popup").style.display = "none";
+		}
+		
+		// 신고 제출 함수
+		function submitReport() {
+	     
+
+			
+			const reportText = document.getElementById("report-text").value;
+		    if (reportText.trim() === "") {
+		        alert("신고 내용을 입력해주세요.");
+		        return;
+		    }
+		
+		    // 신고 내용을 서버에 전송하는 코드
+		    const boardNo = "${contentView.board_no}"; // 게시물 번호
+		    const reporterId = "${sessionScope.loginUser.mem_nick}"; // 신고자 ID (로그인된 사용자 ID)
+		
+		    console.log("Board No:", boardNo); // 디버깅을 위한 로그
+		    console.log("Reporter ID:", reporterId); // 디버깅을 위한 로그
+		    console.log("Comment NO:", currentCommentNo); // 디버깅을 위한 로그
+		    console.log("Report Type:", currentReportType); // 디버깅을 위한 로그
+		    
+		    fetch('/community/report', {
+		        method: 'POST',
+		        headers: {
+		            'Content-Type': 'application/json'
+		        },
+		        body: JSON.stringify({
+		            board_no: boardNo,
+		            reporter_id: reporterId,
+		            reason: reportText,
+		            comment_no: currentCommentNo,
+		            report_type: currentReportType
+		        })
+		    })
+		    .then(response => {
+		        if (!response.ok) {
+		            throw new Error('신고 제출 실패');
+		        }
+		        return response.json();
+		    })
+		    .then(data => {
+		        alert("신고가 제출되었습니다.");
+		        closeReportPopup(); // 팝업 닫기
+		    })
+		    .catch(error => {
+		        alert("신고 제출 중 오류가 발생했습니다: " + error.message);
+		    });
+		}
+	    
+	    
+		    
+		    		    
+	   </script>
 
 
 
@@ -84,9 +165,12 @@
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
 	<div class="container">
+		<input type="hidden" name="board_views" value="${contentView.board_views}">
 
-		
-		<h1 class="post-title">${contentView.board_title}</h1>
+		<h1 class="post-title">${contentView.board_title}</h1> 
+		<div class="view-num">
+		조회수 ${contentView.board_views}
+		</div>
 		<div class="post-header">
 			<img src="/static/Images/pet/${contentView.pet_img}" alt="프로필 이미지"
 				class="profile-image" /> <span class="user-name">${contentView.user_id}</span>
@@ -98,28 +182,31 @@
 		<div class="post-footer">
 			<!-- 왼쪽 끝에 위치할 댓글 및 좋아요 버튼 -->
 			<div class="left-buttons">
-				
-					<span id="likes-count">${contentView.board_likes}</span>
-				
-					<!-- 좋아요 버튼 -->
-					            <button id="like-button" onclick="updateLike()">
-					                <c:choose>
-					                    <c:when test="${isliked == 1}">
+
+				<span id="likes-count">${contentView.board_likes}</span>
+
+				<!-- 좋아요 버튼 -->
+				<button id="like-button" onclick="updateLike()">
+					<c:choose>
+						<c:when test="${isliked == 1}">
 					                        ❤️ <!-- 채워진 하트: 이미 좋아요를 누른 경우 -->
-					                    </c:when>
-					                    <c:otherwise>
+						</c:when>
+						<c:otherwise>
 					                        🤍 <!-- 빈 하트: 아직 좋아요를 누르지 않은 경우 -->
-					                    </c:otherwise>
-					                </c:choose>
-					            </button>
-				<span>💬	
+						</c:otherwise>
+					</c:choose>
+				</button>
+				<span>💬
 					<button onclick="toggleComments()" class="main_comment-button">댓글</button>
 					${contentView.board_comment_count}
 				</span>
+
+
 			</div>
 			<div class="edit-delete-buttons">
 				<c:if test="${sessionScope.loginUser ne null}">
-					<c:if test="${sessionScope.loginUser.mem_code eq contentView.mem_code}">
+					<c:if
+						test="${sessionScope.loginUser.mem_code eq contentView.mem_code}">
 						<!-- 오른쪽 끝에 위치할 수정 및 삭제 버튼 -->
 						<form action="/community/modifyView" method="get">
 							<input type="hidden" name="board_no"
@@ -135,29 +222,51 @@
 						</form>
 					</c:if>
 				</c:if>
+				<button onclick="openReportPopup(null, '게시판')" class="report-button">🚨
+					신고</button>
 			</div>
 		</div>
+
+		<!-- 신고 팝업 창 -->
+
+
+		<div id="report-popup" class="popup-overlay">
+
+			<div class="popup-content">
+				<h2>신고하기</h2>
+				<textarea id="report-text" placeholder="신고 사유를 입력하세요."></textarea>
+				<div class="popup-buttons">
+					<button onclick="submitReport()">제출</button>
+					<button onclick="closeReportPopup()">취소</button>
+				</div>
+			</div>
+		</div>
+
+
+
+
 		<!-- 댓글 목록 영역 -->
 
 		<div id="commentsSection" class="comment-section"
 			style="display: none;">
 			<h3>댓글 목록</h3>
-			 
+
 
 
 			<c:forEach var="comment" items="${commentList}">
 				<div class="comment"
 					style="padding-left: ${comment.comment_order_no * 20}px;">
 					<img src="/static/Images/pet/${comment.pet_img}"
-													alt="Profile Image" class="profile-image">
-					<span class="user-name">${comment.user_id}</span>: <span
+						alt="Profile Image" class="profile-image"> <span
+						class="user-name">${comment.user_id}</span>: <span
 						class="comment-content preformatted-text">${fn:escapeXml(comment.comment_content)}</span>
 					<span class="comment-time">${comment.created_date}</span>
-
+					<button onclick="openReportPopup(${comment.comment_no},'댓글')"
+						class="report-comment-button">🚨 신고</button>
 					<div class="button-group">
-						<button onclick="toggleReplyForm(${comment.comment_no})">댓글</button>
+						<button onclick="toggleReplyForm(${comment.comment_no})">답글</button>
 
-						
+
 						<form action="/community/replyDelete" method="post"
 							onsubmit="return confirm('정말 삭제하시겠습니까?')">
 							<input type="hidden" name="comment_no"
@@ -168,27 +277,37 @@
 								type="hidden" name="comment_level"
 								value="${comment.comment_level}"> <input type="hidden"
 								name="comment_order_no" value="${comment.comment_order_no}">
-							 <c:if test="${sessionScope.loginUser.mem_nick eq comment.user_id}">
+							<c:if
+								test="${sessionScope.loginUser.mem_nick eq comment.user_id}">
 								<button type="submit" class="delete-button">삭제</button>
 							</c:if>
 						</form>
-						
+
+
 					</div>
+
+
+
+
 					<!-- 대댓글 입력 폼 -->
 					<div id="replyForm-${comment.comment_no}" class="reply-section"
 						style="display: none;">
-						<form action="/community/commentReply" method="post" >
-							<input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
-							<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
-							<input type="hidden" name="board_no" value="${contentView.board_no}"> 
-								<input type="hidden" name="comment_no" value="${comment.comment_no}"> 
-								<input type="hidden" name="parent_comment_no" value="${comment.parent_comment_no}"> 
-								<input type="hidden" name="comment_level" value="${comment.comment_level}"> 
-								<input type="hidden" name="comment_order_no" value="${comment.comment_order_no}">
-							
+						<form action="/community/commentReply" method="post">
+							<input type="hidden" name="mem_code"
+								value="${sessionScope.loginUser.mem_code}"> <input
+								type="hidden" name="mem_nick"
+								value="${sessionScope.loginUser.mem_nick}"> <input
+								type="hidden" name="board_no" value="${contentView.board_no}">
+							<input type="hidden" name="comment_no"
+								value="${comment.comment_no}"> <input type="hidden"
+								name="parent_comment_no" value="${comment.parent_comment_no}">
+							<input type="hidden" name="comment_level"
+								value="${comment.comment_level}"> <input type="hidden"
+								name="comment_order_no" value="${comment.comment_order_no}">
+
 							<textarea name="comment_content" placeholder="대댓글을 입력하세요..."
 								required></textarea>
-							<button type="submit" >댓글 달기</button>
+							<button type="submit">답글 달기</button>
 						</form>
 					</div>
 
@@ -199,44 +318,51 @@
 							test="${commentReply.parent_comment_no == comment.comment_no}">
 							<div class="commentReply"
 								style="padding-left: ${(commentReply.comment_order_no) * 50}px;">
-									
-									<img src="/static/Images/pet/${commentReply.pet_img}"
-								alt="Profile Image" class="profile-image">
-								<span class="user-name">${commentReply.user_id}</span>:  <span
+
+								<img src="/static/Images/pet/${commentReply.pet_img}"
+									alt="Profile Image" class="profile-image"> <span
+									class="user-name">${commentReply.user_id}</span>: <span
 									class="commentReply-content preformatted-text">${fn:escapeXml(commentReply.comment_content)}</span>
 								<span class="commentReply-time">${commentReply.created_date}</span>
-
+								<button onclick="openReportPopup(${commentReply.comment_no})"
+									class="report-comment-button">🚨 신고</button>
 								<div class="button-group">
-									<button onclick="toggleReplyForm(${commentReply.comment_no})">댓글</button>
+									<button onclick="toggleReplyForm(${commentReply.comment_no},'댓글')">답글</button>
 
 									<!-- 대댓글 삭제 버튼: 현재 로그인한 사용자와 대댓글 작성자가 같을 경우만 보이기 -->
-									<c:if test="${sessionScope.loginUser.mem_nick == commentReply.user_id}">
-									<form action="/community/replyDelete" method="post"
-										onsubmit="return confirm('정말 삭제하시겠습니까?')">
-										<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
-										<input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
-										<input type="hidden" name="comment_no"
-											value="${commentReply.comment_no}"> <input
-											type="hidden" name="board_no" value="${contentView.board_no}">
-										<input type="hidden" name="parent_comment_no"
-											value="${commentReply.parent_comment_no}"> <input
-											type="hidden" name="comment_level"
-											value="${commentReply.comment_level}"> <input
-											type="hidden" name="comment_order_no"
-											value="${commentReply.comment_order_no}">
-										<button type="submit" class="delete-button">삭제</button>
-									</form>
-								 </c:if> 
+									<c:if
+										test="${sessionScope.loginUser.mem_nick == commentReply.user_id}">
+										<form action="/community/replyDelete" method="post"
+											onsubmit="return confirm('정말 삭제하시겠습니까?')">
+											<input type="hidden" name="mem_nick"
+												value="${sessionScope.loginUser.mem_nick}"> <input
+												type="hidden" name="mem_code"
+												value="${sessionScope.loginUser.mem_code}"> <input
+												type="hidden" name="comment_no"
+												value="${commentReply.comment_no}"> <input
+												type="hidden" name="board_no"
+												value="${contentView.board_no}"> <input
+												type="hidden" name="parent_comment_no"
+												value="${commentReply.parent_comment_no}"> <input
+												type="hidden" name="comment_level"
+												value="${commentReply.comment_level}"> <input
+												type="hidden" name="comment_order_no"
+												value="${commentReply.comment_order_no}">
+											<button type="submit" class="delete-button">삭제</button>
+										</form>
+									</c:if>
 								</div>
 								<div id="replyForm-${commentReply.comment_no}"
 									class="reply-section" style="display: none;">
 									<form action="/community/commentReply" method="post">
-									<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
-									<input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
-										<input type="hidden" name="board_no"
-											value="${contentView.board_no}"> <input type="hidden"
-											name="comment_no" value="${commentReply.comment_no}">
-										<input type="hidden" name="parent_comment_no"
+										<input type="hidden" name="mem_nick"
+											value="${sessionScope.loginUser.mem_nick}"> <input
+											type="hidden" name="mem_code"
+											value="${sessionScope.loginUser.mem_code}"> <input
+											type="hidden" name="board_no" value="${contentView.board_no}">
+										<input type="hidden" name="comment_no"
+											value="${commentReply.comment_no}"> <input
+											type="hidden" name="parent_comment_no"
 											value="${commentReply.parent_comment_no}"> <input
 											type="hidden" name="comment_level"
 											value="${commentReply.comment_level}"> <input
@@ -244,7 +370,7 @@
 											value="${commentReply.comment_order_no}">
 										<textarea name="comment_content" placeholder="대댓글을 입력하세요..."
 											required></textarea>
-										<button type="submit">댓글 달기</button>
+										<button type="submit">답글 달기</button>
 									</form>
 								</div>
 							</div>
@@ -255,25 +381,26 @@
 
 			<!-- 댓글 작성 폼 -->
 			<div class="comment-input">
-				<form action="/community/comment" method="post" >
-					
-					<input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
-					<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
-					<input type="hidden" name="board_no"
-						value="${contentView.board_no}">
-					
+				<form action="/community/comment" method="post">
+
+					<input type="hidden" name="mem_code"
+						value="${sessionScope.loginUser.mem_code}"> <input
+						type="hidden" name="mem_nick"
+						value="${sessionScope.loginUser.mem_nick}"> <input
+						type="hidden" name="board_no" value="${contentView.board_no}">
+
 					<c:if test="${sessionScope.loginUser ne null}">
-					<textarea name="comment_content" placeholder="댓글을 입력하세요..."
-						required onclick="checkLoginAndFocus(this)"></textarea>	
-					<button type="submit" >댓글 달기</button>					
+						<textarea name="comment_content" placeholder="댓글을 입력하세요..."
+							required onclick="checkLoginAndFocus(this)"></textarea>
+						<button type="submit">댓글 달기</button>
 					</c:if>
-					
-					<c:if test="${sessionScope.loginUser eq null}">				
-					<textarea name="comment_content" placeholder="로그인이 필요합니다."
-						required onclick="checkLoginAndFocus(this)"></textarea>	
-					</c:if>				
-				
-				
+
+					<c:if test="${sessionScope.loginUser eq null}">
+						<textarea name="comment_content" placeholder="로그인이 필요합니다."
+							required onclick="checkLoginAndFocus(this)"></textarea>
+					</c:if>
+
+
 				</form>
 			</div>
 		</div>

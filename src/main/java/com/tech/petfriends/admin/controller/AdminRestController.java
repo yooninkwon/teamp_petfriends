@@ -1,6 +1,7 @@
 package com.tech.petfriends.admin.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tech.petfriends.admin.dto.ACommunityDto;
+import com.tech.petfriends.admin.mapper.AdminCommuntiyDao;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
+import com.tech.petfriends.admin.service.AdminCommunityBListService;
 import com.tech.petfriends.admin.service.AdminPethotelDataService;
 import com.tech.petfriends.admin.service.AdminPethotelInfoData;
 import com.tech.petfriends.admin.service.AdminPethotelInfoEditService;
@@ -33,6 +37,8 @@ import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminPetteacherEditService;
 import com.tech.petfriends.admin.service.AdminPetteacherWriteService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
+import com.tech.petfriends.community.dto.CReportDto;
+import com.tech.petfriends.community.service.CReportService;
 import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
@@ -51,6 +57,8 @@ public class AdminRestController {
 	@Autowired
 	NoticeDao noticeDao;
 
+
+
 	AdminServiceInterface adminServiceInterface;
 
 	@PostMapping("/pethotel_reserve_update")
@@ -58,7 +66,7 @@ public class AdminRestController {
 			Model model) {
 		model.addAttribute("statusMap", statusMap);
 		model.addAttribute("request", request);
-    
+
 		adminServiceInterface = new AdminPethotelReserveUpdateService(adminDao);
 		adminServiceInterface.execute(model);
 		
@@ -190,6 +198,21 @@ public class AdminRestController {
 		}
 	}
 
+
+	@PostMapping("/community")
+	public ResponseEntity<Map<String, String>> communityList(@RequestBody ACommunityDto communityDto, Model model) {
+		System.out.println("communityList");
+
+		model.addAttribute("board_no", communityDto.getBoard_no());
+		System.out.println("communityDto.getBoard_no() " + communityDto.getBoard_no());
+
+		adminServiceInterface = new AdminCommunityBListService(CommuntiyDao);
+		adminServiceInterface.execute(model);
+
+		Map<String, String> response = new HashMap<>();
+		return ResponseEntity.ok(response);
+	}
+
 	// 이벤트 삭제 메서드
 	@DeleteMapping("/deleteEvent")
 	public ResponseEntity<String> deleteEvent(@RequestParam("id") Long eventNo) {
@@ -232,5 +255,6 @@ public class AdminRestController {
             return ResponseEntity.badRequest().body("유효하지 않은 요청입니다.");
         }
     }
+
 
 }

@@ -360,20 +360,22 @@ a:hover  {
 
 .user-name {
     font-weight: bold; /* 이름을 굵게 표시 */
-	margin-right: 100px;
+	
+}
+
+
+.profile-info {
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    justify-content: space-between; /* 요소 간 간격 */
+
 }
 
 .post-time {
     margin-left: 10px; /* 이름과 시간 간격 조정 */
     font-size: 0.9em; /* 시간 크기 조정 */
     color: #777; /* 시간 색상 조정 */
-}
-
-.profile-info {
-    display: flex;
-     align-items: center; /* 수직 정렬 */
-    justify-content: space-between; /* 요소 간 간격 */
-    align-items: center; /* 프로필 이미지와 이름을 수평으로 정렬 */
+	
 }
 
 .post-image {
