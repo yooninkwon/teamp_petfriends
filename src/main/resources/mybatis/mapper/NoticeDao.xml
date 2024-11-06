@@ -5,6 +5,18 @@
 
 <mapper namespace="com.tech.petfriends.notice.dao.NoticeDao">
 
+	<!-- 최신공지사항 하나 가져오기 -->
+	<select id="newNotice" resultType="com.tech.petfriends.notice.dto.NoticeDto">
+		SELECT *
+		FROM (
+		SELECT *
+		FROM NOTICE
+		WHERE NOTICE_SHOW = 'Y'
+		ORDER BY NOTICE_NO DESC
+		)
+		WHERE ROWNUM = 1
+	</select>
+
 	<!-- 공지사항 번호로 데이터 가져오기 -->
 	<select id="findNoticeById" parameterType="long"
 		resultType="com.tech.petfriends.notice.dto.NoticeDto">
@@ -39,6 +51,7 @@
 		WHERE ROWNUM = 1
 	</select>
 
+	<!-- 공지사항 조회수 증가 -->
 	<update id="increaseNoticeHit" parameterType="int">
 		UPDATE NOTICE
 		SET
@@ -46,11 +59,37 @@
 		WHERE notice_no = #{noticeNo}
 	</update>
 
+	<!-- 이벤트 조회수 증가 -->
+	<update id="increaseEventHit" parameterType="int">
+		UPDATE EVENT
+		SET
+		event_hit = event_hit + 1
+		WHERE event_no = #{eventId}
+	</update>
+
 	<!-- 이벤트 번호로 데이터 가져오기 -->
 	<select id="findEventById" parameterType="long"
 		resultType="com.tech.petfriends.notice.dto.EventDto">
 		SELECT * FROM EVENT WHERE EVENT_NO = #{eventId}
 	</select>
+
+	<!--진행중 이벤트 표시여부가 Y인 리스트 가져오기 -->
+	<select id="eventList"
+		resultType="com.tech.petfriends.notice.dto.EventDto">
+		SELECT * FROM EVENT WHERE EVENT_SHOW = 'Y' AND
+		EVENT_ENDDATE >= SYSDATE ORDER BY
+		EVENT_NO DESC
+	</select>
+
+	<!--종료된 이벤트 표시여부가 Y인 리스트 가져오기 -->
+	<select id="endEventList"
+		resultType="com.tech.petfriends.notice.dto.EventDto">
+		SELECT * FROM EVENT WHERE EVENT_SHOW = 'Y' AND
+		EVENT_ENDDATE &lt; SYSDATE ORDER BY
+		EVENT_NO DESC
+	</select>
+
+
 
 	<!-- 공지사항 표시여부가 Y인 리스트 가져오기 -->
 	<select id="noticeList"
