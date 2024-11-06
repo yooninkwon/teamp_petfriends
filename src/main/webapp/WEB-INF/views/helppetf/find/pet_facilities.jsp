@@ -8,6 +8,8 @@
 <title>주변 반려동물 동반시설 찾기</title>
 <link rel="stylesheet" href="/static/css/helppetf/helppetf_find.css" />
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey }&libraries=services"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
@@ -32,12 +34,13 @@
 		</div>
 		<button class="search_btn">다른 주소로 찾아보기</button>
 		<div class="change_adress_wrap">
-			<div class="title">주소</div>
+			<div class="title">주소 검색</div>
 			<div class="search_wrap">
+				<!-- 우편번호 찾기 API -->
 				<div class="search_input"></div>
 				<ul class="search_list"></ul>
 			</div>
-			<button class="change_search_btn">검색</button>
+<!-- 			<button class="change_search_btn">검색</button> -->
 		</div>
 	</div>
 	</div>
@@ -53,8 +56,8 @@
 		</div>
 	</div>
 
-	<script type="text/javascript"
-		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey }&libraries=services"></script>
+
+<!-- 카카오 맵 API -->
 	<script>
 		// 마커를 담을 배열입니다
 		var markers = [];
@@ -188,7 +191,6 @@
 		}
 
 		// 검색결과 항목을 Element로 반환하는 함수입니다
-		// TODO : 검색결과 항목에 링크 걸기
 		function getListItem(index, places) {
 			var el = document.createElement('li'), itemStr = '<span class="markerbg marker_'
 					+ (index + 1)
@@ -296,6 +298,114 @@
 		});
 		// 주소검색을 넣기
 	</script>
+<!-- 카카오 맵 API 종료 -->
+	
+<!-- 다음 우편번호 찾기 API -->
+	<script>
+		// 우편번호 API의 테마 지정
+		var themeObj = {
+		   //bgColor: "#E3E3E3", //바탕 배경색
+		   searchBgColor: "#FF4081" //검색창 배경색
+		   //contentBgColor: "#F4EDED", //본문 배경색(검색결과,결과없음,첫화면,검색서제스트)
+		   //pageBgColor: "#EBE2E2", //페이지 배경색
+		   //textColor: "", //기본 글자색
+		   //queryTextColor: "#FFFFFF" //검색창 글자색
+		   //postcodeTextColor: "", //우편번호 글자색
+		   //emphTextColor: "", //강조 글자색
+		   //outlineColor: "", //테두리
+		};
+		
+		// 우편번호 찾기 화면을 넣을 element
+	    var element_layer = document.getElementsByClassName('search_wrap')[0];
+		
+	    function closeDaumPostcode() {
+	        // iframe을 넣은 element를 안보이게 한다.
+	        element_layer.style.display = 'none';
+	    }
+		$('.search_btn').on('click', function(){
+			sample2_execDaumPostcode();
+		});
+	    function sample2_execDaumPostcode() {
+	        new daum.Postcode({
+				theme: themeObj,
+	            oncomplete: function(data) {
+	                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+	                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+	                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	                var addr = ''; // 주소 변수
+	                var extraAddr = ''; // 참고항목 변수
+
+	                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+	                    addr = data.roadAddress;
+	                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	                    addr = data.jibunAddress;
+	                }
+
+	                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+	                if(data.userSelectedType === 'R'){
+	                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                        extraAddr += data.bname;
+	                    }
+	                    // 건물명이 있고, 공동주택일 경우 추가한다.
+	                    if(data.buildingName !== '' && data.apartment === 'Y'){
+	                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                    }
+	                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	                    if(extraAddr !== ''){
+	                        extraAddr = ' (' + extraAddr + ')';
+	                    }
+	                    // 조합된 참고항목을 해당 필드에 넣는다.
+	                    document.getElementById("sample2_extraAddress").value = extraAddr;
+	                
+	                } else {
+	                    document.getElementById("sample2_extraAddress").value = '';
+	                }
+
+	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	                document.getElementById('sample2_postcode').value = data.zonecode;
+	                document.getElementById("sample2_address").value = addr;
+	                // 커서를 상세주소 필드로 이동한다.
+	                document.getElementById("sample2_detailAddress").focus();
+
+	                // iframe을 넣은 element를 안보이게 한다.
+	                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+	                element_layer.style.display = 'none';
+	            },
+	            width : '100%',
+	            height : '100%',
+	            maxSuggestItems : 5
+	        }).embed(element_layer);
+
+	        // iframe을 넣은 element를 보이게 한다.
+	        element_layer.style.display = 'block';
+
+	        // iframe을 넣은 element의 위치를 화면의 가운데로 이동시킨다.
+	        initLayerPosition();
+	    }
+
+	    // 브라우저의 크기 변경에 따라 레이어를 가운데로 이동시키고자 하실때에는
+	    // resize이벤트나, orientationchange이벤트를 이용하여 값이 변경될때마다 아래 함수를 실행 시켜 주시거나,
+	    // 직접 element_layer의 top,left값을 수정해 주시면 됩니다.
+	    function initLayerPosition(){
+	        var width = 300; //우편번호서비스가 들어갈 element의 width
+	        var height = 432; //우편번호서비스가 들어갈 element의 height
+	        var borderWidth = 5; //샘플에서 사용하는 border의 두께
+
+	        // 위에서 선언한 값들을 실제 element에 넣는다.
+	        element_layer.style.width = width + 'px';
+	        element_layer.style.height = height + 'px';
+//	        element_layer.style.border = borderWidth + 'px solid';
+	        // 실행되는 순간의 화면 너비와 높이 값을 가져와서 중앙에 뜰 수 있도록 위치를 계산한다.
+	        element_layer.style.left = (((window.innerWidth || document.documentElement.clientWidth) - width)/2 /* - borderWidth*/) + 'px';
+	        element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 /*- borderWidth*/) + 'px';
+	    }
+	</script>
+<!-- 다음 우편번호 찾기 API 종료 -->
+	
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </body>
 </html>
