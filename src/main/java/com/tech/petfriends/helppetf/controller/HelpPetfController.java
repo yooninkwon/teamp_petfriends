@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.AdoptionViewService;
-import com.tech.petfriends.helppetf.service.FindAddrTMapService;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
 import com.tech.petfriends.helppetf.service.PethotelMainService;
 import com.tech.petfriends.helppetf.service.PetteacherDetailService;
@@ -85,22 +84,18 @@ public class HelpPetfController {
 
 	@GetMapping("/find/pet_hospital") // 주변 동물병원 찾기 페이지
 	public String find_hospital(Model model, HttpSession session) {
+		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "pet_hospital");
 		model.addAttribute("apiKey", apikeyConfig.getKakaoApikey());
-		model.addAttribute("session", session);
-		helpServiceInterface = new FindAddrTMapService(helpDao);
-		helpServiceInterface.execute(model);
-		
+
 		return "/helppetf/find/pet_hospital";
 	}
 
 	@GetMapping("/find/pet_facilities") // 주변 반려동물 시설 찾기 페이지
 	public String pet_facilities(Model model, HttpSession session) {
+		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "pet_facilities");
 		model.addAttribute("apiKey", apikeyConfig.getKakaoApikey());
-		model.addAttribute("session", session);
-		helpServiceInterface = new FindAddrTMapService(helpDao);
-		helpServiceInterface.execute(model);
 		
 		return "/helppetf/find/pet_facilities";
 	}
