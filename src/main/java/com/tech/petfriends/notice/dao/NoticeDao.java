@@ -11,10 +11,13 @@ import com.tech.petfriends.notice.dto.NoticeDto;
 
 @Mapper
 public interface NoticeDao {
+	// 최신 공지사항 하나 가져오기
+	public NoticeDto newNotice();
+	
 	// 공지사항 글 번호로 내용 가져오기
 	public NoticeDto findNoticeById(long noticeId);
 
-	// 공지사항 글 번호로 내용 가져오기
+	// 이벤트 글 번호로 내용 가져오기
 	public EventDto findEventById(long eventId);
 
 	// 공지사항 이전 글 가져오기
@@ -26,14 +29,20 @@ public interface NoticeDao {
 	// 공지사항 조회수 증가
 	public void increaseNoticeHit(int noticeId);
 	
+	// 이벤트 조히수 증가
+	public void increaseEventHit(int eventId);
+	
 	// 공지사항 리스트 가져오기 표시여부 Y 만
 	public ArrayList<NoticeDto> noticeList();
 
 	// 공지사항 리스트 전부 가져오기
 	public ArrayList<NoticeDto> noticeAdminList();
 
-	// 이벤트 리스트 가져오기 표시여부 Y 만
+	// 진행주인 이벤트 리스트 가져오기 표시여부 Y 만
 	public ArrayList<EventDto> eventList();
+	
+	// 종료된 이벤트 리스트 가져오기 표시여부 Y 만
+	public ArrayList<EventDto> endEventList();
 	
 	// 이벤트 리스트 전부 가져오기
 	public ArrayList<EventDto> eventAdminList();	

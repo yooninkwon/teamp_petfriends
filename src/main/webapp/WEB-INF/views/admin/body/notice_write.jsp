@@ -33,7 +33,7 @@
 		        <input type="date" name="endDate" value="" />
         	</div>
 	        <div id="event-file">
-	        	<label for="">메인이미지 <span style="font-size: 14px;">(820 * 320)</span></label>
+	        	<label for="">메인이미지 <span style="font-size: 14px;">(850 * 350)</span></label>
 		        <input type="file" name="thumbnail" />
 		        <label for="">슬라이드 이미지 <span style="font-size: 14px;">(700 * 400)</span></label>
 		        <input type="file" name="slideImg"/>

@@ -98,7 +98,7 @@ $(document).ready(function() {
                 <tr>
                     <td><input type="checkbox" name="checkboxNotice" class="notice-checkbox" value="${item.notice_no}" /></td>
                     <td>${item.notice_no}</td>
-                    <td><a href="/notice/noticeView">${item.notice_title}</a></td>
+                    <td><a href="/notice/noticeView?id=${item.notice_no}">${item.notice_title}</a></td>
                     <td>${item.notice_date}</td>
                     <td>${item.notice_hit}</td>
                     <td>${item.notice_show}</td>
@@ -293,7 +293,7 @@ $(document).ready(function() {
                   <tr>
                       <td><input type="checkbox" class="event-checkbox" name="checkboxEvent" value="${item.event_no}" /></td>
                       <td>${item.event_no}</td>
-                      <td><a href="/event/eventView">${item.event_title}</a></td>
+                      <td><a href="/notice/eventView?id=${item.event_no}">${item.event_title}</a></td>
                       <td>${item.event_startdate}</td>
                       <td>${item.event_enddate}</td>
                       <td>${item.event_legdate}</td>
