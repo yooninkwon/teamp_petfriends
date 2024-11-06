@@ -2,6 +2,7 @@ package com.tech.petfriends.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,7 @@ import com.tech.petfriends.admin.dto.ProductListDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
+import com.tech.petfriends.admin.service.AdminEventEditService;
 import com.tech.petfriends.admin.service.AdminNoticeEditService;
 import com.tech.petfriends.admin.service.AdminNoticeWriteService;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
@@ -316,6 +318,27 @@ public class AdminPageController {
 	    return "admin/notice_edit";
 	}
 	
+	@GetMapping("/event_edit")
+	public String Event_edit(@RequestParam("id") Long eventId, Model model) {
+	    // 공지사항 데이터를 ID로 조회
+	    EventDto eventDto = noticeDao.findEventById(eventId);
+	    
+	    // 날짜 형식 지정
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    
+	    // 시작일과 종료일을 포맷팅하여 문자열로 변환
+	    String formattedStartDate = dateFormat.format(eventDto.getEvent_startdate());
+	    String formattedEndDate = dateFormat.format(eventDto.getEvent_enddate());
+
+	    // 변환된 날짜 문자열을 모델에 추가
+	    model.addAttribute("event", eventDto);
+	    model.addAttribute("formattedStartDate", formattedStartDate);
+	    model.addAttribute("formattedEndDate", formattedEndDate);
+
+	    // 수정 화면으로 이동
+	    return "admin/event_edit";
+	}
+	
 	@PostMapping("/notice_edit_service")
 	public String Notice_edit_service(HttpServletRequest request, 
 	                                   Model model) {
@@ -323,6 +346,23 @@ public class AdminPageController {
 
 	    AdminNoticeEditService adminNoticeEditService = new AdminNoticeEditService(noticeDao);
 	    adminNoticeEditService.execute(model);
+
+	    return "redirect:/admin/notice";
+	}
+	
+	@PostMapping("/event_edit_service")
+	public String EventEditService(
+		HttpServletRequest request,
+	    @RequestParam("thumbnail") MultipartFile thumbnail,
+	    @RequestParam("slideImg") MultipartFile slideImg,
+	    Model model) {
+	    
+		model.addAttribute("request",request);
+		model.addAttribute("thumbnail",thumbnail);
+		model.addAttribute("slideImg",slideImg);
+		
+		AdminEventEditService adminEventEditService = new AdminEventEditService(noticeDao);
+		adminEventEditService.execute(model);
 
 	    return "redirect:/admin/notice";
 	}

@@ -69,7 +69,7 @@
 		</div>
 	</div>
 
-	<div id="reserveDetailModal" style="display: none;">
+	<div id="reserveDetailDiv" style="display: none;">
 		<div id="reserveDetailButtons" class="title">
 			<button id="goBack" class="btn-style">목록으로</button>
 			<label><input type="radio" name="reserve_status_set" value="신청중" /> 신청중</label>

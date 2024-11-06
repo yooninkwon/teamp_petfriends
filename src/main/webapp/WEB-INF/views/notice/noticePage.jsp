@@ -25,20 +25,15 @@
 		</div>
 		<div id="tableDiv">
 			<table id="board">
-				<tr>
-					<th>번호</th>
-					<th>제목</th>
-					<th>날짜</th>
-					<th>조회수</th>
-				</tr>
-				<c:forEach var="notice" items="${noticeList}">
+				<thead>
 					<tr>
-						<td>${notice.notice_no }</td>
-						<td id="title"><a href="/notice/noticeView">${notice.notice_title }</a></td>
-						<td>${notice.notice_date }</td>
-						<td>${notice.notice_hit }</td>
+						<th style="width: 5%;">번호</th>
+						<th style="width: 60%;">제목</th>
+						<th style="width: 25%;">날짜</th>
+						<th style="width: 10%;">조회수</th>
 					</tr>
-				</c:forEach>
+				</thead>
+				
 			</table>
 		</div>
 		<div id="bottom">
@@ -60,5 +55,6 @@
 	</div>
 
 <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
+<script src="/static/js/notice/noticePage.js"></script>
 </body>
 </html>

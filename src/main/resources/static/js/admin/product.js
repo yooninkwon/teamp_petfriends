@@ -2,6 +2,14 @@ $(document).ready(function() {
 
 	$("#pro-detail-type label").hide();
 	loadProductList();
+	
+	//엔터키 누를시 검색버튼 실행
+	document.addEventListener("keydown", function(event) {
+	    if (event.key === "Enter") {
+	        document.getElementById("searchBtn").click();
+	    }
+	});
+	
 	// 라디오 버튼이 변경될 때마다 실행
 	$('#pet-type input[type="radio"], #pro-type input[type="radio"]').change(function() {
 

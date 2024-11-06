@@ -99,14 +99,17 @@
 		INFO_LINE16 = #{info_line16}
 	</update>
 	<select id="adminPethotelReserveData" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
-		SELECT * FROM HELP_PETHOTEL_MEM 
+		SELECT HPHM.*, MEM.MEM_NICK 
+		FROM HELP_PETHOTEL_MEM HPHM, 
+			 MEMBER MEM 
 		<where>
+			HPHM.MEM_CODE = MEM.MEM_CODE
 			<!-- 예약상태 필터 -->
 			<choose>
-				<when test="reserveType == '전체'">HPH_STATUS IS NOT NULL</when>
-				<when test="reserveType == '신청중'">HPH_STATUS = '신청중'</when>
-				<when test="reserveType == '승인'">HPH_STATUS = '승인'</when>
-				<when test="reserveType == '거절'">HPH_STATUS = '거절'</when>
+				<when test="reserveType == '전체'">AND HPH_STATUS IS NOT NULL</when>
+				<when test="reserveType == '신청중'">AND HPH_STATUS = '신청중'</when>
+				<when test="reserveType == '승인'">AND HPH_STATUS = '승인'</when>
+				<when test="reserveType == '거절'">AND HPH_STATUS = '거절'</when>
 			</choose>
 			
 			<!-- 기간 필터 -->
@@ -139,8 +142,11 @@
 	</select>
 	
 	<select id="adminPethotelReserveMem" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
-		SELECT * FROM HELP_PETHOTEL_MEM
-		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
+		SELECT HPHM.*, MEM.MEM_NICK 
+		FROM HELP_PETHOTEL_MEM HPHM, 
+			 MEMBER MEM
+		WHERE HPHM.HPH_RESERVE_NO = #{hph_reserve_no}
+		AND   HPHM.MEM_CODE = MEM.MEM_CODE
 	</select>
 	
 	<update id="adminPethotelReserveUpdate">

@@ -21,11 +21,16 @@ public class AdminPetteacherDetailService implements AdminServiceInterface {
 
 	@Override
 	public void execute(Model model) {
+		// model을 Map으로 변환
 		Map<String, Object> map = model.asMap();
+		// request 추출
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		String hpt_seq = request.getParameter("hpt_seq");
 		
+		// 파라미터 데이터 첨부해서 DB 호출, 데이터 불러옴
 		PetteacherDto dto = adminDao.adminPetteacherDetail(hpt_seq);
+		
+		// model에 전달
 		model.addAttribute("dto", dto);
 	}
 }

@@ -67,4 +67,11 @@
 		WHERE M.MEM_CODE=#{param1}
 	</select>
 
+	<!-- 로그인시 해당 유저가 기존에 둘러본 상품목록 삭제 -->
+	<delete id="deleteWindowPro">
+		DELETE FROM
+			PRODUCT_WINDOW
+		WHERE
+			MEM_CODE = #{mem_code}
+	</delete>
 </mapper>

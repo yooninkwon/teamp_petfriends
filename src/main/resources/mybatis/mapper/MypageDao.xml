@@ -144,6 +144,41 @@
 		WHERE MEM_CODE = #{mem_code}
 	</update>
 	
+	<select id="getCartByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyCartDto">
+		SELECT PI.MAIN_IMG1,
+		       P.PRO_NAME,
+		       PO.PROOPT_NAME,
+		       PO.PROOPT_PRICE,
+		       P.PRO_DISCOUNT,
+		       PO.PROOPT_FINALPRICE,
+		       MC.CART_CNT,
+		       PO.PROOPT_STOCK,
+		       MC.CART_CODE
+		FROM PRODUCT_CART MC
+		LEFT JOIN PRODUCT_IMAGE PI ON MC.PRO_CODE = PI.PRO_CODE
+		LEFT JOIN PRODUCT P ON MC.PRO_CODE = P.PRO_CODE
+		LEFT JOIN PRODUCT_OPTION PO ON MC.PROOPT_CODE = PO.PROOPT_CODE
+		WHERE MC.MEM_CODE = #{mem_code} AND P.PRO_ONOFF = '판매'
+		GROUP BY MC.CART_REGDATE, PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_PRICE, P.PRO_DISCOUNT, PO.PROOPT_FINALPRICE, MC.CART_CNT, PO.PROOPT_STOCK, MC.CART_CODE
+		ORDER BY MC.CART_REGDATE
+	</select>
+	
+	<delete id="deleteAllCartItems">
+		DELETE FROM PRODUCT_CART
+		WHERE MEM_CODE = #{mem_code}
+	</delete>
+	
+	<update id="updateCartQuantity">
+    	UPDATE PRODUCT_CART
+		SET CART_CNT = #{newQuantity}
+		WHERE CART_CODE = #{cartCode}
+	</update>
+	
+	<delete id="deleteCartItem">
+		DELETE FROM PRODUCT_CART
+		WHERE CART_CODE = #{cartCode}
+	</delete>
+	
 	<select id="getAllWishInfoByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyWishDto">
 		SELECT P.PRO_CODE,
 			   P.PRO_NAME,
