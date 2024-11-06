@@ -32,7 +32,9 @@ public class LoginController {
     private MemberService memberService;
    
     @GetMapping("/loginPage")
-    public String LoginPage(HttpServletRequest request) {
+    public String LoginPage(HttpServletRequest request, Model model) {
+    	String previousUrl = request.getHeader("Referer");
+    	model.addAttribute("previousUrl",previousUrl);
         System.out.println("로그인 페이지 이동: " + request.getRequestURI());
         return "login/loginPage";
     }
@@ -43,7 +45,8 @@ public class LoginController {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String remember = request.getParameter("remember");
-
+        String previousUrl = request.getParameter("previousUrl");
+        
         System.out.println("email : " + email);
         System.out.println("password : " + password);
 
@@ -86,7 +89,7 @@ public class LoginController {
                     System.out.println("쿠키 삭제됨 / 삭제된 이메일 : " + email);
                 }
 
-                return "redirect:/";  // 로그인 성공 시 메인 페이지로 이동
+                return "redirect:"+previousUrl;  // 로그인 성공 시 메인 페이지로 이동
             } else {
                 System.out.println("비밀번호가 일치하지 않습니다.");
                 model.addAttribute("error", "이메일 또는 비밀번호가 잘못되었습니다.");

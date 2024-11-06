@@ -40,6 +40,9 @@
 			
 			    <input type="checkbox" id="remember" name="remember" ${cookie.email != null ? 'checked' : ''}> Remember Me
 			    
+			    <!-- 이전에 있던 주소 -->
+			    <input type="hidden" name="previousUrl" value="${previousUrl }" />
+			    
 			    <a href="findId">Forgot Password</a>
 			    <input type="submit" id="signin" value="Sign In"> <br>
 			</form>
