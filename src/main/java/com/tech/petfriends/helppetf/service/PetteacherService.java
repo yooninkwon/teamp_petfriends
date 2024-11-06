@@ -22,11 +22,16 @@ public class PetteacherService implements HelppetfServiceInter {
 
 	@Override
 	public void execute(Model model) {
+		// model을 Map으로 변환
 		Map<String, Object> map = model.asMap();
+		
+		// request 추출
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		
 		String petType = request.getParameter("petType");
 		String category = request.getParameter("category");
-
+		
+		// 파라미터를 첨부하여 DB호출, 데이터 리턴받음
 		ArrayList<PetteacherDto> ylist = helpPetfDao.petteacherList(petType, category);
 
 		model.addAttribute("ylist", ylist);

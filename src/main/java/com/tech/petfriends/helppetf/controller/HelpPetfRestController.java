@@ -43,55 +43,42 @@ public class HelpPetfRestController {
 
 	HelppetfServiceInter helpServiceInterface;
 
+	@SuppressWarnings("unchecked")
 	@GetMapping("/pethotel/pethotel_select_pet")
 	public ArrayList<MyPetDto> pethotelSelectPet(Model model, HttpSession session) {
 		model.addAttribute("session", session);
 		helpServiceInterface = new PethotelSelectPetService(helpDao);
 		helpServiceInterface.execute(model);
-
-		@SuppressWarnings("unchecked")
-		ArrayList<MyPetDto> petDto = (ArrayList<MyPetDto>) model.getAttribute("petDto");
-
-		return petDto;
+		return (ArrayList<MyPetDto>) model.getAttribute("petDto");
 	}
 
 	@PostMapping("/pothotel/pethotel_reserve_data")
 	public String pethotelReserveData(@RequestBody ArrayList<PethotelFormDataDto> formList, HttpServletRequest request,
 			Model model, HttpSession session) throws Exception {
-
 		PethotelReserveService helpService = new PethotelReserveService(helpDao);
-
-		return helpService.execute(model, session, request, formList);
+		return helpService.execute(model, session, request, formList); // execute 메서드를 실행하여 반환된 Json 데이터 반환
 	}
 
 	@GetMapping("/adoption/getJson")
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson(HttpServletRequest request, Model model)
 			throws Exception {
-		model.addAttribute("request", request);
-		return adoptionGetJson.fetchAdoptionData(model);
+		return adoptionGetJson.fetchAdoptionData(model, request);
 	}
 
 	@PostMapping("/adoption/adoption_data")
-	public String adoptionData(@RequestBody AdoptionSelectedAnimalDto adoptionSelectedDto, HttpServletRequest request) {
-		// adoption_main에서 호출한 함수로 인해 작동
-		// JSON 데이터를 AdoptionSelectedAnimalDto 객체로 받아옴
-		// @RequestBody 어노테이션을 사용하면 JSON 데이터를 자동으로 클래스 객체로 변환해준다.
-		HttpSession session = request.getSession();
-		session.setAttribute("selectedAnimal", adoptionSelectedDto); // session에 AdoptionSelectedAnimalDto 등록
-		// redirect는 jsp의 스크립트에서 하기 때문에 반복하지 않음
+	public String adoptionData(@RequestBody AdoptionSelectedAnimalDto selectedAnimalDto, HttpServletRequest request, HttpSession session) {
+		// JSON 데이터를 AdoptionSelectedAnimalDto 객체로 받아옴		
+		session.setAttribute("selectedAnimal", selectedAnimalDto); // session에 AdoptionSelectedAnimalDto 등록
 		return "{\"status\": \"success\"}"; // 성공 메세지를 반환
 	}
 
+	@SuppressWarnings("unchecked")
 	@GetMapping("/petteacher/petteacher_data")
 	public ArrayList<PetteacherDto> petteacherData(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		helpServiceInterface = new PetteacherService(helpDao);
 		helpServiceInterface.execute(model);
-
-		@SuppressWarnings("unchecked")
-		ArrayList<PetteacherDto> ylist = (ArrayList<PetteacherDto>) model.getAttribute("ylist");
-
-		return ylist;
+		return (ArrayList<PetteacherDto>) model.getAttribute("ylist");
 	}
 
 }

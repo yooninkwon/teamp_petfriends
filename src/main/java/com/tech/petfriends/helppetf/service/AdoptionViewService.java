@@ -17,13 +17,16 @@ public class AdoptionViewService implements HelppetfServiceInter {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "adoption");
 		
-		// 세션에서 데이터 가져옴 (리다이렉트 되기 때문에 실행함)
+		// 모델에서 request를 추출
 		HttpServletRequest request = (HttpServletRequest) model.getAttribute("request");
+		
+		// request에서 세션을 얻음
 	    HttpSession session = request.getSession();
-	    // 가져온 데이터를 AdoptionSelectedAnimalDto 타입의 selectedAnimal로 등록
+	    
+	    // 세션에서 추출한 데이터를 DTO로 저장
 	    AdoptionSelectedAnimalDto selectedAnimal = (AdoptionSelectedAnimalDto) session.getAttribute("selectedAnimal");
 	    
-	    // null이 아니라면
+	    // 저장시킨 DTO가 null이 아니라면
 	    if (selectedAnimal != null) {
 	        // 모델에 데이터 추가하여 JSP로 전달
 	        model.addAttribute("selectedAnimal", selectedAnimal);

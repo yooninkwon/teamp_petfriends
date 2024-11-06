@@ -80,10 +80,12 @@
 		TO_DATE(#{hph_end_date}, 'yyyy-MM-dd'))
 	</insert>
 	<delete id="pethotelReserveErrorPet">
+	<!-- 예약 중 예외 발생시 데이터 제거: 조건문이 더 정교해야 할 듯 -->
 		DELETE FROM HELP_PETHOTEL_PETS 
 		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
 	</delete>
 	<delete id="pethotelReserveErrorMem">
+	<!-- 예약 중 예외 발생시 데이터 제거: 조건문이 더 정교해야 할 듯 -->
 		DELETE FROM HELP_PETHOTEL_MEM
 		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
 	</delete>

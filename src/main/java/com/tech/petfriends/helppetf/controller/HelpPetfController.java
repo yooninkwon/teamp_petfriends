@@ -14,8 +14,7 @@ import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.AdoptionViewService;
 import com.tech.petfriends.helppetf.service.FindAddrTMapService;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
-import com.tech.petfriends.helppetf.service.PethotelInfoService;
-import com.tech.petfriends.helppetf.service.PethotelIntroService;
+import com.tech.petfriends.helppetf.service.PethotelMainService;
 import com.tech.petfriends.helppetf.service.PetteacherDetailService;
 
 
@@ -31,35 +30,37 @@ public class HelpPetfController {
 	
 	HelppetfServiceInter helpServiceInterface;
 
-	@GetMapping("/pethotel/pethotel_info") // 펫호텔 이용안내
-	public String pethotelInfo(Model model) {
-		helpServiceInterface = new PethotelInfoService(helpDao);
-		helpServiceInterface.execute(model);
-		return "/helppetf/pethotel/pethotel_info";
-	}
-
 	@GetMapping("/pethotel/pethotel_reserve") // 펫호텔 예약화면
 	public String pethotelReserve(Model model) {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "pethotel");
 		return "/helppetf/pethotel/pethotel_reserve";
 	}
+	
+	@GetMapping("/pethotel/pethotel_info") // 펫호텔 이용안내
+	public String pethotelInfo(Model model) {
+		model.addAttribute("pethotelPage", "info");
+		helpServiceInterface = new PethotelMainService(helpDao);
+		helpServiceInterface.execute(model);
+		return "/helppetf/pethotel/pethotel_info";
+	}
 
 	@GetMapping("/pethotel/pethotel_main") // 펫호텔 메인
 	public String pethotelMain(Model model) {
-		helpServiceInterface = new PethotelIntroService(helpDao);
+		model.addAttribute("pethotelPage", "intro");
+		helpServiceInterface = new PethotelMainService(helpDao);
 		helpServiceInterface.execute(model);
 		return "/helppetf/pethotel/pethotel_main";
 	}
 
-	@GetMapping("/adoption/adoption_main") // 입양 센터 메인
+	@GetMapping("/adoption/adoption_main") // 입양 센터 메인 페이지
 	public String adoptionMain(Model model) {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "adoption");
 		return "/helppetf/adoption/adoption_main";
 	}
 	
-	@GetMapping("/adoption/adoption_detail") // 입양 센터 상세페이지
+	@GetMapping("/adoption/adoption_detail") // 입양 센터 상세 페이지
 	public String adoptionContentSend(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		helpServiceInterface = new AdoptionViewService();
@@ -67,7 +68,7 @@ public class HelpPetfController {
 		return "/helppetf/adoption/adoption_detail"; // <- view단 jsp 매핑 호출
 	}
 		
-	@GetMapping("/petteacher/petteacher_main") // 펫티쳐 메인
+	@GetMapping("/petteacher/petteacher_main") // 펫티쳐 메인 페이지
 	public String petteacherList(Model model) {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "petteacher");
