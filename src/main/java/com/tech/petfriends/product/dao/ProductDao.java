@@ -58,7 +58,7 @@ public interface ProductDao {
 	public ArrayList<ProductSearchReviewRank10Dto> productSearchReviewRank10();
 
 	//검색아이콘 _ 검색제품 나열 쿼리
-	public List<ProductListViewDto> productSearchList(String searchPro);
+	public List<ProductListViewDto> productSearchList();
 
 	//둘러본상품 목록에 있는지 확인하는 쿼리
 	public int productWindowConfirm(String pro_code, String mem_code);
