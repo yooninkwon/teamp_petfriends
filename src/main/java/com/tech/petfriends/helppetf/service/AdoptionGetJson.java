@@ -1,5 +1,6 @@
 package com.tech.petfriends.helppetf.service;
 
+import java.time.Duration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
 
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 @Service
 public class AdoptionGetJson {
@@ -68,11 +70,13 @@ public class AdoptionGetJson {
 		 * 
 		 * 파싱 -> .map(json -> ... )} : parsingJsonObject() 메서드 호출
 		 */
-		return webClient.get().uri(baseUrl + addParameters).retrieve()
+		return webClient.get().uri(baseUrl + addParameters)
+				.retrieve()
 				.onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Client Error")))
 				.onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new Exception("Server Error")))
 				.bodyToMono(String.class) // JSON 데이터를 문자열로 받음
-				.retry(3).map(json -> {
+				.retryWhen(Retry.backoff(3, Duration.ofSeconds(2)))
+				.map(json -> {
 					HelpPetfAdoptionItemsVo adoptionItems;
 					try { // try: json 파싱
 						adoptionItems = parsingJsonObject(json, HelpPetfAdoptionItemsVo.class);

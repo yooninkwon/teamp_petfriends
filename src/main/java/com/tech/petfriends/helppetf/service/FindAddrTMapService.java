@@ -18,7 +18,7 @@ public class FindAddrTMapService implements HelppetfServiceInter {
 
 	@Override
 	public void execute(Model model) {
-		model.addAttribute("main_navbar_id", "helppetf");
+//		model.addAttribute("main_navbar_id", "helppetf");
 		
 		// 모델에서 세션을 추출
 		HttpSession session = (HttpSession) model.getAttribute("session");

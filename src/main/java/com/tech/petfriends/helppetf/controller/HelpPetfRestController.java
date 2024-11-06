@@ -1,6 +1,8 @@
 package com.tech.petfriends.helppetf.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.helppetf.dto.AdoptionSelectedAnimalDto;
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.AdoptionGetJson;
+import com.tech.petfriends.helppetf.service.FindAddrTMapService;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
 import com.tech.petfriends.helppetf.service.PethotelReserveService;
 import com.tech.petfriends.helppetf.service.PethotelSelectPetService;
@@ -31,7 +37,10 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/helppetf")
 public class HelpPetfRestController {
-
+	
+	@Autowired
+	ApikeyConfig apikeyConfig;
+	
 	private final AdoptionGetJson adoptionGetJson;
 
 	public HelpPetfRestController(AdoptionGetJson adoptionGetJson) {
@@ -80,5 +89,15 @@ public class HelpPetfRestController {
 		helpServiceInterface.execute(model);
 		return (ArrayList<PetteacherDto>) model.getAttribute("ylist");
 	}
-
+	
+	@GetMapping("/find/adress_data") // 주변 반려동물 시설 찾기 페이지
+	public String pet_facilities(Model model, HttpSession session) throws JsonProcessingException {
+		model.addAttribute("session", session);
+		helpServiceInterface = new FindAddrTMapService(helpDao);
+		helpServiceInterface.execute(model);
+		Map<String, Object> map = new HashMap<>();
+		map.put("userAddr", model.getAttribute("userAddr"));
+		map.put("mem_nick", model.getAttribute("mem_nick"));
+		return new ObjectMapper().writeValueAsString(map);
+	}
 }
