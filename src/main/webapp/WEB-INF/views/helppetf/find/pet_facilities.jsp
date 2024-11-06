@@ -359,17 +359,23 @@
 	                        extraAddr = ' (' + extraAddr + ')';
 	                    }
 	                    // 조합된 참고항목을 해당 필드에 넣는다.
-	                    document.getElementById("sample2_extraAddress").value = extraAddr;
+		//				console.log(extraAddr);
+	     //               document.getElementById("sample2_extraAddress").value = extraAddr;
 	                
 	                } else {
-	                    document.getElementById("sample2_extraAddress").value = '';
+						extraAddr = '';
+	      //              document.getElementById("sample2_extraAddress").value = '';
 	                }
-
+					userAddress = addr;
+					console.log('user: ',userAddress);
+					console.log(addr);
+					console.log(extraAddr);
+					console.log(data.zonecode);
 	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-	                document.getElementById('sample2_postcode').value = data.zonecode;
-	                document.getElementById("sample2_address").value = addr;
+	  //              document.getElementById('sample2_postcode').value = data.zonecode;
+	   //             document.getElementById("sample2_address").value = addr;
 	                // 커서를 상세주소 필드로 이동한다.
-	                document.getElementById("sample2_detailAddress").focus();
+	    //            document.getElementById("sample2_detailAddress").focus();
 
 	                // iframe을 넣은 element를 안보이게 한다.
 	                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
