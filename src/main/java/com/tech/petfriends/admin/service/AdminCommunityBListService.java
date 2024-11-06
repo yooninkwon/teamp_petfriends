@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.dto.ACommunityDto;
 import com.tech.petfriends.admin.mapper.AdminCommuntiyDao;
-import com.tech.petfriends.admin.mapper.AdminProductDao;
 
 public class AdminCommunityBListService implements AdminServiceInterface {
 
@@ -21,7 +20,7 @@ public class AdminCommunityBListService implements AdminServiceInterface {
 		Integer board_no = (Integer) model.getAttribute("board_no");
 	
 		
-		List<ACommunityDto> CommunityList = admincommunityDao.communityList();
+		List<ACommunityDto> CommunityList = admincommunityDao.communityList(board_no);
 		model.addAttribute("CommunityList",CommunityList);
 	}
 
