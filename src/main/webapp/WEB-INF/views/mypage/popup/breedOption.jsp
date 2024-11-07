@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>펫 종 선택</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="/static/css/mypage.css">
+<link rel="stylesheet" href="/static/css/mypage/mypage.css">
 </head>
 <body>
 <div class="breed-search-container">

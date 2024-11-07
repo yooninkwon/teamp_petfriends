@@ -1,0 +1,278 @@
+@charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+h2 {
+    text-align: center;
+}
+
+/* 주문 및 결제 */
+.payment-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.payment-container section {
+    padding: 20px;
+    border-bottom: 4px solid #ddd;
+}
+.payment-container h3 {
+    font-size: 18px;
+    margin-right: 10px;
+    margin-top: 0;
+}
+.order-info {
+	display: flex;
+	align-items: center;
+    background-color: #ddd;
+    border: none;
+}
+.delivery-info {
+    padding: 15px 0;
+}
+.delivery-info input {
+    margin-left: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 14px;
+}
+.delivery-options {
+    display: flex;
+    flex-direction: column;
+}
+.delivery-options input {
+	width: 525px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+}
+.innerBtn1 {
+	position: relative;
+	bottom: 33px;
+	left: 500px;
+	font-size: 13px;
+	font-weight: bold;
+	color: #777;
+	cursor: pointer;
+}
+.order-items .item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+.item-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.item-details {
+    flex: 1;
+}
+.item-name {
+    margin-bottom: 3px;
+}
+.item-option {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+.item-price {
+    font-size: 15px;
+	font-weight: bold;
+}
+.item-reward {
+    font-size: 13px;
+	color: #ff4081;
+}
+.discount-info {
+    display: flex;
+    flex-direction: column;
+}
+.coupon-option input {
+    width: 525px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+}
+.innerBtn2 {
+	position: relative;
+	bottom: 33px;
+	left: 450px;
+	font-size: 13px;
+	font-weight: bold;
+	color: #777;
+	cursor: pointer;
+}
+.point-option input {
+    width: 350px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 0 8px;
+}
+.point-option button {
+	font-weight: bold;
+    padding: 9px 13px;
+    background-color: #ff4081;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.user-point {
+	font-size: 12px;
+	font-weight: bold;
+	color: #777;
+	margin: 5px 0 0 95px;
+}
+.summary-item {
+	color: #777;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 15px;
+}
+.summary-item span {
+	color: black;
+}
+.total-amount {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 18px;
+}
+.total-point {
+	font-size: 12px;
+	font-weight: bold;
+	color: #777;
+	text-align: right;
+	margin-top: 5px;
+}
+.payment-method {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    width: 100%;
+}
+.payment-method button {
+    padding: 5px;
+    border: 2px solid black;
+    border-radius: 2px;
+    background-color: white;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 11px;
+}
+.payment-method button i {
+    font-size: 35px;
+}
+.payment-button {
+	width: 100%;
+    background-color: #ff4081;
+    color: #fff;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* 배송지 출입&메모 팝업 */
+.popup-container {
+    width: 90%;
+    margin: 20px auto;
+}
+.popup-container label {
+    display: block;
+    font-size: 16px;
+    margin: 10px 0;
+}
+.option-input {
+    width: 90%;
+    margin: 5px auto;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.save-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #ff4081;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.save-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* 쿠폰 적용 팝업 */
+.coupon-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px;
+}
+.coupon-card {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #227878;
+    background-color: #eaf4f4;
+}
+.coupon-info {
+    padding: 20px;
+}
+.coupon-name {
+    font-size: 17px;
+    font-weight: bold;
+    margin: 5px 0;
+    color: #333;
+}
+.coupon-discount {
+    color: #227878;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+.coupon-btn {
+    width: 100%;
+    padding: 10px 0;
+    color: white;
+    border: none;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background-color: #227878;
+}
+.coupon-btn i {
+    margin-left: 5px;
+}
+.coupon-btn:hover {
+    cursor: pointer;
+    background-color: #1b6262;
+}

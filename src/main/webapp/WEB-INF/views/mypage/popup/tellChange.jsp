@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>휴대폰 번호 인증</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="/static/css/mypage.css">
+<link rel="stylesheet" href="/static/css/mypage/mypage.css">
 </head>
 <body>
 <h4 style="text-align: center;">연락처 변경</h4>

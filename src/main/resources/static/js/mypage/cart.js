@@ -60,47 +60,55 @@ function updateCartTotal() {
     document.querySelector('#finalProductPrice').innerText = `=${finalProductPrice.toLocaleString()}원`;
     document.querySelector('#totalPoints').innerText = `${totalPoints.toLocaleString()}원`;
 }
-	
-// AJAX 요청으로 모든 항목 주문
-function orderAllItem() {
-    fetch('/mypage/orderAllItem', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'orderAll' })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            window.location.href = '/mypage/payment';
-        } else {
-            alert('주문 처리에 실패했습니다.');
-        }
-    })
-    .catch(error => console.error('Error:', error));
+
+// 선택된 항목 또는 전체 항목 주문
+function orderSelectedItem(event) {
+    // 클릭된 버튼이 '전체상품 구매' 버튼인지 확인
+    if (event.target.classList.contains('orderAllItem')) {
+        // 전체 선택 체크박스 클릭 시 모든 체크박스를 체크 상태로 설정
+        document.querySelectorAll('.select-item').forEach(checkbox => {
+            checkbox.checked = true;
+        });
+    }
+
+    // 체크된 항목의 cartCode 값을 배열로 수집
+	const cartCodes = Array.from(document.querySelectorAll('tbody .select-item:checked')).map(checkbox => {
+	    return checkbox.closest('tr').querySelector('.quantity-input').dataset.cartCode;
+	});
+
+    if (cartCodes.length === 0) {
+        alert('선택된 상품이 없습니다.');
+        return;
+    }
+
+    // 폼 생성 후 데이터 추가
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/mypage/orderSelectedItem';
+
+    // 각 cartCode를 개별적으로 hidden input으로 추가
+    cartCodes.forEach(cartCode => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'cartCodes';
+        input.value = cartCode;
+        form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
 }
 
-// AJAX 요청으로 선택된 항목 주문
-function orderSelectedItem() {
-    const selectedItems = Array.from(document.querySelectorAll('tbody .select-item'))
-        .filter(checkbox => checkbox.checked)
-        .map(checkbox => checkbox.closest('tr').querySelector('.quantity-input').dataset.cartCode);
-
-    fetch('/mypage/orderSelectedItem', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cartCodes: selectedItems })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            window.location.href = '/mypage/payment';
-        } else {
-            alert('선택된 상품 주문에 실패했습니다.');
-        }
-    })
-    .catch(error => console.error('Error:', error));
+// 폼에 히든 필드를 추가하는 헬퍼 함수
+function createHiddenInput(name, value) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    input.value = value;
+    return input;
 }
 
+// 수량 조정
 function updateQuantity(event) {
     const button = event.target;
     const input = button.closest('td').querySelector('.quantity-input');
