@@ -15,11 +15,9 @@
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 	<jsp:include page="/WEB-INF/views/include_jsp/helppetf_sub_navbar.jsp" />
 	<script>
-		document.getElementById(`${main_navbar_id }`).classList.add('selected');
-		document.getElementById(`${sub_navbar_id }`).classList.add('selected');
-	
-		var pageName = `${sub_navbar_id }`;
-		console.log(pageName)
+		let main_navbar_id = `${main_navbar_id }`;
+		let sub_navbar_id = `${sub_navbar_id }`;
+		let pageName = `${sub_navbar_id }`;
 	</script>
 	<div class="my_adress">
 		<div class="my_adress_wrap">

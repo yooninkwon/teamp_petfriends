@@ -22,6 +22,11 @@
 // 팝업 열기 및 닫기
 document.addEventListener('DOMContentLoaded', () => {
 
+	// 메인 nav, 서브 nav '선택됨' 클래스 설정
+	document.getElementById(main_navbar_id).classList.add('selected');
+	document.getElementById(sub_navbar_id).classList.add('selected');
+	
+	// element들을 각각 저장
 	const addPetButton = document.querySelector('.add-pet-button'); // .add-pet-button의 태그를 찾아 반환해줌
 	const closeAddPetButton = document.querySelector('.close-add-pet-button'); // .add-pet-button의 태그를 찾아 반환해줌
 	const popupForm = document.getElementById('popup-form'); // popup-form의 태그를 찾아 반환해줌
