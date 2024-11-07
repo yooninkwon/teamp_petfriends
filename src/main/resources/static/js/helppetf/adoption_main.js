@@ -14,11 +14,15 @@
  * 초기화 버튼을 눌러 필터링을 초기화할 수 있다.
  */
 
+// 온오프 토글은 이걸쓰자
+//$('#petteacher-main').removeClass().addClass('off');
+//$('#petteacher-detail').removeClass().addClass('on');
+
 import { kindOptions } from '/static/js/helppetf/kind_data.js'; // 품종 데이터 Object import
 import { orgCdOptions } from '/static/js/helppetf/org_data.js'; // 지역 데이터 Object import
 
 $(document).ready(function() {
-
+	pageScroll(0)
 	const itemsPerPage = 8; // 페이지 당 item 수 = 8
 	let currentPage = 1; // 현재 표시되는 페이지
 	let totalItems = 0; // 총 item 수 초기화
@@ -82,7 +86,7 @@ $(document).ready(function() {
 			cards += '<img src="' + item.popfile + '" alt="Pet Image" />';
 			cards += '<div class="content">';
 			cards += '<h3>' + item.kindCd + '</h3>';
-			cards += '<div class="info">공고번호' + item.desertionNo + '</div>';
+			cards += '<div class="info">공고번호 ' + item.desertionNo + '</div>';
 			cards += '<div class="card_list"><div class="card_title">지역</div><div class="card_desc">' + item.orgNm + '</div></div>';
 			cards += '<div class="card_list"><div class="card_title">발견 장소</div><div class="card_desc">' + item.happenPlace + '</div></div>';
 			cards += '<div class="card_list"><div class="card_title">성별</div><div class="card_desc">' + item.sexCd + '</div></div>';
@@ -153,7 +157,7 @@ $(document).ready(function() {
 	// 페이지 클릭 이벤트 핸들러
 	$('#pagination a').on('click', function(event) {
 		event.preventDefault();
-		pageScroll(); // 페이지 스크롤 함수
+		pageScroll(0); // 페이지 스크롤 함수
 		if ($(this).attr('id') === 'prev-group') {
 			// 이전 그룹으로 이동
 			currPageGroup--;
@@ -257,12 +261,10 @@ $(document).ready(function() {
 		fetchData(currentPage, currPageGroup, formParam); // 필터 데이터 초기화한 뒤 fetchData 재호출
 	});
 
-	function pageScroll() {
-		// 함수 호출시 설정한 Y좌표로 스크롤
-		const element = document.getElementById("filter_form");
-		const yOffset = -110;
-		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-		window.scrollTo({ top: y, behavior: 'smooth' });
+	function pageScroll(y) {
+		window.scrollTo({ 
+			top: y,
+			behavior: 'smooth' });
 	}
 
 });

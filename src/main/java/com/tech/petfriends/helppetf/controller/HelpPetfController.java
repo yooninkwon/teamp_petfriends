@@ -14,7 +14,6 @@ import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.AdoptionViewService;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
 import com.tech.petfriends.helppetf.service.PethotelMainService;
-import com.tech.petfriends.helppetf.service.PetteacherDetailService;
 
 
 @Controller
@@ -72,14 +71,6 @@ public class HelpPetfController {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "petteacher");
 		return "/helppetf/petteacher/petteacher_main";
-	}
-
-	@GetMapping("/petteacher/petteacher_detail") // 펫티쳐 상세 페이지
-	public String petteacherDetails(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		helpServiceInterface = new PetteacherDetailService(helpDao);
-		helpServiceInterface.execute(model);
-		return "/helppetf/petteacher/petteacher_detail";
 	}
 
 	@GetMapping("/find/pet_hospital") // 주변 동물병원 찾기 페이지

@@ -2,23 +2,37 @@
 
 body {
 	font-family: 'Arial', sans-serif;
-	background-color: #FFF;
+	background-color: #f9f9f9;
 	margin: 0;
 	padding: 0;
 }
 
-h1 {
+.off {
+	display: none;	
+}
+
+.on {
+	display: block;
+}
+
+/*
+
+펫티쳐 메인 화면 
+
+*/
+
+#petteacher-main h1 {
 	text-align: center;
 	font-size: 24px;
 	margin-top: 30px;
 	color: #333;
 }
 
-a {
+#petteacher-main a {
 	text-decoration: none;
 }
 /* 필터바 전체 스타일 */
-#filter_form {
+#petteacher-main #filter_form {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -27,7 +41,7 @@ a {
 }
 
 /* 공통 Select 스타일 */
-#filter_form select {
+#petteacher-main #filter_form select {
 	padding: 10px 20px; /* 내부 여백을 더 줌 */
 	border-radius: 25px; /* 둥글게 설정 */
 	border: 1px solid #ddd;
@@ -47,19 +61,19 @@ a {
 }
 
 /* 선택박스 포커스 시 효과 */
-#filter_form select:focus {
+#petteacher-main #filter_form select:focus {
 	outline: none;
 	border-color: #aaa;
 	box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
 /* 화살표 제거 */
-#filter_form select::-ms-expand {
+#petteacher-main #filter_form select::-ms-expand {
 	display: none;
 }
 
 /* 검색 버튼 스타일 */
-#filter_form button {
+#petteacher-main #filter_form button {
 	padding: 10px 20px;
 	border-radius: 25px;
 	border: 1px solid #ddd;
@@ -71,19 +85,19 @@ a {
 	transition: background-color 0.3s ease;
 }
 
-#filter_form button:hover {
+#petteacher-main #filter_form button:hover {
 	background-color: #FF2972;
 }
 
 /* 선택박스 전체 높이와 정렬 */
-#filter_form select, .filter-bar button {
+#petteacher-main #filter_form select, #petteacher-main .filter-bar button {
 	height: 40px;
 	display: inline-block;
 	vertical-align: middle;
 }
 
 /* 비디오 카드 그리드 */
-.video-grid {
+#petteacher-main .video-grid {
 	display: flex;
 	width: 1200px;
 	align-items: flex-start;
@@ -94,7 +108,8 @@ a {
 }
 
 /* 비디오 카드 스타일 */
-.video-card {
+#petteacher-main .video-card {
+	cursor: pointer;
 	width: calc(25% - 30px); /* 너비 설정 */
 	height: 320px; /* 높이 설정 */
 	background-color: #fff;
@@ -106,26 +121,26 @@ a {
 	margin-bottom: 50px;
 }
 
-.video-card:nth-child(4n) {
+#petteacher-main .video-card:nth-child(4n) {
 	margin-right: 0;
 }
 
-.video-card:hover {
+#petteacher-main .video-card:hover {
 	transform: scale(1.05);
 }
 
-.video-thumbnail {
+#petteacher-main .video-thumbnail {
 	width: 100%;
 	height: 151.8px;
 	object-fit: cover;
 }
 
-.video-card .content {
+#petteacher-main .video-card .content {
 	padding: 0 15px;
 	text-align: left;
 }
 
-.video-card .content h3 {
+#petteacher-main .video-card .content h3 {
 	font-size: 16px;
 	height: 43px;
 	margin: 10px 0 5px 0;
@@ -135,21 +150,21 @@ a {
 	display: -webkit-box;
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
-	color: #777;
+	color: #232323;
 	
 }
 
-.video-card .content > div {
+#petteacher-main .video-card .content > div {
 	font-size: 13px;
-	color: #777;
+	color: #535252;
 	padding: 5px 0;
 }
 
-.video-card .content > div span {
+#petteacher-main .video-card .content > div span {
 	font-weight: bold;
 }
 
-.video-card .content .video_desc {
+#petteacher-main .video-card .content .video_desc {
     height: 36px;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -160,24 +175,24 @@ a {
    	color: #bbb;
 }
 
-.video-card .content .flex {
+#petteacher-main .video-card .content .flex {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-end;
 }
 
-.video-card .content .views-date {
+#petteacher-main .video-card .content .views-date {
 	font-size: 12px;
 	color: #aaa;
 }
 
 /* 페이지네이션 */
-#pagination {
+#petteacher-main #pagination {
 	text-align: center;
 	margin: 20px 0;
 }
 
-#pagination a {
+#petteacher-main #pagination a {
 	padding: 10px 15px;
 	margin: 0 5px;
 	background-color: #fff;
@@ -188,24 +203,128 @@ a {
 	transition: background-color 0.3s ease;
 }
 
-#pagination a:hover {
+#petteacher-main #pagination a:hover {
 	background-color: #ff007f;
 	color: white;
 }
 
-#pagination a.active {
+#petteacher-main #pagination a.active {
 	background-color: #ff007f;
 	color: white;
 }
 
 /* 반응형 디자인 */
 @media ( max-width : 768px) {
-	.filter-bar {
+	#petteacher-main .filter-bar {
 		flex-direction: column;
 		align-items: stretch;
 	}
-	.filter-bar select, .filter-bar button {
+	#petteacher-main .filter-bar select, #petteacher-main .filter-bar button {
 		width: 100%;
 		margin-bottom: 10px;
 	}
+}
+
+/* 
+
+펫티쳐 상세보기 화면
+
+*/
+
+#petteacher-detail h1 {
+    text-align: center;
+    color: #333;
+    margin: 20px 0;
+}
+
+#petteacher-detail ._content_detail_btn {
+    display: inline-block;
+	padding: 5px 15px;
+	background-color: #ff4081;
+	color: #fff;
+	border-radius: 5px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#petteacher-detail .back_list_btn:first-child {
+	cursor: pointer;
+	margin-bottom: 10px;
+}
+
+#petteacher-detail .back_list_btn:last-child {
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+#petteacher-detail .content_wrap {
+	width: 1000px;
+	margin: 0 auto;	
+}
+
+
+#petteacher-detail .content_wrap .content_header .title_wrap {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	background-color: #F4EDED;
+	border-top: 2px solid #d6caca;
+	border-bottom: 2px solid #d6caca;
+	font-size: 12px;
+}
+
+#petteacher-detail .content_wrap .content_header .title_wrap .content_title {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+#petteacher-detail .content_wrap .content_header .tag_wrap {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	border-bottom: 1px solid #d6caca;
+	font-size: 14px;
+	color: #888;	
+}
+
+#petteacher-detail .content_wrap .content_main {
+	background-color: #fff;
+	padding: 10px 20px;
+}
+
+#petteacher-detail .content_wrap .content_main .content_desc {
+	margin-bottom: 20px;
+}
+
+#petteacher-detail .content_wrap .content_main .content_desc div {
+	padding: 20px 0;
+}
+
+#petteacher-detail .content_wrap .content_main .content_desc._1 div {
+	border-bottom: 1px solid #d6caca;
+	margin-bottom: 30px;
+}
+
+#petteacher-detail .content_wrap .content_main .content_desc._2 div {
+	border-top: 1px solid #d6caca;
+	margin-top: 30px;
+}
+
+#petteacher-detail .content_wrap .content_main .content_video {
+	display:flex;
+	justify-content: center;	
+}
+
+#petteacher-detail .content_wrap .content_footer {
+	background-color: #fff;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	padding: 25px 20px 30px;
+}
+
+#petteacher-detail .content_wrap .content_footer ._content_detail_btn {
+	background-color: #858585;
 }
