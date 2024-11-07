@@ -28,6 +28,7 @@ import com.tech.petfriends.helppetf.service.FindAddrTMapService;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
 import com.tech.petfriends.helppetf.service.PethotelReserveService;
 import com.tech.petfriends.helppetf.service.PethotelSelectPetService;
+import com.tech.petfriends.helppetf.service.PetteacherDetailService;
 import com.tech.petfriends.helppetf.service.PetteacherService;
 import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
 import com.tech.petfriends.mypage.dto.MyPetDto;
@@ -88,6 +89,14 @@ public class HelpPetfRestController {
 		helpServiceInterface = new PetteacherService(helpDao);
 		helpServiceInterface.execute(model);
 		return (ArrayList<PetteacherDto>) model.getAttribute("ylist");
+	}
+	
+	@GetMapping("/petteacher/petteacher_detail_data")
+	public PetteacherDto petteacherDetailData(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
+		helpServiceInterface = new PetteacherDetailService(helpDao);
+		helpServiceInterface.execute(model);
+		return (PetteacherDto) model.getAttribute("petteacherDetailDto");
 	}
 	
 	@GetMapping("/find/adress_data") // 주변 반려동물 시설 찾기 페이지

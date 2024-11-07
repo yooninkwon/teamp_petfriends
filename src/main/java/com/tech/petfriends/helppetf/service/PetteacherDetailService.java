@@ -21,8 +21,6 @@ public class PetteacherDetailService implements HelppetfServiceInter {
 
 	@Override
 	public void execute(Model model) {
-		model.addAttribute("main_navbar_id", "helppetf");		
-		model.addAttribute("sub_navbar_id", "petteacher");
 		
 		// model을 Map으로 변환
 		Map<String, Object> map = model.asMap();
@@ -37,9 +35,9 @@ public class PetteacherDetailService implements HelppetfServiceInter {
 		helpDao.upViews(hpt_seq); // 조회수 +1
 		
 		// 전달받은 파라미터 값에 해당하는 글 번호를 가진 게시글의 상세 내용을 DTO객체에 저장
-		PetteacherDto dto = helpDao.petteacherDetail(hpt_seq);
+		PetteacherDto petteacherDetailDto = helpDao.petteacherDetail(hpt_seq);
 		
-		model.addAttribute("dto", dto);
+		model.addAttribute("petteacherDetailDto", petteacherDetailDto);
 	}
 	
 }

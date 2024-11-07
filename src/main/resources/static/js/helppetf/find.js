@@ -35,10 +35,8 @@ $(document).ready(function() {
 			}
 		})
 		.then(data => {
-			console.log(data)
 			userNick = data.mem_nick;
 			userAddress = data.userAddr;
-			console.log(userNick, ' || ', userAddress)
 			changeUserAddress(userAddress);
 		})
 		.catch(error => {

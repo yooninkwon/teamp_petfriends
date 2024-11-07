@@ -295,7 +295,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	function pageScroll(y) {
 		// 함수 호출시 파라미터의 값(Y좌표)으로 스크롤
-		window.scrollTo({ top: y, behavior: 'smooth' });
+		window.scrollTo({ 
+			top: y,
+			behavior: 'smooth'
+		 });
 	}
 
 	function closeModal() {
