@@ -1,5 +1,6 @@
 package com.tech.petfriends.admin.dto;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
@@ -20,12 +21,14 @@ public class ACommunityDto {
     private String board_title;
     private int board_password;
     private String board_content;
-    private Timestamp board_created;
-    private Timestamp board_modified;
+    private Date board_created;
+    private Date board_modified;
     private int board_views;
     private String board_tag;
     private int board_likes;
     private int board_comment_count;
-
-	
+    
+   
+    private String b_cate_name;
+    private String mem_name;
 }

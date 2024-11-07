@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tech.petfriends.admin.dto.ACommunityDto;
-import com.tech.petfriends.admin.mapper.AdminCommuntiyDao;
+import com.tech.petfriends.admin.mapper.AdminCommunityDao;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
-import com.tech.petfriends.admin.service.AdminCommunityBListService;
 import com.tech.petfriends.admin.service.AdminPethotelDataService;
 import com.tech.petfriends.admin.service.AdminPethotelInfoData;
 import com.tech.petfriends.admin.service.AdminPethotelInfoEditService;
@@ -37,8 +37,6 @@ import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminPetteacherEditService;
 import com.tech.petfriends.admin.service.AdminPetteacherWriteService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
-import com.tech.petfriends.community.dto.CReportDto;
-import com.tech.petfriends.community.service.CReportService;
 import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
@@ -58,7 +56,7 @@ public class AdminRestController {
 	NoticeDao noticeDao;
 
 	@Autowired
-	AdminCommuntiyDao communtiyDao;
+	AdminCommunityDao communtiyDao;
 
 	AdminServiceInterface adminServiceInterface;
 
@@ -201,18 +199,38 @@ public class AdminRestController {
 
 
 	@PostMapping("/community")
-	public ResponseEntity<Map<String, String>> communityList(@RequestBody ACommunityDto communityDto, Model model) {
-		System.out.println("communityList");
+	@ResponseBody
+	public Map<String, Object> searchCommunityBoard(@RequestBody Map<String, String> requestData,Model model) {
+	    System.out.println("searchCommunityBoard");
+	    String searchKeyword = requestData.get("searchKeyword");
+	    String searchFilterType = requestData.get("searchFilterType");
+	    String searchCategory = requestData.get("searchCategory");
+	    String searchStartDate = requestData.get("searchStartDate");
+	    String searchEndDate = requestData.get("searchEndDate");
+	     
+	    System.out.println("**************************" );
+	    System.out.println("searchCategory: " + searchCategory );
+	    System.out.println("searchKeyword: " + searchKeyword);
+	    System.out.println("searchFilterType: " + searchFilterType);
+	    System.out.println("searchStartDate: " + searchStartDate);
+	    System.out.println("searchEndDate: " + searchEndDate);
 
-		model.addAttribute("board_no", communityDto.getBoard_no());
-		System.out.println("communityDto.getBoard_no() " + communityDto.getBoard_no());
+	        
+	    // "all"인 경우 전체 게시물을 조회
+	   
+	  
+	    List<ACommunityDto>  communityList = communtiyDao.communityList(searchKeyword, searchFilterType, searchCategory, searchStartDate, searchEndDate);  // 전체 게시물 조회
+	    System.out.println("조회된 게시물 수: " + communityList.size());  // 게시물 수 확인    
+	
+	  
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("communityList", communityList);
 
-		adminServiceInterface = new AdminCommunityBListService(communtiyDao);
-		adminServiceInterface.execute(model);
-
-		Map<String, String> response = new HashMap<>();
-		return ResponseEntity.ok(response);
+	               
+	    
+	    return response;
 	}
+
 
 	// 이벤트 삭제 메서드
 	@DeleteMapping("/deleteEvent")
