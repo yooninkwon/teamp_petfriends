@@ -104,7 +104,7 @@
 			<!-- 클릭한 동물의 상세 정보 테이블 -->
 		</table>
 		<!-- 목록으로 돌아가는 버튼 -->
-		<button type="button" id="goMain">목록</button>
+		<button type="button" id="goMain">목록으로</button>
 	</div>
 	<!-- 입양센터 상세페이지 종료 -->
 	

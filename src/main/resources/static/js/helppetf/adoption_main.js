@@ -246,13 +246,6 @@ $(document).ready(function() {
 		fetchData(currentPage, currPageGroup, formParam); // 필터 데이터 초기화한 뒤 fetchData 재호출
 	});
 
-	function pageScroll(y) {
-		window.scrollTo({ 
-			top: y,
-			behavior: 'smooth' });
-	}
-	
-		
 		
 /*
 
@@ -281,7 +274,6 @@ $(document).ready(function() {
 		
 		// 선택한 동물의 상세정보들을 html 태그와 함께 저장하여 배치
 		let selectedPetTable = '';
-		selectedPetTable += '';
 		selectedPetTable += '<tr><th>공고번호</th><td>' + selectedPetData.noticeNo + '</td>';
 		selectedPetTable += '<th>접수일</th><td>' + selectedPetData.happenDt + '</td></tr>';
 		selectedPetTable += '<tr><th>동물등록번호</th><td>' + selectedPetData.desertionNo + '</td>';
@@ -301,7 +293,7 @@ $(document).ready(function() {
 		$('#selectedAnimalTable').html(selectedPetTable);
 	});
 	
-	// 목록 버튼 클릭시
+	// "목록으로" 버튼 클릭시
 	$('#goMain').on('click', function() {
 		pageScroll(0);
 		// 입양센터 메인, 상세 페이지 각각의 전체를 감싸는 div에 클래스를 변경
@@ -309,5 +301,12 @@ $(document).ready(function() {
 		$('#adoption-main').removeClass().addClass('on');
 		$('#adoption-detail').removeClass().addClass('off');
 	});
+	
+	// 호출시 입력한 파라미터값의 좌표로 화면을 스크롤
+	function pageScroll(y) {
+		window.scrollTo({ 
+			top: y,
+			behavior: 'smooth' });
+	}
 
 });
