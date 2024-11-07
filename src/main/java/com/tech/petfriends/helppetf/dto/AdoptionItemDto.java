@@ -9,23 +9,7 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AdoptionItemDto {
 
-////	요청번호
-//	@JsonProperty("reqNo")
-//	private int reqNo;
-//
-////	결과코드
-//	@JsonProperty("resultCode")
-//	private int resultCode;
-//
-////	결과메세지
-//	@JsonProperty("resultMsg")
-//	private String resultMsg;
-//
-////	오류메시지
-//	@JsonProperty("errorMsg")
-//	private String errorMsg;
-
-//	유기번호
+//	공고번호
 	@JsonProperty("desertionNo")
 	private String desertionNo;
 
@@ -116,17 +100,5 @@ public class AdoptionItemDto {
 //	특이사항
 	@JsonProperty("noticeComment")
 	private String noticeComment;
-
-////	한 페이지 결과 수
-//	@JsonProperty("numOfRows")
-//	private int numOfRows;
-//
-////	페이지 번호
-//	@JsonProperty("pageNo")
-//	private int pageNo;
-//
-////	전체 결과수
-//	@JsonProperty("totalCount")
-//	private int totalCount;
 
 }
