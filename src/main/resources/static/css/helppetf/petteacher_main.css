@@ -37,6 +37,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	gap: 10px; /* 필터 사이의 간격 */
+	margin-top: 15px;
 	margin-bottom: 20px;
 }
 
