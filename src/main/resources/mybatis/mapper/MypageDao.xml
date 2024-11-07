@@ -174,10 +174,49 @@
 		WHERE CART_CODE = #{cartCode}
 	</update>
 	
+	<select id="getItemByCartCode" resultType="com.tech.petfriends.mypage.dto.MyCartDto">
+		SELECT PI.MAIN_IMG1,
+		       P.PRO_NAME,
+		       PO.PROOPT_NAME,
+		       PO.PROOPT_PRICE,
+		       P.PRO_DISCOUNT,
+		       PO.PROOPT_FINALPRICE,
+		       MC.CART_CNT,
+		       PO.PROOPT_STOCK,
+		       MC.CART_CODE
+		FROM PRODUCT_CART MC
+		LEFT JOIN PRODUCT_IMAGE PI ON MC.PRO_CODE = PI.PRO_CODE
+		LEFT JOIN PRODUCT P ON MC.PRO_CODE = P.PRO_CODE
+		LEFT JOIN PRODUCT_OPTION PO ON MC.PROOPT_CODE = PO.PROOPT_CODE
+		WHERE MC.CART_CODE = #{cartCode}
+		GROUP BY MC.CART_REGDATE, PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_PRICE, P.PRO_DISCOUNT, PO.PROOPT_FINALPRICE, MC.CART_CNT, PO.PROOPT_STOCK, MC.CART_CODE
+	</select>
+	
 	<delete id="deleteCartItem">
 		DELETE FROM PRODUCT_CART
 		WHERE CART_CODE = #{cartCode}
 	</delete>
+	
+	<select id="getItemsByCartCodes" resultType="com.tech.petfriends.mypage.dto.MyCartDto">
+	    SELECT PI.MAIN_IMG1,
+	           P.PRO_NAME,
+	           PO.PROOPT_NAME,
+	           PO.PROOPT_PRICE,
+	           P.PRO_DISCOUNT,
+	           PO.PROOPT_FINALPRICE,
+	           MC.CART_CNT,
+	           PO.PROOPT_STOCK,
+	           MC.CART_CODE
+	    FROM PRODUCT_CART MC
+	    LEFT JOIN PRODUCT_IMAGE PI ON MC.PRO_CODE = PI.PRO_CODE
+	    LEFT JOIN PRODUCT P ON MC.PRO_CODE = P.PRO_CODE
+	    LEFT JOIN PRODUCT_OPTION PO ON MC.PROOPT_CODE = PO.PROOPT_CODE
+	    WHERE MC.CART_CODE IN
+	    <foreach item="cartCode" collection="cartCodes" open="(" separator="," close=")">
+	        #{cartCode}
+	    </foreach>
+	    GROUP BY MC.CART_REGDATE, PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_PRICE, P.PRO_DISCOUNT, PO.PROOPT_FINALPRICE, MC.CART_CNT, PO.PROOPT_STOCK, MC.CART_CODE
+	</select>
 	
 	<select id="getAllWishInfoByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyWishDto">
 		SELECT P.PRO_CODE,

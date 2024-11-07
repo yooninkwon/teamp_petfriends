@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>펫프렌즈 : 고객센터</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
-<link rel="stylesheet" href="/static/css/mypage.css">
+<link rel="stylesheet" href="/static/css/mypage/mypage2.css">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />

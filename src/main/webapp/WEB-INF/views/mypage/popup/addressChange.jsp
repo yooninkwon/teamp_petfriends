@@ -8,7 +8,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://kit.fontawesome.com/6c32a5aaaa.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="/static/css/mypage.css">
+<link rel="stylesheet" href="/static/css/mypage/mypage.css">
 </head>
 <body>
 <div class="addr-search-container">

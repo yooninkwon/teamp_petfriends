@@ -63,7 +63,11 @@ public interface MypageDao {
 	
 	boolean updateCartQuantity(String newQuantity, String cartCode);
 	
+	List<MyCartDto> getItemByCartCode(String cartCode);
+	
 	void deleteCartItem(String cartCode);
+	
+	List<MyCartDto> getItemsByCartCodes(List<String> cartCodes);
 
 	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
 	

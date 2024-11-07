@@ -506,9 +506,20 @@ public class MyPageController {
 	@GetMapping("/orderThisItem")
 	public String orderThisItem(Model model, HttpServletRequest request, HttpSession session) {
 		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		GradeDto userGrade = (GradeDto) session.getAttribute("userGrade");
 		
-		
-		return "mypage/payment";
+		ArrayList<MemberAddressDto> address = mypageDao.getAddrByMemberCode(loginUser.getMem_code());
+	    List<MyCartDto> items = mypageDao.getItemByCartCode(request.getParameter("cartCode"));
+	    ArrayList<CouponDto> mycoupons = mypageDao.getCouponByMemberCode(loginUser.getMem_code());
+	    
+	    model.addAttribute("loginUser", loginUser);
+		model.addAttribute("userGrade", userGrade);
+		model.addAttribute("address",address);
+	    model.addAttribute("items", items);
+	    model.addAttribute("mycoupons",mycoupons);
+
+	    return "mypage/payment";
 	}
 	
 	@GetMapping("/deleteThisItem")
@@ -521,20 +532,45 @@ public class MyPageController {
 		return "redirect:/mypage/cart";
 	}
 	
-	@GetMapping("/orderAllItem")
-	public String orderAllItem(Model model, HttpServletRequest request, HttpSession session) {
-		
-		
-		
-		return "mypage/payment";
+	@PostMapping("/orderSelectedItem")
+	public String orderSelectedItem(@RequestParam List<String> cartCodes, Model model, HttpSession session) {
+
+	    MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+	    GradeDto userGrade = (GradeDto) session.getAttribute("userGrade");
+
+	    ArrayList<MemberAddressDto> address = mypageDao.getAddrByMemberCode(loginUser.getMem_code());
+	    List<MyCartDto> items = mypageDao.getItemsByCartCodes(cartCodes);
+	    ArrayList<CouponDto> mycoupons = mypageDao.getCouponByMemberCode(loginUser.getMem_code());
+
+	    model.addAttribute("loginUser", loginUser);
+	    model.addAttribute("userGrade", userGrade);
+	    model.addAttribute("address", address);
+	    model.addAttribute("items", items);
+	    model.addAttribute("mycoupons", mycoupons);
+
+	    return "mypage/payment";
 	}
 	
-	@GetMapping("/orderSelectedItem")
-	public String orderSelectedItem(Model model, HttpServletRequest request, HttpSession session) {
+	@GetMapping("/payment/delivEnterMethod")
+	public String delivEnterMethod(Model model) {
+		return "/mypage/popup/delivEnterMethod";
+	}
+	
+	@GetMapping("/payment/delivMemo")
+	public String delivMemo(Model model) {
+		return "/mypage/popup/delivMemo";
+	}
+	
+	@GetMapping("/payment/usableCoupon")
+	public String usableCoupon(Model model, HttpSession session) {
 		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
 		
+		ArrayList<CouponDto> mycoupons = mypageDao.getCouponByMemberCode(loginUser.getMem_code());
 		
-		return "mypage/payment";
+        model.addAttribute("mycoupons",mycoupons);
+		
+		return "/mypage/popup/usableCoupon";
 	}
 	
 	@GetMapping("/order")

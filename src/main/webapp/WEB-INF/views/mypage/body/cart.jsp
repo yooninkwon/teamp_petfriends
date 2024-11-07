@@ -17,8 +17,8 @@
     <h3>배송지 정보</h3>
     <hr />
     <div class="form-col" style="margin-bottom: 20px;">
-    	<input type="text" value="${loginUser.mem_name}" style="margin-right: 5px;" required>
-    	<input type="text" value="${loginUser.mem_tell}" style="margin-right: 5px;" required>
+    	<input type="text" value="${loginUser.mem_name}" style="margin-right: 5px;" disabled>
+    	<input type="text" value="${loginUser.mem_tell}" style="margin-right: 5px;" disabled>
         <c:forEach var="address" items="${address}">
             <c:if test="${address.addr_default.toString() == 'Y'}">
                 ${address.addr_line1} ${address.addr_line2}
@@ -124,8 +124,8 @@
     </table>
     
 	<div class="button-container">
-	    <button class="orderAllItem" onclick="orderAllItem()">전체상품 구매</button>
-	    <button class="orderSelectedItem" onclick="orderSelectedItem()">선택상품 구매</button>
+	    <button class="orderAllItem" onclick="orderSelectedItem(event)">전체상품 구매</button>
+	    <button class="orderSelectedItem" onclick="orderSelectedItem(event)">선택상품 구매</button>
 	</div>
 </div>
 
