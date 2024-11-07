@@ -1,4 +1,94 @@
 @charset "UTF-8";
+/* 필터링 영역 */
+.filter-section-1, .cate-group, .search-group {
+	display: flex;
+	flex-wrap: wrap; /* 줄 바꿈이 가능하도록 설정 */
+	justify-content: flex-start;
+	gap: 20px; /* 각 항목 간의 간격 */
+	align-items: center; /* 세로 정렬을 맞춤 */
+	margin-bottom: 5px; /* 각 영역 간의 하단 여백 */
+}
+
+/* 각 필터 그룹 내에서 제목 스타일 */
+.filter-title {
+	font-size: 16px;
+	font-weight: bold;
+	width: 80px; /* 일정 너비 고정 */
+}
+
+/* 작성일 필터 영역 */
+.date-group {
+	display: flex;
+	gap: 10px; /* 날짜 입력 필드 간 간격 */
+	align-items: center;
+}
+
+/* 카테고리 필터 영역 */
+.cate-group select {
+	width: 250px; /* select 박스의 고정 너비 */
+	padding: 5px; /* 패딩 추가 */
+}
+
+/* 검색 필터 영역 */
+.search-group {
+	display: flex;
+	gap: 5px; /* 각 항목 간의 간격 */
+	align-items: center;
+}
+
+/* 검색 입력 필드 */
+#search-filter {
+	width: 200px; /* 검색 입력 필드 크기 고정 */
+	padding: 5px;
+}
+
+/* 버튼 스타일 */
+input[type="button"] {
+	padding: 7px 15px;
+	font-size: 14px;
+	cursor: pointer;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	transition: background-color 0.3s ease;
+}
+
+/* 버튼 호버 시 스타일 */
+input[type="button"]:hover {
+	background-color: #e0e0e0;
+}
+
+/* 초기화 버튼 스타일 */
+#reset-date {
+	background-color: #ff4081; /* 초기화 버튼 배경 색상 */
+}
+
+/* 초기화 버튼 호버 */
+#reset-date:hover {
+	background-color: #e0e0e0;
+}
+
+/* 엑셀 다운로드 버튼 스타일 */
+#downloadBtn {
+	background-color: #ff4081;
+	margin-left: 10px; /* 엑셀 다운로드 버튼과 검색 버튼 간 간격 */
+}
+
+/* 엑셀 다운로드 버튼 호버 */
+#downloadBtn:hover {
+	background-color: #e0e0e0;
+}
+
+/* '검색' 버튼 스타일 */
+#searchBtn {
+	background-color: #ff4081;
+	margin-left: 10px;
+}
+
+#searchBtn:hover {
+	background-color: #e0e0e0;
+}
 
 .title {
 	width: 100%;
@@ -18,11 +108,7 @@
 	background-color: #dddddd;
 	font-size: 14px;
 	font-weight: bold;
-	
-
 }
-
-
 
 label {
 	padding: 5px 0 5px 10px;
@@ -36,15 +122,13 @@ label {
 	align-items: center;
 }
 
-
-.date-group{
+.date-group {
 	display: flex;
 	width: 100%;
-    border: 2px solid white;
-    background-color: #efefef;
-    align-items: center;
+	border: 2px solid white;
+	background-color: #efefef;
+	align-items: center;
 }
-
 
 .search-group {
 	display: flex;
@@ -53,11 +137,9 @@ label {
 	background-color: #efefef;
 }
 
-#pet-type {
-	width: 70%;
+#downloadBtn {
+	margin-left: auto; /* 오른쪽으로 이동 */
 }
-
-
 
 #pro-detail-type {
 	width: 100%;
@@ -87,41 +169,58 @@ label {
 	background-color: white;
 }
 
-.product-list-container {
+.community-list-container {
 	position: relative;
 	padding-bottom: 70px; /* 페이징 높이만큼 여백을 추가 */
 }
 
-.product-list {
+.community-list {
 	width: 100%;
 	border-collapse: collapse;
 	table-layout: fixed; /* 고정 테이블 레이아웃 설정 */
 }
 
+/* 제목 스타일 */
+.community-list th, .community-list td {
+	text-align: center;
+	padding: 10px;
+}
+
+.community-list td {
+	max-width: 200px; /* 최대 너비 설정 (필요에 따라 수정 가능) */
+	overflow: hidden;
+	text-overflow: ellipsis; /* 텍스트가 넘칠 경우 '...'으로 표시 */
+	white-space: nowrap; /* 텍스트가 한 줄로 나오도록 설정 */
+}
+
 /* 각 열의 너비 설정 */
-.product-list th:nth-child(1), .product-list td:nth-child(1) {
+.community-list th:nth-child(1), .community-list td:nth-child(1) {
 	width: 7%;
 } /* 날짜 */
-.product-list th:nth-child(2), .product-list td:nth-child(2) {
+.community-list th:nth-child(2), .community-list td:nth-child(2) {
 	width: 15%;
 } /* 상품코드 */
-.product-list th:nth-child(3), .product-list td:nth-child(3) {
+.community-list th:nth-child(3), .community-list td:nth-child(3) {
 	width: 30%;
 } /* 상품명 */
-.product-list th:nth-child(4), .product-list td:nth-child(4) {
+.community-list th:nth-child(4), .community-list td:nth-child(4) {
 	width: 15%;
 } /* 상품타입 */
-.product-list th:nth-child(5), .product-list td:nth-child(5) {
+.community-list th:nth-child(5), .community-list td:nth-child(5) {
 	width: 8%;
 } /* 판매상태 */
-.product-list th:nth-child(6), .product-list td:nth-child(6) {
+.community-list th:nth-child(6), .community-list td:nth-child(6) {
 	width: 10%;
 } /* 상세보기/편집 */
+.community-list th:nth-child(7), .community-list td:nth-child(7) {
+	width: 10%;
+} 
+
 .thead {
 	background-color: #dddddd;
 }
 
-.product-list th, .product-list td {
+.community-list th, .community-list td {
 	border: 1px solid #cdcdcd;
 	padding: 5px;
 	text-align: center;
@@ -156,167 +255,49 @@ label {
 	color: white;
 }
 
-/* 모달창 */
-.modal {
-	position: fixed;
-	z-index: 9999;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.4); /* 반투명 검정 배경 */
-}
-
-.modal-content {
-	position: relative;
-	margin: 3% auto; /* 중앙 정렬 */
-	padding: 40px;
-	width: 1000px;
-	max-height: 700px; /* 최대 높이 설정 */
-	background-color: #f4f4f4;
-	text-align: left;
-}
-
-.close-btn {
-	position: absolute;
-	right: 20px;
-	top: 15px;
-	cursor: pointer;
-}
-
-.modal-title {
-	position: absolute;
-	left: 20px;
-	top: 15px;
-}
-
-.input-group, .input-group2 {
+/* 탭 스타일 */
+.tab-section {
 	display: flex;
-	margin: 5px;
-	height: 30px;
+	margin-left: 5px;
+	gap: 3px;
 }
 
-.input-group label {
-	width: 120px;
+.tab-btn {
+	padding: 10px 20px;
+	background-color: #ddd;
+	border: 1px solid #ddd;
+	cursor: pointer;
+	transition: background-color 0.3s;
 	font-weight: bold;
+	border-top-left-radius: 10px; /* 왼쪽 위 모서리 둥글게 */
+	border-top-right-radius: 10px; /* 오른쪽 위 모서리 둥글게 */
 }
-
-.input-group input[type="text"] {
-	width: 200px;
-	padding: 5px;
-	border: 1px solid #ccc;
-	font-size: 15px;
-}
-
-#options {
-	width: 120px;
+.tab-btn.active, 
+.tab-btn:hover {
+	background-color: #828282;
+	color: black;
+	border-color: #ddd;
 	font-weight: bold;
-}
-.input-group2 span {
-	font-weight: bold;
-	margin: 5px;
-	font-size: 12px;
-}
-
-#optPrice {
-	width: 80px;
-}
-#optCnt {
-	width: 60px;
-}
-
-
-#option-container {
-            max-height: 100px; /* 원하는 최대 높이 */
-            overflow-y: auto; /* 세로 스크롤 표시 */
-           
-        }
-
-/* 버튼 기본 스타일 */
-.input-group2 button {
-   width: 25px; /* 버튼 너비 조정 */
-    height: 25px; /* 버튼 높이 조정 */
-    border: none;
-    border-radius: 10%;
-    font-size: 20px; /* 글자 크기 조정 */
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    background-color: #333; 
-    margin-left: 5px; /* 버튼 간의 간격 추가 */
-}
-
-.imgAdd {
-	width: 30px;
-	font-size: 20px; /* 글자 크기 조정 */
-}
-
-#proName{
-	width: 520px;
-}
-#proDiscount{
-	width: 50px;
-	
+	border-top-left-radius: 10px; /* 왼쪽 위 모서리 둥글게 */
+	border-top-right-radius: 10px; /* 오른쪽 위 모서리 둥글게 */
 }
 
 
 
-#proMainImages, #proDesImages {
-	all: unset; /* 모든 스타일 초기화 */
+/* 탭 콘텐츠 스타일 */
+.tab-content {
 	display: none;
 }
 
-.proEx {
-	font-size: 12px;
-	color: gray;
-	line-height: 40px; /* 요소의 높이와 동일하게 설정 */
-	margin-left: 10px;
+.tab-content.active {
+	display: block;
 }
 
-.checkLine {
-	border-top: 1px solid #cccccc; /* 연한 회색 구분선 */
-	margin: 10px 0; /* 위아래 여백 추가 */
+/* 나머지 스타일 */
+.filter-section-1, .cate-group, .search-group {
+	margin-bottom: 20px;
 }
 
-#discountUnit {
-	font-size: 17px;
-	margin-left: 5px;
-}
-
-#registerProductBtn {
-	width: 100%;
-	padding: 10px;
-	margin-top: 15px;
-	background-color: #555;
-	color: white;
-	font-size: 16px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: background-color 0.3s ease;
-}
-
-#registerCouponBtn:hover {
-	background-color: #333;
-}
-
-.image-preview {
-	display: flex; /* 이미지를 가로로 정렬 */
-	flex-wrap: wrap; /* 여러 줄로 정렬 */
-}
-
-.preview-image {
-	border: 1px solid #ccc; /* 이미지 테두리 */
-	border-radius: 5px; /* 모서리 둥글게 */
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
-}
-
-
-.date-group{
-	display: flex;
-	width: 100%;
-    border: 2px solid white;
-    background-color: #efefef;
-    align-items: center;
+.community-list-container {
+	margin-top: 20px;
 }

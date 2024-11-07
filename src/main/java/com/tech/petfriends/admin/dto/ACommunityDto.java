@@ -31,4 +31,8 @@ public class ACommunityDto {
    
     private String b_cate_name;
     private String mem_name;
+
+
+    
+    
 }
