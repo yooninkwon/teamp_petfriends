@@ -345,9 +345,36 @@
 		</div>
 	</form>
 
+	<!-- 장바구니에 담기가 완료되면 장바구니로 유도하는 팝업 -->
+	
+		<div id="addCartGoBtnBox" class="popup-overlay-goCart">
+			<div class="popup-content-goCart">
+				<div id="goCartMent">
+					<div id="goCartMentIn">
+						<span id="goPro">${product.pro_name}</span>
+					</div>
+					<div id="goCartMentIn">
+						<span>상품이 장바구니에 담겼습니다</span>
+					</div>
+				</div>
+				<button type="button" id="goCartBtn2">
+					<a href="/mypage/cart">장바구니 이동</a>
+				</button>
+	
+			</div>
+		</div>
+	
+
+
+
 	<div id="scrollTopBtn" class="scrollTopBtn">
 		<span>▲</span><br /> Top
 	</div>
+
+	
+
+
+
 
 	<!-- 푸터 -->
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
