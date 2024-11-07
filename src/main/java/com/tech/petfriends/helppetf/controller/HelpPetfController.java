@@ -1,6 +1,5 @@
 package com.tech.petfriends.helppetf.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
-import com.tech.petfriends.helppetf.service.AdoptionViewService;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
 import com.tech.petfriends.helppetf.service.PethotelMainService;
 
@@ -58,13 +56,13 @@ public class HelpPetfController {
 		return "/helppetf/adoption/adoption_main";
 	}
 	
-	@GetMapping("/adoption/adoption_detail") // 입양 센터 상세 페이지
-	public String adoptionContentSend(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		helpServiceInterface = new AdoptionViewService();
-		helpServiceInterface.execute(model); // <- 리다이렉트 이후 데이터 처리
-		return "/helppetf/adoption/adoption_detail"; // <- view단 jsp 매핑 호출
-	}
+//	@GetMapping("/adoption/adoption_detail") // 입양 센터 상세 페이지
+//	public String adoptionContentSend(HttpServletRequest request, Model model) {
+//		model.addAttribute("request", request);
+//		helpServiceInterface = new AdoptionViewService();
+//		helpServiceInterface.execute(model); // <- 리다이렉트 이후 데이터 처리
+//		return "/helppetf/adoption/adoption_detail"; // <- view단 jsp 매핑 호출
+//	}
 		
 	@GetMapping("/petteacher/petteacher_main") // 펫티쳐 메인 페이지
 	public String petteacherList(Model model) {

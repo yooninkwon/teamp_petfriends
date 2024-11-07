@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.configuration.ApikeyConfig;
-import com.tech.petfriends.helppetf.dto.AdoptionSelectedAnimalDto;
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
@@ -75,12 +74,12 @@ public class HelpPetfRestController {
 		return adoptionGetJson.fetchAdoptionData(model, request);
 	}
 
-	@PostMapping("/adoption/adoption_data")
-	public String adoptionData(@RequestBody AdoptionSelectedAnimalDto selectedAnimalDto, HttpServletRequest request, HttpSession session) {
-		// JSON 데이터를 AdoptionSelectedAnimalDto 객체로 받아옴		
-		session.setAttribute("selectedAnimal", selectedAnimalDto); // session에 AdoptionSelectedAnimalDto 등록
-		return "{\"status\": \"success\"}"; // 성공 메세지를 반환
-	}
+//	@PostMapping("/adoption/adoption_data")
+//	public String adoptionData(@RequestBody AdoptionSelectedAnimalDto selectedAnimalDto, HttpServletRequest request, HttpSession session) {
+//		// JSON 데이터를 AdoptionSelectedAnimalDto 객체로 받아옴		
+//		session.setAttribute("selectedAnimal", selectedAnimalDto); // session에 AdoptionSelectedAnimalDto 등록
+//		return "{\"status\": \"success\"}"; // 성공 메세지를 반환
+//	}
 
 	@SuppressWarnings("unchecked")
 	@GetMapping("/petteacher/petteacher_data")
