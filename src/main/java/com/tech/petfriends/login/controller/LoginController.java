@@ -20,6 +20,8 @@ import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.login.util.PasswordEncryptionService;
 import com.tech.petfriends.member.service.MemberService;
 import com.tech.petfriends.mypage.dto.GradeDto;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/login")
@@ -67,6 +69,7 @@ public class LoginController {
 
                 GradeDto userGrade = memberMapper.getGradeByMemberCode(member.getMem_code());
                 
+                memberMapper.updatelogdate(member.getMem_code()); // 로그인시 로그데이트 현재로 업데이트
                 memberMapper.deleteWindowPro(member.getMem_code()); //유저로그인시 둘러본상품목록 전체삭제
                 
                 session.setAttribute("loginUser", member); // 세션에 사용자 정보 저장
@@ -142,5 +145,19 @@ public class LoginController {
            return "login/changePw";  // 에러 발생 시 비밀번호 변경 페이지로 다시 이동
        }
    }
+   
+   @GetMapping("/withdraw")
+   public String withdraw(HttpSession session, HttpServletResponse response) {
+	   session.invalidate();
+	   
+	// 쿠키 삭제
+	    Cookie emailCookie = new Cookie("email", null);
+	    emailCookie.setMaxAge(0); // 쿠키 유효 기간을 0으로 설정하여 무효화
+	    emailCookie.setPath("/"); // 설정된 경로와 일치시켜야 삭제됨
+	    response.addCookie(emailCookie);
+	    
+	   return "redirect:/login/loginPage";
+   }
+   
    
 }

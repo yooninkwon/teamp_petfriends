@@ -5,6 +5,63 @@
 
 <mapper namespace="com.tech.petfriends.login.mapper.MemberMapper">
 
+	<!-- 로그인시 로그데이트 업데이트 -->
+	<update id="updatelogdate" parameterType="String">
+		UPDATE MEMBER
+		SET MEM_LOGDATE = SYSDATE
+		WHERE MEM_CODE = #{mem_code}
+	</update>
+
+	<!-- 최근 1주일 가입회원 조회 -->
+	<select id="newMemberForWeek" resultType="_int">
+		SELECT COUNT(*) 
+	    FROM MEMBER 
+	    WHERE MEM_REGDATE >= SYSDATE - 7
+	</select>
+	
+	<!-- 최근 1주일 방문회원 조회 -->
+	<select id="visitMemberForWeek" resultType="_int">
+		SELECT COUNT(*) 
+	    FROM MEMBER 
+	    WHERE MEM_LOGDATE >= SYSDATE - 7
+	</select>
+	
+	<!-- 최근 1주일 탈퇴회원 조회 -->
+	<select id="withdrawMemberForWeek" resultType="_int">
+		SELECT COUNT(*) 
+	    FROM MEMBER 
+	    WHERE MEM_LOGDATE >= SYSDATE - 7 AND MEM_TYPE = '탈퇴'
+	</select>
+	
+	<!-- 최근 가입회원 5명 조회 -->
+	<select id="newMemberList" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
+		SELECT *
+		FROM (
+		    SELECT * 
+		    FROM MEMBER
+		    ORDER BY MEM_REGDATE DESC
+		)
+		WHERE ROWNUM &lt; = 5
+	</select>
+	
+	<!-- 최근 탈퇴회원 35명 조회 -->
+	<select id="withdrawMemberList" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
+		SELECT *
+		FROM (
+		    SELECT * 
+		    FROM MEMBER
+		    WHERE MEM_TYPE = '탈퇴'
+		    ORDER BY MEM_LOGDATE DESC
+		)
+		WHERE ROWNUM &lt; = 5
+	</select>
+	
+	<!-- 총 회원수 조회 -->
+	<select id="totalMember" resultType="_int">
+		SELECT COUNT(*) 
+	    FROM MEMBER 
+	</select>
+
     <!-- 이메일과 비밀번호로 회원을 조회 -->
     <select id="getMemberByEmail" parameterType="String" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
 	    SELECT * 
