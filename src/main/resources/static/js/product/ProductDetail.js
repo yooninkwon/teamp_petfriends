@@ -1,24 +1,24 @@
 $(document).ready(function() {
-	console.log(windowMemCode+'멤코드다');
-	console.log(windowProCode+'프로코드다');
-	
+	console.log(windowMemCode + '멤코드다');
+	console.log(windowProCode + '프로코드다');
+
 	// 로그인이 되어있을때 상품상세페이지 로드시 둘러본상품목록에 추가
-	if(windowMemCode){
-		
+	if (windowMemCode) {
+
 		$.ajax({
-		    url: '/product/productAddWindow',
-		    type: 'POST',
-		    contentType: 'application/json',
-		    data: JSON.stringify({
-		        windowMemCode,
+			url: '/product/productAddWindow',
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify({
+				windowMemCode,
 				windowProCode
-		    })
+			})
 		});
-		
+
 	}
-	
-	
-	
+
+
+
 	//sub메뉴바 클릭 활성화
 	$(document).ready(function() {
 		$('#productPetItem').addClass('selected');
@@ -197,6 +197,7 @@ $(document).ready(function() {
 		var goCartBtn = document.getElementById("goCartBtn");
 		var closeGoCartBtn = document.getElementById("closeGoCartBtn");
 
+
 		console.log(memCode);
 		console.log(proCode);
 		console.log(optCode);
@@ -246,6 +247,7 @@ $(document).ready(function() {
 
 		addCartBtn.addEventListener("click", function() {
 			cartPopup.style.display = "none"; // 팝업 닫기
+
 		});
 
 		closeCartBtn.addEventListener("click", function() {
@@ -267,7 +269,7 @@ $(document).ready(function() {
 		const selectedOptionName = selectedOption.data('name');
 		const selectedOptionCode = selectedOption.data('code');
 		const selectedOptionStock = selectedOption.data('stock');
-		
+
 		$('#selectedOptionPrice').text(`1개 (${Number(selectedPrice).toLocaleString()}원)`);
 		$('#optionCodeInput').val(selectedCode);
 		$('#selectedOptionText').text(selectedOptionName); // 옵션 이름 업데이트
@@ -276,9 +278,31 @@ $(document).ready(function() {
 		$('#quantityMaxText').text(`최대 ${Number(selectedOptionStock).toLocaleString()}개`); // 화면에 재고 표시
 
 		updateFinalPrice(selectedPrice);
-		
+
+
+
+
 	});
 
+
+	document.querySelector("form[action='/product/productDetailCart']").addEventListener("submit", function() {
+		sessionStorage.setItem("showCartPopup", "true");
+	});
+
+	setTimeout(function() {
+		const popupStatus = sessionStorage.getItem("showCartPopup");
+		if (popupStatus === "true") {
+			const popup = document.getElementById("addCartGoBtnBox");
+			if (popup) {
+				popup.style.display = "flex";
+				sessionStorage.removeItem("showCartPopup");
+				// 3초 후 팝업을 닫기
+				setTimeout(function() {
+					popup.style.display = "none";
+				}, 2000);  // 2초 (2000ms)
+			}
+		}
+	}, 0);
 
 	// 수량 변경 시 최종 가격 업데이트
 	$('#quantityInput').on('input', function() {
@@ -538,11 +562,11 @@ $(document).ready(function() {
 	});
 
 
-	document.getElementById('contentBtn').addEventListener('click', function () {
-	        const productDetails = document.getElementById('productInfoPg');
-	        const isExpanded = productDetails.classList.toggle('expanded');
-	        this.textContent = isExpanded ? '상품 설명 접기 ▲' : '상품 설명 펼쳐보기 ▼';
-	    });
+	document.getElementById('contentBtn').addEventListener('click', function() {
+		const productDetails = document.getElementById('productInfoPg');
+		const isExpanded = productDetails.classList.toggle('expanded');
+		this.textContent = isExpanded ? '상품 설명 접기 ▲' : '상품 설명 펼쳐보기 ▼';
+	});
 
 
 
