@@ -1,23 +1,45 @@
 /**
+ * 이 스크립트는 로그인 되어있는 유저의 로그인 정보를 세션에서 추출하여
+ * 데이터베이스에 저장된 유저의 "배송지"주소를 불러온다.
+ * 
+ * 배송지 정보를 카카오맵 API에 입력하여 맵을 구성한다.
+ * 
+ * 다른 주소로 찾아보기 버튼을 누르면 iframe으로 구성된 모달창이 나온다.
+ * 다음 우편번호 API를 이용하여 검색의 기준이 될 주소를 변경하여 검색할 수도 있다.
+ * 
+ * 페이지 이름 (동물병원/반려동물 동반시설)에 따라 찾아내는 결과의 카테고리가 변경된다.
+ * 
+ * 만약 로그인 되어있지 않더라도, 다른 주소로 찾아보기를 눌러
+ * 다음 우편번호 API를 사용하면, 원하는 주소의 주변 시설들을 찾아볼 수 있다.
+ * 
+ * 카카오맵 API에서 구성된 검색결과 목록을 클릭하면, 
+ * 해당하는 시설의 "카카오맵 상세 페이지"로 연결된다.
  * 
  */
 
 
 $(document).ready(function() {
-
-	// @@ 유저 주소
+	
+	// 메인 nav, 서브 nav '선택됨' 클래스 설정
+	document.getElementById(main_navbar_id).classList.add('selected');
+	document.getElementById(sub_navbar_id).classList.add('selected');
+	
+	// 검색 키워드, 유저 주소, 닉네임 초기화
 	var searchKeyword = '';
 	var userAddress = ''
 	var userNick = '';
 	
+	// 페이지 이름에 따라 검색 키워드 변경
 	if (pageName === 'pet_facilities') {
 		searchKeyword = '반려동물 동반';
 	} else {
 		searchKeyword = '동물병원';		
 	}
 	
+	// 로그인된 유저의 닉네임과 주소를 불러오는 함수
 	getNickAndAddr();
 	
+	// 로그인된 유저의 닉네임과 주소를 불러오는 함수
 	function getNickAndAddr() {
 		fetch("/helppetf/find/adress_data", {
 			method: 'GET',
@@ -29,14 +51,17 @@ $(document).ready(function() {
 			if(response.ok) {
 				// 서버에 데이터 전송 성공 후 간단히 콘솔에 로그 출력
 				console.log('Data successfully sent to server');
-				return response.json(); // DB에 등록된 값을 다시 전달받음 (예약완료, 예약정보 확인 페이지를 위해)
+				return response.json();
 			} else {
 				console.error('Failed to send data');
 			}
 		})
 		.then(data => {
+			// 변수에 불러온 값을 저장
 			userNick = data.mem_nick;
 			userAddress = data.userAddr;
+			
+			// 안내창에 적혀있는 유저 닉네임, 주소를 변경하는 함수
 			changeUserAddress(userAddress);
 		})
 		.catch(error => {
@@ -44,9 +69,11 @@ $(document).ready(function() {
 		});
 	}
 
+	// 안내창에 적혀있는 유저 닉네임, 주소를 변경하는 함수
 	function changeUserAddress(userAddress) {
 		post = '';
-
+		
+		// 유저 닉네임이 null이 아니라면 == 로그인 되어 있다면
 		if(userNick != null){
 			post += `<span class="user_nickname">${userNick }</span>님의 주소는 <span class="current_address">`;
 			post += `${userAddress }</span> 입니다. 주소를 기반으로 주변 동반 시설을 찾아볼게요.`;
@@ -54,8 +81,11 @@ $(document).ready(function() {
 			post += '<span class="user_nickname">로그인</span> 하시면 <span class="current_address">';
 			post += '배송지로 저장되어 있는 주소</span>로 주변 동반 시설을 찾아보실 수 있습니다.';
 		}
-
+		
+		// 유저 닉네임, 주소를 html 태그와 함께 작성
 		$('.my_adress_box').html(post);
+		
+		// 주소를 입력하여 지도를 구성하는 함수
 		buildTMap(userAddress);
 	}
 	
@@ -67,116 +97,110 @@ $(document).ready(function() {
 	
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	mapOption = {
-		center : new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-		level : 3
-	// 지도의 확대 레벨
+		center : new kakao.maps.LatLng(37.566826, 126.9786567), // 초기 지도의 중심좌표
+		level : 3 // 지도의 확대 레벨
 	};
 
-	// 지도를 생성합니다    
+	// 지도를 생성
 	var map = new kakao.maps.Map(mapContainer, mapOption);
 	
-	// 주소-좌표 변환 객체를 생성합니다
+	// 주소-좌표 변환 객체를 생성
 	var geocoder = new kakao.maps.services.Geocoder();
 	
-	// 장소 검색 객체를 생성합니다
+	// 장소 검색 객체를 생성
 	var ps = new kakao.maps.services.Places();
 	
+	// 주소를 입력하여 지도를 구성하는 함수
 	function buildTMap(userAddress) {
-		// 주소로 좌표를 검색합니다
+		
+		// 주소로 좌표를 검색
 		geocoder.addressSearch(userAddress, function(result, status) {
 			if (status === kakao.maps.services.Status.OK) {
 				var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 		
-				// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+				// 지도의 중심을 결과값으로 받은 위치로 이동
 				map.setCenter(coords);
 		
-				// 결과값으로 받은 위치를 마커로 표시합니다
-				// @@ TODO: 유저 주소 마커 이미지 변경
+				// 결과값으로 받은 위치를 마커로 표시
+// @@ TODO: 유저 주소 마커 이미지 변경
 				var marker = new kakao.maps.Marker({
 					map : map,
 					position : coords
 				});
 		
-				// 장소 검색 객체를 생성합니다
+				// 장소 검색 객체를 생성
 				var ps = new kakao.maps.services.Places();
 		
-				// 키워드로 장소를 검색합니다
+				// 키워드로 장소를 검색
 				ps.keywordSearch(searchKeyword, placesSearchCB, {
 					location : coords
 				});
 			}
 		});
 		
-		// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+		// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성
 		var infowindow = new kakao.maps.InfoWindow({
 			zIndex : 1
 		});
 		
-		// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+		// 장소검색이 완료됐을 때 호출되는 콜백함수
 		function placesSearchCB(data, status, pagination) {
+			// 정상적으로 검색이 완료됐으면
 			if (status === kakao.maps.services.Status.OK) {
-		
-				// 정상적으로 검색이 완료됐으면
-				// 검색 목록과 마커를 표출합니다
+				// 검색 목록과 마커를 표출
 				displayPlaces(data);
-				// 페이지 번호를 표출합니다
-				displayPagination(pagination);
-		
+				
+				// 페이지 번호를 표출
+				displayPagination(pagination);		
 			} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-		
+				// 검색 결과가 0이라면
 				alert('검색 결과가 존재하지 않습니다.');
 				return;
-		
 			} else if (status === kakao.maps.services.Status.ERROR) {
-		
+				// 검색 중 오류가 발생한다면
 				alert('검색 결과 중 오류가 발생했습니다.');
 				return;
-		
 			}
 		}
 		
-		// 검색 결과 목록과 마커를 표출하는 함수입니다
+		// 검색 결과 목록과 마커를 표출하는 함수
 		function displayPlaces(places) {
-		
+			
+			// 결과 리스트, 메뉴들을 불러옴
 			var listEl = document.getElementById('placesList'), menuEl = document
-					.getElementById('menu_wrap'), fragment = document
-					.createDocumentFragment(), bounds = new kakao.maps.LatLngBounds(), listStr = '';
+			        .getElementById('menu_wrap'), fragment = document
+			        .createDocumentFragment(), bounds = new kakao.maps.LatLngBounds(), listStr = '';
 		
-			// 검색 결과 목록에 추가된 항목들을 제거합니다
+			// 검색 결과 목록에 추가된 항목들을 제거
 			removeAllChildNods(listEl);
 		
-			// 지도에 표시되고 있는 마커를 제거합니다
+			// 지도에 표시되고 있는 마커를 제거
 			removeMarker();
 		
 			for (var i = 0; i < places.length; i++) {
-				// 마커를 생성하고 지도에 표시합니다
+				// 마커를 생성하고 지도에 표시
 				var placePosition = new kakao.maps.LatLng(places[i].y,
 						places[i].x), marker = addMarker(placePosition, i), 
-						itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+						itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성
 				
 						
 				// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-				// LatLngBounds 객체에 좌표를 추가합니다
+				// LatLngBounds 객체에 좌표를 추가
 				bounds.extend(placePosition);
 		
 				// 마커와 검색결과 항목에 mouseover 했을때
-				// 해당 장소에 인포윈도우에 장소명을 표시합니다
-				// mouseout 했을 때는 인포윈도우를 닫습니다
+				// 해당 장소에 인포윈도우에 장소명을 표시
+				// mouseout 했을 때는 인포윈도우를 닫음
 				(function(marker, title) {
-					kakao.maps.event.addListener(marker, 'mouseover',
-							function() {
+					kakao.maps.event.addListener(marker, 'mouseover',function() {
 								displayInfowindow(marker, title);
 							});
-		
-					kakao.maps.event.addListener(marker, 'mouseout',
-							function() {
+					kakao.maps.event.addListener(marker, 'mouseout',function() {
 								infowindow.close();
 							});
-		
 					itemEl.onmouseover = function() {
 						displayInfowindow(marker, title);
 					};
-		
 					itemEl.onmouseout = function() {
 						infowindow.close();
 					};
@@ -185,33 +209,30 @@ $(document).ready(function() {
 				fragment.appendChild(itemEl);
 			}
 		
-			// 검색결과 항목들을 검색결과 목록 Element에 추가합니다
+			// 검색결과 항목들을 검색결과 목록 Element에 추가
 			listEl.appendChild(fragment);
 			menuEl.scrollTop = 0;
 		
-			// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+			// 검색된 장소 위치를 기준으로 지도 범위를 재설정
 			map.setBounds(bounds);
 		}
 		
-		// 검색결과 항목을 Element로 반환하는 함수입니다
+		// 검색결과 항목을 Element로 반환하는 함수
 		function getListItem(index, places) {
-			var el = document.createElement('li'), itemStr = '<span class="markerbg marker_'
-					+ (index + 1)
-					+ '"></span>'
-					+ '<div class="info">'
-					+ '<a href="https://place.map.kakao.com/' + places.id + '" target="_blank">'
-					+ '   <h5>' + places.place_name + '</h5>';
-		
+			var el = document.createElement('li');
+			itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>';
+			itemStr += '<div class="info"><a href="https://place.map.kakao.com/' + places.id + '" target="_blank">';
+			itemStr += '<h5>' + places.place_name + '</h5>';
+
 			if (places.road_address_name) {
-				itemStr += '    <span>' + places.road_address_name + '</span>'
-						+ '   <span class="jibun gray">' + places.address_name
-						+ '</span>';
+				itemStr += '<span>    ' + places.road_address_name + '</span>';
+				itemStr += '<span class="jibun gray">   ' + places.address_name;
+				itemStr += '</span>';
 			} else {
-				itemStr += '    <span>' + places.address_name + '</span>';
+				itemStr += '<span>    ' + places.address_name + '</span>';
 			}
 		
-			itemStr += '  <span class="tel">' + places.phone + '</span>'
-					+ '</div>';
+			itemStr += '<span class="tel">  ' + places.phone + '</span></div>';
 		
 			el.innerHTML = itemStr;
 			el.className = 'item';
@@ -219,9 +240,9 @@ $(document).ready(function() {
 			return el;
 		}
 		
-		// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+		// 마커를 생성하고 지도 위에 마커를 표시하는 함수
 		function addMarker(position, idx, title) {
-			var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+			var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 사용
 			imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
 			imgOptions = {
 				spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
@@ -234,13 +255,13 @@ $(document).ready(function() {
 				image : markerImage
 			});
 		
-			marker.setMap(map); // 지도 위에 마커를 표출합니다
-			markers.push(marker); // 배열에 생성된 마커를 추가합니다
+			marker.setMap(map); // 지도 위에 마커를 표출
+			markers.push(marker); // 배열에 생성된 마커를 추가
 		
 			return marker;
 		}
 		
-		// 지도 위에 표시되고 있는 마커를 모두 제거합니다
+		// 지도 위에 표시되고 있는 마커를 모두 제거
 		function removeMarker() {
 			for (var i = 0; i < markers.length; i++) {
 				markers[i].setMap(null);
@@ -248,16 +269,17 @@ $(document).ready(function() {
 			markers = [];
 		}
 		
-		// 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+		// 검색결과 목록 하단에 페이지번호를 표시는 함수
 		function displayPagination(pagination) {
 			var paginationEl = document.getElementById('pagination'), fragment = document
 					.createDocumentFragment(), i;
 		
-			// 기존에 추가된 페이지번호를 삭제합니다
+			// 기존에 추가된 페이지번호를 삭제
 			while (paginationEl.hasChildNodes()) {
 				paginationEl.removeChild(paginationEl.lastChild);
 			}
-		
+			
+			// 새로운 페이지번호 생성
 			for (i = 1; i <= pagination.last; i++) {
 				var el = document.createElement('a');
 				el.href = "#";
@@ -272,14 +294,14 @@ $(document).ready(function() {
 						}
 					})(i);
 				}
-		
+				
 				fragment.appendChild(el);
 			}
 			paginationEl.appendChild(fragment);
 		}
 		
-			// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
-			// 인포윈도우에 장소명을 표시합니다
+			// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수
+			// 인포윈도우에 장소명을 표시
 			function displayInfowindow(marker, title) {
 				var content = '<div style="padding:5px;z-index:1;">' + title
 						+ '</div>';
@@ -288,17 +310,13 @@ $(document).ready(function() {
 				infowindow.open(map, marker);
 			}
 			
-			// 검색결과 목록의 자식 Element를 제거하는 함수입니다
+			// 검색결과 목록의 자식 Element를 제거하는 함수
 			function removeAllChildNods(el) {
 				while (el.hasChildNodes()) {
 					el.removeChild(el.lastChild);
 				}
 			}
 			
-			$('.search_btn').on('click', function(){
-				const adress_wrap = $('.change_adress_wrap').get(0);
-				adress_wrap.classList.toggle('on');
-			});
 		}
 
 // 카카오맵 API 종료 // 
@@ -306,6 +324,10 @@ $(document).ready(function() {
 
 
 // 우편번호 찾기 API //
+		$('.search_btn').on('click', function(){
+			const adress_wrap = $('.change_adress_wrap').get(0);
+			adress_wrap.classList.toggle('on');
+		});
 
 		// 우편번호 API의 테마 지정
 		var themeObj = {
@@ -327,15 +349,19 @@ $(document).ready(function() {
 		$('.search_btn').on('click', function(){
 			let flag = $(this).attr('data-isOn');
 			
+			// dataset의 값이 'on', 'off' 여부를 따짐
 			if (flag === 'off') {
+				// 'off'인 경우: 'on'으로 변경한 뒤 다음 우편번호찾기 API 요청 함수 호출
 				$(this).attr('data-isOn', 'on');
 				executePostcode();
 			} else {
+				// 'on'인 경우: 'off'로 변경한 뒤 다음 우편번호 API, 모달창 닫는 함수 호출
 				$(this).attr('data-isOn', 'off');
 				closePostcode();
 			}
 		});
 		
+		// 다음 우편번호찾기 API 요청 함수 호출
 	    function executePostcode() {
 	        new daum.Postcode({
 				theme: themeObj,
@@ -369,9 +395,6 @@ $(document).ready(function() {
 	        initLayerPosition();
 	    }
 
-	    // 브라우저의 크기 변경에 따라 레이어를 가운데로 이동시키고자 하실때에는
-	    // resize이벤트나, orientationchange이벤트를 이용하여 값이 변경될때마다 아래 함수를 실행 시켜 주시거나,
-	    // 직접 element_layer의 top,left값을 수정해 주시면 됩니다.
 	    function initLayerPosition(){
 	        var width = 300; //우편번호서비스가 들어갈 element의 width
 	        var height = 432; //우편번호서비스가 들어갈 element의 height
@@ -385,8 +408,8 @@ $(document).ready(function() {
 	        element_postCode_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2) + 'px';
 	    }
 		
+		// 다음 우편번호 API, 모달창 닫는 함수 호출
 		function closePostcode() {
-		    // iframe을 넣은 element를 안보이게 한다.
 			element_div_layer.style.display = 'none';
 		    element_postCode_layer.style.display = 'none';
 		}

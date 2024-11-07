@@ -15,13 +15,8 @@
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 	<jsp:include page="/WEB-INF/views/include_jsp/helppetf_sub_navbar.jsp" />
 	<script>
-		$(document).ready(
-				function() {
-					document.getElementById('${main_navbar_id }').classList
-							.add('selected');
-					document.getElementById('${sub_navbar_id }').classList
-							.add('selected');
-				});
+		let main_navbar_id = `${main_navbar_id }`;
+		let sub_navbar_id = `${sub_navbar_id }`;
 	</script>
 
 	<!-- 입양센터 메인 -->

@@ -32,6 +32,9 @@
 
 $(document).ready(function() {
 	
+	// 메인 nav, 서브 nav '선택됨' 클래스 설정
+	document.getElementById(main_navbar_id).classList.add('selected');
+	document.getElementById(sub_navbar_id).classList.add('selected');
 	/* 
 	
 	펫티쳐 메인

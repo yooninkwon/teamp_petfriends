@@ -37,7 +37,13 @@ import { orgCdOptions } from '/static/js/helppetf/org_data.js'; // 지역 데이
 */
 
 $(document).ready(function() {
+	
+	// 메인 nav, 서브 nav '선택됨' 클래스 설정
+	document.getElementById(main_navbar_id).classList.add('selected');
+	document.getElementById(sub_navbar_id).classList.add('selected');
+	
 	pageScroll(0)
+	
 	let selectedPetData = null;
 	const itemsPerPage = 8; // 페이지 당 item 수 = 8
 	let currentPage = 1; // 현재 표시되는 페이지
