@@ -1,5 +1,7 @@
 package com.tech.petfriends.admin.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -206,28 +208,41 @@ public class AdminRestController {
 	    String searchFilterType = requestData.get("searchFilterType");
 	    String searchCategory = requestData.get("searchCategory");
 	    String searchStartDate = requestData.get("searchStartDate");
-	    String searchEndDate = requestData.get("searchEndDate");
-	     
+	    String searchEndDate = requestData.get("searchEndDate");     
+	    
 	    System.out.println("**************************" );
 	    System.out.println("searchCategory: " + searchCategory );
 	    System.out.println("searchKeyword: " + searchKeyword);
 	    System.out.println("searchFilterType: " + searchFilterType);
 	    System.out.println("searchStartDate: " + searchStartDate);
 	    System.out.println("searchEndDate: " + searchEndDate);
-
+	    
+	    // 날짜 형식 변환 (문자열 -> LocalDate)
+	    LocalDate startDate = null;
+	    LocalDate endDate = null;
 	        
-	    // "all"인 경우 전체 게시물을 조회
+	    // 시작 날짜가 있을 경우 LocalDate로 변환
+	    if (searchStartDate != null && !searchStartDate.isEmpty()) {
+	        startDate = LocalDate.parse(searchStartDate, DateTimeFormatter.ISO_LOCAL_DATE);
+	    }
+
+	    // 종료 날짜가 있을 경우 LocalDate로 변환
+	    if (searchEndDate != null && !searchEndDate.isEmpty()) {
+	        endDate = LocalDate.parse(searchEndDate, DateTimeFormatter.ISO_LOCAL_DATE);
+	    }   
 	   
-	  
-	    List<ACommunityDto>  communityList = communtiyDao.communityList(searchKeyword, searchFilterType, searchCategory, searchStartDate, searchEndDate);  // 전체 게시물 조회
-	    System.out.println("조회된 게시물 수: " + communityList.size());  // 게시물 수 확인    
-	
-	  
+	    // 해당 페이지에 맞는 게시물 리스트 조회
+	    List<ACommunityDto> communityList = communtiyDao.communityList(
+	        searchKeyword, searchFilterType, searchCategory, searchStartDate, searchEndDate );
+	 
+	    int totalItems = communtiyDao.totalItems(
+	            searchKeyword, searchFilterType, searchCategory, searchStartDate, searchEndDate);
+	    
+	    System.out.println("조회된 게시물 수: " + communityList.size());  // 게시물 수 확인
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("communityList", communityList);
-
-	               
-	    
+	    response.put("totalItems", totalItems);
+	        
 	    return response;
 	}
 

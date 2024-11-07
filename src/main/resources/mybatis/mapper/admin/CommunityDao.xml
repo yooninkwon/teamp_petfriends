@@ -6,49 +6,76 @@
 <mapper namespace="com.tech.petfriends.admin.mapper.AdminCommunityDao">
 
   <select id="communityList" resultType="com.tech.petfriends.admin.dto.ACommunityDto">
-    SELECT M.MEM_NAME, C.*, BC.B_CATE_NAME
-    FROM MEMBER M
-    JOIN COMMUNITY_BOARD C ON M.MEM_CODE = C.MEM_CODE
-    JOIN BOARD_CATEGORY BC ON BC.B_CATE_NO = C.B_CATE_NO
-
-    <where>
-      <choose>
-        <!-- 카테고리가 선택된 경우 카테고리 조건을 우선시 -->
-        <!-- 검색 타입이 'all'이고, 카테고리가 '0'일 때 전체 데이터 반환 -->
-        <when test="searchCategory == '0' and searchFilterType == 'all'">
-          <!-- WHERE 조건을 추가하지 않음으로써 모든 데이터 반환 -->
-        </when>
-
-        <!-- 검색 조건이 있는 경우 -->
-        <otherwise>
-          <!-- 카테고리가 선택된 경우 해당 카테고리 내에서 검색 -->
-          <if test="searchCategory != null and searchCategory != '0'">
-            AND C.B_CATE_NO = #{searchCategory}
-          </if>
-
-          <choose>
-            <!-- 검색 타입이 'all'일 때 카테고리 내에서 전체 검색 -->
-            <when test="searchFilterType == 'all'">
-              AND (C.BOARD_TITLE LIKE '%' || #{searchKeyword} || '%' 
-                OR M.MEM_NAME LIKE '%' || #{searchKeyword} || '%')
-            </when>
-            
-            <!-- 검색 타입이 'title'일 때 제목으로 검색 -->
-            <when test="searchFilterType == 'title'">
-              AND C.BOARD_TITLE LIKE '%' || #{searchKeyword} || '%'
-            </when>
-
-            <!-- 검색 타입이 'user_name'일 때 사용자 이름으로 검색 -->
-            <when test="searchFilterType == 'user_name'">
-              AND M.MEM_NAME LIKE '%' || #{searchKeyword} || '%'
-            </when>
-          </choose>
-        </otherwise>
-      </choose>
-    </where>
-
+	SELECT M.MEM_NAME, C.*, BC.B_CATE_NAME
+	FROM MEMBER M
+	JOIN COMMUNITY_BOARD C ON M.MEM_CODE = C.MEM_CODE
+	JOIN BOARD_CATEGORY BC ON BC.B_CATE_NO = C.B_CATE_NO
+	WHERE      
+          C.BOARD_NO > 0     
+       
+	    <!-- 시작일과 종료일이 모두 있을 때 해당 날짜 범위로 필터링 -->
+	<if test="searchStartDate != '' and searchEndDate != ''">
+	 AND C.BOARD_CREATED BETWEEN #{searchStartDate} 
+	 AND TO_DATE(#{searchEndDate}, 'yyyy-MM-dd') + 1
+	</if>
+	            
+     <!-- 카테고리 필터가 있을 경우 해당 카테고리만 선택 -->
+      <if test="searchCategory != 0">
+         AND  C.B_CATE_NO = #{searchCategory}
+      </if>       
+	
+	<!-- 검색 필터가 'all'일 때 제목이나 사용자 이름 검색 -->
+	<if test="searchFilterType == 'all' ">
+	   AND 	(C.BOARD_TITLE LIKE '%' || #{searchKeyword} || '%' 
+	         OR M.MEM_NAME LIKE '%' || #{searchKeyword} || '%')
+	</if>
+	
+	<!-- 검색 타입이 'title'일 때 제목으로 검색 -->
+	<if test="searchFilterType == 'title'">
+	    AND C.BOARD_TITLE LIKE '%' || #{searchKeyword} || '%'
+	</if>
+	
+	<!-- 검색 타입이 'user_name'일 때 사용자 이름으로 검색 -->
+	<if test="searchFilterType == 'user_name'">
+	   AND  M.MEM_NAME LIKE '%' || #{searchKeyword} || '%'
+	</if>
     ORDER BY C.BOARD_NO DESC
+  
   </select>
+     
    
+
+<!-- 총 게시글 수 조회 -->
+  <select id="totalItems" resultType="int">
+    SELECT COUNT(*)
+    FROM COMMUNITY_BOARD C
+    JOIN MEMBER M ON M.MEM_CODE = C.MEM_CODE
+    JOIN BOARD_CATEGORY BC ON BC.B_CATE_NO = C.B_CATE_NO
+    WHERE C.BOARD_NO > 0
+
+    <if test="searchStartDate != '' and searchEndDate != ''">
+      AND C.BOARD_CREATED BETWEEN #{searchStartDate}
+      AND TO_DATE(#{searchEndDate}, 'yyyy-MM-dd') + 1
+    </if>
+
+    <if test="searchCategory != 0">
+      AND C.B_CATE_NO = #{searchCategory}
+    </if>
+
+    <if test="searchFilterType == 'all'">
+      AND (C.BOARD_TITLE LIKE '%' || #{searchKeyword} || '%' 
+           OR M.MEM_NAME LIKE '%' || #{searchKeyword} || '%')
+    </if>
+
+    <if test="searchFilterType == 'title'">
+      AND C.BOARD_TITLE LIKE '%' || #{searchKeyword} || '%'
+    </if>
+
+    <if test="searchFilterType == 'user_name'">
+      AND M.MEM_NAME LIKE '%' || #{searchKeyword} || '%'
+    </if>
+  </select>
+
+
 
 </mapper>
