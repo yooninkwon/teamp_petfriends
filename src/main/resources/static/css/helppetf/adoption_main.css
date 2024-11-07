@@ -1,6 +1,4 @@
 @charset "UTF-8";
-/*  #adoption-main  */
-/*  #adoption-detail  */
 body {
 	font-family: '맑은 고딕', sans-serif;
 	margin: 0;
@@ -153,6 +151,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	gap: 10px; /* 필터 사이의 간격 */
+	margin-top: 15px;
 	margin-bottom: 20px;
 }
 
