@@ -140,6 +140,7 @@
                 <label><input type="text" name="report-search-filter" value="" id="report-search-filter"></label> 
                 <input type="button" value="검색" class="btn-style" id="report-searchBtn" />
                 <input type="button" value="엑셀 다운로드" class="btn-style" id="report-downloadBtn" />
+                <input type="button" value="처리/미처리" class="btn-style" id="report-statusBtn" />
             </div>
 
             <!-- 리스트 영역 -->

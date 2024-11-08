@@ -1,22 +1,29 @@
 $(document).ready(function() {
-    
-    // 페이지 버튼 클릭 이벤트 리스너
-    $(document).on("click", ".page-btn", function() {
-        currentPage = $(this).data("page");
-        loadData(currentPage); // 페이지 번호에 맞는 데이터 로드
-    });
 
-    // 검색 버튼 클릭 이벤트 리스너 (전체 게시글)
-    $("#searchBtn").click(function() {
-        currentPage = 1; 
-        loadData(currentPage);
-    });
-    
-    // 검색 버튼 클릭 이벤트 리스너 (신고 현황)
-    $("#report-searchBtn").click(function() {
-        currentPage = 1;
-        loadReportData(currentPage); // 신고 현황 데이터 로드
-    });
+
+	   // 페이지 버튼 클릭 이벤트 리스너 (community 테이블)
+	   $(document).on("click", "#pagination .page-btn", function() {
+	       currentPage = $(this).data("page");
+	       loadData(currentPage); // community 데이터 로드
+	   });
+
+	   // 페이지 버튼 클릭 이벤트 리스너 (report 테이블)
+	   $(document).on("click", "#report-pagination .page-btn", function() {
+	       currentPage = $(this).data("page");
+	       loadReportData(currentPage); // report 데이터 로드
+	   });
+
+	   // 검색 버튼 클릭 이벤트 리스너 (전체 게시글)
+	   $("#searchBtn").click(function() {
+	       currentPage = 1; 
+	       loadData(currentPage);
+	   });
+
+	   // 검색 버튼 클릭 이벤트 리스너 (신고 현황)
+	   $("#report-searchBtn").click(function() {
+	       currentPage = 1;
+	       loadReportData(currentPage); // 신고 현황 데이터 로드
+	   });
 
     // 데이터 로드 함수 (전체 게시글)
     function loadData(page) {
@@ -125,16 +132,17 @@ $(document).ready(function() {
                     rows = '<tr><td colspan="7">데이터가 없습니다.</td></tr>';
                 } else {
                     currentPageData.forEach(function(report) {
-                        rows += `<tr>
-                                    <td><input type="checkbox" class="select-item"></td>
-                                    <td>${report.mem_name}</td>
+                        rows += `<tr>									
+                                    <td><input type="checkbox" class="select-item" value="${report.report_id}" /></td>                                   
+									<td>${report.mem_name}</td>
                                     <td>${report.reason}</td>
                                     <td>${report.report_type}</td>
                                     <td>${report.reporter_id}</td>
                                     <td>${report.report_date}</td>
                                     <td>${report.status}</td>
                                   </tr>`;
-                    });
+             	
+					});
                 }
 
                 $("#report-community-table-body").append(rows);
@@ -162,7 +170,8 @@ $(document).ready(function() {
 
     var currentPage = 1;
     loadData(currentPage);
-
+	loadReportData (currentPage);
+	
     $("#select-all").click(function() {
         var isChecked = $(this).prop('checked');
         $(".select-item").prop('checked', isChecked);
@@ -192,6 +201,42 @@ $(document).ready(function() {
         }
     });
 
+	
+	$("#report-statusBtn").click(function(){
+		 var selectedReport =[];	
+		  
+		$('.select-item:checked').each(function(index) {	
+			let no = $(this).val();	
+				selectedReport[index] = {
+					"reportNo" : no													
+				}
+				
+			});
+			console.log(selectedReport);
+			
+		fetch('/admin/updateReportStatus', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(selectedReport)
+			})
+			//
+			.then(response => {
+				if(response.ok) {
+					return response.json();
+				}
+			})
+			.then(data => {
+				console.log(data);
+			})
+			.catch(error =>{
+				console.error(error);
+			});
+		});
+	
+
+		
     $("#report-downloadBtn").click(function() {
         var selectedRows = [];
         $(".select-item:checked").each(function() {
@@ -226,4 +271,10 @@ $(document).ready(function() {
         $("#report-start-date").val("");
         $("#report-end-date").val("");
     });
+
+	
+	
+
+	
+	
 });
