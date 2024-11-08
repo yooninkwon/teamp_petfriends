@@ -32,7 +32,14 @@ public class ACommunityDto {
     private String b_cate_name;
     private String mem_name;
 
-
+    //신고자 테이블
+    private int report_id;
+    private String reporter_id;
+    private String reason;
+    private Date report_date;
+    private String status;
+    private int comment_no;
+    private String report_type;
     
     
 }
