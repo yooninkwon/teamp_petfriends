@@ -25,6 +25,7 @@ import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.AdoptionGetJson;
 import com.tech.petfriends.helppetf.service.FindAddrTMapService;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
+import com.tech.petfriends.helppetf.service.PethotelMainService;
 import com.tech.petfriends.helppetf.service.PethotelReserveService;
 import com.tech.petfriends.helppetf.service.PethotelSelectPetService;
 import com.tech.petfriends.helppetf.service.PetteacherDetailService;
@@ -61,25 +62,28 @@ public class HelpPetfRestController {
 		return (ArrayList<MyPetDto>) model.getAttribute("petDto");
 	}
 
-	@PostMapping("/pothotel/pethotel_reserve_data")
+	@PostMapping("/pethotel/pethotel_reserve_data")
 	public String pethotelReserveData(@RequestBody ArrayList<PethotelFormDataDto> formList, HttpServletRequest request,
 			Model model, HttpSession session) throws Exception {
+		
 		PethotelReserveService helpService = new PethotelReserveService(helpDao);
+		
 		return helpService.execute(model, session, request, formList); // execute 메서드를 실행하여 반환된 Json 데이터 반환
 	}
-
+	
+	@GetMapping("/pethotel/pethotel_post_data")
+	public String pethotelPostData(Model model) {
+		helpServiceInterface = new PethotelMainService(helpDao);
+		helpServiceInterface.execute(model);
+				
+		return (String) model.getAttribute("json");
+	}
+	
 	@GetMapping("/adoption/getJson")
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson(HttpServletRequest request, Model model)
 			throws Exception {
 		return adoptionGetJson.fetchAdoptionData(model, request);
 	}
-
-//	@PostMapping("/adoption/adoption_data")
-//	public String adoptionData(@RequestBody AdoptionSelectedAnimalDto selectedAnimalDto, HttpServletRequest request, HttpSession session) {
-//		// JSON 데이터를 AdoptionSelectedAnimalDto 객체로 받아옴		
-//		session.setAttribute("selectedAnimal", selectedAnimalDto); // session에 AdoptionSelectedAnimalDto 등록
-//		return "{\"status\": \"success\"}"; // 성공 메세지를 반환
-//	}
 
 	@SuppressWarnings("unchecked")
 	@GetMapping("/petteacher/petteacher_data")

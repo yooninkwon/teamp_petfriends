@@ -200,7 +200,6 @@ $(document).ready(function() {
 				// 펫 정보
 				for (var i = 0; i < data.reservePets.length; i++) {
 					lists += '<tr>';
-					lists += '<td>' + data.reservePets[i].hph_reserve_no + '</td>';
 					lists += '<td>' + data.reservePets[i].hphp_reserve_pet_no + '</td>';
 					lists += '<td>' + data.reservePets[i].hphp_pet_name + '</td>';
 					lists += '<td>' + data.reservePets[i].hphp_pet_type + '</td>';
@@ -286,27 +285,46 @@ $(document).ready(function() {
 		$('input[name="reserve_status_set"][value="거절"]').on('change', function() {
 			openModal();
 		});
-
+		
+		// 거절사유 작성하는 창 닫는 버튼 클릭시
+		$('.close-btn').on('click', function() {
+			closeModal();
+		});
+		
 		// 거절 사유 작성하는 창 열기
 		function openModal() {
 			document.getElementById('reasonModal').style.display = 'block';
 		}
 
+		// 거절 사유 작성하는 창 닫기
+		function closeModal() {
+			// 사유를 적어 업데이트하지 않고 닫는다면 라디오버튼을 기존의 상태로 복귀
+			$('input[name="reserve_status_set"][value="' + currStatus + '"]').prop("checked", true);
+			document.getElementById('reasonModal').style.display = 'none';
+		}
+
 		// 예약 거절 창의 예약상태변경 버튼 클릭 시
 		$(document).on('click', '#reserveSubmit_refusal', function() {
+			let statusVal = $(`input[name="reserve_status_set"]:checked`).val()
 			hph_refusal_reason = $('textarea[name="refusal_reason"]').val();
-			// 작성한 거절 사유를 오브젝트에 저장해 DB 업데이트 요청
-			let statusObj = {
-				'hph_reserve_no': currReserveNo,
-				'hph_status': '거절',
-				'hph_refusal_reason': hph_refusal_reason
-			}
-			if (statusVal === '거절') {
-				// 현재 승인 상태가 요청할 상태와 같을 때 알림
-				alert('변동사항이 없습니다.')
+			let statusObj = {};
+
+			if(hph_refusal_reason.replace(/\s/g, "").length != 0){
+				// 작성한 거절 사유를 오브젝트에 저장해 DB 업데이트 요청
+				statusObj = {
+					'hph_reserve_no': currReserveNo,
+					'hph_status': '거절',
+					'hph_refusal_reason': hph_refusal_reason
+				}
+				if (statusVal === currStatus) {
+					// 현재 승인 상태가 요청할 상태와 같을 때 알림
+					alert('변동사항이 없습니다.');
+				} else {
+					// 다를 경우 업데이트 요청 보냄
+					fetchDataForStatus(statusObj);
+				}
 			} else {
-				// 다를 경우 업데이트 요청 보냄
-				fetchDataForStatus(statusObj);
+				alert('거절 사유를 작성해 주세요.');
 			}
 		});
 
