@@ -17,8 +17,6 @@ $(document).ready(function() {
 
 	}
 
-
-
 	//sub메뉴바 클릭 활성화
 	$(document).ready(function() {
 		$('#productPetItem').addClass('selected');
@@ -101,10 +99,6 @@ $(document).ready(function() {
 	});
 
 
-
-
-
-
 	//페이지 시작시 유저의 상품 찜상태 체크
 	startWish(wishResult);
 
@@ -123,21 +117,12 @@ $(document).ready(function() {
 		}
 	}
 
-	//찜버튼 누를시  ajax 요청 / 세션에 로그인정보가 없을시 로그인화면 유도 팝업창
-	$('#wishListBtn').click(function() {
-		const button = $(this);
-		const productCode = button.data('product-code');
-		const memCode = button.data('mem-code'); // 세션에서 mem_code 가져오기
-		const $wishWord = $('#wishWord');
-
-		console.log(memCode);
-		console.log(productCode);
-
+	/*현재 로그인상태인지 확인
+	로그인 아닐시 false값 리턴*/
+	function memCodeConfirm(memCode) {
 		var loginPopup = document.getElementById("loginPopup");
 		var loginBtn = document.getElementById("loginBtn");
 		var closeBtn = document.getElementById("closeBtn");
-
-		// 로그인 상태 확인
 		if (!memCode) {
 			// 팝업 표시
 			loginPopup.style.display = "flex";
@@ -150,7 +135,24 @@ $(document).ready(function() {
 			closeBtn.addEventListener("click", function() {
 				loginPopup.style.display = "none"; // 팝업 닫기
 			});
-			return;
+			return false;
+		}
+		return true;
+	}
+
+	//찜버튼 누를시  ajax 요청 / 세션에 로그인정보가 없을시 로그인화면 유도 팝업창
+	$('#wishListBtn').click(function() {
+		const button = $(this);
+		const productCode = button.data('product-code');
+		const memCode = button.data('mem-code'); // 세션에서 mem_code 가져오기
+		const $wishWord = $('#wishWord');
+
+		console.log(memCode);
+		console.log(productCode);
+
+		// 로그인 상태 확인
+		if (!memCodeConfirm(memCode)) {
+			return; // 로그인 필요 시 클릭 이벤트 종료
 		}
 
 		// 찜목록 상품 넣기 AJAX 요청
@@ -186,10 +188,6 @@ $(document).ready(function() {
 		const proOption = $('#productOptions').find('option:selected');
 		const optCode = proOption.data('code');
 
-
-		var loginPopup = document.getElementById("loginPopup");
-		var loginBtn = document.getElementById("loginBtn");
-		var closeBtn = document.getElementById("closeBtn");
 		var cartPopup = document.getElementById("cartPopup");
 		var addCartBtn = document.getElementById("addCartBtn");
 		var closeCartBtn = document.getElementById("closeCartBtn");
@@ -197,10 +195,10 @@ $(document).ready(function() {
 		var goCartBtn = document.getElementById("goCartBtn");
 		var closeGoCartBtn = document.getElementById("closeGoCartBtn");
 
-
-		console.log(memCode);
-		console.log(proCode);
-		console.log(optCode);
+		// 로그인 상태 확인
+		if (!memCodeConfirm(memCode)) {
+			return; // 로그인 필요 시 클릭 이벤트 종료
+		}
 
 		// 장바구니 담겨있는지 확인요청 ajax
 		if (memCode) {
@@ -227,24 +225,7 @@ $(document).ready(function() {
 			});
 		}
 
-
-		// 로그인 상태 확인
-		if (!memCode) {
-			// 팝업 표시
-			loginPopup.style.display = "flex";
-			// 로그인 버튼 클릭 시
-			loginBtn.addEventListener("click", function() {
-				window.location.href = '/login/loginPage'; // 로그인 페이지로 이동
-				loginPopup.style.display = "none"; // 팝업 닫기
-			});
-			// 닫기 버튼 클릭 시
-			closeBtn.addEventListener("click", function() {
-				loginPopup.style.display = "none"; // 팝업 닫기
-			});
-
-		}
-
-
+		/*장바구니에 담겼습니다, 장바구니 담기 팝업 버튼에 의한 닫기기능*/
 		addCartBtn.addEventListener("click", function() {
 			cartPopup.style.display = "none"; // 팝업 닫기
 
@@ -279,12 +260,30 @@ $(document).ready(function() {
 
 		updateFinalPrice(selectedPrice);
 
-
-
-
 	});
 
+	// 수량 변경 시 최종 가격 업데이트
+	$('#quantityInput').on('input', function() {
+		const selectedOption = $('#productOptions').find('option:selected');
+		const selectedPrice = selectedOption.data('price');
+		updateFinalPrice(selectedPrice);
+	});
 
+	// 최종 가격 계산 함수
+	function updateFinalPrice(selectedPrice) {
+		const quantity = $('#quantityInput').val();
+		const finalPrice = selectedPrice * quantity;
+		$('#finalPrice').html(`총 수량 ${Number(quantity).toLocaleString()}개 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ${Number(finalPrice).toLocaleString()}원`);
+	}
+
+	/*상품이 담겼습니다 > 장바구니 유도 팝업
+	-> form으로 장바구니db에 담는거라 페이지가 새로고침되서
+	장바구니에 담는순간
+	sessionStorage에 키/밸류값(showCartPopup / ture)을 담고
+	페이지가 로드시에 sessionStorage에 showCartPopup = true값이면
+	해당 상품이 담긴상태니 팝업창을 띄우고 그 후에 sessionStorage에 
+	showCartPopup값 삭제*/
 	document.querySelector("form[action='/product/productDetailCart']").addEventListener("submit", function() {
 		sessionStorage.setItem("showCartPopup", "true");
 	});
@@ -303,21 +302,6 @@ $(document).ready(function() {
 			}
 		}
 	}, 0);
-
-	// 수량 변경 시 최종 가격 업데이트
-	$('#quantityInput').on('input', function() {
-		const selectedOption = $('#productOptions').find('option:selected');
-		const selectedPrice = selectedOption.data('price');
-		updateFinalPrice(selectedPrice);
-	});
-
-	// 최종 가격 계산 함수
-	function updateFinalPrice(selectedPrice) {
-		const quantity = $('#quantityInput').val();
-		const finalPrice = selectedPrice * quantity;
-		$('#finalPrice').html(`총 수량 ${Number(quantity).toLocaleString()}개 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ${Number(finalPrice).toLocaleString()}원`);
-	}
 
 	//리뷰갯수 게이지
 	var gauge5 = document.getElementById("heartSignalFill5");
@@ -347,7 +331,6 @@ $(document).ready(function() {
 
 	//리뷰리스트 불러오기 ajax 비동기
 	var selectedOpt = $('#reviewOption').val(); //리뷰리스트 옵션선택값 가져오기
-	var totalReviews = total;
 	var proCode = $('#reviewOption').data('procode');
 
 
@@ -459,8 +442,6 @@ $(document).ready(function() {
 			cards += '</div>';
 			cards += '</div>';
 
-
-
 			// 리뷰 이미지
 			cards += '<div class="reviewImages">';
 			if (rlist.review_img1) {
@@ -561,7 +542,7 @@ $(document).ready(function() {
 		largeImages.forEach(img => img.classList.remove('large')); // 스크롤 시 모든 큰 이미지 클래스 제거
 	});
 
-
+	//상품설명 펼쳐보기 접기 버튼
 	document.getElementById('contentBtn').addEventListener('click', function() {
 		const productDetails = document.getElementById('productInfoPg');
 		const isExpanded = productDetails.classList.toggle('expanded');
@@ -590,7 +571,7 @@ $(document).ready(function() {
 
 
 
-
+	//스크롤버튼 맨아래에 있을시 맨 위로 가게해줌
 	// 버튼 표시 및 숨김 기능
 	window.onscroll = function() {
 		const scrollTopBtn = document.getElementById("scrollTopBtn");

@@ -19,8 +19,7 @@
 	<div class="searchPage">
 		<div class="searchProductList">
 			<div>
-				<input type="text" id="searchInput" value="어떤상품을 찾고있냐옹?"
-					onclick="this.value='';" />
+				<input type="text" id="searchInput"  placeholder="어떤상품을 찾고있냐옹?"/>
 			</div>
 			<div id="product-Count"></div>
 			<div class="searchList" id="searchList"></div>

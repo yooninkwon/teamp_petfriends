@@ -58,20 +58,15 @@ public class AdminProductListService implements AdminServiceInterface {
         boolean isMatch = true;
         for (String searchChar : searchProChars) {
             if (!cleanedProName.contains(searchChar)) {
-            	
-            	
-            	
                 isMatch = false;
                 break; // 하나라도 포함되지 않으면 해당 제품은 제외
             }
         }
-
         // 모든 문자들이 포함되면 결과 리스트에 추가
         if (isMatch) {
             resultList.add(product);
         }
     }
-
     // 결과 리스트 반환
     return resultList;
 }

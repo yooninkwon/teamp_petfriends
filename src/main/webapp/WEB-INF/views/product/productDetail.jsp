@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>펫프렌즈 PRODUCT</title>
 
 <!-- 헤더푸터 css,sc -->
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
@@ -45,10 +45,7 @@
 <jsp:include page="/WEB-INF/views/include_jsp/product_sub_navbar.jsp" />
 <body>
 
-
 	<div class="productDetailpg">
-
-
 		<div class="productData">
 			<div class="image-container">
 				<img id="productImage" />
@@ -281,17 +278,10 @@
 		<div class="reviewListPagination"></div>
 		<br />
 
-
-
 	</div>
 
 
-
-
-
-
-
-
+<!-- ----------------------------팝업내용----------------------------- -->
 
 	<!-- 로그인이 필요합니다 팝업 -->
 	<div id="loginPopup" class="popup-overlay">
@@ -346,7 +336,6 @@
 	</form>
 
 	<!-- 장바구니에 담기가 완료되면 장바구니로 유도하는 팝업 -->
-	
 		<div id="addCartGoBtnBox" class="popup-overlay-goCart">
 			<div class="popup-content-goCart">
 				<div id="goCartMent">
@@ -363,10 +352,8 @@
 	
 			</div>
 		</div>
-	
 
-
-
+	<!-- 화면 제일 위로 옮겨주는 버튼 -->
 	<div id="scrollTopBtn" class="scrollTopBtn">
 		<span>▲</span><br /> Top
 	</div>

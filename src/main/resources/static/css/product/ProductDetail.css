@@ -471,7 +471,7 @@
 .productInfo{
 	max-height: 2000px;
 	overflow: hidden;
-	transition: max-height 0.5s ease;
+	
 }
 .productInfo.expanded {
         max-height: 100%;
