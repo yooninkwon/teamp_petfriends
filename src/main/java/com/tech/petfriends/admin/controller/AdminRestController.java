@@ -37,6 +37,8 @@ import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
+import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.notice.dao.NoticeDao;
 import com.tech.petfriends.notice.dto.EventDto;
 import com.tech.petfriends.notice.dto.NoticeDto;
@@ -50,6 +52,9 @@ public class AdminRestController {
 
 	@Autowired
 	NoticeDao noticeDao;
+	
+	@Autowired
+	MemberMapper memberMapper;
 
 	AdminServiceInterface adminServiceInterface;
 
@@ -232,5 +237,12 @@ public class AdminRestController {
             return ResponseEntity.badRequest().body("유효하지 않은 요청입니다.");
         }
     }
+	
+	@GetMapping("/customer_list")
+	public ArrayList<MemberLoginDto> customerList() {
+		ArrayList<MemberLoginDto> memberlist = memberMapper.memberList();
+		
+		return memberlist;
+	}
 
 }

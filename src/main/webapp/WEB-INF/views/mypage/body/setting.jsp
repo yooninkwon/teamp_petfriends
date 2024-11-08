@@ -76,8 +76,13 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("withdrawLink").addEventListener("click", function(event) {
         event.preventDefault(); // 기본 동작 방지
         if (confirm("정말 탈퇴하시겠습니까?")) {
-        	prompt("회원 정보는 3개월간 유지됩니다. 탈퇴 사유를 입력 해 주세요.");
-            window.location.href = "/login/withdraw"; // 회원탈퇴 URL로 이동
+            var reason = prompt("회원 정보는 3개월간 유지됩니다. 탈퇴 사유를 입력 해 주세요.");
+            if (reason !== null) { // 사용자가 "취소"를 누르지 않은 경우
+                window.location.href = "/login/withdraw"; // 회원탈퇴 URL로 이동
+            } else {
+                // 사용자가 "취소"를 누른 경우, 아무 동작도 하지 않음
+                alert("탈퇴가 취소되었습니다."); // 필요 시 메시지 표시
+            }
         }
     });
 });

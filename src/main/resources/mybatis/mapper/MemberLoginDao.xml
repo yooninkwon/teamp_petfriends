@@ -5,6 +5,12 @@
 
 <mapper namespace="com.tech.petfriends.login.mapper.MemberMapper">
 
+	<select id="memberList" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
+		SELECT *
+		FROM MEMBER
+		ORDER BY MEM_REGDATE DESC
+	</select>
+
 	<!-- 로그인시 로그데이트 업데이트 -->
 	<update id="updatelogdate" parameterType="String">
 		UPDATE MEMBER
@@ -131,4 +137,19 @@
 		WHERE
 			MEM_CODE = #{mem_code}
 	</delete>
+	
+	<!-- 회원 탈퇴 -->
+	<update id="withdraw" parameterType="String">
+		UPDATE MEMBER
+		SET MEM_TYPE = '탈퇴'
+		WHERE MEM_CODE = #{mem_code}
+	</update>
+	
+	<!-- 탈퇴회원 복구 -->
+	<update id="deleteRestoration" parameterType="String">
+		UPDATE MEMBER
+		SET MEM_TYPE = '일반'
+		WHERE MEM_CODE = #{mem_code}
+	</update>
+	
 </mapper>

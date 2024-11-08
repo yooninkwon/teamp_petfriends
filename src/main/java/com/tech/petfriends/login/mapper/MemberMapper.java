@@ -11,6 +11,9 @@ import com.tech.petfriends.mypage.dto.GradeDto;
 @Mapper
 public interface MemberMapper {
 	
+	// 회원 리스트
+	ArrayList<MemberLoginDto> memberList();
+	
 	// 로그인시 마지막 접속 시간 업데이트
 	void updatelogdate(String mem_code);
 	
@@ -63,5 +66,11 @@ public interface MemberMapper {
 	GradeDto getGradeByMemberCode(String mem_code);
 
 	void deleteWindowPro(String mem_code);
+	
+	// 회원탈퇴
+	void withdraw(String mem_code);
+	
+	// 탈퇴회원 복구
+	void deleteRestoration(String mem_code);
 
 }

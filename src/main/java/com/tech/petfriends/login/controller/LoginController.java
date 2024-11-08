@@ -21,6 +21,7 @@ import com.tech.petfriends.login.util.PasswordEncryptionService;
 import com.tech.petfriends.member.service.MemberService;
 import com.tech.petfriends.mypage.dto.GradeDto;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -68,6 +69,13 @@ public class LoginController {
                 System.out.println("로그인 성공");
 
                 GradeDto userGrade = memberMapper.getGradeByMemberCode(member.getMem_code());
+                
+                if (member.getMem_type().equals("탈퇴")) {
+					System.out.println("탈퇴한 회원입니다.");
+					model.addAttribute("withdraw","탈퇴한 회원입니다. 정보를 복구하시겠습니까?");
+					model.addAttribute("member", member);
+					return "/login/loginPage";
+				}
                 
                 memberMapper.updatelogdate(member.getMem_code()); // 로그인시 로그데이트 현재로 업데이트
                 memberMapper.deleteWindowPro(member.getMem_code()); //유저로그인시 둘러본상품목록 전체삭제
@@ -147,17 +155,25 @@ public class LoginController {
    }
    
    @GetMapping("/withdraw")
-   public String withdraw(HttpSession session, HttpServletResponse response) {
-	   session.invalidate();
-	   
-	// 쿠키 삭제
+   public String withdraw(HttpSession session, HttpServletResponse response, RedirectAttributes re) {
+	   // 쿠키 삭제
 	    Cookie emailCookie = new Cookie("email", null);
 	    emailCookie.setMaxAge(0); // 쿠키 유효 기간을 0으로 설정하여 무효화
 	    emailCookie.setPath("/"); // 설정된 경로와 일치시켜야 삭제됨
 	    response.addCookie(emailCookie);
-	    
-	   return "redirect:/login/loginPage";
+	    MemberLoginDto member = (MemberLoginDto) session.getAttribute("loginUser");
+	    memberMapper.withdraw(member.getMem_code());
+	    re.addFlashAttribute("message","회원 탈퇴가 완료되었습니다.");
+	    session.invalidate();
+	    return "redirect:/";
    }
    
+   @PostMapping("/restoration")
+   public String restoration(@RequestParam("code") String memCode, RedirectAttributes re) {
+	   System.out.println(memCode);
+	   memberMapper.deleteRestoration(memCode);
+	   re.addFlashAttribute("message","복구가 완료되었습니다. 다시 로그인 해주세요");
+	   return "redirect:/";
+   }
    
 }
