@@ -331,10 +331,10 @@ public class AdminRestController {
 	
 	@GetMapping("/customer_list")
 	public ArrayList<MemberLoginDto> customerList() {
-		ArrayList<MemberLoginDto> memberlist = memberMapper.memberList();
-		
+		ArrayList<MemberLoginDto> memberlist = memberMapper.memberList();	
 		return memberlist;
 	}
+
 
 
 }
