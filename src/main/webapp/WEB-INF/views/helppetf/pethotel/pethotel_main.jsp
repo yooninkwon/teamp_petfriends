@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>펫호텔</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
+<script src="https://kit.fontawesome.com/6c32a5aaaa.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/static/css/helppetf/pethotel_main.css" />
 </head>
 <body>

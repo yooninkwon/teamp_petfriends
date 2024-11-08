@@ -164,9 +164,9 @@ $(document).ready(function(){
 
 	// + (추가) 버튼 클릭시 form을 띄우고 페이지 스크롤
 	$('.add-pet-button').on('click', function(){
-		pageScroll(420);
 		$('#popup-form').removeClass().addClass('flex');
 		$('#pet-form')[0].reset();
+		pageScroll(350);
 	});
 	
 	// 펫추가의 닫기 버튼 클릭시 팝업 폼을 보이지 않게 하고, form 내부 내용을 초기화
@@ -174,12 +174,53 @@ $(document).ready(function(){
 		pageScroll(0);
 		$('#popup-form').removeClass().addClass('off');
 		$('#pet-form')[0].reset();
-	})
 
+	})
+	
+	// 예약 시작일, 예약 종료일 input 태그 저장
+	let startDateTag = $('input[name="start-date"]');
+	let endDateTag = $('input[name="end-date"]');
+	let startDateVal;
+	let endDateVal;
+	
 	// 예약 시작일을 오늘부터 시작
-	const today = new Date().toISOString().split('T')[0]; // 현재 날짜를 YYYY-MM-DD 형식으로 변환
-	$('input[name="start-date"]').attr('min', today);
-	$('input[name="end-date"]').attr('min', today);
+	// 현재 날짜를 로컬 시간 기준으로 설정, 'en-CA'는 YYYY-MM-DD 형식을 반환
+	const today = new Date().toLocaleDateString('en-CA'); 
+	startDateTag.attr('min', today);
+	endDateTag.attr('min', today);
+	
+	// 예약 시작일이 변경될 때 - 종료날짜와 비교하여 제한
+	startDateTag.on('change', function(){
+		// 예약 시작일과 종료일을 비교하는 함수 호출
+		checkDateVal(endDateTag);
+	});
+
+	// 예약 종료일이 변경될 때 - 시작날짜와 비교하여 제한
+	endDateTag.on('change', function(){
+		// 예약 시작일과 종료일을 비교하는 함수 호출
+		checkDateVal(endDateTag);
+	});
+	
+	// 예약 시작일과 종료일을 비교하는 함수
+	function checkDateVal(tag) {
+		// 정규식 - 날짜의 -을 모두 공백으로 바꾸고 숫자로 타입을 변경한다.
+		startDateVal = Number(startDateTag.val().replace(/-/gi,''));
+		endDateVal = Number(endDateTag.val().replace(/-/gi,''));
+
+		// 종료 날짜가 0이 아닌 경우 (종료일이 비어있을 때가 아닌 경우)
+		if(endDateVal != 0 && startDateVal != 0) {
+			
+			// 시작일이 종료일보다 클 때
+			if(startDateVal > endDateVal) {
+				alert('예약의 시작하는 날짜가 종료되는 날짜보다 이후일 수 없습니다.');
+				// 해당 태그의 값을 공백으로 설정 - date 타입은 초기화된다
+				tag.val('');
+			}
+		}
+	}
+
+	// form의 반려동물 생일을 오늘 이후로 설정 불가로 지정
+	$('#pet-birth').attr('max', today);
 	
 	// 아이 선택하기 모달창의 x버튼(닫기)를 클릭시
 	$('.modal-close-btn').on('click', function() {
@@ -347,7 +388,6 @@ $(document).ready(function(){
 				}
 			})
 			.then(data => {
-				console.log(data);
 				// 펫 선택 모달 배치
 				displaySelectModal(data);
 			})
@@ -400,11 +440,7 @@ $(document).ready(function(){
 
 				var petType = '';
 				// DB에 'C', 'D'로 저장되어 있기 때문에 팝업 폼의 형식에 알맞게 변환
-				if (data[index].pet_type === 'C') {
-					petType = '고양이';
-				} else {
-					petType = '강아지';
-				}
+				petType = data[index].pet_type === 'C' ? '고양이' : '강아지';
 
 				// 클릭된 index넘버의 'tr'에 알맞는 데이터를 팝업 폼의 input에 배치
 				// data 오브젝트의 index와 반복문의 index를 맞춰서 배치하였기 때문에
@@ -412,9 +448,9 @@ $(document).ready(function(){
 				$('input[name="pet-name"]').val(data[index].pet_name);
 				$('input[name="pet-birth"]').val(data[index].pet_birth);
 				$('input[name="pet-weight"]').val(data[index].pet_weight);
-				$('input[name="pet-type"][value="' + petType + '"]').attr('checked', true);
-				$('input[name="pet-neutered"][value="' + data[index].pet_neut + '"]').attr('checked', true);
-				$('input[name="pet-gender"][value="' + data[index].pet_gender + '"]').attr('checked', true);
+				$('input[name="pet-type"][value="' + petType + '"]').prop('checked', true);
+				$('input[name="pet-neutered"][value="' + data[index].pet_neut + '"]').prop('checked', true);
+				$('input[name="pet-gender"][value="' + data[index].pet_gender + '"]').prop('checked', true);
 
 				// input에 값 배치 후 모달 닫기
 				closeModal();
