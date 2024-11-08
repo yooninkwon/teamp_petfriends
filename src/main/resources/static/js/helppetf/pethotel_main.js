@@ -234,7 +234,7 @@ $(document).ready(function(){
 			`);
 			
 			// petSection(.pet-wrapper) 속의 addPetButton 앞에 newPet을 삽입
-			petSection.append(newPet, addPetButton);
+			petSection.append(newPet, $('.add-pet-button'));
 			
 			pageScroll(0);
 			
