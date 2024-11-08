@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>펫프렌즈</title>
+<title>펫프렌즈 PRODUCUT</title>
 
 <!-- 헤더푸터 css,sc -->
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />

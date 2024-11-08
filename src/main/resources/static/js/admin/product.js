@@ -2,18 +2,16 @@ $(document).ready(function() {
 
 	$("#pro-detail-type label").hide();
 	loadProductList();
-	
+
 	//엔터키 누를시 검색버튼 실행
 	document.addEventListener("keydown", function(event) {
-	    if (event.key === "Enter") {
-	        document.getElementById("searchBtn").click();
-	    }
+		if (event.key === "Enter") {
+			document.getElementById("searchBtn").click();
+		}
 	});
-	
+
 	// 라디오 버튼이 변경될 때마다 실행
 	$('#pet-type input[type="radio"], #pro-type input[type="radio"]').change(function() {
-
-
 
 		// 선택된 petType과 proType 값 확인
 		var petType = $('input[name="pet-filter"]:checked').val();
@@ -60,12 +58,12 @@ $(document).ready(function() {
 	$('#searchBtn').click(function() {
 		loadProductList();
 	});
-	
+
 	// 드롭다운이 변경될 때 loadProductList 호출
 	$('#pro_onoff').change(function() {
 		// 검색 필드 초기화
-				$('#search-filter').val('');
-	    loadProductList();
+		$('#search-filter').val('');
+		loadProductList();
 	});
 
 
@@ -302,10 +300,10 @@ $(document).ready(function() {
 
 			// btnArray에서 deleteButton의 인덱스 찾기
 			const btnIndex = btnArray.indexOf(deleteButton);
-			
+
 			// selectedFiles에서 삭제할 파일 이름 가져오기
 			const removedFile = selectedFiles[btnIndex]; // 삭제할 파일 이름 가져오기
-			
+
 
 			// 문자열인지 확인 후 removeFiles 배열에 추가
 			if (typeof removedFile === 'string') {
@@ -321,7 +319,7 @@ $(document).ready(function() {
 			if (fileIndex !== -1) {
 				// 해당 파일 제거
 				selectedFiles.splice(fileIndex, 1);
-				
+
 			} else {
 				console.log("해당 파일이 배열에 없습니다.");
 			}
@@ -511,7 +509,7 @@ $(document).ready(function() {
 
 		console.log(options);
 
-		if (petType === "" || proType === "" || proDetailType === "" || proName === "" || proDiscount === "" || proDiscount < 0 || 
+		if (petType === "" || proType === "" || proDetailType === "" || proName === "" || proDiscount === "" || proDiscount < 0 ||
 			proDiscount > 100 || options.some(opt => opt.price === "" || opt.count === "")) {
 			alert('상품등록 필수 항목을 채워주세요.\n(펫타입, 상품종류, 상품타입, 상품명, 할인율, 옵션최소 1개, 할인율은 0~100까지 입력가능)');
 			return;
@@ -583,18 +581,6 @@ $(document).ready(function() {
 			});
 		}
 
-
-
-
-
-
-
-
-
-
-
-
-
 		// 기존 미리보기 이미지 초기화
 		document.getElementById('mainImagePreview').innerHTML = ''; // 대표 이미지 미리보기 초기화
 		document.getElementById('desImagePreview').innerHTML = '';  // 상세 이미지 미리보기 초기화
@@ -606,23 +592,6 @@ $(document).ready(function() {
 		btnArray1 = [];
 		btnArray2 = [];
 		btnArray3 = [];
-		//이부분에ㅁㄴ엄누ㅗㅠ아ㅓㄴㅁ유ㅜ라ㅓㄴㅁ우ㅠ라ㅓㄴㅁ우ㅠㅏ러누ㅠㅇ마ㅓ루ㅠㄴㅁ아ㅓ류ㅜ
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	});
 

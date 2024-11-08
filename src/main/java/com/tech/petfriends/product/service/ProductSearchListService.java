@@ -28,16 +28,20 @@ public class ProductSearchListService implements ProductService {
 		String mem_code = (String) model.getAttribute("memCode");
 		System.out.println(mem_code + "멤코드");
 
-//		List<ProductListViewDto> searchList = productDao.productSearchList(searchPro);
 		List<ProductListViewDto> allList = productDao.productSearchList();
 
 		List<ProductListViewDto> searchList = similarList(searchPro, allList);
-		model.addAttribute("searchList", searchList);
+
+		// 결과를 맵에 담기
+	    Map<String, Object> resultMap = new HashMap<>();
+	    resultMap.put("searchList", searchList);
 
 		if (mem_code != null && mem_code != "") {
 			List<ProductListViewDto> windowList = productDao.productWindowList(mem_code);
-			model.addAttribute("windowList", windowList);
+			resultMap.put("windowList", windowList);
 		}
+		// 모델에 맵 추가
+	    model.addAttribute("resultMap", resultMap);
 	}
 
 	public List<ProductListViewDto> similarList(String searchPro, List<ProductListViewDto> allList) {
