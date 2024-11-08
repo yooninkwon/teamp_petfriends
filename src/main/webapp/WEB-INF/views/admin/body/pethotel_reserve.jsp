@@ -103,7 +103,6 @@
 			<table width="100%">
 				<thead class="thead">
 					<tr>
-						<th>예약 코드</th>
 						<th>펫 코드</th>
 						<th>이름</th>
 						<th>동물 종류</th>

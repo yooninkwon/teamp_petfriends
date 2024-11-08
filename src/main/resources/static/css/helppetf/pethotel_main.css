@@ -5,7 +5,23 @@ body {
 	background-color: #f8f8f8;
 }
 
-.container {
+.on {
+	display: block;
+}
+
+.off {
+	display: none;
+}
+
+.flex {
+	display: flex;
+}
+
+/*
+메인 페이지
+*/
+
+#information .container {
 	width: 80%;
 	max-width: 600px;
 	margin: 5px auto;
@@ -18,18 +34,18 @@ body {
 }
 
 /* 상단 섹션 */
-.top-section {
+#information .top-section {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
 
-.text-content {
+#information .text-content {
 	text-align: left;
 	flex: 1;
 }
 
-.top-section h1 {
+#information .top-section h1 {
 	font-size: 22px;
 	color: #000;
 	margin-left: 30%;
@@ -37,7 +53,7 @@ body {
 	text-align: center;
 }
 
-.top-section p {
+#information .top-section p {
 	font-size: 16px;
 	color: #333;
 	line-height: 1.5;
@@ -46,7 +62,7 @@ body {
 }
 
 /* 중간 섹션 */
-.middle-section h2 {
+#information .middle-section h2 {
 	font-size: 20px;
 	margin-top: 15px;
 	color: #333;
@@ -55,36 +71,36 @@ body {
 	text-align: center;
 }
 
-wrapper ul, li {
+#information wrapper ul, #information li {
 	list-style: none;
 	padding-left: 10px;
 	padding: 0;
 }
 
-wrapper ul li {
+#information wrapper ul li {
 	margin-bottom: 15px;
 	font-size: 15px;
 	color: #444;
 	margin-left: 20px;
 }
 
-.small-text {
+#information .small-text {
 	font-size: 12px;
 	color: gray;
 }
 
 /* 하단 버튼 */
-.bottom-section {
+#information .bottom-section {
 	margin-top: 30px;
 }
 
-.pethotel_img {
+#information .pethotel_img {
 	width: 120px;
 	margin-left: 20px;
 	flex-shrink: 0;
 }
 
-.button {
+#information .button {
 	display: inline-block;
 	padding: 10px 25px;
 	margin: 10px;
@@ -97,36 +113,137 @@ wrapper ul li {
 	transition: background-color 0.3s ease;
 }
 
-#left {
+#information #left {
 	margin-left: 15%;
 }
 
-#right {
+#information #right {
 	margin-left: 20%;
 }
 
-.button:hover {
+#information .button:hover {
 	background-color: #FF2972;
 }
 
 /* 하단 링크 */
-.more_info {
+#information .more_info {
 	margin-top: 20px;
 	margin-left: 80%
 }
 
-.more_info a {
+#information .more_info a {
 	color: #666;
 	text-decoration: none;
 	font-size: 14px;
 }
 
-.more_info a:hover {
+#information .more_info a:hover {
 	text-decoration: underline;
 }
 
+/*
+이용안내 페이지
+*/
 
-/* pop up */
+#introduction .container {
+	width: 80%;
+	max-width: 600px;
+	margin: 50px auto;
+	padding: 30px;
+	background-color: white;
+	border-radius: 15px;
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+	text-align: left;
+	border: 2px solid #ddd;
+}
+
+/* 상단 섹션 */
+#introduction .top-section {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+#introduction .back_link {
+	text-align: left;	
+}
+
+#introduction .top-section h1 {
+	font-size: 20px;
+	color: #000;
+	margin-top: 0px;
+	margin-bottom: 15px;
+}
+
+#introduction .back-link {
+	font-size: 14px;
+	color: #666;
+	text-decoration: none;
+	display: inline-block;
+	margin-bottom: 10px;
+}
+
+#introduction .back-link:hover {
+	text-decoration: underline;
+}
+
+/* 이용 안내 섹션 */
+#introduction .content-section h2 {
+	font-size: 18px;
+	color: #333;
+	margin-bottom: 15px;
+	text-align: center;
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 10px;
+}
+
+#introduction h3 {
+	font-size: 16px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	color: #444;
+}
+
+#introduction #wrapper p, #introduction ul {
+	font-size: 14px;
+	color: #555;
+	line-height: 1.6;
+	margin-bottom: 15px;
+}
+
+#introduction ul {
+	padding-left: 20px;
+}
+
+#introduction .container ul li {
+	list-style: disc;
+}
+
+/* 하단 버튼 */
+#introduction .bottom-section {
+	text-align: center;
+	margin-top: 30px;
+}
+
+#introduction .button {
+	display: inline-block;
+	padding: 10px 25px;
+	background-color: #ff6b81;
+	color: white;
+	border: none;
+	border-radius: 25px;
+	text-decoration: none;
+	font-size: 16px;
+	transition: background-color 0.3s ease;
+}
+
+#introduction .button:hover {
+	background-color: #ff4b61;
+}
+
+
+/* 
+pop up 
+*/
 
 .popup-overlay {
     position: fixed;
@@ -182,4 +299,265 @@ wrapper ul li {
     text-align: center;
     width: 500px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/*
+펫호텔 예약 페이지
+*/
+
+#pethotel_reserve .container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#pethotel_reserve h1 {
+    font-size: 1.4em;
+    margin-bottom: 20px;
+}
+
+#pethotel_reserve .top-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+#pethotel_reserve button {
+	margin-left: 10px;
+}
+
+#pethotel_reserve button:not(.delete-button) ,
+#pethotel_reserve button:not(.select-pet-button) {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#pethotel_reserve .register-button {
+    background-color: #ff6b81;
+    color: white;
+}
+
+#pethotel_reserve .back-button {
+    background-color: #f5b7b7;
+    color: white;
+}
+
+#pethotel_reserve .reservation-form {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+#pethotel_reserve .date-selection {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#pethotel_reserve .date-input {
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+#pethotel_reserve .pet-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+#pethotel_reserve .registered-pet-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    color: #000;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 12px;
+    position: relative;
+    margin-right: 10px;
+}
+
+#pethotel_reserve .delete-button {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 1px, 1px;
+}
+
+#pethotel_reserve .add-pet-button {
+    font-size: 24px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#pethotel_reserve #pet-form {
+	width: 800px;
+	
+}
+
+#pethotel_reserve #select_already {
+	margin-left: 460px;
+}
+
+
+/* 팝업 폼 */
+#pethotel_reserve #popup-form {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #FFF;
+/*     display: flex; */
+    justify-content: center;
+    align-items: center;
+	flex-direction: column;
+}
+
+#pethotel_reserve .popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#pethotel_reserve .popup-content h2 {
+	width: 1px;
+    margin-bottom: 20px;
+}
+
+#pethotel_reserve .popup-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+#pethotel_reserve .popup-content label {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+#pethotel_reserve #select_already {
+	width: 400px;	
+}
+
+#pethotel_reserve .pet-section {
+    margin-bottom: 20px;
+}
+
+
+
+#pethotel_reserve .popup-content input[type="text"],
+#pethotel_reserve .popup-content input[type="date"],
+#pethotel_reserve .popup-content input[type="number"] {
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+/* 전달사항 스타일 */
+#pethotel_reserve #pet-message {
+    width: 80%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+#pethotel_reserve .popup-content input[type="radio"] {
+    margin-right: 5px;
+}
+
+#pethotel_reserve button#save-pet {
+    background-color: #ff6b81;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#pethotel_reserve .select-pet-button {
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    margin-left: 650px;
+}
+
+/*
+.close-and-pet-button {
+	margin-left: -10px;
+} */
+
+
+/*
+등록되어 있는 펫 선택 모달창
+*/
+#select-pet-modal {
+    position: fixed; 
+    z-index: 9999; 
+    left: 0; 
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.4); /* 반투명 검정 배경 */
+}
+
+#pethotel_reserve #selectPetsTbody {
+	background-color: #fff;
+}
+
+#select-pet-modal .modal-content {
+    position: relative;
+    margin: 10% auto; /* 중앙 정렬 */
+    padding: 40px;
+    width: 700px;
+    background-color: #f4f4f4;
+    text-align: left;
+    margin-top: 70px;
+}
+
+#select-pet-modal .modal-content p {
+	margin: 0;
+}	
+
+#select-pet-modal .modal-content td {
+/* 	width: 60px; */
+	height: 60px;
+}	
+
+#select-pet-modal .modal-content td {
+	cursor: pointer;
+}	
+
+#select-pet-modal .modal-close-btn {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+}
+
+#select-pet-modal .modal-img {
+	width: 15%;
 }
