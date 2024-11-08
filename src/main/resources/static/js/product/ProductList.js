@@ -1,4 +1,9 @@
 $(document).ready(function() {
+	//sub메뉴바 클릭 활성화
+	$(document).ready(function() {
+		$('#productPetItem').addClass('selected');
+	});
+
 	// 라디오 버튼이 변경될 때마다 실행
 	$('input[type="radio"]').change(function() {
 		// 선택된 petType과 proType 값 확인
@@ -87,13 +92,17 @@ $(document).ready(function() {
 		$("#option_rank").show();
 	});
 
-
-
-
 	// 펫타입, 상품종류, 상품타입 체크변경시 필터옵션 체크 해제
 	$('.firsttype input[type="radio"], .thirdtype  input[type="radio"]').change(function() {
 		$(".filter > div input[type='radio'], .filter > div input[type='checkbox']").prop('checked', false);
 		$('input[name="rankOption"][value="rankopt0All"]').prop('checked', true);
+	});
+
+	$('#filterClear').on('click', function() {
+		$(".filter > div input[type='radio'], .filter > div input[type='checkbox']").prop('checked', false);
+		$('input[name="rankOption"][value="rankopt0All"]').prop('checked', true);
+		sendAjaxRequest();
+
 	});
 
 	// 페이지 로드 시 초기 상태 설정
@@ -152,7 +161,6 @@ $(document).ready(function() {
 			return $(this).val();
 		}).get();
 
-
 		console.log('petType:', petType);
 		console.log('proType:', proType);
 		console.log('proType:', dfoodType);
@@ -202,9 +210,6 @@ $(document).ready(function() {
 				console.log(response);
 				// 여기서 서버로부터 받은 데이터를 바탕으로 UI를 업데이트할 수 있습니다.
 				updateProductList(response);
-
-
-
 			},
 			error: function(xhr, status, error) {
 				// 에러 발생 시 실행할 코드
@@ -233,8 +238,6 @@ $(document).ready(function() {
 
 			const soldOutOverlay = product.pro_onoff === '품절' ? '<div class="sold-out-overlay">품절</div>' : '';
 
-
-
 			// 소수점 포함 별점 처리
 			const fullStars = Math.floor(product.average_rating);  // 정수 부분
 			const halfStar = (product.average_rating % 1) >= 0.5;  // 소수점 반영 (0.5 이상일 경우 반쪽 별)
@@ -256,20 +259,17 @@ $(document).ready(function() {
 				starRatingHtml += '<span class="star gray">&#9733;</span>';  // 회색 별 (빈 별)
 			}
 
-
-
-
 			const productItem = `
 	            <div class="product-Item" data-product-code="${product.pro_code}">
 					<div class="product-image-wrapper">
 	   	    	        <img src="/static/images/ProductImg/MainImg/${product.main_img1}"/>
 						${soldOutOverlay} <!-- 품절 표시 -->
 	                </div>
-	                <h3>${product.pro_name}</h3>
-					<p>${product.proopt_price}원</p>
-	                <p>${product.pro_discount}% ${product.proopt_finalprice}원</p>
+	                <div class="proName">${product.pro_name}</div>
+					<div class="proPrice">${Number(product.proopt_price).toLocaleString()}원</div>
+	                <div class="proFPriceBox"><span class="proDis">${product.pro_discount}%</span> <span class="proFPri">${Number(product.proopt_finalprice).toLocaleString()}원</span></div>
 					<div class="rating">
-                    ${starRatingHtml} <span>(${product.total_reviews})</span> <!-- 별점과 리뷰 개수 -->
+                    ${starRatingHtml} <span class="revTotal">(${product.total_reviews})</span> <!-- 별점과 리뷰 개수 -->
 	                </div>
 	            </div>
 	        `;
@@ -291,18 +291,15 @@ $(document).ready(function() {
 		soldOutProducts.forEach(item => {
 			productListContainer.append(item);
 		});
-
 	}
 
 	$(document).on('click', '.product-Item', function() {
 		const productCode = $(this).data('product-code'); // data-product-code 값을 가져옴
-		// productCode를 사용하여 작업 수행
+
+		// productCode를 사용하여 제품상세페이지 이동
 		window.location.href = `/product/productDetail?code=${productCode}`;
 	});
 
-	
-	
-	
 });
 
 

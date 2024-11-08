@@ -32,10 +32,10 @@
 		WHERE HPT_SEQ = #{hpt_seq}
 	</select>
 	<select id="findUserAddr" resultType="String">
-		SELECT TEMP_ADDR
-		FROM
-		TEMP_FIND_ADDR
-		WHERE USER_ID = #{userId}
+		SELECT ADDR_LINE1 
+		FROM ADDRESS 
+		WHERE MEM_CODE = #{mem_code}
+		AND ADDR_DEFAULT = 'Y'
 	</select>
 		<select id="pethotelIntro" resultType="com.tech.petfriends.helppetf.dto.PethotelIntroDto">
 		SELECT * FROM HELP_PETHOTEL_INTRO
@@ -73,18 +73,24 @@
 		HPH_START_DATE, 
 		HPH_END_DATE)
 		VALUES
-		(CONCAT(#{hph_reserve_no}, TO_CHAR(SEQ_HPH_MEM.NEXTVAL)), 
+		(#{hph_reserve_no}, 
 		#{mem_code}, 
 		#{hph_numof_pet}, 
 		TO_DATE(#{hph_start_date}, 'yyyy-MM-dd'), 
 		TO_DATE(#{hph_end_date}, 'yyyy-MM-dd'))
 	</insert>
 	<delete id="pethotelReserveErrorPet">
+	<!-- 예약 중 예외 발생시 데이터 제거: 조건문이 더 정교해야 할 듯 -->
 		DELETE FROM HELP_PETHOTEL_PETS 
 		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
 	</delete>
 	<delete id="pethotelReserveErrorMem">
+	<!-- 예약 중 예외 발생시 데이터 제거: 조건문이 더 정교해야 할 듯 -->
 		DELETE FROM HELP_PETHOTEL_MEM
 		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
 	</delete>
+	<select id="pethotelSelectPet" resultType="com.tech.petfriends.mypage.dto.MyPetDto">
+		SELECT * FROM MEMBER_PET
+		WHERE MEM_CODE = #{mem_code}
+	</select>
 </mapper>

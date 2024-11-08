@@ -120,11 +120,30 @@
 	background-color: #e62e59;
 }
 
-#pageDiv a{
-	padding-left: 20px;
-	padding-right: 20px;
-	font-size: 25px;
-	text-decoration: none;
-	color: gray;
-	background-color: black;
+#pagination {
+   width: 80%;
+   text-align: right;
+   bottom: 20px;
 }
+
+#pagination a {
+   padding: 5px 10px;
+   margin: 0 5px;
+   background-color: #fff;
+   border: 1px solid #ddd;
+   border-radius: 5px;
+   text-decoration: none;
+   color: #333;
+   transition: background-color 0.3s ease;
+}
+
+#pagination a:hover {
+   background-color: #545454;
+   color: white;
+}
+
+#pagination a.active {
+   background-color: #545454;
+   color: white;
+}
+

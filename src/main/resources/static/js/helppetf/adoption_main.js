@@ -7,18 +7,44 @@
  * 
  * 각 도시 코드에 대한 시/군/구 코드와 각 동물 종류에 따른 품종 코드를 
  * Object 형태로 저장한 파일을 import하여 사용한다. 
- * 사용자가 필터에서 대분류(도시, 동물 종류)를 선택하면,
+ * 유저가 필터에서 대분류(도시, 동물 종류)를 선택하면,
  * 선택된 대분류 값에 맞춰 소분류(시/군/구, 동물 품종)가 동적으로 업데이트된다.
  * 
  * 검색 버튼을 눌러 필터링이 포함된 데이터를 불러온 이후에도 선택된 필터링은 유지된다.
- * 초기화 버튼을 눌러 필터링을 초기화할 수 있음.
+ * 초기화 버튼을 눌러 필터링을 초기화할 수 있다.
+ * 
+ * 메인 페이지의 카드레이아웃을 클릭하면, 해당하는 영역에 해당하는 게시글이 표시된다.
+ * 메인 페이지 전체가 포함되어 있는 div의 스타일을 display: none으로 만들어 보이지 않게 하고,
+ * 상세 페이지 전체가 포함되어 있는 div의 스타일을 display: block으로 만들어 보이게 한다.
+ * (목록으로 클릭 시 반대로 적용)
+ * 
+ * dataset을 이용해 메인 페이지에 카드레이아웃이 배치될 때 각각에 해당하는 인덱스 번호를 저장한다.
+ * 카드레이아웃을 눌렀을 때, 해당 카드에 저장되어 있는 글 번호를 추출하여 전송, 상세 내용을 불러온다.
+ * 
+ * 유저의 열람이 끝난 뒤, 목록으로 버튼을 누르면 메인 페이지로 복귀된다.
+ * 
  */
+
 
 import { kindOptions } from '/static/js/helppetf/kind_data.js'; // 품종 데이터 Object import
 import { orgCdOptions } from '/static/js/helppetf/org_data.js'; // 지역 데이터 Object import
 
-$(document).ready(function() {
 
+/*
+
+입양센터 메인페이지
+
+*/
+
+$(document).ready(function() {
+	
+	// 메인 nav, 서브 nav '선택됨' 클래스 설정
+	document.getElementById(main_navbar_id).classList.add('selected');
+	document.getElementById(sub_navbar_id).classList.add('selected');
+	
+	pageScroll(0)
+	
+	let selectedPetData = null;
 	const itemsPerPage = 8; // 페이지 당 item 수 = 8
 	let currentPage = 1; // 현재 표시되는 페이지
 	let totalItems = 0; // 총 item 수 초기화
@@ -65,59 +91,35 @@ $(document).ready(function() {
 		// end = 시작 인덱스번호 + itemsPerPage(8)
 		const end = start + itemsPerPage;
 		// .slice(start, end)는 배열에서 start부터 end 이전까지의 아이템들을 추출
-		// start가 0이고 end가 8이라면 인덱스 [0] ~ [7] 을 출력
+		// start가 0이고 end가 8이라면 인덱스 [0] ~ [7] 을 저장
 		const visibleItems = adoptionItems.slice(start, end);
 		// item 객체의 정보를 테이블로 출력
 		let cards = '';
+
 		$.each(visibleItems, function(index, item) {
+			// 받아온 정보의 YYYYMMDD를 각각 분리한다.
+			let day = item.happenDt.substr(6, 2);
+			let month = item.happenDt.substr(4, 2);
+			let year = item.happenDt.substr(0, 4);
 			// 인덱스가 0~79 이므로 페이지가 넘어가도 인덱스 번호가 정상적으로 불러와지도록 현재 페이지의 시작 인덱스 번호를 더해준다
 			cards += '<div class="adoption-card"><a href="#" class="adoption-link" data-index="' + (start + index) + '">';
+			cards += '<div class="card_date"><div class="day">' + day ;
+			cards += '</div><div class="month">' + year + '-' + month + '</div></div>';
 			cards += '<img src="' + item.popfile + '" alt="Pet Image" />';
 			cards += '<div class="content">';
 			cards += '<h3>' + item.kindCd + '</h3>';
-			cards += '<p class="info">공고번호: ' + item.desertionNo + '</p>';
-			cards += '<p><strong>지역:</strong> ' + item.orgNm + '</p>';
-			cards += '<p><strong>발견 장소:</strong> ' + item.happenPlace + '</p>';
-			cards += '<p><strong>성별:</strong> ' + item.sexCd + '</p>';
-			cards += '<p><strong>발견 날짜:</strong> ' + item.happenDt + '</p>';
-			cards += '<p><strong>특징:</strong> ' + item.specialMark + '</p>';
+			cards += '<div class="info">공고번호 ' + item.desertionNo + '</div>';
+			cards += '<div class="card_list"><div class="card_title">지역</div><div class="card_desc">' + item.orgNm + '</div></div>';
+			cards += '<div class="card_list"><div class="card_title">발견 장소</div><div class="card_desc">' + item.happenPlace + '</div></div>';
+			cards += '<div class="card_list"><div class="card_title">성별</div><div class="card_desc">' + item.sexCd + '</div></div>';
+			cards += '<div class="card_list"><div class="card_title">발견 날짜</div><div class="card_desc">' + item.happenDt + '</div></div>';
+			cards += '<div class="card_list"><div class="card_title">특징</div><div class="card_desc">' + item.specialMark + '</div></div>';
 			cards += '</div>';
 			cards += '</a></div>';
 		});
-
+		
 		$('#adoptionContainer').html(cards);
 	}
-
-	// 클릭한 곳의 동물 상세페이지
-	$(document).on('click', '.adoption-link', function(event) {
-		event.preventDefault(); // 기본 링크 클릭 동작 방지
-		const index = $(this).data('index'); // 클릭한 요소의 인덱스 값을 가져옴
-		const selectedItem = adoptionItems[index]; // 선택된 항목 가져오기
-
-		// API 요청이 아니라 이미 불러와진 데이터중 
-		// 클릭한 곳에 해당하는 데이터를 세션에 저장하여 데이터를 불러옴
-		fetch('/helppetf/adoption/adoption_data', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(selectedItem) // 선택된 객체를 Json으로 변환
-		})
-			.then(response => {
-				if (!response.ok) {
-					throw new Error('ERROR');
-				}
-				return response.json(); // 응답을 Json으로 변환
-			})
-			.then(data => {
-				console.log('Success:', data);
-				window.location.href = '/helppetf/adoption/adoption_detail'; // 리다이렉트
-			})
-			.catch(error => {
-				console.error('Error:', error);
-			});
-	});
-
 
 	// 페이지네이션 설정
 	function setupPagination(currentPage, currPageGroup) {
@@ -146,7 +148,7 @@ $(document).ready(function() {
 	// 페이지 클릭 이벤트 핸들러
 	$('#pagination a').on('click', function(event) {
 		event.preventDefault();
-		pageScroll(); // 페이지 스크롤 함수
+		pageScroll(0); // 페이지 스크롤 함수
 		if ($(this).attr('id') === 'prev-group') {
 			// 이전 그룹으로 이동
 			currPageGroup--;
@@ -170,10 +172,8 @@ $(document).ready(function() {
 	});
 }
 
-	/** @ 필터링
-	 * 오브젝트 : 지역, 품종 데이터 저장
-	 * */
-
+	// 필터링
+	// 오브젝트 : 지역, 품종 데이터 저장 되어 있음
 	$('#upKind').on('change', function() { // id="upKind" 요소의 값이 변경될 때마다 호출
 
 		const selectedKindVal = $(this).val(); // selectedKindVal을 누른 요소의 value로 지정
@@ -183,7 +183,7 @@ $(document).ready(function() {
 		if (kindOptions[selectedKindVal]) { // kindOptions 오브젝트의 [selectedKindVal]에 해당하는 데이터를 찾음 
 			kindOptions[selectedKindVal].forEach(option => {
 				$('#kind').append(`<option value="${option.value}">${option.text}</option>`);
-				/* * 람다식 설명 :
+				/** 람다식 설명 :
 				* forEach: 배열의 각 요소를 순차적으로 처리하는 메서드
 				* option => {} : 배열의 각 항목(객체)을 option이라는 변수로 전달
 				* 배열의 첫 번째 요소부터 마지막 요소까지 차례로 진행 (forEach)
@@ -207,7 +207,7 @@ $(document).ready(function() {
 		if (orgCdOptions[selectedUprVal]) {
 			orgCdOptions[selectedUprVal].forEach(option => {
 				$('#org_cd').append(`<option value="${option.value}">${option.text}</option>`);
-				/* * 람다식 설명 :
+				/** 람다식 설명 :
 				* forEach: 배열의 각 요소를 순차적으로 처리하는 메서드
 				* option => {} : 배열의 각 항목(객체)을 option이라는 변수로 전달
 				* (option은 배열의 각 요소를 참조하는 변수이다.)
@@ -243,7 +243,7 @@ $(document).ready(function() {
 		$('#kind').append(`<option value="any" selected>품종</option>`);
 		$('#kind').append(`<option value="any" selected>동물종류를 먼저 골라주세요</option>`);
 
-		// option 태그의 선택값을 인덱스넘버 0으로 바꾸기
+		// option 태그의 선택값을 인덱스넘버 0으로 바꿈
 		$("#upr_cd option:eq(0)").prop("selected", true);
 		$("#upKind option:eq(0)").prop("selected", true);
 		$("#org_cd option:eq(0)").prop("selected", true);
@@ -252,12 +252,67 @@ $(document).ready(function() {
 		fetchData(currentPage, currPageGroup, formParam); // 필터 데이터 초기화한 뒤 fetchData 재호출
 	});
 
-	function pageScroll() {
-		// 함수 호출시 설정한 Y좌표로 스크롤
-		const element = document.getElementById("filter_form");
-		const yOffset = -110;
-		const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-		window.scrollTo({ top: y, behavior: 'smooth' });
+		
+/*
+
+입양센터 상세페이지
+
+*/
+
+	// 클릭한 곳의 동물 상세페이지
+	$(document).on('click', '.adoption-link', function(event) {
+		pageScroll(0);
+		// 입양센터 메인, 상세 페이지 각각의 전체를 감싸는 div에 클래스를 변경
+		// CSS 스타일시트에 'on' 클래스는 display: block; , 'off' 클래스는 display: none; 이다.
+		$('#adoption-main').removeClass().addClass('off');
+		$('#adoption-detail').removeClass().addClass('on');
+		event.preventDefault(); // 기본 링크 클릭 동작 방지
+		const index = $(this).data('index'); // 클릭한 요소의 인덱스 값을 가져옴
+		selectedPetData = adoptionItems[index]; // 선택된 항목 가져오기
+		
+		// 지역, 보호소 안내를 html 태그와 함께 저장하여 배치
+		let infoText = '<span class="infoSpan">' + selectedPetData.orgNm + '</span>에 있는 <span class="infoSpan">' + selectedPetData.careNm + '</span>에서 보호중인 동물이에요.';
+		$('#infoText').html(infoText);
+		
+		// 선택한 동물의 이미지를 html 태그와 함께 저장하여 배치
+		let selectedPetImage = '<img src="' + selectedPetData.popfile + '" alt="Animal Image" />';
+		$('#animalImage').html(selectedPetImage);
+		
+		// 선택한 동물의 상세정보들을 html 태그와 함께 저장하여 배치
+		let selectedPetTable = '';
+		selectedPetTable += '<tr><th>공고번호</th><td>' + selectedPetData.noticeNo + '</td>';
+		selectedPetTable += '<th>접수일</th><td>' + selectedPetData.happenDt + '</td></tr>';
+		selectedPetTable += '<tr><th>동물등록번호</th><td>' + selectedPetData.desertionNo + '</td>';
+		selectedPetTable += '<th>발견장소</th><td>' + selectedPetData.happenPlace + '</td></tr>';
+		selectedPetTable += '<tr><th>품종</th><td>' + selectedPetData.kindCd + '</td>';
+		selectedPetTable += '<th>색상</th><td>' + selectedPetData.colorCd + '</td></tr>';
+		selectedPetTable += '<tr><th>성별</th><td>' + selectedPetData.sexCd + '</td>';
+		selectedPetTable += '<th>중성화 여부</th><td>' + selectedPetData.neuterYn + '</td></tr>';
+		selectedPetTable += '<tr><th>나이/체중</th><td>' + selectedPetData.age + '/ ' + selectedPetData.weight + '</td>';
+		selectedPetTable += '<th>구조시 특징</th><td>' + selectedPetData.specialMark + '</td></tr>';
+		selectedPetTable += '<tr><th>보호소명</th><td>' + selectedPetData.careNm + '</td>';
+		selectedPetTable += '<th>보호소 전화번호</th><td>' + selectedPetData.careTel + '</td></tr>';
+		selectedPetTable += '<tr><th>관할기관</th><td>' + selectedPetData.orgNm + '</td>'
+		selectedPetTable += '<th>담당자</th><td>' + selectedPetData.chargeNm + '</td></tr>'
+		selectedPetTable += '<tr><th>보호소 주소</th><td colspan="3">' + selectedPetData.careAddr + '</td></tr>';
+		selectedPetTable += '<tr><th>담당자 연락처</th><td colspan="3">' + selectedPetData.officetel + '</td></tr>';
+		$('#selectedAnimalTable').html(selectedPetTable);
+	});
+	
+	// "목록으로" 버튼 클릭시
+	$('#goMain').on('click', function() {
+		pageScroll(0);
+		// 입양센터 메인, 상세 페이지 각각의 전체를 감싸는 div에 클래스를 변경
+		// CSS 스타일시트에 'on' 클래스는 display: block; , 'off' 클래스는 display: none; 이다.
+		$('#adoption-main').removeClass().addClass('on');
+		$('#adoption-detail').removeClass().addClass('off');
+	});
+	
+	// 호출시 입력한 파라미터값의 좌표로 화면을 스크롤
+	function pageScroll(y) {
+		window.scrollTo({ 
+			top: y,
+			behavior: 'smooth' });
 	}
 
 });

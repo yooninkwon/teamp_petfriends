@@ -61,4 +61,10 @@
 	<definition name="admin/notice_write" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/notice_write.jsp" />
 	</definition>
+	<definition name="admin/notice_edit" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/notice_edit.jsp" />
+	</definition>
+	<definition name="admin/event_edit" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/event_edit.jsp" />
+	</definition>
 </tiles-definitions>

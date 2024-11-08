@@ -108,7 +108,9 @@ public class AdminProductAddService implements AdminServiceInterface {
 	
 	// 이미지 새이름 생성 메소드
 	private String generateNewFileName(String originalFilename) {
-	    return System.currentTimeMillis() + "_" + originalFilename; // 현재 시간 + 원본 파일 이름
+		String plus =(char) ('A' + Math.random() * 26) + "" +  ((int) (Math.random() * 9999)+1);
+		
+	    return plus + System.currentTimeMillis() + "_" + originalFilename; // 현재 시간 + 원본 파일 이름
 	}
 	// 파일저장 및 이미지 새이름 리턴 
 	public List<String> saveFiles(MultipartFile[] files, String uploadDir) {

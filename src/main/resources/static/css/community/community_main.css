@@ -45,7 +45,7 @@ a:hover  {
 /* 핫이슈 */
 .hot-topics {
     grid-column: 1; /* 핫토픽을 첫 번째 열에 배치 */
-    margin-top: 60px; /* 핫이슈 섹션 위쪽 여백 줄이기 */
+    margin-top: 0px; /* 핫이슈 섹션 위쪽 여백 줄이기 */
     padding: 10px; /* 패딩 줄이기 */
     background: #f9f9f9;
 	border: 5px solid #ffe5ee;
@@ -121,7 +121,8 @@ a:hover  {
 .overlay p {
     color: rgba(255, 255, 255, 0.9);
     font-size: 18px; /* 글씨 크기 */
-	
+	text-align: center; /* 텍스트 중앙 정렬 */
+	margin: 10px; /* 기본 마진 */
 }
 
 .container-box {
@@ -140,6 +141,7 @@ a:hover  {
     padding: 0; /* 상단의 여백 */
     font-size: 18px; /* 글씨 크기 조정 */
     font-weight: bold; /* 글씨 두껍게 설정 */
+
 }
 
 
@@ -319,10 +321,11 @@ a:hover  {
     
 }
 
-.post-header, .post-content {
+.post-header {
     flex: 1; /* 텍스트가 더 많은 공간을 차지 */
     text-align: left; /* 텍스트를 왼쪽 정렬 */
     align-items: flex-start; /* 프로필과 제목, 내용을 왼쪽 정렬 */
+	
 }
 
 
@@ -357,17 +360,22 @@ a:hover  {
 
 .user-name {
     font-weight: bold; /* 이름을 굵게 표시 */
+	
+}
+
+
+.profile-info {
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    justify-content: space-between; /* 요소 간 간격 */
+
 }
 
 .post-time {
     margin-left: 10px; /* 이름과 시간 간격 조정 */
     font-size: 0.9em; /* 시간 크기 조정 */
     color: #777; /* 시간 색상 조정 */
-}
-
-.profile-info {
-    display: flex;
-    align-items: center; /* 프로필 이미지와 이름을 수평으로 정렬 */
+	
 }
 
 .post-image {
@@ -385,13 +393,15 @@ a:hover  {
 }
 
 .post-content {
-    display: -webkit-box; /* Flexbox의 웹킷 버전 */
-    -webkit-box-orient: vertical; /* 세로 방향으로 정렬 */
-    -webkit-line-clamp: 3; /* 3줄로 제한 */
-    overflow: hidden; /* 넘치는 내용 숨기기 */
-    text-overflow: ellipsis; /* 넘치는 부분을 '...'으로 표시 */
-    height: auto; /* 자동 높이 */
-   
+    display: -webkit-box !important ; /* Flexbox의 웹킷 버전 */
+    -webkit-box-orient: vertical !important; /* 세로 방향으로 정렬 */
+    -webkit-line-clamp: 3 !important; /* 3줄로 제한 */
+    overflow: hidden !important; /* 넘치는 내용 숨기기 */
+    text-overflow: ellipsis !important; /* 넘치는 부분을 '...'으로 표시 */
+    height: auto !important; /* 자동 높이 */
+    font-weight: normal !important; /* 굵기 조정 */
+    font-size: 14px !important; /* 크기 조정 */
+    color: black !important; /* 색상 조정 */
 }
 
 
@@ -405,21 +415,13 @@ a:hover  {
     align-self: flex-start; /* 부모 요소의 왼쪽 하단에 위치 */
 }
 
-.post-title a, .post-content a {
-    text-decoration: none; /* 링크의 밑줄 제거 */
-    color: #333; /* 기본 텍스트 색상 설정 */
-    transition: color 0.3s ease; /* 호버 시 부드러운 색상 변화 */
-}
-
-
-
 
 
 /* 사이드바 */
 
 .sidebar {
     position: absolute; /* 절대 위치 설정 */
-    top: 100px; /* 헤더의 높이에 따라 조정 */
+    top: 187px; /* 헤더의 높이에 따라 조정 */
     right: 160px; /* 오른쪽 정렬 */
     width: 350px; /* 화면 비율에 따라 사이드바 너비를 설정 */
     background-color: #fff; /* 배경색 */
@@ -443,14 +445,34 @@ a:hover  {
 }
 
 .login-button {
-    position: absolute; /* 절대 위치 설정 */
-    right: 20px; /* 오른쪽 끝으로 이동 */
-    background-color: #ff4081; /* 로그인 버튼 색상 */
-    color: white; /* 글씨 색상 흰색 */
-    padding: 10px 15px; /* 내부 여백 */
-    border: none; /* 테두리 제거 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    cursor: pointer; /* 커서 변경 */
+    background-color: #ff4081 !important; /* 버튼 배경색 */
+    color: white !important; /* 텍스트 색상 */
+    padding: 10px 15px !important; /* 내부 여백 */
+    border-color: none !important; /* 테두리 제거 */
+    border-radius: 5px !important; /* 모서리 둥글게 */
+    cursor: pointer !important; /* 마우스 포인터 변경 */
+    display: flex !important;
+    align-items: center !important; /* 수직 중앙 정렬 */
+    justify-content: center !important; /* 수평 중앙 정렬 */
+    width: 320px !important;
+    height: 50px !important;
+    margin: auto !important;
+    text-align: center !important; /* 텍스트 가운데 정렬 */
+	font-size: 20px !important;
+	font-weight: bold !important;
+}
+
+.logout-button {
+    background-color: #ff4081 !important; /* 버튼 색상 */
+    color: white !important; /* 텍스트 색상 */
+    padding: 10px 15px !important; /* 내부 여백 */
+    border: none !important;/* 테두리 제거 */
+    border-radius: 5px !important; /* 모서리 둥글게 */
+    cursor: pointer !important; /* 마우스 포인터 변경 */
+    display: flex !important;
+    align-items: center !important;
+    margin-left: auto !important;
+	float: right !important;
 }
 
 .sidebar-menu {

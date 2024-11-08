@@ -12,6 +12,26 @@
 </head>
 <body>
 
+	<!-- 회원복구 -->
+	<c:if test="${not empty withdraw}">
+	    <script>
+	        if (confirm("${withdraw}")) {
+	            // 폼을 동적으로 생성하여 POST 방식으로 전송
+	            const form = document.createElement('form');
+	            form.method = 'POST';
+	            form.action = '/login/restoration';
+	            // 코드 파라미터를 폼에 추가
+	            const input = document.createElement('input');
+	            input.type = 'hidden';
+	            input.name = 'code';
+	            input.value = '${member.mem_code}';
+	            form.appendChild(input);
+	            document.body.appendChild(form);
+	            form.submit(); // 폼 전송
+	        }
+	    </script>
+	</c:if>
+
 	<!-- 에러 전달받는게 있을때 표시 -->
 	<c:if test="${not empty error}">
         <script>
@@ -39,6 +59,9 @@
 			    <input type="password" id="password" name="password" placeholder="비밀번호"> <br>
 			
 			    <input type="checkbox" id="remember" name="remember" ${cookie.email != null ? 'checked' : ''}> Remember Me
+			    
+			    <!-- 이전에 있던 주소 -->
+			    <input type="hidden" name="previousUrl" value="${previousUrl }" />
 			    
 			    <a href="findId">Forgot Password</a>
 			    <input type="submit" id="signin" value="Sign In"> <br>

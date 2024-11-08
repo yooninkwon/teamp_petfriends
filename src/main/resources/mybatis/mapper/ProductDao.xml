@@ -188,14 +188,12 @@
             GRADE.G_RATE
         FROM
             GRADE
-        INNER JOIN 
-            MEMBER ON GRADE.G_NO = MEMBER.G_NO
         WHERE
-            MEMBER.G_NO= (SELECT G_NO FROM MEMBER WHERE MEM_CODE=#{mem_code})
+            GRADE.G_NO= (SELECT G_NO FROM MEMBER WHERE MEM_CODE=#{mem_code})
 	</select>
 	
-	<!-- 제품상세페이지 장바구니담기 인서트 -->
-	<insert id="productDetailCart">
+	<!-- 제품상세페이지 장바구니담기 인서트 _ 주소포함-->
+	<!-- <insert id="productDetailCart">
 		INSERT INTO 
 			PRODUCT_CART(CART_CODE, MEM_CODE, PRO_CODE, PROOPT_CODE, CART_CNT, ADDR_CODE)
 		VALUES (
@@ -208,6 +206,15 @@
     			MEM_CODE = #{mem_code}
     		AND 
     			ADDR_DEFAULT = 'Y'))
+	</insert> -->
+	
+	<!-- 제품상세페이지 장바구니담기 인서트 _ 주소삭제-->
+	<insert id="productDetailCart">
+		INSERT INTO 
+			PRODUCT_CART(CART_CODE, MEM_CODE, PRO_CODE, PROOPT_CODE, CART_CNT)
+		VALUES (
+    		#{cart_code}, #{mem_code}, #{pro_code}, #{opt_code}, #{cart_cnt}
+    			)
 	</insert>
 	
 	<!-- 제품상세페이지 추천제품 리스트 -->
@@ -286,11 +293,11 @@
 			REV.REVIEW_IMG1, REV.REVIEW_IMG2, REV.REVIEW_IMG3, REV.REVIEW_IMG4, REV.REVIEW_IMG5
 		FROM
 			PRODUCT_REVIEW REV
-		INNER JOIN
-			MEMBER_PET PET ON REV.MEM_CODE=PET.MEM_CODE
+		LEFT JOIN
+				MEMBER_PET PET ON REV.MEM_CODE=PET.MEM_CODE
+			AND
+   				PET.PET_MAIN='Y'
 		WHERE
-   			PET.PET_MAIN='Y'
-		AND
 			REV.PRO_CODE = #{proCode}
 		ORDER BY 
 			${selectedOpt}
@@ -313,7 +320,7 @@
 	</select>
 	
 	<!-- 헤더 검색페이지 검색쿼리 -->
-	<select id="productSearchList"
+	<!-- <select id="productSearchList"
 		resultType="com.tech.petfriends.product.dto.ProductListViewDto">
 		SELECT
 			PRO.PRO_CODE,
@@ -350,7 +357,103 @@
 		GROUP BY
 			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, 
 			PRO.PRO_DATE, PRO.PRO_ONOFF	
+	</select> -->
+	
+	<!--검색페이지_ 검색상품 불러오기(all 제품)  -->
+	<select id="productSearchList"
+		resultType="com.tech.petfriends.product.dto.ProductListViewDto">
+		SELECT
+			PRO.PRO_CODE,
+			PRO.PRO_NAME,
+			PRO.PRO_PETS,
+            PRO.PRO_TYPE,
+            PRO.PRO_CATEGORY,
+			PROIMG.MAIN_IMG1,
+			MIN(PROOPT.PROOPT_FINALPRICE) AS PROOPT_FINALPRICE,
+   			MIN(PROOPT.PROOPT_PRICE) AS PROOPT_PRICE,
+			PRO.PRO_DISCOUNT,
+			PRO.PRO_ONOFF,
+			NVL(COUNT(PROREV.PRO_CODE), 0) AS TOTAL_REVIEWS, 
+		    COALESCE(ROUND(AVG(PROREV.REVIEW_RATING), 1), 0.0) AS AVERAGE_RATING  
+		FROM
+			PRODUCT PRO
+		INNER JOIN
+			PRODUCT_IMAGE PROIMG ON PRO.PRO_CODE = PROIMG.PRO_CODE
+		INNER JOIN(
+		    SELECT 
+		        PROOPT.PRO_CODE,
+		        MIN(PROOPT.PROOPT_FINALPRICE) AS PROOPT_FINALPRICE,
+		        MIN(PROOPT.PROOPT_PRICE) AS PROOPT_PRICE
+		    FROM 
+		        PRODUCT_OPTION PROOPT
+		    GROUP BY 
+		        PROOPT.PRO_CODE
+			) PROOPT ON PRO.PRO_CODE = PROOPT.PRO_CODE
+		LEFT JOIN
+			PRODUCT_REVIEW PROREV ON PRO.PRO_CODE = PROREV.PRO_CODE 
+		GROUP BY
+			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, 
+			PRO.PRO_DATE, PRO.PRO_ONOFF,PRO.PRO_PETS, PRO.PRO_TYPE, PRO.PRO_CATEGORY	
     	
+	</select>
+	
+	<!-- 검색페이지_최근 본 아이템 db에 있는지 확인하기 위한 쿼리문 -->
+	<select id="productWindowConfirm" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			PRODUCT_WINDOW
+		WHERE
+			PRO_CODE = #{pro_code}
+		AND
+			MEM_CODE = #{mem_code}
+	</select>
+	<!-- 검색페이지_최근 본 아이템 db에 없으면 추가 -->
+	<insert id="productWindowAdd">
+		INSERT INTO 
+			PRODUCT_WINDOW(PRO_CODE, MEM_CODE)
+		VALUES
+			(#{pro_code}, #{mem_code})
+	</insert>
+	<!-- 검생페이지_최근 본 아이템 불러오기 -->
+	<select id="productWindowList"
+		resultType="com.tech.petfriends.product.dto.ProductListViewDto">
+		SELECT
+			PRO.PRO_CODE,
+			PRO.PRO_NAME,
+			PROIMG.MAIN_IMG1,
+			MIN(PROOPT.PROOPT_FINALPRICE) AS PROOPT_FINALPRICE,
+   			MIN(PROOPT.PROOPT_PRICE) AS PROOPT_PRICE,
+			PRO.PRO_DISCOUNT,
+			PRO.PRO_ONOFF,
+			NVL(COUNT(PROREV.PRO_CODE), 0) AS TOTAL_REVIEWS, 
+		    COALESCE(ROUND(AVG(PROREV.REVIEW_RATING), 1), 0.0) AS AVERAGE_RATING,
+		    PW.WINDOW_DATE 
+		FROM
+			PRODUCT PRO
+		INNER JOIN
+			PRODUCT_IMAGE PROIMG ON PRO.PRO_CODE = PROIMG.PRO_CODE
+		INNER JOIN(
+		    SELECT 
+		        PROOPT.PRO_CODE,
+		        MIN(PROOPT.PROOPT_FINALPRICE) AS PROOPT_FINALPRICE,
+		        MIN(PROOPT.PROOPT_PRICE) AS PROOPT_PRICE
+		    FROM 
+		        PRODUCT_OPTION PROOPT
+		    GROUP BY 
+		        PROOPT.PRO_CODE
+			) PROOPT ON PRO.PRO_CODE = PROOPT.PRO_CODE
+        INNER JOIN
+            PRODUCT_WINDOW PW ON PRO.PRO_CODE = PW.PRO_CODE
+		LEFT JOIN
+			PRODUCT_REVIEW PROREV ON PRO.PRO_CODE = PROREV.PRO_CODE
+        WHERE
+            PW.MEM_CODE = #{mem_code}
+        GROUP BY
+			PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, 
+			PW.WINDOW_DATE, PRO.PRO_ONOFF
+		ORDER BY
+            PW.WINDOW_DATE DESC
 	</select>
 	
 </mapper>

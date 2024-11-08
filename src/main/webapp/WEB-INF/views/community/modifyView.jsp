@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>게시글 수정</title>
     <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/community/community_modify.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/community/community_modifyView.css">
     <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
 </head>
 <body>
@@ -18,7 +18,9 @@
 
     <form id="postForm" action="${pageContext.request.contextPath}/community/modify" method="post" enctype="multipart/form-data" class="write-form" onsubmit="return validateForm()">
         <input type="hidden" name="board_no" value="${contentView.board_no}"> <!-- 게시글 번호 -->
-        <input type="hidden" name="u_no" value="${contentView.u_no}"> <!-- 사용자 번호 -->
+		<input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
+		<input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
+		<input type="hidden" name="pet_img" value="${getpetimg.pet_img}">
         <!-- 기존 대표 이미지 파일명을 히든 필드로 전송 -->
 		<input type="hidden" name="orepfile" value="${contentView.orepfile}">
 		<input type="hidden" name="chrepfile" value="${contentView.chrepfile}">
@@ -28,8 +30,13 @@
 	    <input type="hidden" name="cchgfile" value="${contentView.cchgfile}"> <!-- 기존 변경된 일반 이미지 파일명 -->
        
        
-        <label for="user_id">이름</label>
-        <input type="text" id="user_id" name="user_id" value="${contentView.user_id}" readonly required>
+		<div class="form-group">
+		    <div class="profile-info">
+		        <img src="/static/Images/pet/${contentView.pet_img}" alt="프로필 이미지 1" class="profile-image" />
+		        <label for="user_id" class="author-label">${sessionScope.loginUser.mem_nick}</label>
+		    </div>
+		</div>
+    
 		
         <label for="b_cate_no">카테고리</label>
         <select id="b_cate_no" name="b_cate_no" required>

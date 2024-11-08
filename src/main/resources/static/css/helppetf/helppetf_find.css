@@ -1,11 +1,94 @@
 @charset "UTF-8";
 
+.my_adress {
+	border-bottom: 1px solid #F4EDED;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+}
+
+.my_adress_wrap {
+	position: relative;
+	display: flex;
+	width: 1000px;
+	margin: 0 auto;
+	font-size: 14px;
+}
+
+.my_adress_wrap .my_adress_box span {
+	font-weight: bold;
+}
+
+.my_adress_wrap .my_adress_box {
+	width: calc(100% - 258px);
+	background-color: #F4EDED;
+	text-align: center;
+	padding: 8px 50px;
+	border-radius: 5px;
+}
+
+.my_adress_wrap .search_btn {
+    display: block;
+    background-color: #FF4081;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.my_adress_wrap .change_adress_wrap.on {
+	display: block;
+}
+
+.my_adress_wrap .change_adress_wrap {
+    position: absolute;
+    display: none;
+    top: 34px;
+    right: 0;
+    z-index: 8;
+    background-color: #fff;
+    width: 300px;
+    height: 465px;
+    border-radius: 10px;
+    border: 2px solid #BEBCBC;
+    font-size: 13px;
+    padding: 10px 5px;
+}
+
+.my_adress_wrap .change_adress_wrap .title {
+	font-weight: bold;
+/* 	padding-bottom: 20px; */
+	text-align: center;
+	font-size: 12px;
+}
+
+.my_adress_wrap .change_adress_wrap .search_wrap {
+	height: calc(100% - 80px);
+	padding-bottom: 5px
+}
+
+.my_adress_wrap .change_adress_wrap .change_search_btn {
+	width: 100%;
+	color: #fff;
+	background-color: #FF4081;
+	padding: 5px 10px;
+	text-align: center;
+	cursor: pointer;
+	border: none;
+	border-radius: 5px;
+}
 
 .map_wrap, .map_wrap * {
 	margin: 0;
 	padding: 0;
 	font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
 	font-size: 12px;
+}
+
+.map_wrap > div {
+	position: relative;
+    width: 1000px;
+    margin: 0 auto;
 }
 
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active {
@@ -33,6 +116,17 @@
 	font-size: 12px;
 	border-radius: 10px;
 }
+
+#menu_wrap .search_wrap {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	white-space: nowrap;
+	padding-bottom: 10px;
+	border-bottom: 2px solid #000;
+}
+
 
 .bg_white {
 	background: #fff;

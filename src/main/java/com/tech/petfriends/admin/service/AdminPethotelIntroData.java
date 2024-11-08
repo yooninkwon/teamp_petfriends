@@ -17,6 +17,7 @@ public class AdminPethotelIntroData implements AdminServiceInterface {
 	
 	@Override
 	public void execute(Model model) {
+		// db호출하여 데이터 DTO에 저장
 		PethotelIntroDto dto = adminDao.adminPethotelIntro();
 		model.addAttribute("dto", dto);
 	}

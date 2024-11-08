@@ -6,12 +6,14 @@
 	<select id="getPetteacherList" resultType="com.tech.petfriends.helppetf.dto.PetteacherDto">
 		SELECT * FROM HELP_PETTEACHER
 		<where>
+			<!-- 동물종류 필터 -->
 			<choose>
 				<when test="type == '전체'">HPT_HIT >= 0</when>
 				<when test="type == '고양이'">HPT_PETTYPE = '고양이'</when>
 				<when test="type == '강아지'">HPT_PETTYPE = '강아지'</when>
 				<when test="type == '기타 동물'">HPT_PETTYPE = '기타 동물'</when>
 			</choose>
+			<!-- 카테고리 필터 -->
 			<choose>
 				<when test="category == '전체'">AND HPT_SEQ >= 0</when>
 				<when test="category == '훈련'">AND HPT_CATEGORY = '훈련'</when>
@@ -22,6 +24,7 @@
 				<when test="category == '생활'">AND HPT_CATEGORY = '생활'</when>
 			</choose>
 		</where>
+		<!-- 정렬 -->
 		<choose>
 			<when test="sort == '최신순'">ORDER BY HPT_RGEDATE DESC</when>
 			<when test="sort == '오래된순'">ORDER BY HPT_RGEDATE ASC</when>
@@ -95,4 +98,75 @@
 		INFO_LINE15 = #{info_line15}, 
 		INFO_LINE16 = #{info_line16}
 	</update>
+	<select id="adminPethotelReserveData" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
+		SELECT HPHM.*, MEM.MEM_NICK 
+		FROM HELP_PETHOTEL_MEM HPHM, 
+			 MEMBER MEM 
+		<where>
+			HPHM.MEM_CODE = MEM.MEM_CODE
+			<!-- 예약상태 필터 -->
+			<choose>
+				<when test="reserveType == '전체'">AND HPH_STATUS IS NOT NULL</when>
+				<when test="reserveType == '신청중'">AND HPH_STATUS = '신청중'</when>
+				<when test="reserveType == '승인'">AND HPH_STATUS = '승인'</when>
+				<when test="reserveType == '거절'">AND HPH_STATUS = '거절'</when>
+			</choose>
+			
+			<!-- 기간 필터 -->
+ 			<if test="(startDate != null and startDate != '') or (endDate != null and endDate != '')">
+	            <choose>
+	            	<when test="(startDate != null and startDate != '') and (endDate == null or endDate == '')">
+	            		AND HPH_START_DATE &gt;= TO_DATE(#{startDate}, 'YYYY/MM/DD')
+	            	</when>
+	            	<when test="(endDate != null and endDate != '') and (startDate == null or startDate == '')">
+	            		AND HPH_END_DATE &lt;= TO_DATE(#{endDate}, 'YYYY/MM/DD')
+	            	</when>
+	            	<when test="(startDate != null and endDate != null) or (startDate != '' and endDate != '')">
+	            		AND HPH_START_DATE &gt;= TO_DATE(#{startDate}, 'YYYY/MM/DD')
+	            		AND HPH_END_DATE &lt;= TO_DATE(#{endDate}, 'YYYY/MM/DD')
+	            	</when>
+	            </choose>
+        	</if>
+        	
+        	<!-- 멤버 코드 -->
+			<if test="memberCode != '' and memberCode != null"> AND MEM_CODE = #{memberCode} </if>
+
+        	<!-- 예약 코드 -->
+			<if test="reserveCode != '' and memberCode != null"> AND HPH_RESERVE_NO = #{reserveCode} </if>
+		</where>
+		ORDER BY HPH_RGE_DATE DESC
+	</select>
+	<select id="adminPethotelReservePets" resultType="com.tech.petfriends.helppetf.dto.PethotelFormDataDto">
+		SELECT * FROM HELP_PETHOTEL_PETS
+		WHERE HPH_RESERVE_NO = #{hph_reserve_no}
+	</select>
+	
+	<select id="adminPethotelReserveMem" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
+		SELECT HPHM.*, MEM.MEM_NICK 
+		FROM HELP_PETHOTEL_MEM HPHM, 
+			 MEMBER MEM
+		WHERE HPHM.HPH_RESERVE_NO = #{hph_reserve_no}
+		AND   HPHM.MEM_CODE = MEM.MEM_CODE
+	</select>
+	
+	<update id="adminPethotelReserveUpdate">
+		UPDATE HELP_PETHOTEL_MEM 
+		SET 
+		HPH_STATUS = #{hph_status} 
+		<if test="hph_status == '신청중'">
+			, HPH_APPROVAL_DATE = null 
+			, HPH_REFUSAL_REASON = '-'
+		</if>
+		<if test="hph_status == '승인'">
+			, HPH_APPROVAL_DATE = SYSDATE 
+			, HPH_REFUSAL_REASON = '-'
+		</if>
+		<if test="hph_status == '거절'">
+			, HPH_APPROVAL_DATE = null 
+			, HPH_REFUSAL_REASON = #{hph_refusal_reason}
+		</if>
+		WHERE 
+		HPH_RESERVE_NO = #{hph_reserve_no} 
+	</update>
+	
 </mapper>

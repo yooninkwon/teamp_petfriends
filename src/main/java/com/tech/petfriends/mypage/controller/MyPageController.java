@@ -1,5 +1,7 @@
 package com.tech.petfriends.mypage.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -7,6 +9,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -19,9 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.configuration.ApikeyConfig;
@@ -29,7 +34,10 @@ import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dao.MypageDao;
 import com.tech.petfriends.mypage.dto.GradeDto;
+import com.tech.petfriends.mypage.dto.MyCartDto;
+import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
+import com.tech.petfriends.mypage.dto.MyWishDto;
 
 @Controller
 @RequestMapping("/mypage")
@@ -53,12 +61,12 @@ public class MyPageController {
 	
 	@Transactional
 	@PostMapping("/mypet/setMainPet")
-	public String setMainPet(HttpServletRequest request) {
-        
+	public String setMainPet(HttpServletRequest request, HttpSession session) {
+
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
 		String newlyChecked = request.getParameter("newlyChecked");
-		String previousChecked = request.getParameter("previousChecked");
 		
-		mypageDao.removeMainPet(previousChecked);
+		mypageDao.removeMainPet(loginUser.getMem_code());
 		mypageDao.setMainPet(newlyChecked);
 		
 		return "redirect:/mypage/mypet";
@@ -67,6 +75,85 @@ public class MyPageController {
 	@GetMapping("/mypet/register")
 	public String mypetRegister() {
 		return "mypage/mypet/register";
+	}
+	
+	@GetMapping("register/breedOption")
+	public String breedOption(HttpServletRequest request, Model model) {
+		
+		String petType = request.getParameter("petType");
+		
+		ArrayList<String> options = mypageDao.getBreedOptionByType(petType);
+		
+		model.addAttribute("petType",petType);
+		model.addAttribute("options",options);
+		
+		return "/mypage/popup/breedOption";
+	}
+	
+	@Transactional
+	@PostMapping("/registPet")
+	public String registerPet(HttpServletRequest request, HttpSession session, @RequestParam("petImgFile") MultipartFile petImgFile) {
+		
+	    String petCode = UUID.randomUUID().toString();
+	    String memCode = ((MemberLoginDto) session.getAttribute("loginUser")).getMem_code();
+
+	    MyPetDto myPetDto = new MyPetDto(); //초기화
+	    
+	    // 폼에서 전달된 정보들 Dto에 넣어주기
+	    myPetDto.setPet_code(petCode);
+	    myPetDto.setMem_code(memCode);
+	    myPetDto.setPet_type(request.getParameter("petType"));
+	    myPetDto.setPet_name(request.getParameter("petName"));
+	    myPetDto.setPet_breed(request.getParameter("petBreed"));
+	    
+	    String fileName = null;
+		try {
+			if (petImgFile != null && !petImgFile.isEmpty()) {
+				
+				String imagesDir = new File("src/main/resources/static/Images/pet").getAbsolutePath();
+				
+				// 파일 이름 가져오기
+				fileName = petImgFile.getOriginalFilename();
+				File saveFile = new File(imagesDir, fileName);
+				
+				// 파일 이름 중복 체크
+				int count = 1;
+				String nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
+				String ext = fileName.substring(fileName.lastIndexOf('.'));
+				while (saveFile.exists()) {
+					fileName = nameWithoutExt + "(" + count + ")" + ext;
+					saveFile = new File(imagesDir, fileName);
+					count++;
+				}
+				// 파일 저장
+				petImgFile.transferTo(saveFile);
+			} else {
+				fileName = "noPetImg.jpg";
+			}
+		} catch (IOException e) {
+	        e.printStackTrace();
+	        return "파일 업로드 실패";
+	    }
+	    
+	    // 날짜 형식 변환
+	    try {
+	    	myPetDto.setPet_birth(Date.valueOf(LocalDate.parse(request.getParameter("petBirth"), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+	    } catch (DateTimeParseException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    myPetDto.setPet_img(fileName);
+	    myPetDto.setPet_gender(request.getParameter("petGender"));
+	    myPetDto.setPet_weight(request.getParameter("petWeight"));
+	    myPetDto.setPet_neut(request.getParameter("petNeut"));
+	    myPetDto.setPet_form(request.getParameter("petForm"));
+	    myPetDto.setPet_care(request.getParameter("petCare"));
+	    myPetDto.setPet_allergy(request.getParameter("petAllergy"));
+
+	    mypageDao.removeMainPet(memCode);
+	    mypageDao.insertPet(myPetDto);
+
+	    return "redirect:/mypage/mypet";
 	}
 	
 	@GetMapping("/mypet/modify")
@@ -79,6 +166,61 @@ public class MyPageController {
 		model.addAttribute("info",info);
         
 		return "mypage/mypet/modify";
+	}
+	
+	@PostMapping("/modifyPet")
+	public String modifyPet(HttpServletRequest request, @RequestParam("petImgFile") MultipartFile petImgFile) {
+
+	    MyPetDto myPetDto = new MyPetDto();
+	    
+	    myPetDto.setPet_code(request.getParameter("petCode"));
+	    myPetDto.setPet_name(request.getParameter("petName"));
+	    
+	    String fileName = null;
+		try {
+			if (petImgFile != null && !petImgFile.isEmpty()) {
+				
+				String imagesDir = new File("src/main/resources/static/Images/pet").getAbsolutePath();
+				
+				fileName = petImgFile.getOriginalFilename();
+				File saveFile = new File(imagesDir, fileName);
+				
+				int count = 1;
+				String nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
+				String ext = fileName.substring(fileName.lastIndexOf('.'));
+				while (saveFile.exists()) {
+					fileName = nameWithoutExt + "(" + count + ")" + ext;
+					saveFile = new File(imagesDir, fileName);
+					count++;
+				}
+				petImgFile.transferTo(saveFile);
+			} else {
+				fileName = "noPetImg.jpg";
+			}
+		} catch (IOException e) {
+	        e.printStackTrace();
+	        return "파일 업로드 실패";
+	    }
+	    
+		myPetDto.setPet_img(fileName);
+	    myPetDto.setPet_gender(request.getParameter("petGender"));
+	    myPetDto.setPet_weight(request.getParameter("petWeight"));
+	    myPetDto.setPet_neut(request.getParameter("petNeut"));
+	    myPetDto.setPet_form(request.getParameter("petForm"));
+	    myPetDto.setPet_care(request.getParameter("petCare"));
+	    myPetDto.setPet_allergy(request.getParameter("petAllergy"));
+		
+		mypageDao.modifyPetByPetCode(myPetDto);
+		
+		return "redirect:/mypage/mypet";
+	}
+	
+	@GetMapping("/deletePet")
+	public String deletePet(HttpServletRequest request) {
+		
+		mypageDao.deletePetByPetCode(request.getParameter("petCode"));
+		
+		return "redirect:/mypage/mypet";
 	}
 	
 	@GetMapping("/grade")
@@ -300,7 +442,7 @@ public class MyPageController {
 	    loginUser.setMem_name(request.getParameter("mem_name"));
 	    loginUser.setMem_nick(request.getParameter("mem_nick"));
 	    
-	 // 날짜 형식 변환
+	    // 날짜 형식 변환
 	    try {
 	        loginUser.setMem_birth(Date.valueOf(LocalDate.parse(request.getParameter("mem_birth"), DateTimeFormatter.ofPattern("yyyyMMdd"))));
 	    } catch (DateTimeParseException e) {
@@ -320,8 +462,115 @@ public class MyPageController {
 	}
 	
 	@GetMapping("/cart")
-	public String cart() {
+	public String cart(Model model, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		GradeDto userGrade = (GradeDto) session.getAttribute("userGrade");
+		
+		ArrayList<MemberAddressDto> address = mypageDao.getAddrByMemberCode(loginUser.getMem_code());
+		List<MyCartDto> cart = mypageDao.getCartByMemberCode(loginUser.getMem_code());
+		
+		model.addAttribute("loginUser", loginUser);
+		model.addAttribute("userGrade", userGrade);
+		model.addAttribute("address",address);
+		model.addAttribute("cart", cart);
+		
 		return "mypage/cart";
+	}
+	
+	@GetMapping("/deleteAllItem")
+	public String deleteAllItem(HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		
+		mypageDao.deleteAllCartItems(loginUser.getMem_code());
+		
+		return "redirect:/mypage/cart";
+	}
+	
+	@PostMapping("/updateQuantity")
+	@ResponseBody
+	public Map<String, Object> updateQuantity(@RequestBody Map<String, String> payload) {
+		
+		String newQuantity = payload.get("newQuantity");
+	    String cartCode = payload.get("cartCode");
+	    
+	    boolean updateSuccess = mypageDao.updateCartQuantity(newQuantity, cartCode);
+
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("success", updateSuccess);
+	    
+	    return response;
+	}
+	
+	@GetMapping("/orderThisItem")
+	public String orderThisItem(Model model, HttpServletRequest request, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		GradeDto userGrade = (GradeDto) session.getAttribute("userGrade");
+		
+		ArrayList<MemberAddressDto> address = mypageDao.getAddrByMemberCode(loginUser.getMem_code());
+	    List<MyCartDto> items = mypageDao.getItemByCartCode(request.getParameter("cartCode"));
+	    ArrayList<CouponDto> mycoupons = mypageDao.getCouponByMemberCode(loginUser.getMem_code());
+	    
+	    model.addAttribute("loginUser", loginUser);
+		model.addAttribute("userGrade", userGrade);
+		model.addAttribute("address",address);
+	    model.addAttribute("items", items);
+	    model.addAttribute("mycoupons",mycoupons);
+
+	    return "mypage/payment";
+	}
+	
+	@GetMapping("/deleteThisItem")
+	public String deleteThisItem(HttpServletRequest request) {
+		
+		String cartCode = request.getParameter("cartCode");
+		
+		mypageDao.deleteCartItem(cartCode);
+		
+		return "redirect:/mypage/cart";
+	}
+	
+	@PostMapping("/orderSelectedItem")
+	public String orderSelectedItem(@RequestParam List<String> cartCodes, Model model, HttpSession session) {
+
+	    MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+	    GradeDto userGrade = (GradeDto) session.getAttribute("userGrade");
+
+	    ArrayList<MemberAddressDto> address = mypageDao.getAddrByMemberCode(loginUser.getMem_code());
+	    List<MyCartDto> items = mypageDao.getItemsByCartCodes(cartCodes);
+	    ArrayList<CouponDto> mycoupons = mypageDao.getCouponByMemberCode(loginUser.getMem_code());
+
+	    model.addAttribute("loginUser", loginUser);
+	    model.addAttribute("userGrade", userGrade);
+	    model.addAttribute("address", address);
+	    model.addAttribute("items", items);
+	    model.addAttribute("mycoupons", mycoupons);
+
+	    return "mypage/payment";
+	}
+	
+	@GetMapping("/payment/delivEnterMethod")
+	public String delivEnterMethod(Model model) {
+		return "/mypage/popup/delivEnterMethod";
+	}
+	
+	@GetMapping("/payment/delivMemo")
+	public String delivMemo(Model model) {
+		return "/mypage/popup/delivMemo";
+	}
+	
+	@GetMapping("/payment/usableCoupon")
+	public String usableCoupon(Model model, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		
+		ArrayList<CouponDto> mycoupons = mypageDao.getCouponByMemberCode(loginUser.getMem_code());
+		
+        model.addAttribute("mycoupons",mycoupons);
+		
+		return "/mypage/popup/usableCoupon";
 	}
 	
 	@GetMapping("/order")
@@ -336,7 +585,41 @@ public class MyPageController {
 	
 	@GetMapping("/wish")
 	public String wish() {
-		return "mypage/wish";
+	    return "mypage/wish";
+	}
+
+	@GetMapping("/wish/data")
+	@ResponseBody
+	public List<MyWishDto> wishData(HttpServletRequest request, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		String sortType = request.getParameter("sort");
+
+		List<MyWishDto> myWish = mypageDao.getAllWishInfoByMemberCode(loginUser.getMem_code(), sortType);
+		
+		return myWish;
+	}
+	
+	@GetMapping("/buyoften/data")
+	@ResponseBody
+	public List<MyOrderDto> buyoftenData(HttpServletRequest request, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		String orderable = request.getParameter("");
+		
+		List<MyOrderDto> buyoften = mypageDao.getAllOrderInfoByMemberCode(loginUser.getMem_code(), orderable);
+		
+		return buyoften;
+	}
+	
+	@GetMapping("/deleteWish")
+	public String deleteWish(HttpServletRequest request, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		
+		mypageDao.deleteWishByProCode(loginUser.getMem_code(), request.getParameter("proCode"));
+		
+		return "redirect:/mypage/wish";
 	}
 	
 	@GetMapping("/cscenter")

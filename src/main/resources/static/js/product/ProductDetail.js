@@ -1,4 +1,28 @@
 $(document).ready(function() {
+	console.log(windowMemCode + '멤코드다');
+	console.log(windowProCode + '프로코드다');
+
+	// 로그인이 되어있을때 상품상세페이지 로드시 둘러본상품목록에 추가
+	if (windowMemCode) {
+
+		$.ajax({
+			url: '/product/productAddWindow',
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify({
+				windowMemCode,
+				windowProCode
+			})
+		});
+
+	}
+
+	//sub메뉴바 클릭 활성화
+	$(document).ready(function() {
+		$('#productPetItem').addClass('selected');
+	});
+
+
 	let currentIndex = 0; // 현재 이미지 인덱스
 
 	// 만약 이미지가 하나 이하라면 버튼을 숨김
@@ -75,10 +99,6 @@ $(document).ready(function() {
 	});
 
 
-
-
-
-
 	//페이지 시작시 유저의 상품 찜상태 체크
 	startWish(wishResult);
 
@@ -97,21 +117,12 @@ $(document).ready(function() {
 		}
 	}
 
-	//찜버튼 누를시  ajax 요청 / 세션에 로그인정보가 없을시 로그인화면 유도 팝업창
-	$('#wishListBtn').click(function() {
-		const button = $(this);
-		const productCode = button.data('product-code');
-		const memCode = button.data('mem-code'); // 세션에서 mem_code 가져오기
-		const $wishWord = $('#wishWord');
-
-		console.log(memCode);
-		console.log(productCode);
-
+	/*현재 로그인상태인지 확인
+	로그인 아닐시 false값 리턴*/
+	function memCodeConfirm(memCode) {
 		var loginPopup = document.getElementById("loginPopup");
 		var loginBtn = document.getElementById("loginBtn");
 		var closeBtn = document.getElementById("closeBtn");
-
-		// 로그인 상태 확인
 		if (!memCode) {
 			// 팝업 표시
 			loginPopup.style.display = "flex";
@@ -124,7 +135,24 @@ $(document).ready(function() {
 			closeBtn.addEventListener("click", function() {
 				loginPopup.style.display = "none"; // 팝업 닫기
 			});
-			return;
+			return false;
+		}
+		return true;
+	}
+
+	//찜버튼 누를시  ajax 요청 / 세션에 로그인정보가 없을시 로그인화면 유도 팝업창
+	$('#wishListBtn').click(function() {
+		const button = $(this);
+		const productCode = button.data('product-code');
+		const memCode = button.data('mem-code'); // 세션에서 mem_code 가져오기
+		const $wishWord = $('#wishWord');
+
+		console.log(memCode);
+		console.log(productCode);
+
+		// 로그인 상태 확인
+		if (!memCodeConfirm(memCode)) {
+			return; // 로그인 필요 시 클릭 이벤트 종료
 		}
 
 		// 찜목록 상품 넣기 AJAX 요청
@@ -160,10 +188,6 @@ $(document).ready(function() {
 		const proOption = $('#productOptions').find('option:selected');
 		const optCode = proOption.data('code');
 
-
-		var loginPopup = document.getElementById("loginPopup");
-		var loginBtn = document.getElementById("loginBtn");
-		var closeBtn = document.getElementById("closeBtn");
 		var cartPopup = document.getElementById("cartPopup");
 		var addCartBtn = document.getElementById("addCartBtn");
 		var closeCartBtn = document.getElementById("closeCartBtn");
@@ -171,9 +195,10 @@ $(document).ready(function() {
 		var goCartBtn = document.getElementById("goCartBtn");
 		var closeGoCartBtn = document.getElementById("closeGoCartBtn");
 
-		console.log(memCode);
-		console.log(proCode);
-		console.log(optCode);
+		// 로그인 상태 확인
+		if (!memCodeConfirm(memCode)) {
+			return; // 로그인 필요 시 클릭 이벤트 종료
+		}
 
 		// 장바구니 담겨있는지 확인요청 ajax
 		if (memCode) {
@@ -200,26 +225,10 @@ $(document).ready(function() {
 			});
 		}
 
-
-		// 로그인 상태 확인
-		if (!memCode) {
-			// 팝업 표시
-			loginPopup.style.display = "flex";
-			// 로그인 버튼 클릭 시
-			loginBtn.addEventListener("click", function() {
-				window.location.href = '/login/loginPage'; // 로그인 페이지로 이동
-				loginPopup.style.display = "none"; // 팝업 닫기
-			});
-			// 닫기 버튼 클릭 시
-			closeBtn.addEventListener("click", function() {
-				loginPopup.style.display = "none"; // 팝업 닫기
-			});
-
-		}
-
-
+		/*장바구니에 담겼습니다, 장바구니 담기 팝업 버튼에 의한 닫기기능*/
 		addCartBtn.addEventListener("click", function() {
 			cartPopup.style.display = "none"; // 팝업 닫기
+
 		});
 
 		closeCartBtn.addEventListener("click", function() {
@@ -242,17 +251,16 @@ $(document).ready(function() {
 		const selectedOptionCode = selectedOption.data('code');
 		const selectedOptionStock = selectedOption.data('stock');
 
-		$('#selectedOptionPrice').text(`1개 (${selectedPrice}원)`);
+		$('#selectedOptionPrice').text(`1개 (${Number(selectedPrice).toLocaleString()}원)`);
 		$('#optionCodeInput').val(selectedCode);
 		$('#selectedOptionText').text(selectedOptionName); // 옵션 이름 업데이트
 		opt_code.value = selectedOptionCode;
 		$('#quantityInput').attr('max', selectedOptionStock);
-		$('#quantityMaxText').text(`최대 ${selectedOptionStock}개`); // 화면에 재고 표시
+		$('#quantityMaxText').text(`최대 ${Number(selectedOptionStock).toLocaleString()}개`); // 화면에 재고 표시
 
 		updateFinalPrice(selectedPrice);
 
 	});
-
 
 	// 수량 변경 시 최종 가격 업데이트
 	$('#quantityInput').on('input', function() {
@@ -265,8 +273,35 @@ $(document).ready(function() {
 	function updateFinalPrice(selectedPrice) {
 		const quantity = $('#quantityInput').val();
 		const finalPrice = selectedPrice * quantity;
-		$('#finalPrice').text(`총 가격: ${finalPrice}원`);
+		$('#finalPrice').html(`총 수량 ${Number(quantity).toLocaleString()}개 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ${Number(finalPrice).toLocaleString()}원`);
 	}
+
+	/*상품이 담겼습니다 > 장바구니 유도 팝업
+	-> form으로 장바구니db에 담는거라 페이지가 새로고침되서
+	장바구니에 담는순간
+	sessionStorage에 키/밸류값(showCartPopup / ture)을 담고
+	페이지가 로드시에 sessionStorage에 showCartPopup = true값이면
+	해당 상품이 담긴상태니 팝업창을 띄우고 그 후에 sessionStorage에 
+	showCartPopup값 삭제*/
+	document.querySelector("form[action='/product/productDetailCart']").addEventListener("submit", function() {
+		sessionStorage.setItem("showCartPopup", "true");
+	});
+
+	setTimeout(function() {
+		const popupStatus = sessionStorage.getItem("showCartPopup");
+		if (popupStatus === "true") {
+			const popup = document.getElementById("addCartGoBtnBox");
+			if (popup) {
+				popup.style.display = "flex";
+				sessionStorage.removeItem("showCartPopup");
+				// 3초 후 팝업을 닫기
+				setTimeout(function() {
+					popup.style.display = "none";
+				}, 2000);  // 2초 (2000ms)
+			}
+		}
+	}, 0);
 
 	//리뷰갯수 게이지
 	var gauge5 = document.getElementById("heartSignalFill5");
@@ -296,7 +331,6 @@ $(document).ready(function() {
 
 	//리뷰리스트 불러오기 ajax 비동기
 	var selectedOpt = $('#reviewOption').val(); //리뷰리스트 옵션선택값 가져오기
-	var totalReviews = total;
 	var proCode = $('#reviewOption').data('procode');
 
 
@@ -381,16 +415,21 @@ $(document).ready(function() {
 
 			// 반려동물 이미지
 			cards += '<div class="reviewFirst">'
-			if(rlist.pet_img){
-			cards += '<img src="/static/Images/pet/' + rlist.pet_img + '" class="petImage">';
-			}else {
-			cards += '<img src="/static/Images/pet/noPetImg.jpg" class="petImage">';
+			if (rlist.pet_img) {
+				cards += '<img src="/static/Images/pet/' + rlist.pet_img + '" class="petImage">';
+			} else {
+				cards += '<img src="/static/Images/pet/noPetImg.jpg" class="petImage">';
 			}
-			
+
 			// 작성자 이름
 			cards += '<div class="reviewAuthor">';
-			cards += '<strong>' + rlist.pet_name + '</strong>'; // 작성자 이름
+			if (rlist.pet_name) {
+				cards += '<strong>' + rlist.pet_name + '</strong>'; // 작성자 이름
+			} else {
+				cards += '<strong>펫아무개</strong>'; // 작성자 이름
+			}
 			cards += '</div>';
+			console.log(rlist.pet_name);
 
 			// 리뷰 평점
 			cards += '<div class="reviewRating">';
@@ -402,8 +441,6 @@ $(document).ready(function() {
 			cards += '<span>' + formatDate(rlist.review_date) + '</span>'; // 포맷팅된 날짜
 			cards += '</div>';
 			cards += '</div>';
-
-		
 
 			// 리뷰 이미지
 			cards += '<div class="reviewImages">';
@@ -484,25 +521,32 @@ $(document).ready(function() {
 
 	// 이미지 클릭 이벤트 추가
 	document.addEventListener('click', function(event) {
-	    if (event.target.closest('.reviewImages')) {
-	        const clickedImage = event.target;
-	        if (clickedImage.classList.contains('reviewImage')) {
-	            // 클릭한 이미지 크기 조정
-	            if (clickedImage.classList.contains('large')) {
-	                clickedImage.classList.remove('large'); // 큰 이미지 클래스를 제거
-	            } else {
-	                const images = clickedImage.closest('.reviewImages').querySelectorAll('.reviewImage');
-	                images.forEach(img => img.classList.remove('large')); // 다른 이미지에서 큰 클래스 제거
-	                clickedImage.classList.add('large'); // 클릭한 이미지에 큰 클래스 추가
-	            }
-	        }
-	    }
+		if (event.target.closest('.reviewImages')) {
+			const clickedImage = event.target;
+			if (clickedImage.classList.contains('reviewImage')) {
+				// 클릭한 이미지 크기 조정
+				if (clickedImage.classList.contains('large')) {
+					clickedImage.classList.remove('large'); // 큰 이미지 클래스를 제거
+				} else {
+					const images = clickedImage.closest('.reviewImages').querySelectorAll('.reviewImage');
+					images.forEach(img => img.classList.remove('large')); // 다른 이미지에서 큰 클래스 제거
+					clickedImage.classList.add('large'); // 클릭한 이미지에 큰 클래스 추가
+				}
+			}
+		}
 	});
 
 	// 스크롤 이벤트 추가
 	window.addEventListener('scroll', function() {
-	    const largeImages = document.querySelectorAll('.reviewImage.large');
-	    largeImages.forEach(img => img.classList.remove('large')); // 스크롤 시 모든 큰 이미지 클래스 제거
+		const largeImages = document.querySelectorAll('.reviewImage.large');
+		largeImages.forEach(img => img.classList.remove('large')); // 스크롤 시 모든 큰 이미지 클래스 제거
+	});
+
+	//상품설명 펼쳐보기 접기 버튼
+	document.getElementById('contentBtn').addEventListener('click', function() {
+		const productDetails = document.getElementById('productInfoPg');
+		const isExpanded = productDetails.classList.toggle('expanded');
+		this.textContent = isExpanded ? '상품 설명 접기 ▲' : '상품 설명 펼쳐보기 ▼';
 	});
 
 
@@ -527,10 +571,7 @@ $(document).ready(function() {
 
 
 
-
-
-
-
+	//스크롤버튼 맨아래에 있을시 맨 위로 가게해줌
 	// 버튼 표시 및 숨김 기능
 	window.onscroll = function() {
 		const scrollTopBtn = document.getElementById("scrollTopBtn");

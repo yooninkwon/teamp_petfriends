@@ -1,5 +1,6 @@
 package com.tech.petfriends.community.dto;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
@@ -16,19 +17,18 @@ public class CDto {
 
     private int board_no;
     private int b_cate_no;
-    private String u_no;
+    private String mem_code;
     private String user_id;
     private String board_title;
     private int board_password;
     private String board_content;
-    private Timestamp board_created;
-    private Timestamp board_modified;
+    private Date board_created;
+    private Date board_modified;
     private int board_views;
     private String board_tag;
-//    private String board_post_img;
     private int board_likes;
     private int board_comment_count;
-//	private String board_post_unimg;
+
 	
 //    RE_CBOARD_IMAGE 테이블
 	private int rebno;
@@ -37,8 +37,17 @@ public class CDto {
 	private String orepfile; // 대표 이미지 원본 파일 이름
 	private String chrepfile; // 대표 이미지변경 파일 이름
 
+	// member_pet  테이블
+	private String pet_img;
+	private String pet_main;
 
+
+	private int feed_no;
+
+	private String mem_nick;
 }
+
+
 
 
 

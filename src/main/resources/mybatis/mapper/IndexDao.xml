@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.tech.petfriends.index.mapper.IndexDao">
+  	<!-- 메인페이지 인기순위 top10 강아지제품 -->
+	<select id="indexProductListDog"
+		resultType="com.tech.petfriends.index.dto.IndexProductDto">
+		 SELECT 
+		 	*
+		 FROM (
+	    	SELECT
+		        PRO.PRO_CODE,
+		        PRO.PRO_NAME,
+		        PROIMG.MAIN_IMG1,
+		        MIN(PROOPT.PROOPT_FINALPRICE) AS PROOPT_FINALPRICE,
+		        MIN(PROOPT.PROOPT_PRICE) AS PROOPT_PRICE,
+		        PRO.PRO_DISCOUNT,
+		        PRO.PRO_ONOFF,
+		        NVL(COUNT(PROREV.PRO_CODE), 0) AS TOTAL_REVIEWS, 
+		        COALESCE(ROUND(AVG(PROREV.REVIEW_RATING), 1), 0.0) AS AVERAGE_RATING
+		    FROM
+		        PRODUCT PRO
+		    INNER JOIN
+		        PRODUCT_IMAGE PROIMG ON PRO.PRO_CODE = PROIMG.PRO_CODE
+		    INNER JOIN (
+		        SELECT 
+		            PROOPT.PRO_CODE,
+		            MIN(PROOPT.PROOPT_FINALPRICE) AS PROOPT_FINALPRICE,
+		            MIN(PROOPT.PROOPT_PRICE) AS PROOPT_PRICE
+		        FROM 
+		            PRODUCT_OPTION PROOPT
+		        GROUP BY 
+		            PROOPT.PRO_CODE
+		    ) PROOPT ON PRO.PRO_CODE = PROOPT.PRO_CODE
+		    LEFT JOIN
+		        PRODUCT_REVIEW PROREV ON PRO.PRO_CODE = PROREV.PRO_CODE
+		    WHERE
+		        PRO.PRO_ONOFF = '판매'
+		    AND
+		    	PRO.PRO_PETS = '강아지'
+		    GROUP BY
+		        PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, PRO.PRO_ONOFF
+		    ORDER BY
+		        AVERAGE_RATING DESC
+			)
+		 WHERE ROWNUM &lt;= 10
+	</select>
+  	<!-- 메인페이지 인기순위 top10 고양이제품 -->
+	<select id="indexProductListCat"
+		resultType="com.tech.petfriends.index.dto.IndexProductDto">
+		 SELECT 
+		 	*
+		 FROM (
+	    	SELECT
+		        PRO.PRO_CODE,
+		        PRO.PRO_NAME,
+		        PROIMG.MAIN_IMG1,
+		        MIN(PROOPT.PROOPT_FINALPRICE) AS PROOPT_FINALPRICE,
+		        MIN(PROOPT.PROOPT_PRICE) AS PROOPT_PRICE,
+		        PRO.PRO_DISCOUNT,
+		        PRO.PRO_ONOFF,
+		        NVL(COUNT(PROREV.PRO_CODE), 0) AS TOTAL_REVIEWS, 
+		        COALESCE(ROUND(AVG(PROREV.REVIEW_RATING), 1), 0.0) AS AVERAGE_RATING
+		    FROM
+		        PRODUCT PRO
+		    INNER JOIN
+		        PRODUCT_IMAGE PROIMG ON PRO.PRO_CODE = PROIMG.PRO_CODE
+		    INNER JOIN (
+		        SELECT 
+		            PROOPT.PRO_CODE,
+		            MIN(PROOPT.PROOPT_FINALPRICE) AS PROOPT_FINALPRICE,
+		            MIN(PROOPT.PROOPT_PRICE) AS PROOPT_PRICE
+		        FROM 
+		            PRODUCT_OPTION PROOPT
+		        GROUP BY 
+		            PROOPT.PRO_CODE
+		    ) PROOPT ON PRO.PRO_CODE = PROOPT.PRO_CODE
+		    LEFT JOIN
+		        PRODUCT_REVIEW PROREV ON PRO.PRO_CODE = PROREV.PRO_CODE
+		    WHERE
+		        PRO.PRO_ONOFF = '판매'
+		    AND
+		    	PRO.PRO_PETS = '고양이'
+		    GROUP BY
+		        PRO.PRO_CODE, PRO.PRO_NAME, PROIMG.MAIN_IMG1, PRO.PRO_DISCOUNT, PRO.PRO_ONOFF
+		    ORDER BY
+		        AVERAGE_RATING DESC
+			)
+		 WHERE ROWNUM &lt;= 10
+	</select>
+  
+  
+  
+  
+  </mapper>

@@ -61,9 +61,22 @@ $(document).ready(function() {
 		
 		// DB 데이터 화면에 배치하는 함수
 		function displayItems(currentPage) {
+			/**
+			 * start = ( 현재 페이지 - 1 ) * 페이지 당 아이템의 수
+			 * 	: 각 페이지당 시작 인덱스 번호 
+			 * 		-> 현재 페이지가 1인 경우 -> (1 - 1) * 10 = 0 
+			 * 		   현재 페이지가 5인 경우 -> (5 - 1) * 10 = 40
+			 * end = start + 페이지당 아이템 수
+			 *  : 각 페이지의 마지막 인덱스 번호
+			 * 		-> 현재 페이지가 1인 경우 -> 0 + 10 = 10
+			 * 		   현재 페이지가 5인 경우 -> 40 + 10 = 50
+			 */
 			const start = (currentPage - 1) * itemsPerPage;
 			const end = start + itemsPerPage;
+			// .slice(start, end)는 배열에서 start부터 end 이전까지의 아이템들을 추출
+			// start가 0이고 end가 10이라면 인덱스 [0] ~ [10] 을 저장
 			const sliceList = petteacherList.slice(start, end);
+			// item 객체의 정보를 테이블로 출력
 
 			let lists = '';
 			$.each(sliceList, function(index, plist) {
@@ -143,36 +156,13 @@ $(document).ready(function() {
 			});
 		}
 
-		// 필터링 관련 코드 
-		$('#petteacher-filter input[name="pet-type-filter"]').on('change', function() {
-			// 동물 종류 필터가 변할때마다 그에 맞는 데이터 불러옴
+		// 필터링 코드 
+		$('#filters').on('change', function() {
+			// 필터 div의 필터 input 값이 변할때마다 그에 맞는 데이터 불러옴
 			filterParam = {
 				type: $('input[name="pet-type-filter"]:checked').val(),
 				category: $('input[name="category-filter"]:checked').val(),
 				sort: $('#sort-order').val()
-			};
-
-			fetchData(currentPage, currPageGroup, filterParam);
-		});
-
-		$('#category-filter input[name="category-filter"]').on('change', function() {
-			// 카테고리 필터가 변할때마다 그에 맞는 데이터 불러옴
-			filterParam = {
-				type: $('input[name="pet-type-filter"]:checked').val(),
-				category: $('input[name="category-filter"]:checked').val(),
-				sort: $('#sort-order').val()
-			};
-
-			fetchData(currentPage, currPageGroup, filterParam);
-		});
-
-
-		$('#sort-order').on('change', function() {
-			// 등록일자 필터가 변할때마다 그에 맞는 데이터 불러옴
-			filterParam = {
-				type: $('input[name="pet-type-filter"]:checked').val(),
-				category: $('input[name="category-filter"]:checked').val(),
-				sort: $(this).val()
 			};
 
 			fetchData(currentPage, currPageGroup, filterParam);
@@ -235,7 +225,6 @@ $(document).ready(function() {
 		} else if (actionType === '수정') {
 			// 수정 처리
 			const hpt_seq = $('#petteacherModal').data('hpt_seq');
-			console.log(hpt_seq);
 			$.ajax({
 				url: `/admin/petteacher_admin_data_forEdit?hpt_seq=` + hpt_seq,
 				method: 'PUT',

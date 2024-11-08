@@ -192,14 +192,13 @@ input[type="text"] {
     position: relative;
     min-height: calc(100vh - 280px);
 }
-#pagination {
+.pagination {
     width: 100%;
 	text-align: center;
     position: absolute;
     bottom: 20px;
 }
-
-#pagination a {
+.pagination a {
 	padding: 5px 10px;
 	margin: 0 5px;
 	background-color: #fff;
@@ -210,12 +209,12 @@ input[type="text"] {
 	transition: background-color 0.3s ease;
 }
 
-#pagination a:hover {
+.pagination a:hover {
 	background-color: #545454;
 	color: white;
 }
 
-#pagination a.active {
+.pagination a.active {
 	background-color: #545454;
 	color: white;
 }

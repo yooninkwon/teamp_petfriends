@@ -22,6 +22,8 @@ public class CCommentDto {
 	private int comment_level;
 	private int comment_order_no; 
 	private Date edited_date;
+	private String mem_code;
 	
+	private String pet_img;
 	
 }

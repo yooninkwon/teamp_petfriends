@@ -10,7 +10,7 @@
 </title>
 <script src="https://kit.fontawesome.com/6c32a5aaaa.js" crossorigin="anonymous"></script>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
-<link rel="stylesheet" href="/static/css/mypage.css">
+<link rel="stylesheet" href="/static/css/mypage/mypage.css">
 </head>
 <body>
 <div id="container">

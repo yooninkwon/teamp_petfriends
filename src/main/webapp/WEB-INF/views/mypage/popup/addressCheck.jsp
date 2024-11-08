@@ -6,7 +6,7 @@
 <title>주소 확인</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoApi }&libraries=services"></script>
-<link rel="stylesheet" href="/static/css/mypage.css">
+<link rel="stylesheet" href="/static/css/mypage/mypage.css">
 </head>
 <body>
 <h4 style="text-align: center;">주소</h4>
@@ -33,7 +33,6 @@
     <button class="confirm-address-btn" id="addrcom">이 주소가 확실해요</button>
 </div>
 
-<script src="/static/js/mypage/setting.js"></script>
 <script>
 $(document).ready(function() {
     $('#addrcom').on('click', function() {
@@ -57,5 +56,6 @@ $(document).ready(function() {
     });
 });
 </script>
+<script src="/static/js/mypage/setting.js"></script>
 </body>
 </html>

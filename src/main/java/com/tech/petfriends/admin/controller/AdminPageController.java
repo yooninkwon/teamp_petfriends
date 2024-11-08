@@ -1,6 +1,8 @@
 package com.tech.petfriends.admin.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,11 +27,19 @@ import com.tech.petfriends.admin.dto.ProductListDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
+import com.tech.petfriends.admin.service.AdminEventEditService;
+import com.tech.petfriends.admin.service.AdminNoticeEditService;
+import com.tech.petfriends.admin.service.AdminNoticeWriteService;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminProductAddService;
+import com.tech.petfriends.admin.service.AdminProductDetailService;
 import com.tech.petfriends.admin.service.AdminProductListService;
+import com.tech.petfriends.admin.service.AdminProductModifyService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
+import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.notice.dao.NoticeDao;
+import com.tech.petfriends.notice.dto.EventDto;
 import com.tech.petfriends.notice.dto.NoticeDto;
 
 @Controller
@@ -47,6 +57,9 @@ public class AdminPageController {
 	
 	@Autowired
 	AdminProductDao adminProductDao;
+	
+	@Autowired
+	MemberMapper memberDao;
 
 	AdminServiceInterface adminServInter;
 
@@ -167,6 +180,7 @@ public class AdminPageController {
 		adminServInter = new AdminProductListService(adminProductDao);
 		adminServInter.execute(model);
 		
+		@SuppressWarnings("unchecked")
 		List<ProductListDto> productList = (List<ProductListDto>) model.getAttribute("productList");
 		
 		return productList;
@@ -192,9 +206,69 @@ public class AdminPageController {
 		adminServInter.execute(model);
 		
 	}
+	
+	@GetMapping("/product/detail")
+	@ResponseBody
+	public Map<String, Object> productDetail(HttpServletRequest request, Model model) {
+		
+		String proCode = request.getParameter("proCode");
+		model.addAttribute("proCode",proCode);
+		
+		adminServInter = new AdminProductDetailService(adminProductDao);
+		adminServInter.execute(model);
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put("pro", model.getAttribute("pro"));
+		data.put("img", model.getAttribute("img"));
+		data.put("opt", model.getAttribute("opt"));
+		
+		return data;
+	}
+	
+	//관리자페이지 상품 등록
+		@PostMapping("/product/modify")
+		@ResponseBody
+		 public void productModify(
+				 	@RequestParam Map<String, Object> data,
+			        @RequestParam(value = "mainImages", required = false) MultipartFile[] mainImages,
+			        @RequestParam(value = "desImages", required = false) MultipartFile[] desImages,
+			        @RequestParam(value = "removeImages", required = false) String[] removeImages,
+			        @RequestParam(value = "mainImagesPath", required = false) List<String> mainImagesPath,
+			        @RequestParam(value = "desImagesPath", required = false) List<String> desImagesPath,
+			        @RequestParam(value = "options") String options,
+			        Model model) {
+			
+			// Model에 데이터 추가
+			model.addAllAttributes(data);
+		    model.addAttribute("mainImages", mainImages);
+		    model.addAttribute("desImages", desImages);
+		    model.addAttribute("removeImages", removeImages);
+		    model.addAttribute("options", options);
+		    model.addAttribute("mainImagesPath", mainImagesPath);
+		    model.addAttribute("desImagesPath", desImagesPath);
+			
+			adminServInter = new AdminProductModifyService(adminProductDao);
+			adminServInter.execute(model);
+			
+		}
+	
 
 	@GetMapping("/customer_status")
-	public String customer_status() {
+	public String customer_status(Model model) {
+		System.out.println("고객");
+		int newMember = memberDao.newMemberForWeek();
+		int visitMember = memberDao.visitMemberForWeek();
+		int withdrawMember = memberDao.withdrawMemberForWeek();
+		int total = memberDao.totalMember();
+		ArrayList<MemberLoginDto> newMemberList = memberDao.newMemberList();
+		ArrayList<MemberLoginDto> withdrawMemberList = memberDao.withdrawMemberList();
+
+		model.addAttribute("newMember",newMember);
+		model.addAttribute("visitMember",visitMember);
+		model.addAttribute("withdrawMember",withdrawMember);
+		model.addAttribute("total",total);
+		model.addAttribute("newMemberList",newMemberList);
+		model.addAttribute("withdrawMemberList",withdrawMemberList);
 		return "admin/customer_status";
 	}
 
@@ -219,18 +293,104 @@ public class AdminPageController {
 	}
 
 	@GetMapping("/notice")
-	public String NoticeWrite(Model model) {
-		ArrayList<NoticeDto> noticeAdminList = noticeDao.NoticeAdminList();
-        model.addAttribute("noticeAdminList", noticeAdminList);
+	public String Notice(Model model) {
+		ArrayList<NoticeDto> noticeAdminList = noticeDao.noticeAdminList();
+//        model.addAttribute("noticeAdminList", noticeAdminList);
+        ArrayList<EventDto> eventAdminList = noticeDao.eventAdminList();
+//        model.addAttribute("eventAdminList", eventAdminList);
 		
 		return "admin/notice";
 	}
 	
 	@GetMapping("/notice_write")
-	public String Notice() {
+	public String Notice_write() {
 		System.out.println("글작성페이지");
 		return "admin/notice_write";
 	}
+	
+	@PostMapping("/notice_write_service")
+	public String Notice_write_service(HttpServletRequest request, 
+	                                   @RequestParam("thumbnail") MultipartFile thumbnail,
+	                                   @RequestParam("slideImg") MultipartFile slideImg, 
+	                                   Model model) {
+	    model.addAttribute("request", request);
+	    model.addAttribute("thumbnail", thumbnail);
+	    model.addAttribute("slideImg", slideImg);
+
+	    AdminNoticeWriteService adminNoticeWriteService = new AdminNoticeWriteService(noticeDao);
+	    adminNoticeWriteService.execute(model);
+
+	    return "redirect:/admin/notice";
+	}
+	
+	@GetMapping("/notice_edit")
+	public String Notice_edit(@RequestParam("id") Long noticeId, Model model) {
+	    // 공지사항 데이터를 ID로 조회
+	    NoticeDto noticeDto = noticeDao.findNoticeById(noticeId);
+
+	    // 조회한 데이터를 모델에 추가하여 JSP에서 사용할 수 있게 함
+	    model.addAttribute("notice", noticeDto);
+	    
+	    // 수정 화면으로 이동
+	    return "admin/notice_edit";
+	}
+	
+	@GetMapping("/event_edit")
+	public String Event_edit(@RequestParam("id") Long eventId, Model model) {
+	    // 공지사항 데이터를 ID로 조회
+	    EventDto eventDto = noticeDao.findEventById(eventId);
+	    
+	    // 날짜 형식 지정
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    
+	    // 시작일과 종료일을 포맷팅하여 문자열로 변환
+	    String formattedStartDate = dateFormat.format(eventDto.getEvent_startdate());
+	    String formattedEndDate = dateFormat.format(eventDto.getEvent_enddate());
+
+	    // 변환된 날짜 문자열을 모델에 추가
+	    model.addAttribute("event", eventDto);
+	    model.addAttribute("formattedStartDate", formattedStartDate);
+	    model.addAttribute("formattedEndDate", formattedEndDate);
+
+	    // 수정 화면으로 이동
+	    return "admin/event_edit";
+	}
+	
+	@PostMapping("/notice_edit_service")
+	public String Notice_edit_service(HttpServletRequest request, 
+	                                   Model model) {
+	    model.addAttribute("request", request);
+
+	    AdminNoticeEditService adminNoticeEditService = new AdminNoticeEditService(noticeDao);
+	    adminNoticeEditService.execute(model);
+
+	    return "redirect:/admin/notice";
+	}
+	
+	@PostMapping("/event_edit_service")
+	public String EventEditService(
+		HttpServletRequest request,
+	    @RequestParam("thumbnail") MultipartFile thumbnail,
+	    @RequestParam("slideImg") MultipartFile slideImg,
+	    Model model) {
+	    
+		model.addAttribute("request",request);
+		model.addAttribute("thumbnail",thumbnail);
+		model.addAttribute("slideImg",slideImg);
+		
+		AdminEventEditService adminEventEditService = new AdminEventEditService(noticeDao);
+		adminEventEditService.execute(model);
+
+	    return "redirect:/admin/notice";
+	}
+	
+	@GetMapping("/searchNotices")
+	public String searchNotices(@RequestParam("title") String title, Model model) {
+	    List<NoticeDto> noticeAdminList = noticeDao.searchNoticesByTitle(title);
+	    model.addAttribute("noticeAdminList", noticeAdminList);
+	    return "admin/notice"; // 검색 결과를 표시할 JSP 경로
+	}
+	
 
 	@GetMapping("/sales")
 	public String sales() {

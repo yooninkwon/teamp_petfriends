@@ -1,70 +1,137 @@
 @charset "UTF-8";
-
 body {
-	font-family: Arial, sans-serif;
+	font-family: '맑은 고딕', sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #f9f9f9;
 }
 
-a {
+.off {
+	display: none;	
+}
+
+.on {
+	display: block;
+}
+
+/*
+입양센터 메인페이지
+*/
+#adoption-detail #infoText .infoSpan {
+	font-weight: bold;
+}
+	
+#adoption-main a {
 	text-decoration: none;
 }
 
-.adoption-container {
+#adoption-main .adoption-container {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
-	max-width: 1200px;
+	justify-content: flex-start;
+	width: 1200px;
 	margin: 0 auto;
 }
 
-.adoption-card {
+#adoption-main .adoption-card {
+	position: relative;
 	border: 1px solid #e0e0e0;
 	border-radius: 10px;
 	overflow: hidden;
-	margin: 10px;
-	width: calc(25% - 40px);
+	margin-right: 20px;
+	margin-bottom: 40px;
+	width: calc(25% - 20px);
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	transition: transform 0.3s ease;
 }
 
-.adoption-card:hover {
+#adoption-main .adoption-card:nth-child(4n) {
+	margin-right: 0;
+}
+
+#adoption-main .adoption-card:hover {
 	transform: scale(1.05);
 }
 
-.adoption-card img {
+#adoption-main .adoption-card .card_date {
+	position: absolute;
+    background-color: #ff4081;
+    color: #fff;
+    text-align: center;
+    padding: 10px 5px;
+    border-radius: 0 0 20px 20px;
+    width: 40px;
+    top: 0;    
+    right: 10px;
+}
+
+#adoption-main .adoption-card .card_date .day {
+	font-size: 30px;
+	font-weight: bold;
+}
+
+#adoption-main .adoption-card .card_date .month {
+	font-size: 10px;
+}
+
+#adoption-main .adoption-card img {
 	width: 100%;
 	height: 200px;
 	object-fit: cover;
 }
 
-.adoption-card .content {
+#adoption-main .adoption-card .content {
 	padding: 15px;
 }
 
-.adoption-card h3 {
+#adoption-main .adoption-card h3 {
 	margin: 0;
 	font-size: 18px;
 	color: #333;
 }
 
-.adoption-card p {
-	margin: 8px 0;
-	font-size: 14px;
+#adoption-main .adoption-card .card_list {
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+	font-size: 13px;
 	color: #666;
+	padding: 2px 10px;
 }
 
-.adoption-card .info {
+#adoption-main .adoption-card .card_list:last-child {
+	margin-bottom: 5px;
+}
+
+#adoption-main .adoption-card .card_list .card_title {
+	width: 28%;
+	margin-right: 5px;
+	font-weight: bold;
+}
+
+#adoption-main .adoption-card .card_list .card_desc {
+	width: calc(72% - 5px);
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	word-break: break-all;
+}
+
+#adoption-main .adoption-card .info {
 	font-weight: bold;
 	font-size: 12px;
 	color: #888;
+	margin-top: 5px;
+	margin-bottom: 10px;
 }
 
-.pagination {
+#adoption-main .pagination {
 	display: flex;
 	justify-content: center;
 	margin: 20px 0;
 }
 
-.pagination a {
+#adoption-main .pagination a {
 	padding: 8px 16px;
 	margin: 0 4px;
 	background-color: #f1f1f1;
@@ -73,22 +140,23 @@ a {
 	color: #333;
 }
 
-.pagination a.active {
+#adoption-main .pagination a.active {
 	background-color: #FF4081;
 	color: white;
 }
 
 /* 필터바 전체 스타일 */
-#filter_form {
+#adoption-main #filter_form {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	gap: 10px; /* 필터 사이의 간격 */
+	margin-top: 15px;
 	margin-bottom: 20px;
 }
 
 /* 공통 Select 스타일 */
-#filter_form select {
+#adoption-main #filter_form select {
 	padding: 10px 20px; /* 내부 여백을 더 줌 */
 	border-radius: 25px; /* 둥글게 설정 */
 	border: 1px solid #ddd;
@@ -115,12 +183,12 @@ a {
 }
 
 /* 화살표 제거 */
-#filter_form select::-ms-expand {
+#adoption-main #filter_form select::-ms-expand {
 	display: none;
 }
 
 /* 검색 버튼 스타일 */
-#filter_form button {
+#adoption-main #filter_form button {
 	padding: 10px 20px;
 	border-radius: 25px;
 	border: 1px solid #ddd;
@@ -132,19 +200,19 @@ a {
 	transition: background-color 0.3s ease;
 }
 
-#filter_form button:hover {
+#adoption-main #filter_form button:hover {
 	background-color: #FF2972;
 }
 
 /* 선택박스 전체 높이와 정렬 */
-#filter_form select, .filter-bar button {
+#adoption-main #filter_form select, #adoption-main .filter-bar button {
 	height: 40px;
 	display: inline-block;
 	vertical-align: middle;
 }
 
 /* 반응형 디자인 */
-@media ( max-width : 768px) {
+ /* @media ( max-width : 768px) {
 	.filter-bar {
 		flex-direction: column;
 		align-items: stretch;
@@ -160,4 +228,83 @@ a {
 		width: 40%;
 		margin-bottom: 10px;
 	}
+} */
+
+
+/*
+입양센터 상세페이지
+*/
+
+#adoption-detail h1 {
+    text-align: center;
+    color: #333;
+    margin: 20px 0;
+}
+
+/* 상단 안내문 */
+#adoption-detail #infoText {
+    text-align: center;
+    font-size: 16px;
+    margin: 20px;
+    background-color: #f3f3f3;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* 이미지 섹션 스타일 */
+#adoption-detail #animalImage {
+    text-align: center;
+    margin: 20px auto;
+}
+
+#adoption-detail #animalImage img {
+    max-width: 300px;
+    margin: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 표 스타일 */
+#adoption-detail table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+#adoption-detail th, #adoption-detail td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+#adoption-detail th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: center;
+}
+
+#adoption-detail td {
+    font-size: 14px;
+    color: #555;
+}
+
+/* 버튼 스타일 */
+#adoption-detail #goMain {
+    display: block;
+    width: 100px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #FF4081;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#adoption-detail #goMain:hover {
+    background-color: #FF2672;
 }

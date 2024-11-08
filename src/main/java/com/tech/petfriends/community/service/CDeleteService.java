@@ -25,6 +25,7 @@ public class CDeleteService implements CServiceInterface {
 		int board_no = Integer.parseInt(request.getParameter("board_no"));
 		
 		iDao.delete(board_no);
+	
 		
 	}
 
