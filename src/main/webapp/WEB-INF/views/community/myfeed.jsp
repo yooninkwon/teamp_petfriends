@@ -14,7 +14,60 @@
 <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
 </head>
+<script>
+	function checkAddFriend(loginUser) {
+	    var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}"; // 로그인 여부 확인
 
+	    if (isLoggedIn === "false") { // 로그인되지 않은 경우
+	        alert('로그인이 필요합니다');
+	        return false;  // 링크 이동 막기
+	    } else {
+	        alert('친구가 추가됐습니다');
+	        return true;  // 친구 추가 실행
+	    }
+	}
+	
+	function checkDelFriend(loginUser) {
+	    var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}"; // 로그인 여부 확인
+
+	    if (isLoggedIn === "false") { // 로그인되지 않은 경우
+	        alert('로그인이 필요합니다');
+	        return false;  // 링크 이동 막기
+	    } else {
+	        alert('친구가 삭제됐습니다');
+	        return true;  // 친구 추가 실행
+	    }
+	}
+	function openNeighborList() {
+
+	    // AJAX를 이용해 서버에서 이웃 목록을 가져옴
+	    var xhr = new XMLHttpRequest();
+	    xhr.open("GET", "/myfeed/{mem_code}", true);
+	    xhr.onload = function() {
+	        if (xhr.status == 200) {
+	            // 서버에서 받은 데이터를 모달에 삽입
+	            document.getElementById("neighbor-list-modal-content").innerHTML = xhr.responseText;
+	            openModal(); // 모달 열기
+	        } else {
+	            alert("이웃 목록을 불러오는 데 실패했습니다.");
+	        }
+	    };
+	    xhr.send();
+	}
+
+	// 모달을 여는 함수
+	function openModal() {
+	    document.getElementById("neighbor-list-modal").style.display = "block";
+	}
+
+	// 모달을 닫는 함수
+	function closeModal() {
+	    document.getElementById("neighbor-list-modal").style.display = "none";
+	}
+
+
+
+</script>
 <body>
 
 	
@@ -37,10 +90,34 @@
         <h2>${myFeedName.mem_nick}</h2>
     </div>
     <div class="profile-menu">
-        <a href="#">+ 친구 추가</a>
-        <a href="#">메세지</a>
-        <a href="#">이웃</a>
-    </div>
+		
+		<p>isFriendBool: ${isFriendBool}</p> 
+		
+		<c:if test="${isFriendBool == 1}">
+			<a href="<c:url value='/community/addFriend/${mem_code}'/>?mem_nick=${myFeedName.mem_nick}"
+					       onclick="return checkDelFriend('${sessionScope.loginUser}');">친구 삭제</a> 
+		</c:if>
+
+		<c:if test="${isFriendBool == 0 || isFriendBool == null}">
+		    <a href="<c:url value='/community/addFriend/${mem_code}'/>?mem_nick=${myFeedName.mem_nick}"
+		       onclick="return checkAddFriend('${sessionScope.loginUser}');">+ 친구 추가</a> <!-- 친구가 아닐 때 -->
+		</c:if>
+        
+		<a href="#">메세지</a>
+        
+		<a href="#" onclick="openNeighborList(); return false;">이웃 목록</a>
+		<div id="neighbor-list-modal" class="modal" style="display:none;">
+		    <div class="modal-content" id="neighbor-list-modal-content">
+			
+		
+				        
+				      
+		    </div>
+		    <span class="close" onclick="closeModal()">&times;</span>
+		</div>
+	
+	
+	</div>
 </div>
 
 
@@ -54,7 +131,8 @@
   
         <div class="feed-images">
             <c:forEach items="${myFeedList}" var="myFeedList">
-                <div class="feed-item"> <!-- 이미지와 정보를 감싸는 div 추가 -->
+		  
+			<div class="feed-item"> <!-- 이미지와 정보를 감싸는 div 추가 -->
                     <a href="<c:url value='/community/contentView/?board_no=${myFeedList.board_no}'/>"> <!-- 이미지 클릭 시 이동할 링크 추가 -->
                         <img src="/static/images/community_img/${myFeedList.chrepfile}" alt="">
                     </a>

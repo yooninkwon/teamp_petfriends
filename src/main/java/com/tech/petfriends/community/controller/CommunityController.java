@@ -29,8 +29,10 @@ import com.tech.petfriends.community.service.CCommentService;
 import com.tech.petfriends.community.service.CContentViewService;
 import com.tech.petfriends.community.service.CDeleteService;
 import com.tech.petfriends.community.service.CDownloadService;
+import com.tech.petfriends.community.service.CFriendService;
 import com.tech.petfriends.community.service.CModifyService;
 import com.tech.petfriends.community.service.CMyFeedService;
+
 import com.tech.petfriends.community.service.CPostListService;
 import com.tech.petfriends.community.service.CReportService;
 import com.tech.petfriends.community.service.CServiceInterface;
@@ -234,6 +236,8 @@ public class CommunityController {
 		serviceInterface = new CMyFeedService(iDao);
 		serviceInterface.execute(model);
 
+		
+		
 		return "/community/myfeed";
 	}
 
@@ -261,8 +265,23 @@ public class CommunityController {
 	    Map<String, String> response = new HashMap<>();
 	    response.put("message", "신고가 제출되었습니다.");
 	    return ResponseEntity.ok(response);
-
-	
+	    
 	}
 
+	
+	@GetMapping("/addFriend/{mem_code}")
+	public String addFriend(@PathVariable String mem_code, HttpSession session, HttpServletRequest request, Model model) {
+	    System.out.println("addFriend()");
+	    model.addAttribute("session", session);
+	    model.addAttribute("request", request);
+	    serviceInterface = new CFriendService(iDao);
+	    serviceInterface.execute(model);
+	    System.out.println("mem_code: " + mem_code);
+	    
+	    System.out.println("isFriendBool: " + model.getAttribute("isFriendBool")); // 디버깅용
+	    return "redirect:/community/myfeed/" + mem_code;
+	}
+	
+	
+	
 }

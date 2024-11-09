@@ -241,6 +241,30 @@
         WHERE BOARD_NO = #{board_no}
     </update>
 	
+	<insert id="addFriend">
+		INSERT INTO COMMUNITY_FRIEND (MEM_NICK, FRIEND_MEM_NICK, FRIEND_CREATED)
+		VALUES(#{mem_nick}, #{friend_mem_nick}, SYSDATE)
+	
+	</insert>
+	
+	<select id="isFriend" resultType="int">
+		SELECT COUNT(*) 
+		FROM COMMUNITY_FRIEND 
+		WHERE MEM_NICK = #{mem_nick} AND FRIEND_MEM_NICK = #{friend_mem_nick}
+	</select>
 	
 	
+	<delete id="deleteFriend">
+		DELETE FROM COMMUMITY_FRIEND WHERE MEM_NICK = #{mem_nick}
+	</delete>
+
+<select id="getNeighborList" resultType="com.tech.petfriends.community.dto.CCommunityFriendDto">
+        SELECT 
+            FRIEND_MEM_NICK
+        FROM 
+            COMMUNITY_FRIEND 
+        WHERE 
+            MEM_NICK = #{mem_nick}
+
+	</select>
 </mapper>

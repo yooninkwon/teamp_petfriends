@@ -47,6 +47,7 @@ public class CPostListService implements CServiceInterface{
         model.addAttribute("getHotTopicList",getHotTopicList);
         		
 		
+      
 		
 		
 
