@@ -24,7 +24,7 @@ public interface AdminCommunityDao {
           String searchCategory, String searchStartDate, 
           String searchEndDate);
 
-  void reportStatusUpdate(int reportId);
+  void reportStatusUpdate(int reportid);
 
  
   
