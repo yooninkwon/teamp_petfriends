@@ -172,9 +172,12 @@
 		조회수 ${contentView.board_views}
 		</div>
 		<div class="post-header">
-			<img src="/static/Images/pet/${contentView.pet_img}" alt="프로필 이미지"
-				class="profile-image" /> <span class="user-name">${contentView.user_id}</span>
-			<span class="post-time">${contentView.board_created}</span>
+		    <a href="/community/myfeed/${contentView.mem_code}" class="profile-link">
+		        <img src="/static/Images/pet/${contentView.pet_img}" alt="프로필 이미지"
+		            class="profile-image" />
+		        <span class="user-name">${contentView.user_id}</span>
+		    </a>
+		    <span class="post-time">${contentView.board_created}</span>
 		</div>
 		<hr />
 		<div class="post-content">${contentView.board_content}</div>
@@ -256,10 +259,11 @@
 			<c:forEach var="comment" items="${commentList}">
 				<div class="comment"
 					style="padding-left: ${comment.comment_order_no * 20}px;">
+			<a href="/community/myfeed/${comment.mem_code}" class="profile-link">
 					<img src="/static/Images/pet/${comment.pet_img}"
 						alt="Profile Image" class="profile-image"> <span
 						class="user-name">${comment.user_id}</span>: <span
-						class="comment-content preformatted-text">${fn:escapeXml(comment.comment_content)}</span>
+						class="comment-content preformatted-text">${fn:escapeXml(comment.comment_content)}</span> </a>
 					<span class="comment-time">${comment.created_date}</span>
 					<button onclick="openReportPopup(${comment.comment_no},'댓글')"
 						class="report-comment-button">🚨 신고</button>
@@ -318,11 +322,11 @@
 							test="${commentReply.parent_comment_no == comment.comment_no}">
 							<div class="commentReply"
 								style="padding-left: ${(commentReply.comment_order_no) * 50}px;">
-
+						<a href="/community/myfeed/${commentReply.mem_code}" class="profile-link">
 								<img src="/static/Images/pet/${commentReply.pet_img}"
 									alt="Profile Image" class="profile-image"> <span
 									class="user-name">${commentReply.user_id}</span>: <span
-									class="commentReply-content preformatted-text">${fn:escapeXml(commentReply.comment_content)}</span>
+									class="commentReply-content preformatted-text">${fn:escapeXml(commentReply.comment_content)}</span></a>
 								<span class="commentReply-time">${commentReply.created_date}</span>
 								<button onclick="openReportPopup(${commentReply.comment_no})"
 									class="report-comment-button">🚨 신고</button>

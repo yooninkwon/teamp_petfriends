@@ -200,41 +200,46 @@
 
 			<!-- 펫프렌즈는 지금 뭐할까? -->
 			<div class="container-box">
-				<div class="container-header">
-					<span class="header-text">펫프렌즈는 지금 뭐할까?</span>
-					<form class="search-form" action="/search" method="GET">
-						<input type="text" name="query" placeholder="검색어를 입력하세요"
-							class="search-input">
-						<button type="submit" class="search-button">🔍</button>
-					</form>
+			    <div class="container-header">
+			        <span class="header-text">펫프렌즈는 지금 뭐할까?</span>
+			        <form class="search-form" action="/main" method="GET">
+			            <input type="text" name="query" placeholder="검색어를 입력하세요" class="search-input">
+			            <button type="submit" class="search-button">🔍</button>
+			        </form>
+			    </div>
+
+				 <div class="story-container">
+				        <c:choose>
+				            <c:when test="${sessionScope.loginUser != null}">
+				                <!-- 로그인 상태일 때: 게시글 리스트를 동적으로 출력 -->
+				                <c:forEach var="storyList" items="${storyList}">
+				                    <li class="story-item">
+				                        <a href="/community/myfeed/${storyList.mem_code}">
+				                            <img src="/static/Images/pet/${storyList.pet_img}" alt="스토리 이미지" class="story-image" />
+				                            <p>${storyList.user_id}</p>
+				                        </a>
+				                    </li>
+				                </c:forEach>
+				            
+								<!-- 게시글 리스트가 비어있을 경우 -->
+								   <c:if test="${empty storyList}" >
+								       <div class="logout-message">
+								           <p>이웃의 새글이 없습니다.</p>
+								       </div>
+								   </c:if>
+							
+							
+							</c:when>
+							
+							<c:otherwise>
+							        <!-- 로그아웃 상태일 때: 안내 메시지 출력 -->
+							        <div class="logout-message" >
+							            <p>로그아웃 상태입니다.<br>로그인하여 이웃 새글을 확인해보세요.</p>
+							        </div>
+							    </c:otherwise>
+				        </c:choose>
+				    </div>
 				</div>
-
-
-				<div class="story-container">
-
-					<li class="story-item"><a href="#"> <img
-							src="/static/Images/communityorign_img/story1.jpeg"
-							alt="스토리 이미지 1" class="story-image" />
-							<p>살구언니</p>
-					</a></li>
-					<li class="story-item"><a href="#"> <img
-							src="/static/Images/communityorign_img/story2.jpeg"
-							alt="스토리 이미지 2" class="story-image" />
-							<p>코댕이네</p>
-					</a></li>
-					<li class="story-item"><a href="#"> <img
-							src="/static/Images/communityorign_img/story3.jpeg"
-							alt="스토리 이미지 3" class="story-image" />
-							<p>버디언니</p>
-					</a></li>
-					<li class="story-item"><a href="#"> <img
-							src="/static/Images/communityorign_img/story4.jpeg"
-							alt="스토리 이미지 4" class="story-image" />
-							<p>토리누나</p>
-					</a></li>
-
-				</div>
-			</div>
 
 			<!-- 카테고리 섹션 -->
 			<section class="categories">

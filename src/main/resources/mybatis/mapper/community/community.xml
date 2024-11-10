@@ -292,6 +292,33 @@
 		JOIN MEMBER MF ON CF.FRIEND_MEM_NICK = MF.MEM_NICK
 		LEFT JOIN MEMBER_PET MP_FRIEND ON MF.MEM_CODE = MP_FRIEND.MEM_CODE
 		WHERE CF.MEM_NICK = #{mem_nick}
-
 	</select>
+
+	<select id="storyList"
+			resultType="com.tech.petfriends.community.dto.CDto">
+		SELECT B.*, 
+		       NVL(P.PET_IMG, 'NOPETIMG.JPG') AS PET_IMG,
+		       F.FRIEND_MEM_NICK
+		FROM COMMUNITY_BOARD B
+		LEFT JOIN MEMBER_PET P ON B.MEM_CODE = P.MEM_CODE
+		LEFT JOIN COMMUNITY_FRIEND F ON B.USER_ID = F.MEM_NICK
+		WHERE B.BOARD_CREATED >= SYSDATE - INTERVAL '1' DAY
+		  AND P.PET_MAIN = 'Y'
+		  AND F.FRIEND_MEM_NICK = #{mem_nick}
+		ORDER BY B.BOARD_CREATED DESC
+	
+	</select>
+
+
+
+<!--    <select id="searchPosts" resultType="com.tech.petfriends.community.dto.CDto">
+		SELECT * FROM COMMUNITY_BOARD
+		WHERE 
+		(BOARD_TITLE LIKE CONCAT('%', #{BOARD_TITLE}, '%') OR
+        BOARD_CONTENT LIKE CONCAT('%', #{BOARD_CONTENT}, '%') OR
+        USER_ID LIKE CONCAT('%', #{USER_ID}, '%'));
+    </select>-->
+
+
+
 </mapper>

@@ -84,6 +84,10 @@ public interface IDao {
 
 	public ArrayList<CCommunityFriendDto> getNeighborList(String mem_nick);
 
+	public ArrayList<CDto> storyList (String mem_nick);
+	
+//	public ArrayList<CDto> searchPosts (String board_title, String board_content, String user_id);
+	
 
 }
 
