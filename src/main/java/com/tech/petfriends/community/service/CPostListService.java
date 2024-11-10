@@ -49,8 +49,6 @@ public class CPostListService implements CServiceInterface{
 		
       
 		
-		
-
 	
 	
 	} 

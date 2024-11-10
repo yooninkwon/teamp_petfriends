@@ -1,5 +1,6 @@
 package com.tech.petfriends.community.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tech.petfriends.community.dto.CCategoryDto;
+import com.tech.petfriends.community.dto.CCommunityFriendDto;
 import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.dto.CReportDto;
 import com.tech.petfriends.community.mapper.IDao;
@@ -32,7 +35,8 @@ import com.tech.petfriends.community.service.CDownloadService;
 import com.tech.petfriends.community.service.CFriendService;
 import com.tech.petfriends.community.service.CModifyService;
 import com.tech.petfriends.community.service.CMyFeedService;
-
+import com.tech.petfriends.community.service.CMyNeighborListService;
+import com.tech.petfriends.community.service.CNeighborListService;
 import com.tech.petfriends.community.service.CPostListService;
 import com.tech.petfriends.community.service.CReportService;
 import com.tech.petfriends.community.service.CServiceInterface;
@@ -226,7 +230,7 @@ public class CommunityController {
 		return ResponseEntity.ok(response); // JSON 형식으로 응답 반환
 	}
 
-	@RequestMapping("/myfeed/{mem_code}")
+	@GetMapping("/myfeed/{mem_code}")
 	public String myfeed(@PathVariable String mem_code, HttpSession session, HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		model.addAttribute("mem_code", mem_code);
@@ -235,12 +239,61 @@ public class CommunityController {
 
 		serviceInterface = new CMyFeedService(iDao);
 		serviceInterface.execute(model);
-
 		
 		
 		return "/community/myfeed";
 	}
 
+	
+	@GetMapping("/neighborList/{mem_code}")
+	@ResponseBody
+	public ArrayList<CCommunityFriendDto> neighborList(@PathVariable String mem_code, HttpSession session, HttpServletRequest request, Model model) {
+	    System.out.println("neighborList()");
+
+	    model.addAttribute("session", session);
+	    model.addAttribute("request", request);
+	    serviceInterface = new CNeighborListService(iDao);
+	    serviceInterface.execute(model);
+	    
+	    ArrayList<CCommunityFriendDto> neighborList = (ArrayList<CCommunityFriendDto>) model.getAttribute("neighborList");
+	    System.out.println("neighborList" + neighborList.size());
+	    return neighborList;  
+	}
+	
+	
+	@GetMapping("/myNeighborList/{mem_code}")
+	@ResponseBody
+	public ArrayList<CCommunityFriendDto> myNeighborList(@PathVariable String mem_code, HttpSession session, HttpServletRequest request, Model model) {
+	    System.out.println("MyNeighborList()");
+
+	    model.addAttribute("session", session);
+	    model.addAttribute("request", request);
+	    serviceInterface = new CMyNeighborListService(iDao);
+	    serviceInterface.execute(model);
+	    
+	    ArrayList<CCommunityFriendDto> myNeighborList = (ArrayList<CCommunityFriendDto>) model.getAttribute("MyNeighborList");
+	   
+	    return myNeighborList;  
+	}
+	
+	
+	
+	@GetMapping("/MainNeighborList")
+	@ResponseBody
+	public ArrayList<CCommunityFriendDto> MainNeighborList(HttpSession session, HttpServletRequest request, Model model) {
+	    System.out.println("MyNeighborList()");
+
+	    model.addAttribute("session", session);
+	    model.addAttribute("request", request);
+	    serviceInterface = new CMyNeighborListService(iDao);
+	    serviceInterface.execute(model);
+	    
+	    ArrayList<CCommunityFriendDto> MainNeighborList = (ArrayList<CCommunityFriendDto>) model.getAttribute("MyNeighborList");
+	   
+	    return MainNeighborList;  
+	}
+	
+	
 	@PostMapping("/report")
 	public  ResponseEntity<Map<String, String>> communityReport(@RequestBody CReportDto reportDto, Model model) {
 		
@@ -281,6 +334,8 @@ public class CommunityController {
 	    System.out.println("isFriendBool: " + model.getAttribute("isFriendBool")); // 디버깅용
 	    return "redirect:/community/myfeed/" + mem_code;
 	}
+	
+	
 	
 	
 	

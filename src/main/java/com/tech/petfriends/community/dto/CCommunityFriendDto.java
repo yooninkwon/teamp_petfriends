@@ -19,7 +19,11 @@ public class CCommunityFriendDto {
     private String mem_nick;
     private String friend_mem_nick;
     private Date friend_created;
-
+   
+    private String pet_img;
+    private String mem_code;
+    
+    private String friend_mem_code;
 }
 
 

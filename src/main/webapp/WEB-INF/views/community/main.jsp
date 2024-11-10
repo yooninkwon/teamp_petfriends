@@ -11,36 +11,104 @@
 <link rel="stylesheet" href="/static/css/community/community_main.css">
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+</head>
 <script>
+	function fetchMyNeighborList() {
+	    $.ajax({
+	        url: '/community/MainNeighborList',
+	        method: 'GET',
+	        success: function(data) {
+	            console.log("data:", data);
+	            let html = '<h4>내 이웃 목록</h4><ul>';
+
+	            if (data.length === 0) {
+	                html += '<li>이웃이 없습니다.</li>'; // 이웃 목록이 없을 경우 메시지 출력
+	            } else {
+	                // 이웃 목록 데이터 순회
+	                data.forEach(Myneighbor => {
+	                    // 이웃의 이름과 프로필 이미지 출력
+	                    html += `
+	                        <div class="neighbor-item">
+	                            <div class="neighbor-pet-img-container">
+	                                <a href="/community/myfeed/\${Myneighbor.friend_mem_code}" target="_blank">
+	                                    <img src="/static/Images/pet/\${Myneighbor.pet_img || 'noPetImg.jpg'}" alt="${Myneighbor.friend_mem_nick}" class="neighbor-pet-img">
+	                                </a>
+	                            </div>
+	                            <div class="neighbor-name">
+	                                <a href="/community/myfeed/\${Myneighbor.friend_mem_code}" target="_blank">
+	                                    \${Myneighbor.friend_mem_nick}
+	                                </a>
+	                            </div>
+	                        </div>
+	                    `;
+	                });
+	            }
+
+	            html += '</ul>';
+	            $('#MyneighborListContainer').html(html); // 모달에 이웃 목록 삽입
+
+	            // 내 이웃 모달 열기
+	            openMyNeighborListModal();
+	        },
+	        error: function(error) {
+	            console.log('이웃 목록을 가져오는 중 오류 발생:', error);
+	        }
+	    });
+	}
+
+	// 문서가 로드된 후에 다른 이벤트 처리
 	$(document).ready(function() {
-		$('.category-button').click(function(e) {
-			e.preventDefault(); // 기본 링크 클릭 이벤트 방지
+	    $('.category-button').click(function(e) {
+	        e.preventDefault(); // 기본 링크 클릭 이벤트 방지
 
-			var cateNo = $(this).data('cate-no'); // 클릭한 카테고리 번호
+	        var cateNo = $(this).data('cate-no'); // 클릭한 카테고리 번호
 
-			$.ajax({
-				url : '/community/getPostsByCategory', // 카테고리별 게시글 조회 URL
-				type : 'GET',
-				data : {
-					b_cate_no : cateNo
-				}, // 카테고리 번호 전달
-				success : function(data) {
-					// postContainer 영역 업데이트
-					$('#postContainer').html(data);
-				},
-				error : function() {
-					alert('게시글을 불러오는 데 실패했습니다.');
-				}
-			});
-		});
+	        $.ajax({
+	            url : '/community/getPostsByCategory', // 카테고리별 게시글 조회 URL
+	            type : 'GET',
+	            data : {
+	                b_cate_no : cateNo
+	            }, // 카테고리 번호 전달
+	            success : function(data) {
+	                // postContainer 영역 업데이트
+	                $('#postContainer').html(data);
+	            },
+	            error : function() {
+	                alert('게시글을 불러오는 데 실패했습니다.');
+	            }
+	        });
+	    });
 	});
+
+	// 내 이웃 목록 모달 열기
+	function openMyNeighborListModal() {
+	    document.getElementById("myNeighborListModal").style.display = "block"; // 내 이웃 목록 모달 열기
+	}
+
+	// 내 이웃 목록 모달 닫기
+	function closeMyNeighborListModal() {
+	    document.getElementById("myNeighborListModal").style.display = "none"; // 내 이웃 목록 모달 닫기
+	}
+
 </script>
 
-</head>
 
 <body>
-	<div class="container">
+
+	
+	<!-- 내 이웃 목록 모달 -->
+	<div id="myNeighborListModal" class="modal">
+	    <div class="modal-content">
+	        <span class="close-btn" onclick="closeMyNeighborListModal()">&times;</span>
+	        <div id="MyneighborListContainer"></div>
+	    </div>
+	</div>	
+
+	
+	
+	
+	
+		<div class="container">
 		<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
 		<main>
@@ -98,26 +166,17 @@
 
 				<ul class="sidebar-menu">
 					
-					<!--<c:if test="${sessionScope.loginUser ne null}">-->
-					<!--</c:if>
-					<c:if test="${sessionScope.loginUser eq null}">
-					    <li><a href="/community/myfeed" onclick="alert('로그인이 필요합니다'); return false;">내 피드</a></li>
-					</c:if>-->
-					
-					<li><a href="/community/myfeed/${sessionScope.loginUser.mem_code}">내 피드</a></li>
+			
 					<c:if test="${sessionScope.loginUser ne null}">
-						<!-- 로그인이 되어 있을 때 글쓰기 페이지로 이동 -->
-						<li><a href="/community/writeView">글쓰기</a></li>
-					</c:if>
-
-					<c:if test="${sessionScope.loginUser eq null}">
-						<!-- 로그인이 되어 있지 않을 때 알림창을 띄움 -->
-						<li><a href="/community/writeView" onclick="alert('로그인이 필요합니다'); return false;">글쓰기</a></li>
-					</c:if>
+					<li><a href="/community/myfeed/${sessionScope.loginUser.mem_code}">내 피드</a></li>
+					
+					<li><a href="/community/writeView">글쓰기</a></li>		
+					
 					<li><a href="#">내 소식</a></li>
 					<li><a href="#">내 활동</a></li>
-					<li><a href="#">이웃 목록</a></li>
+					<a href="#" onclick="fetchMyNeighborList()">내 이웃 목록</a>
 				</ul>
+				</c:if>
 				<div class="sidebar-notice">
 					<h3>소식상자</h3>
 					<p>새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다 새로운 소식이 없습니다새로운 소식이

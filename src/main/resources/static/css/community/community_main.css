@@ -36,11 +36,7 @@ a:hover  {
     margin: 0 auto; /* 가운데 정렬 */
 }
 
-@media (min-width: 1200px) { /* 화면이 1200px 이상일 때 */
-    .container {
-        width: 80%; /* 50% 너비 */
-    }
-}
+
 
 /* 핫이슈 */
 .hot-topics {
@@ -365,10 +361,10 @@ a:hover  {
 
 
 .profile-info {
-    display: flex;
-    align-items: center; /* 수직 정렬 */
-    justify-content: space-between; /* 요소 간 간격 */
-
+    display: flex; /* 수평 정렬을 위해 Flexbox 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: space-between; /* 왼쪽 정렬 */
+    gap: 10px; /* 이미지와 이름 사이의 간격 */
 }
 
 .post-time {
@@ -421,9 +417,9 @@ a:hover  {
 
 .sidebar {
     position: absolute; /* 절대 위치 설정 */
-    top: 187px; /* 헤더의 높이에 따라 조정 */
-    right: 160px; /* 오른쪽 정렬 */
-    width: 350px; /* 화면 비율에 따라 사이드바 너비를 설정 */
+    top: 182px; /* 헤더의 높이에 따라 조정 */
+    right: 180px; /* 오른쪽 정렬 */
+    width: 250px; /* 화면 비율에 따라 사이드바 너비를 설정 */
     background-color: #fff; /* 배경색 */
     padding: 20px; /* 내부 여백 */
     border: 1px solid #ccc; /* 테두리 */
@@ -538,5 +534,75 @@ a:hover  {
 .profile-text {
     font-size: 18px; /* 텍스트 크기 조정 */
     color: #333; /* 텍스트 색상 */
+}
+
+/* 모달 창 스타일 */
+.modal {
+    display: none;  /* 기본적으로 숨겨둠 */
+    position: fixed;  /* 화면에 고정 */
+    top: 50%;  /* 화면 중앙 위치 */
+    left: 50%;
+    transform: translate(-50%, -50%);  /* 중앙 정렬 */
+    background-color: white;  /* 흰색 배경 추가 */
+    padding: 20px;
+    z-index: 9999;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* 그림자 효과 */
+    max-width: 500px;  /* 모달 최대 너비 */
+    width: 100%;  /* 전체 너비 사용 */
+    border-radius: 8px;  /* 둥근 모서리 */
+}
+
+.modal-content {
+    padding: 10px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* 모달 배경 클릭 시 닫기 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);  /* 반투명 배경 */
+    z-index: 9998;
+}
+
+#neighborListContainer ul {
+    list-style-type: none; /* 작은 점을 없애는 CSS */
+    padding-left: 0; /* 기본적인 왼쪽 여백을 없애기 위해 추가 */
+}
+
+.neighbor-list {
+    display: flex;
+    flex-direction: column; /* 이웃 항목을 세로로 정렬 */
+}
+
+.neighbor-item {
+    display: flex; /* 수평 정렬 */
+    align-items: center;
+    margin-bottom: 10px; /* 항목 간 간격 */
+}
+
+.neighbor-pet-img-container {
+    margin-right: 10px; /* 이미지와 이름 간 간격 */
+}
+
+.neighbor-pet-img {
+    width: 40px; /* 이미지 크기 설정 */
+    height: 40px; /* 이미지 크기 설정 */
+    object-fit: cover; /* 비율 유지 */
+    border-radius: 50%; /* 원형 이미지 */
+}
+
+.neighbor-name {
+    font-size: 16px; /* 이름 폰트 크기 */
 }
 

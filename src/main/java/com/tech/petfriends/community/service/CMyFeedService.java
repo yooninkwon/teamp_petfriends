@@ -32,8 +32,8 @@ public class CMyFeedService implements CServiceInterface {
 		if (loginUser != null) {
 			String mem_code = loginUser.getMem_code();
 
-			CDto getpetimg = (CDto) iDao.getPetIMG(mem_code);
-			model.addAttribute("getpetimg", getpetimg);
+			CDto logingetpetimg = (CDto) iDao.getPetIMG(mem_code);
+			model.addAttribute("logingetpetimg", logingetpetimg);
 		}
 
 		// 이미 mem_code가 모델에 추가되어 있으므로 바로 가져올 수 있습니다.
@@ -53,12 +53,14 @@ public class CMyFeedService implements CServiceInterface {
 
 		CDto getpetimg = (CDto) iDao.getPetIMG(mem_code);
 		model.addAttribute("getpetimg", getpetimg);
-
+		System.out.println("getpetimg:"+ getpetimg);
 		
-		String friend_mem_nick = myFeedName.getMem_nick(); // getpetimg에서 닉네임 추출
+		String friend_mem_nick = myFeedName.getMem_nick();
 		System.out.println("friend_mem_nick:" + friend_mem_nick);
 		
-		if (loginUser != null) {
+	    
+	
+		  if (loginUser != null) {
 			String mem_nick = loginUser.getMem_nick();
 			Integer count = iDao.isFriend(mem_nick, friend_mem_nick); // Integer로 받아옴
 		
@@ -68,9 +70,7 @@ public class CMyFeedService implements CServiceInterface {
 		}
 
 		
-        ArrayList<CCommunityFriendDto> neighborList = iDao.getNeighborList(friend_mem_nick);
-        model.addAttribute("neighborList", neighborList);
-		System.out.println("neighborList:"+neighborList);
+		
 		
 	}
 

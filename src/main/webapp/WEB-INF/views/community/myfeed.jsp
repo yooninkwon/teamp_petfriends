@@ -7,12 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>myfeed</title>
+<title>myfeed.jsp</title>
 <link rel="stylesheet" href="/static/css/community/community_myfeed.css">
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
-
 <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <script>
 	function checkAddFriend(loginUser) {
@@ -38,40 +37,136 @@
 	        return true;  // 친구 추가 실행
 	    }
 	}
-	function openNeighborList() {
+	function fetchNeighborList(mem_code, mem_nick) {
+	    $.ajax({
+	        url: '/community/neighborList/' + mem_code,
+	        method: 'GET',
+	        data: { mem_nick: mem_nick }, // mem_nick 전달
+	        success: function(data) {
+	            console.log("data:", data);
+	            let html = '<h4>' + mem_nick + '의 이웃 목록</h4><ul>';
 
-	    // AJAX를 이용해 서버에서 이웃 목록을 가져옴
-	    var xhr = new XMLHttpRequest();
-	    xhr.open("GET", "/myfeed/{mem_code}", true);
-	    xhr.onload = function() {
-	        if (xhr.status == 200) {
-	            // 서버에서 받은 데이터를 모달에 삽입
-	            document.getElementById("neighbor-list-modal-content").innerHTML = xhr.responseText;
-	            openModal(); // 모달 열기
-	        } else {
-	            alert("이웃 목록을 불러오는 데 실패했습니다.");
+	            if (data.length === 0) {
+	                html += '<li>이웃이 없습니다.</li>'; // 이웃 목록이 없을 경우 메시지 출력
+	            } else {
+	                // 이웃 목록 데이터 순회
+	                data.forEach(neighbor => {
+	                    // 이웃의 이름과 프로필 이미지 출력
+	                    html += `
+	                        <div class="neighbor-item">
+	                            <div class="neighbor-pet-img-container">
+	                                <a href="/community/myfeed/\${neighbor.friend_mem_code}" target="_blank">
+	                                    <img src="/static/Images/pet/\${neighbor.pet_img || 'noPetImg.jpg'}" alt="${neighbor.friend_mem_nick}" class="neighbor-pet-img">
+	                                </a>
+	                            </div>
+	                            <div class="neighbor-name">
+	                                <a href="/community/myfeed/\${neighbor.friend_mem_code}" target="_blank">
+	                                    \${neighbor.friend_mem_nick}
+	                                </a>
+	                            </div>
+	                        </div>
+	                    `;
+	                });
+	            }
+
+	            html += '</ul>';
+	            $('#neighborListContainer').html(html); // 모달에 이웃 목록 삽입
+
+	            // 이웃 모달 열기
+	            openNeighborListModal();
+	        },
+	        error: function(error) {
+	            console.log('이웃 목록을 가져오는 중 오류 발생:', error);
 	        }
-	    };
-	    xhr.send();
+	    });
 	}
 
-	// 모달을 여는 함수
-	function openModal() {
-	    document.getElementById("neighbor-list-modal").style.display = "block";
+	function fetchMyNeighborList(mem_code) {
+	    $.ajax({
+	        url: '/community/myNeighborList/' + mem_code,
+	        method: 'GET',
+	      
+	        success: function(data) {
+	            console.log("data:", data);
+	            let html = '<h4>내 이웃 목록</h4><ul>';
+
+	            if (data.length === 0) {
+	                html += '<li>이웃이 없습니다.</li>'; // 이웃 목록이 없을 경우 메시지 출력
+	            } else {
+	                // 이웃 목록 데이터 순회
+	                data.forEach(Myneighbor => {
+	                    // 이웃의 이름과 프로필 이미지 출력
+	                    html += `
+	                        <div class="neighbor-item">
+	                            <div class="neighbor-pet-img-container">
+	                                <a href="/community/myfeed/\${Myneighbor.friend_mem_code}" target="_blank">
+	                                    <img src="/static/Images/pet/\${Myneighbor.pet_img || 'noPetImg.jpg'}" alt="${Myneighbor.friend_mem_nick}" class="neighbor-pet-img">
+	                                </a>
+	                            </div>
+	                            <div class="neighbor-name">
+	                                <a href="/community/myfeed/\${Myneighbor.friend_mem_code}" target="_blank">
+	                                    \${Myneighbor.friend_mem_nick}
+	                                </a>
+	                            </div>
+	                        </div>
+	                    `;
+	                });
+	            }
+
+	            html += '</ul>';
+	            $('#MyneighborListContainer').html(html); // 모달에 이웃 목록 삽입
+
+	            // 내 이웃 모달 열기
+	            openMyNeighborListModal();
+	        },
+	        error: function(error) {
+	            console.log('이웃 목록을 가져오는 중 오류 발생:', error);
+	        }
+	    });
 	}
 
-	// 모달을 닫는 함수
-	function closeModal() {
-	    document.getElementById("neighbor-list-modal").style.display = "none";
+	function openNeighborListModal() {
+	    document.getElementById("neighborListModal").style.display = "block"; // 이웃 목록 모달 열기
 	}
 
+	function closeNeighborListModal() {
+	    document.getElementById("neighborListModal").style.display = "none"; // 이웃 목록 모달 닫기
+	}
 
+	function openMyNeighborListModal() {
+	    document.getElementById("myNeighborListModal").style.display = "block"; // 내 이웃 목록 모달 열기
+	}
 
+	function closeMyNeighborListModal() {
+	    document.getElementById("myNeighborListModal").style.display = "none"; // 내 이웃 목록 모달 닫기
+	}
+	
+	
+	
 </script>
+
 <body>
 
+	<!-- 이웃 목록 모달 -->
+	<div id="neighborListModal" class="modal">
+	    <div class="modal-content">
+	        <span class="close-btn" onclick="closeNeighborListModal()">&times;</span>
+	        <div id="neighborListContainer"></div>
+	    </div>
+	</div>	
+
 	
-<!-- 이벤트 이미지 -->
+	<!-- 내 이웃 목록 모달 -->
+	<div id="myNeighborListModal" class="modal">
+	    <div class="modal-content">
+	        <span class="close-btn" onclick="closeMyNeighborListModal()">&times;</span>
+	        <div id="MyneighborListContainer"></div>
+	    </div>
+	</div>	
+	
+	
+	
+	<!-- 이벤트 이미지 -->
 <div class="feed-image">
     <img src="<c:url value='/static/Images/communityorign_img/myfeed.jpg'/>" alt="Event 1">
 </div>
@@ -91,7 +186,7 @@
     </div>
     <div class="profile-menu">
 		
-		<p>isFriendBool: ${isFriendBool}</p> 
+	
 		
 		<c:if test="${isFriendBool == 1}">
 			<a href="<c:url value='/community/addFriend/${mem_code}'/>?mem_nick=${myFeedName.mem_nick}"
@@ -105,16 +200,13 @@
         
 		<a href="#">메세지</a>
         
-		<a href="#" onclick="openNeighborList(); return false;">이웃 목록</a>
-		<div id="neighbor-list-modal" class="modal" style="display:none;">
-		    <div class="modal-content" id="neighbor-list-modal-content">
-			
+		<!-- 이웃 목록 버튼 -->
+		<a href="#" onclick="fetchNeighborList('${mem_code}', '${myFeedName.mem_nick}'); return false;">이웃 목록</a>
 		
-				        
-				      
-		    </div>
-		    <span class="close" onclick="closeModal()">&times;</span>
-		</div>
+
+	
+		
+
 	
 	
 	</div>
@@ -159,7 +251,7 @@
 				<div class="profile-info">
 
 					<c:if test="${sessionScope.loginUser ne null}">
-						<img src="/static/Images/pet/${getpetimg.pet_img}"
+						<img src="/static/Images/pet/${logingetpetimg.pet_img}"
 							alt="Profile Image" class="profile-image">
 						<span class="user-name">${sessionScope.loginUser.mem_nick}</span>
 						<a href="/mypage/logout" class="logout-button">로그아웃</a>
@@ -176,28 +268,17 @@
 
 
 			<ul class="sidebar-menu">
-
-				<!--<c:if test="${sessionScope.loginUser ne null}">-->
-				<!--</c:if>
-	  					<c:if test="${sessionScope.loginUser eq null}">
-	  					    <li><a href="/community/myfeed" onclick="alert('로그인이 필요합니다'); return false;">내 피드</a></li>
-	  					</c:if>-->
-
-				<li><a href="/community/myfeed/">내 피드</a></li>
 				<c:if test="${sessionScope.loginUser ne null}">
-					<!-- 로그인이 되어 있을 때 글쓰기 페이지로 이동 -->
-					<li><a href="/community/writeView">글쓰기</a></li>
-				</c:if>
-
-				<c:if test="${sessionScope.loginUser eq null}">
-					<!-- 로그인이 되어 있지 않을 때 알림창을 띄움 -->
-					<li><a href="/community/writeView"
-						onclick="alert('로그인이 필요합니다'); return false;">글쓰기</a></li>
-				</c:if>
+				<li><a href="/community/myfeed/${sessionScope.loginUser.mem_code}">내 피드</a></li>			
+				<li><a href="/community/writeView">글쓰기</a></li>						
 				<li><a href="#">내 소식</a></li>
 				<li><a href="#">내 활동</a></li>
-				<li><a href="#">이웃 목록</a></li>
-			</ul>
+				<a href="#" onclick="fetchMyNeighborList('${mem_code}'); return false;">내 이웃 목록</a>
+				</c:if>	
+		
+			
+			
+				</ul>
 			<div class="sidebar-notice">
 				<h3>소식상자</h3>
 				<p>새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다 새로운 소식이 없습니다새로운 소식이

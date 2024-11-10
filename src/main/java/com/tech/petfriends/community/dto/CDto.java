@@ -43,8 +43,9 @@ public class CDto {
 
 
 	private int feed_no;
-
 	private String mem_nick;
+
+	
 }
 
 
