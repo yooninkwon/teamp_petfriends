@@ -281,4 +281,24 @@
 	    FROM MEMBER_WISHLIST
 	    WHERE MEM_CODE = #{mem_code} AND PRO_CODE = #{pro_code}
 	</delete>
+	<select id="pethotelReserveMypageMem" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
+		SELECT HPHM.*, MEM.MEM_NICK 
+		FROM HELP_PETHOTEL_MEM HPHM, MEMBER MEM 
+		WHERE
+		HPHM.MEM_CODE = MEM.MEM_CODE
+		AND HPHM.MEM_CODE = #{mem_code}
+		ORDER BY HPH_RGE_DATE DESC
+	</select>
+	<select id="pethotelReserveMypageMemNo" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
+		SELECT * 
+		FROM HELP_PETHOTEL_MEM
+		WHERE
+		HPH_RESERVE_NO = #{reserveNo}
+	</select>
+	<select id="pethotelReserveMypagePets" resultType="com.tech.petfriends.helppetf.dto.PethotelFormDataDto">
+		SELECT * 
+		FROM HELP_PETHOTEL_PETS
+		WHERE
+		HPH_RESERVE_NO = #{reserveNo}
+	</select>
 </mapper>

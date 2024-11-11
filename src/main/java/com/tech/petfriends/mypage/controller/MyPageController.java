@@ -28,9 +28,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.configuration.ApikeyConfig;
+import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
+import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dao.MypageDao;
@@ -656,6 +659,35 @@ public class MyPageController {
 	@GetMapping("/cscenter")
 	public String cscenter() {
 		return "/mypage/cscenter";
+	}
+
+	@GetMapping("/pethotel")
+	public String myPethotel() {
+		return "mypage/pethotel";
+	}
+	
+	@GetMapping("/pethotel/dataList")
+	@ResponseBody
+	public String myPethotelDataLiet(HttpServletRequest request, HttpSession session) throws JsonProcessingException {
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		ArrayList<PethotelMemDataDto> pethotelMemDto = mypageDao.pethotelReserveMypageMem(loginUser.getMem_code());
+		Map<String, Object> map = new HashMap<>();
+		map.put("pethotelMemDto", pethotelMemDto);
+		
+		return new ObjectMapper().writeValueAsString(map);
+	}
+
+	@GetMapping("/pethotel/dataDetail")
+	@ResponseBody
+	public String myPethotelDataDetail(HttpServletRequest request) throws JsonProcessingException {
+		String reserveNo = request.getParameter("reserveNo");
+		PethotelMemDataDto pethotelMemDto = mypageDao.pethotelReserveMypageMemNo(reserveNo);
+		ArrayList<PethotelFormDataDto> pethotelPetsDto = mypageDao.pethotelReserveMypagePets(reserveNo);
+		Map<String, Object> map = new HashMap<>();
+		map.put("pethotelMemDto", pethotelMemDto);
+		map.put("pethotelPetsDto", pethotelPetsDto);
+		
+		return new ObjectMapper().writeValueAsString(map);
 	}
 	
 	@GetMapping("/logout")

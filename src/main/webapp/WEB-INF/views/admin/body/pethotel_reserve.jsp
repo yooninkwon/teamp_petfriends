@@ -100,22 +100,8 @@
 		</div>
 		<div id="reserveDetailListTable">
 			<!-- 상세정보의 펫 목록 -->
-			<table width="100%">
-				<thead class="thead">
-					<tr>
-						<th>펫 코드</th>
-						<th>이름</th>
-						<th>동물 종류</th>
-						<th>성별</th>
-						<th>중성화</th>
-						<th>생일</th>
-						<th>체중(Kg)</th>
-						<th>전달사항</th>
-					</tr>
-				</thead>
-				<tbody id="reserveDetailList">
-					
-				</tbody>
+			<table width="100%" id="reserveDetailList">
+				
 			</table>
 		</div>
 	</div>
