@@ -1,7 +1,5 @@
 package com.tech.petfriends.admin.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +38,8 @@ import com.tech.petfriends.admin.service.AdminProductListService;
 import com.tech.petfriends.admin.service.AdminProductModifyService;
 import com.tech.petfriends.admin.service.AdminSalesService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
+import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.notice.dao.NoticeDao;
 import com.tech.petfriends.notice.dto.EventDto;
 import com.tech.petfriends.notice.dto.NoticeDto;
@@ -62,6 +62,9 @@ public class AdminPageController {
 	
 	@Autowired
 	AdminSalesDao adminSalesDao;
+  
+	@Autowired
+	MemberMapper memberDao;
 
 	AdminServiceInterface adminServInter;
 
@@ -256,7 +259,21 @@ public class AdminPageController {
 	
 
 	@GetMapping("/customer_status")
-	public String customer_status() {
+	public String customer_status(Model model) {
+		System.out.println("고객");
+		int newMember = memberDao.newMemberForWeek();
+		int visitMember = memberDao.visitMemberForWeek();
+		int withdrawMember = memberDao.withdrawMemberForWeek();
+		int total = memberDao.totalMember();
+		ArrayList<MemberLoginDto> newMemberList = memberDao.newMemberList();
+		ArrayList<MemberLoginDto> withdrawMemberList = memberDao.withdrawMemberList();
+
+		model.addAttribute("newMember",newMember);
+		model.addAttribute("visitMember",visitMember);
+		model.addAttribute("withdrawMember",withdrawMember);
+		model.addAttribute("total",total);
+		model.addAttribute("newMemberList",newMemberList);
+		model.addAttribute("withdrawMemberList",withdrawMemberList);
 		return "admin/customer_status";
 	}
 

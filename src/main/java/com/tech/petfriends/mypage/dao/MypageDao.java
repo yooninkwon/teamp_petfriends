@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.tech.petfriends.admin.dto.CouponDto;
+import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
+import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dto.MyCartDto;
@@ -69,9 +71,27 @@ public interface MypageDao {
 	
 	List<MyCartDto> getItemsByCartCodes(List<String> cartCodes);
 
+	void insertOrderCode(String cartCode, String o_code);
+	
+	void insertOrder(MyOrderDto orderData);
+	
+	void insertOrderStatus(String o_code);
+	
+	void updateCouponByOrder(String mc_code);
+	
+	void updateAmountByOrder(MyOrderDto orderData);
+	
+	ArrayList<MyOrderDto> getOrderByMemberCode(String mem_code);
+	
 	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
 	
 	List<MyOrderDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
 	
 	void deleteWishByProCode(String mem_code, String pro_code);
+
+	ArrayList<PethotelMemDataDto> pethotelReserveMypageMem(String mem_code);
+
+	PethotelMemDataDto pethotelReserveMypageMemNo(String reserveNo);
+
+	ArrayList<PethotelFormDataDto> pethotelReserveMypagePets(String reserveNo);
 }

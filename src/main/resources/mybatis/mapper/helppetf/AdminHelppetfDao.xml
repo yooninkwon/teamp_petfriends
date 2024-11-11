@@ -104,6 +104,7 @@
 			 MEMBER MEM 
 		<where>
 			HPHM.MEM_CODE = MEM.MEM_CODE
+			
 			<!-- 예약상태 필터 -->
 			<choose>
 				<when test="reserveType == '전체'">AND HPH_STATUS IS NOT NULL</when>

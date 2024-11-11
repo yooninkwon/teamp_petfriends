@@ -1,5 +1,7 @@
 package com.tech.petfriends.login.mapper;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.tech.petfriends.login.dto.MemberAddressDto;
@@ -8,6 +10,31 @@ import com.tech.petfriends.mypage.dto.GradeDto;
 
 @Mapper
 public interface MemberMapper {
+	
+	// 회원 리스트
+	ArrayList<MemberLoginDto> memberList();
+	
+	// 로그인시 마지막 접속 시간 업데이트
+	void updatelogdate(String mem_code);
+	
+	// 최근 1주일 이내 가입 회원 조회
+	int newMemberForWeek();
+	
+	// 최근 1주일 이내 방문 회원 조회
+	int visitMemberForWeek();
+	
+	// 최근 1주일 탈퇴 회원 조회
+	int withdrawMemberForWeek();
+	
+	// 최근 가입 회원 정보 5개
+	ArrayList<MemberLoginDto> newMemberList();
+	
+	// 최근 가입 회원 정보 3개
+	ArrayList<MemberLoginDto> withdrawMemberList();
+	
+	// 총 회원수 조회
+	int totalMember();
+	
     // 이메일로 사용자 조회
     MemberLoginDto getMemberByEmail(String email);
     
@@ -39,5 +66,11 @@ public interface MemberMapper {
 	GradeDto getGradeByMemberCode(String mem_code);
 
 	void deleteWindowPro(String mem_code);
+	
+	// 회원탈퇴
+	void withdraw(String mem_code);
+	
+	// 탈퇴회원 복구
+	void deleteRestoration(String mem_code);
 
 }

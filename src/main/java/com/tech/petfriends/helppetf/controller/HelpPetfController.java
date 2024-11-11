@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
-import com.tech.petfriends.helppetf.service.PethotelMainService;
 
 
 @Controller
@@ -26,26 +25,10 @@ public class HelpPetfController {
 	
 	HelppetfServiceInter helpServiceInterface;
 
-	@GetMapping("/pethotel/pethotel_reserve") // 펫호텔 예약화면
-	public String pethotelReserve(Model model) {
-		model.addAttribute("main_navbar_id", "helppetf");
-		model.addAttribute("sub_navbar_id", "pethotel");
-		return "/helppetf/pethotel/pethotel_reserve";
-	}
-	
-	@GetMapping("/pethotel/pethotel_info") // 펫호텔 이용안내
-	public String pethotelInfo(Model model) {
-		model.addAttribute("pethotelPage", "info");
-		helpServiceInterface = new PethotelMainService(helpDao);
-		helpServiceInterface.execute(model);
-		return "/helppetf/pethotel/pethotel_info";
-	}
-
 	@GetMapping("/pethotel/pethotel_main") // 펫호텔 메인
 	public String pethotelMain(Model model) {
-		model.addAttribute("pethotelPage", "intro");
-		helpServiceInterface = new PethotelMainService(helpDao);
-		helpServiceInterface.execute(model);
+		model.addAttribute("main_navbar_id", "helppetf");
+		model.addAttribute("sub_navbar_id", "pethotel");
 		return "/helppetf/pethotel/pethotel_main";
 	}
 

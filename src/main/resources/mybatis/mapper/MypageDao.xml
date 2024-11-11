@@ -77,7 +77,7 @@
 	</select>
 	
 	<select id="getCouponByMemberCode" resultType="com.tech.petfriends.admin.dto.CouponDto">
-		SELECT CP.CP_NO,CP_NAME,CP_KEYWORD,CP_START,CP_END,CP_DEAD,CP_TYPE,CP_AMOUNT
+		SELECT CP.CP_NO,MC_CODE,CP_NAME,CP_KEYWORD,CP_START,CP_END,CP_DEAD,CP_TYPE,CP_AMOUNT
 		FROM COUPON CP
 		JOIN MEMBER_COUPON_BRIDGE MC ON CP.CP_NO=MC.CP_NO
 		WHERE MEM_CODE=#{param1} AND MC_USE IS NULL AND MC_DEAD IS NULL
@@ -158,7 +158,7 @@
 		LEFT JOIN PRODUCT_IMAGE PI ON MC.PRO_CODE = PI.PRO_CODE
 		LEFT JOIN PRODUCT P ON MC.PRO_CODE = P.PRO_CODE
 		LEFT JOIN PRODUCT_OPTION PO ON MC.PROOPT_CODE = PO.PROOPT_CODE
-		WHERE MC.MEM_CODE = #{mem_code} AND P.PRO_ONOFF = '판매'
+		WHERE MC.MEM_CODE = #{mem_code} AND P.PRO_ONOFF = '판매' AND MC.O_CODE IS NULL
 		GROUP BY MC.CART_REGDATE, PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_PRICE, P.PRO_DISCOUNT, PO.PROOPT_FINALPRICE, MC.CART_CNT, PO.PROOPT_STOCK, MC.CART_CODE
 		ORDER BY MC.CART_REGDATE
 	</select>
@@ -190,6 +190,41 @@
 		LEFT JOIN PRODUCT_OPTION PO ON MC.PROOPT_CODE = PO.PROOPT_CODE
 		WHERE MC.CART_CODE = #{cartCode}
 		GROUP BY MC.CART_REGDATE, PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_PRICE, P.PRO_DISCOUNT, PO.PROOPT_FINALPRICE, MC.CART_CNT, PO.PROOPT_STOCK, MC.CART_CODE
+	</select>
+	
+	<update id="insertOrderCode">
+    	UPDATE PRODUCT_CART
+		SET O_CODE = #{o_code}
+		WHERE CART_CODE = #{cartCode}
+	</update>
+	
+	<insert id="insertOrder" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
+	    INSERT INTO "ORDER"
+	    VALUES (#{o_code}, #{mc_code}, #{mem_code}, #{o_resiver}, #{o_resiver_tell}, #{o_entry}, #{o_entry_detail}, #{o_memo}, #{o_point}, #{o_payment}, #{o_amount}, #{o_saving}, SYSDATE + INTERVAL '3' DAY, NULL, NULL)
+	</insert>
+	    
+	<insert id="insertOrderStatus">
+	    INSERT INTO ORDER_STATUS
+	    VALUES (#{o_code}, '결제완료', SYSDATE)
+	</insert>
+
+	<update id="updateCouponByOrder">
+    	UPDATE MEMBER_COUPON_BRIDGE
+	    SET MC_USE = SYSDATE
+	    WHERE MC_CODE = #{mc_code}
+	</update>
+
+	<update id="updateAmountByOrder" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
+	    UPDATE MEMBER
+	    SET MEM_POINT = MEM_POINT - #{o_point} + #{o_saving},
+	    	MEM_PAY_AMOUNT = o_amount
+	    WHERE MEM_CODE = #{mem_code}
+	</update>
+	
+	<select id="getOrderByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyOrderDto">
+		SELECT *
+		FROM "ORDER"
+		WHERE MEM_CODE = #{mem_code}
 	</select>
 	
 	<delete id="deleteCartItem">
@@ -246,4 +281,24 @@
 	    FROM MEMBER_WISHLIST
 	    WHERE MEM_CODE = #{mem_code} AND PRO_CODE = #{pro_code}
 	</delete>
+	<select id="pethotelReserveMypageMem" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
+		SELECT HPHM.*, MEM.MEM_NICK 
+		FROM HELP_PETHOTEL_MEM HPHM, MEMBER MEM 
+		WHERE
+		HPHM.MEM_CODE = MEM.MEM_CODE
+		AND HPHM.MEM_CODE = #{mem_code}
+		ORDER BY HPH_RGE_DATE DESC
+	</select>
+	<select id="pethotelReserveMypageMemNo" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
+		SELECT * 
+		FROM HELP_PETHOTEL_MEM
+		WHERE
+		HPH_RESERVE_NO = #{reserveNo}
+	</select>
+	<select id="pethotelReserveMypagePets" resultType="com.tech.petfriends.helppetf.dto.PethotelFormDataDto">
+		SELECT * 
+		FROM HELP_PETHOTEL_PETS
+		WHERE
+		HPH_RESERVE_NO = #{reserveNo}
+	</select>
 </mapper>

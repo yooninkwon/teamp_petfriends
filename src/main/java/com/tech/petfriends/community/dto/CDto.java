@@ -43,8 +43,10 @@ public class CDto {
 
 
 	private int feed_no;
-
 	private String mem_nick;
+
+	//친구 테이블
+	private String friend_mem_code;
 }
 
 

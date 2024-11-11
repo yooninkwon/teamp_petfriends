@@ -12,6 +12,7 @@ public interface AdminCommunityDao {
 	
   List<ACommunityDto> communityList(String searchKeyword, String searchFilterType, String searchCategory, String searchStartDate, String searchEndDate);
  
+  List<ACommunityDto> reportList(String searchKeyword, String searchFilterType, String searchCategory, String searchStartDate, String searchEndDate);
   
   // 총 게시글 수 조회
   int totalItems(String searchKeyword, String searchFilterType, 
@@ -19,4 +20,15 @@ public interface AdminCommunityDao {
                  String searchEndDate);
 
 	
+  int reportTotalItems(String searchKeyword, String searchFilterType, 
+          String searchCategory, String searchStartDate, 
+          String searchEndDate);
+
+  void reportStatusUpdate(int reportid);
+
+ 
+  
+  
+  
+  
 }

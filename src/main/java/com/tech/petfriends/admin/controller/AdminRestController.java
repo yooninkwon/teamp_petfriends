@@ -26,6 +26,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tech.petfriends.admin.dto.ACommunityDto;
 import com.tech.petfriends.admin.mapper.AdminCommunityDao;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
+import com.tech.petfriends.admin.service.AdminCommunityReportService;
 import com.tech.petfriends.admin.service.AdminPethotelDataService;
 import com.tech.petfriends.admin.service.AdminPethotelInfoData;
 import com.tech.petfriends.admin.service.AdminPethotelInfoEditService;
@@ -43,6 +44,8 @@ import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
+import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.notice.dao.NoticeDao;
 import com.tech.petfriends.notice.dto.EventDto;
 import com.tech.petfriends.notice.dto.NoticeDto;
@@ -56,6 +59,9 @@ public class AdminRestController {
 
 	@Autowired
 	NoticeDao noticeDao;
+	
+	@Autowired
+	MemberMapper memberMapper;
 
 	@Autowired
 	AdminCommunityDao communtiyDao;
@@ -210,12 +216,6 @@ public class AdminRestController {
 	    String searchStartDate = requestData.get("searchStartDate");
 	    String searchEndDate = requestData.get("searchEndDate");     
 	    
-	    System.out.println("**************************" );
-	    System.out.println("searchCategory: " + searchCategory );
-	    System.out.println("searchKeyword: " + searchKeyword);
-	    System.out.println("searchFilterType: " + searchFilterType);
-	    System.out.println("searchStartDate: " + searchStartDate);
-	    System.out.println("searchEndDate: " + searchEndDate);
 	    
 	    // 날짜 형식 변환 (문자열 -> LocalDate)
 	    LocalDate startDate = null;
@@ -246,7 +246,69 @@ public class AdminRestController {
 	    return response;
 	}
 
+	@PostMapping("/report")
+	@ResponseBody
+	public Map<String, Object> searchReport(@RequestBody Map<String, String> requestData, Model model) {
+	    System.out.println("searchReport");
+	    String reportSearchKeyword = requestData.get("searchKeyword");
+	    String reportSearchFilterType = requestData.get("searchFilterType");
+	    String reportCategory = requestData.get("searchCategory");
+	    String reportStartDate = requestData.get("searchStartDate");
+	    String reportEndDate = requestData.get("searchEndDate");
+	    System.out.println("reportSearchKeyword: "+reportSearchKeyword);
+	    System.out.println("reportSearchFilterType: "+reportSearchFilterType);
+	    System.out.println("reportCategory: "+reportCategory);
+	    System.out.println("reportStartDate: "+reportStartDate);
+	    System.out.println("reportEndDate: "+reportEndDate);
+	    
+	    
+	    // 날짜 형식 변환 (문자열 -> LocalDate)
+	    LocalDate startDate = null;
+	    LocalDate endDate = null;
 
+	    // 시작 날짜가 있을 경우 LocalDate로 변환
+	    if (reportStartDate != null && !reportStartDate.isEmpty()) {
+	        startDate = LocalDate.parse(reportStartDate, DateTimeFormatter.ISO_LOCAL_DATE);
+	    }
+
+	    // 종료 날짜가 있을 경우 LocalDate로 변환
+	    if (reportEndDate != null && !reportEndDate.isEmpty()) {
+	        endDate = LocalDate.parse(reportEndDate, DateTimeFormatter.ISO_LOCAL_DATE);
+	    }
+
+	    // 신고 리스트 조회
+	    List<ACommunityDto> reportList = communtiyDao.reportList(
+	        reportSearchKeyword, reportSearchFilterType, reportCategory, reportStartDate, reportEndDate);
+
+	    int totalReportItems = communtiyDao.reportTotalItems(
+	        reportSearchKeyword, reportSearchFilterType, reportCategory, reportStartDate, reportEndDate);
+
+	    System.out.println("조회된 신고 내역 수: " + reportList.size()); // 신고 내역 수 확인
+	    
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("reportList", reportList);
+	    response.put("totalItems", totalReportItems);
+
+	    return response;
+	}
+	
+	  @PostMapping("/updateReportStatus")
+	public void updateReportStatus(@RequestBody ArrayList<Map<String, Object>> selectedReport, Model model)  {
+		  model.addAttribute("selectedReport", selectedReport);
+		  
+		  adminServiceInterface = new AdminCommunityReportService(communtiyDao);
+		  adminServiceInterface.execute(model);
+		  
+		  System.out.println("selectedReport:" + selectedReport);
+		  System.out.println("model:" + model);
+		  
+		 
+		  
+	  }
+	
+	
+	
+	
 	// 이벤트 삭제 메서드
 	@DeleteMapping("/deleteEvent")
 	public ResponseEntity<String> deleteEvent(@RequestParam("id") Long eventNo) {
@@ -289,6 +351,13 @@ public class AdminRestController {
             return ResponseEntity.badRequest().body("유효하지 않은 요청입니다.");
         }
     }
+	
+	@GetMapping("/customer_list")
+	public ArrayList<MemberLoginDto> customerList() {
+		ArrayList<MemberLoginDto> memberlist = memberMapper.memberList();
+		
+		return memberlist;
+	}
 
 
 }

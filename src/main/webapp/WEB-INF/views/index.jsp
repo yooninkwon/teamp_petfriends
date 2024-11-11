@@ -15,6 +15,12 @@
 	<!-- 헤더 인클루드 -->
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
+	<c:if test="${not empty message}">
+	    <script>
+	        alert("${message}");
+	    </script>
+	</c:if>
+
 
 	<!-- 메인구성 시작-->
 	<!-- 이벤트 -->
