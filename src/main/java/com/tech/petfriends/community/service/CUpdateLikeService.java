@@ -55,6 +55,10 @@ public class CUpdateLikeService implements CServiceInterface {
 	        
 	            iDao.addLike(boardNo, memNick, memCode); // 좋아요 추가
 	            System.out.println("좋아요 추가");
+	           
+//	            iDao.likeActivity(line, memNick, boardNo, memCode);
+	            
+	            
 	        }
 	        int updatedLikesCount = iDao.getLikesCount(boardNo); // 전체 좋아요 수를 가져옴
 	        model.addAttribute("likesCount", updatedLikesCount); // 업데이트된 좋아요 수

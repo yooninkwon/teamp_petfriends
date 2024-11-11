@@ -21,20 +21,20 @@
 					<a href="/community/myfeed/${post.mem_code}" class="profile-link">
 				<div class="profile-info">
 					<img src="/static/Images/pet/${post.pet_img}" alt="프로필 이미지 1"
-					class="profile-image" /> </a>
+					class="profile-image" /> 
 					<span class="user-name">${post.user_id }</span></a>
 					<span class="post-time">${post.board_created}</span>
 				</div>
 
 				<h2 class="post-title">
-					<a href="/community/contentView?board_no=${post.board_no}">${post.board_title}
+					<a href="/community/contentView?board_no=${post.board_no}">${post.board_title} </a>
 				</h2>
 				<div class="post-content">
-					<c:out
-						value="${post.board_content.replaceAll('<img[^>]*>', '').replaceAll('<(strong|b|font)[^>]*>', '')}"
-						escapeXml="false" />
+					<a href="/community/contentView?board_no=${post.board_no}">${post.board_content_input}</a>
 				</div>
 	</div>
+	
+	<a href="/community/myfeed/${post.mem_code}" class="profile-link">
 	<img
 		src="${pageContext.request.contextPath}/static/images/community_img/${post.chrepfile}"
 		alt="포스트 1 이미지" class="post-image" />
@@ -55,6 +55,6 @@
 	</div>
 	</article>
 	</c:forEach>
-	</div>
+	
 </body>
 </html>

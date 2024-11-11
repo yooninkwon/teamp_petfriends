@@ -90,48 +90,83 @@
 	    document.getElementById("myNeighborListModal").style.display = "none"; // 내 이웃 목록 모달 닫기
 	}
 
+	// 이미지 클릭 시 회색으로 처리하는 함수
+	function applyGrayFilter(storyId) {
+	    const imageElement = document.querySelector(`#story-img-${storyId}`);
+	    if (imageElement) {
+	        imageElement.classList.add("gray-filter"); // 회색 필터 적용
+
+	        // 클릭 상태 서버에 저장
+	        $.ajax({
+	            url: '/community/updateImageClickStatus',
+	            type: 'POST',
+	            data: { storyId: storyId, clicked: true },
+	            success: function(response) {
+	                console.log("이미지 클릭 상태가 서버에 저장되었습니다.");
+	            },
+	            error: function(error) {
+	                console.log("이미지 클릭 상태 저장 중 오류 발생:", error);
+	            }
+	        });
+	    }
+	}
+
+	// 클릭 이벤트 리스너 설정
+	document.addEventListener("DOMContentLoaded", function() {
+	    document.querySelectorAll(".story-image").forEach(image => {
+	        image.addEventListener("click", function() {
+	            const storyId = this.dataset.storyId;
+	            applyGrayFilter(storyId);
+	        });
+	    });
+	});
+	
+	
+	
 </script>
 
 
 <body>
 
-	
+
 	<!-- 내 이웃 목록 모달 -->
 	<div id="myNeighborListModal" class="modal">
-	    <div class="modal-content">
-	        <span class="close-btn" onclick="closeMyNeighborListModal()">&times;</span>
-	        <div id="MyneighborListContainer"></div>
-	    </div>
-	</div>	
+		<div class="modal-content">
+			<span class="close-btn" onclick="closeMyNeighborListModal()">&times;</span>
+			<div id="MyneighborListContainer"></div>
+		</div>
+	</div>
 
-	
-	
-	
-	
-		<div class="container">
+
+
+
+
+	<div class="container">
 		<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
 		<main>
 			<!-- 핫토픽 섹션 -->
 			<section class="hot-topics">
-			   <h3>오늘의 핫이슈!</h3>
-			   <ul>
-			       <c:forEach var="hottopic" items="${getHotTopicList}" varStatus="status">
-			           <c:if test="${status.index < 4}"> <!-- 최대 4개까지만 출력 -->
-			               <li>
-			                   <a href="/community/contentView?board_no=${hottopic.board_no}">
-			                       <div class="image-container">
-			                           <img src="/static/images/community_img/${hottopic.chrepfile}"
-			                                alt="핫토픽 이미지" />
-			                           <div class="overlay">
-			                               <p>${hottopic.board_title}</p>
-			                           </div>
-			                       </div>
-			                   </a>
-			               </li>
-			           </c:if>
-			       </c:forEach>
-			   </ul>
+				<h3>오늘의 핫이슈!</h3>
+				<hr>
+				<ul>
+					<c:forEach var="hottopic" items="${getHotTopicList}"
+						varStatus="status">
+						<c:if test="${status.index < 4}">
+							<!-- 최대 4개까지만 출력 -->
+							<li><a
+								href="/community/contentView?board_no=${hottopic.board_no}">
+									<div class="image-container">
+										<img src="/static/images/community_img/${hottopic.chrepfile}"
+											alt="핫토픽 이미지" />
+										<div class="overlay">
+											<p>${hottopic.board_title}</p>
+										</div>
+									</div>
+							</a></li>
+						</c:if>
+					</c:forEach>
+				</ul>
 			</section>
 
 			<!-- 사이드바 -->
@@ -139,25 +174,33 @@
 
 			<div class="sidebar">
 				<div class="ad-banner">
-					<a href=""> <img
-						src="/static/Images/communityorign_img/ad1.jpg" alt="광고 배너" />
+					<a href="http://localhost:9002/notice/eventView?id=49"> <img
+						src="/static/Images/thumbnail/페스룸포토리뷰썸네일.gif" alt="광고 배너" />
 					</a>
 				</div>
 
 				<div class="post-header">
 					<div class="profile-info">
-						
+
 						<c:if test="${sessionScope.loginUser ne null}">
-							<img src="/static/Images/pet/${getpetimg.pet_img}"
-								alt="Profile Image" class="profile-image">
+							<c:choose>
+								<c:when test="${empty getpetimg.pet_img}">
+									<img src="/static/Images/pet/noPetImg.jpg" alt="프로필 이미지"
+										class="profile-image">
+								</c:when>
+								<c:otherwise>
+									<img src="/static/Images/pet/${getpetimg.pet_img}"
+										alt="프로필 이미지" class="profile-image">
+								</c:otherwise>
+							</c:choose>
 							<span class="user-name">${sessionScope.loginUser.mem_nick}</span>
 							<a href="/mypage/logout" class="logout-button">로그아웃</a>
 						</c:if>
-					
+
 						<c:if test="${sessionScope.loginUser eq null}">
 							<a href="/login/loginPage" class="login-button">로그인</a>
 						</c:if>
-					
+
 					</div>
 				</div>
 
@@ -165,16 +208,18 @@
 
 
 				<ul class="sidebar-menu">
-					
-			
+
+
 					<c:if test="${sessionScope.loginUser ne null}">
-					<li><a href="/community/myfeed/${sessionScope.loginUser.mem_code}">내 피드</a></li>
-					
-					<li><a href="/community/writeView">글쓰기</a></li>		
-					
-					<li><a href="#">내 소식</a></li>
-					<li><a href="#">내 활동</a></li>
-					<a href="#" onclick="fetchMyNeighborList()">내 이웃 목록</a>
+						<li><a
+							href="/community/myfeed/${sessionScope.loginUser.mem_code}">내
+								피드</a></li>
+
+						<li><a href="/community/writeView">글쓰기</a></li>
+
+						<li><a href="#">내 소식</a></li>
+						<li><a href="#">내 활동</a></li>
+						<a href="#" onclick="fetchMyNeighborList()">내 이웃 목록</a>
 				</ul>
 				</c:if>
 				<div class="sidebar-notice">
@@ -189,8 +234,8 @@
 					<p>나의 특별한 여행지에서의 영상도 보여드릴게요!</p>
 				</div>
 				<div class="ad-banner">
-					<a href=""> <img
-						src="/static/Images/communityorign_img/ad1.jpg" alt="광고 배너" />
+					<a href="http://localhost:9002/notice/eventView?id=50"> <img
+						src="/static/Images/thumbnail/페스룸카카오친추썸네일.gif" alt="광고 배너" />
 					</a>
 				</div>
 			</div>
@@ -200,46 +245,49 @@
 
 			<!-- 펫프렌즈는 지금 뭐할까? -->
 			<div class="container-box">
-			    <div class="container-header">
-			        <span class="header-text">펫프렌즈는 지금 뭐할까?</span>
-			        <form class="search-form" action="/main" method="GET">
-			            <input type="text" name="query" placeholder="검색어를 입력하세요" class="search-input">
-			            <button type="submit" class="search-button">🔍</button>
-			        </form>
-			    </div>
-
-				 <div class="story-container">
-				        <c:choose>
-				            <c:when test="${sessionScope.loginUser != null}">
-				                <!-- 로그인 상태일 때: 게시글 리스트를 동적으로 출력 -->
-				                <c:forEach var="storyList" items="${storyList}">
-				                    <li class="story-item">
-				                        <a href="/community/myfeed/${storyList.mem_code}">
-				                            <img src="/static/Images/pet/${storyList.pet_img}" alt="스토리 이미지" class="story-image" />
-				                            <p>${storyList.user_id}</p>
-				                        </a>
-				                    </li>
-				                </c:forEach>
-				            
-								<!-- 게시글 리스트가 비어있을 경우 -->
-								   <c:if test="${empty storyList}" >
-								       <div class="logout-message">
-								           <p>이웃의 새글이 없습니다.</p>
-								       </div>
-								   </c:if>
-							
-							
-							</c:when>
-							
-							<c:otherwise>
-							        <!-- 로그아웃 상태일 때: 안내 메시지 출력 -->
-							        <div class="logout-message" >
-							            <p>로그아웃 상태입니다.<br>로그인하여 이웃 새글을 확인해보세요.</p>
-							        </div>
-							    </c:otherwise>
-				        </c:choose>
-				    </div>
+				<div class="container-header">
+					<span class="header-text">펫프렌즈는 지금 뭐할까?</span>
+					<form class="search-form" action="/community/main" method="GET">
+						<input type="text" name="query" placeholder="검색어를 입력하세요"
+							class="search-input">
+						<button type="submit" class="search-button">🔍</button>
+					</form>
 				</div>
+
+				<div class="story-container">
+					<c:choose>
+						<c:when test="${sessionScope.loginUser != null}">
+							<!-- 로그인 상태일 때: 게시글 리스트를 동적으로 출력 -->
+							<c:forEach var="storyList" items="${storyList}">
+								<div class="story-item">
+								<a href="/community/myfeed/${storyList.mem_code}"> 
+								<img src="/static/Images/pet/${storyList.pet_img}" alt="스토리 이미지"
+										class="story-image" />
+										 <p>${storyList.user_id}</p>	</a> 
+							</div>
+							</c:forEach>
+
+							<!-- 게시글 리스트가 비어있을 경우 -->
+							<c:if test="${empty storyList}">
+								<div class="logout-message">
+									<p>이웃의 새글이 없습니다.</p>
+								</div>
+							</c:if>
+
+
+						</c:when>
+
+						<c:otherwise>
+							<!-- 로그아웃 상태일 때: 안내 메시지 출력 -->
+							<div class="logout-message">
+								<p>
+									로그아웃 상태입니다.<br>로그인하여 이웃 새글을 확인해보세요.
+								</p>
+							</div>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
 
 			<!-- 카테고리 섹션 -->
 			<section class="categories">
