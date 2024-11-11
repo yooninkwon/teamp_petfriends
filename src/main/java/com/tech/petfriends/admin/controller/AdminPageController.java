@@ -28,6 +28,7 @@ import com.tech.petfriends.admin.dto.MemberCouponDto;
 import com.tech.petfriends.admin.dto.ProductListDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
+import com.tech.petfriends.admin.mapper.AdminSalesDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
 import com.tech.petfriends.admin.service.AdminEventEditService;
 import com.tech.petfriends.admin.service.AdminNoticeEditService;
@@ -37,6 +38,7 @@ import com.tech.petfriends.admin.service.AdminProductAddService;
 import com.tech.petfriends.admin.service.AdminProductDetailService;
 import com.tech.petfriends.admin.service.AdminProductListService;
 import com.tech.petfriends.admin.service.AdminProductModifyService;
+import com.tech.petfriends.admin.service.AdminSalesService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
 import com.tech.petfriends.notice.dao.NoticeDao;
 import com.tech.petfriends.notice.dto.EventDto;
@@ -57,6 +59,9 @@ public class AdminPageController {
 	
 	@Autowired
 	AdminProductDao adminProductDao;
+	
+	@Autowired
+	AdminSalesDao adminSalesDao;
 
 	AdminServiceInterface adminServInter;
 
@@ -376,7 +381,11 @@ public class AdminPageController {
 	
 
 	@GetMapping("/sales")
-	public String sales() {
+	public String sales(Model model) {
+		
+		adminServInter = new AdminSalesService(adminSalesDao);
+		adminServInter.execute(model);
+		
 		return "admin/sales";
 	}
 

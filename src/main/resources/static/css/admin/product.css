@@ -53,6 +53,10 @@ label {
 	width: 270px; /* 입력 필드 너비 */
 }
 
+.btnBox{
+	margin: 10px;
+}
+
 .btn-style {
 	background-color: #545454;
 	font-weight: bold;
@@ -60,7 +64,7 @@ label {
 	padding: 4px 15px;
 	border: none;
 	cursor: pointer;
-	margin-left: 10px;
+	
 }
 
 .array-section {

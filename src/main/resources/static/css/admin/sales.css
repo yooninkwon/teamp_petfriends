@@ -13,7 +13,7 @@
 	display: flex;
 	justify-content: space-between; /* 좌우로 배치 */
 	align-items: center; /* 세로 정렬: 중앙 */
-	gap: 10px; /* 요소 간 간격 추가 (선택 사항) */
+	gap: 1px; /* 요소 간 간격 추가 (선택 사항) */
 	height: 250px;
 }
 
@@ -123,4 +123,72 @@
     box-sizing: border-box; /* 여백 포함 */
     padding: 5px;
 }
+
+.title2{
+	width:100%;
+	background-color: #e3e3e3;
+	margin-top: 10px;
+	font-size: 18px;
+	text-align: left; /* 텍스트를 왼쪽 정렬 */
+	margin: 0 3px;
+	padding: 5px 5px;
+}
+
+.radioGroup{
+	display: flex;
+	
+}
  
+.filterTitle {
+	width: 100px;
+	height: 100%;
+	padding: 5px 15px;
+	background-color: #dddddd;
+	font-size: 14px;
+	font-weight: bold;
+	margin-left: 3px;
+
+}
+.radioBtn {
+	padding: 5px 0 0 10px;
+	 display: flex; /* 라디오 버튼과 텍스트를 가로로 정렬 */
+	gap: 5px; /* 버튼과 텍스트 사이의 간격 */
+	
+}
+
+.btn-style {
+	background-color: #545454;
+	font-weight: bold;
+	color: white;
+	padding: 4px 15px;
+	border: none;
+	cursor: pointer;
+	margin: 10px 0;
+}
+
+.product-list {
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: fixed; /* 고정 테이블 레이아웃 설정 */
+}
+.thead {
+	background-color: #dddddd;
+}
+.product-list th, .product-list td {
+	border: 1px solid #cdcdcd;
+	padding: 5px;
+	text-align: center;
+	font-size: 14px;
+}
+.salesGraphResultBox{
+	margin: 0 5px;
+}
+
+.totalResultGraph{
+	height: 400px;	
+	border: 1px solid #cdcdcd;
+	margin-bottom: 3px;
+}
+.product-list{
+	height: 400px;	
+}
