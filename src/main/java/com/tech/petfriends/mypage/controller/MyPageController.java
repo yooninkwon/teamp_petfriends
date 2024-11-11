@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.configuration.ApikeyConfig;
+import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dao.MypageDao;
@@ -656,6 +657,14 @@ public class MyPageController {
 	@GetMapping("/cscenter")
 	public String cscenter() {
 		return "/mypage/cscenter";
+	}
+
+	@GetMapping("/pethotel")
+	public String pethotel(HttpServletRequest request, Model model, HttpSession session) {
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		ArrayList<PethotelMemDataDto> pethotelMemDto = mypageDao.pethotelReserveMypage(loginUser.getMem_code());
+		model.addAttribute("pethotelMemDto", pethotelMemDto);
+		return "mypage/pethotel";
 	}
 	
 	@GetMapping("/logout")
