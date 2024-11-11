@@ -30,7 +30,7 @@
 				</div>
 				<p style="margin: 5px 0;">사용기간: ${coupons.cp_dead} 까지</p>
 			</div>
-			<button class="coupon-btn" onclick="couponUse('${coupons.cp_name}', '${coupons.cp_type}', ${coupons.cp_amount})">사용하기<i class="fa-solid fa-check" style="color: #ffffff;"></i></button>
+			<button class="coupon-btn" onclick="couponUse('${coupons.cp_name}', '${coupons.cp_type}', ${coupons.cp_amount}, '${coupons.mc_code}')">사용하기<i class="fa-solid fa-check" style="color: #ffffff;"></i></button>
 		</div>
 	</c:forEach>
 </div>

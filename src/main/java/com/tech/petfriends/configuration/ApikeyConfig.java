@@ -39,5 +39,20 @@ public class ApikeyConfig {
 
 		return coolSecretKey;
 	}
+	
+	@Value("${portOne.key}")
+    private String portOneKey;
+    
+    public String getPortOnekey() {
+        
+        return portOneKey;
+    }
 
+    @Value("${portOneChannel.key}")
+    private String portOneChannel;
+    
+    public String getPortOneChannel() {
+        
+        return portOneChannel;
+    }
 }
