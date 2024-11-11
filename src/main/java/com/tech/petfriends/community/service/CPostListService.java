@@ -27,6 +27,7 @@ public class CPostListService implements CServiceInterface{
 	@Override
 	public void execute(Model model) {
 		Map<String, Object> m = model.asMap();
+		HttpServletRequest request = (HttpServletRequest) m.get("request");
 		HttpSession session = (HttpSession) m.get("session");
 	
 		
@@ -46,11 +47,25 @@ public class CPostListService implements CServiceInterface{
         ArrayList<CDto> getHotTopicList = iDao.getHotTopicList();
         model.addAttribute("getHotTopicList",getHotTopicList);
         		
-		
-		
-		
-
-	
+       
+        if(loginUser != null) {
+        	 String mem_nick = loginUser.getMem_nick();
+    	
+    		
+             ArrayList<CDto> storyList = iDao.storyList(mem_nick);
+             model.addAttribute("storyList",storyList);
+    		}
+        
+        String board_title = request.getParameter("board_title") ;
+        String board_content = request.getParameter("board_content") ;
+        String user_id = request.getParameter("user_id") ;
+        
+        System.out.println("board_title: "+board_title);		
+        
+		/*
+		 * ArrayList<CDto> searchPosts = iDao.searchPosts(board_title, board_content,
+		 * user_id); model.addAttribute("searchPosts",searchPosts);
+		 */
 	
 	} 
 	

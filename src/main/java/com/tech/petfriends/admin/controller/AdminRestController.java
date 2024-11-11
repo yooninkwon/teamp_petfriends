@@ -26,6 +26,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tech.petfriends.admin.dto.ACommunityDto;
 import com.tech.petfriends.admin.mapper.AdminCommunityDao;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
+import com.tech.petfriends.admin.service.AdminCommunityReportService;
 import com.tech.petfriends.admin.service.AdminPethotelDataService;
 import com.tech.petfriends.admin.service.AdminPethotelInfoData;
 import com.tech.petfriends.admin.service.AdminPethotelInfoEditService;
@@ -254,7 +255,11 @@ public class AdminRestController {
 	    String reportCategory = requestData.get("searchCategory");
 	    String reportStartDate = requestData.get("searchStartDate");
 	    String reportEndDate = requestData.get("searchEndDate");
-
+	    System.out.println("reportSearchKeyword: "+reportSearchKeyword);
+	    System.out.println("reportSearchFilterType: "+reportSearchFilterType);
+	    System.out.println("reportCategory: "+reportCategory);
+	    System.out.println("reportStartDate: "+reportStartDate);
+	    System.out.println("reportEndDate: "+reportEndDate);
 	    
 	    
 	    // 날짜 형식 변환 (문자열 -> LocalDate)
@@ -275,7 +280,7 @@ public class AdminRestController {
 	    List<ACommunityDto> reportList = communtiyDao.reportList(
 	        reportSearchKeyword, reportSearchFilterType, reportCategory, reportStartDate, reportEndDate);
 
-	    int totalReportItems = communtiyDao.totalItems(
+	    int totalReportItems = communtiyDao.reportTotalItems(
 	        reportSearchKeyword, reportSearchFilterType, reportCategory, reportStartDate, reportEndDate);
 
 	    System.out.println("조회된 신고 내역 수: " + reportList.size()); // 신고 내역 수 확인
@@ -283,9 +288,27 @@ public class AdminRestController {
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("reportList", reportList);
 	    response.put("totalItems", totalReportItems);
-	    
+
 	    return response;
 	}
+	
+	  @PostMapping("/updateReportStatus")
+	public void updateReportStatus(@RequestBody ArrayList<Map<String, Object>> selectedReport, Model model)  {
+		  model.addAttribute("selectedReport", selectedReport);
+		  
+		  adminServiceInterface = new AdminCommunityReportService(communtiyDao);
+		  adminServiceInterface.execute(model);
+		  
+		  System.out.println("selectedReport:" + selectedReport);
+		  System.out.println("model:" + model);
+		  
+		 
+		  
+	  }
+	
+	
+	
+	
 	// 이벤트 삭제 메서드
 	@DeleteMapping("/deleteEvent")
 	public ResponseEntity<String> deleteEvent(@RequestParam("id") Long eventNo) {

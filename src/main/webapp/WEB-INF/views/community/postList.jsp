@@ -21,7 +21,7 @@
 					<a href="/community/myfeed/${post.mem_code}" class="profile-link">
 				<div class="profile-info">
 					<img src="/static/Images/pet/${post.pet_img}" alt="프로필 이미지 1"
-					class="profile-image" /> 
+					class="profile-image" /> </a>
 					<span class="user-name">${post.user_id }</span></a>
 					<span class="post-time">${post.board_created}</span>
 				</div>

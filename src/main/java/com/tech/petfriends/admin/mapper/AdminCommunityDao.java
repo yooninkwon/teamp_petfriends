@@ -20,6 +20,15 @@ public interface AdminCommunityDao {
                  String searchEndDate);
 
 	
-  
+  int reportTotalItems(String searchKeyword, String searchFilterType, 
+          String searchCategory, String searchStartDate, 
+          String searchEndDate);
+
+  void reportStatusUpdate(int reportid);
+
  
+  
+  
+  
+  
 }

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.tech.petfriends.community.dto.CCategoryDto;
 import com.tech.petfriends.community.dto.CCommentDto;
+import com.tech.petfriends.community.dto.CCommunityFriendDto;
 import com.tech.petfriends.community.dto.CDto;
 
 
@@ -75,6 +76,18 @@ public interface IDao {
 
 	public void incrementViews(String board_no);
 
+	public void addFriend(String mem_nick, String friend_mem_nick);
+
+	public void deleteFriend(String mem_nick);
+
+	public int isFriend(String mem_nick, String friend_mem_nick);
+
+	public ArrayList<CCommunityFriendDto> getNeighborList(String mem_nick);
+
+	public ArrayList<CDto> storyList (String mem_nick);
+	
+//	public ArrayList<CDto> searchPosts (String board_title, String board_content, String user_id);
+	
 
 }
 

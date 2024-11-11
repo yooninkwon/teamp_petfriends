@@ -41,5 +41,6 @@ public class ACommunityDto {
     private int comment_no;
     private String report_type;
     
-    
+  
+
 }

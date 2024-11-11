@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 
-<script src="/static/js/admin/community_report.js"></script>
+<script src="/static/js/admin/community.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script> <!-- SheetJS 추가 -->
 
@@ -140,6 +140,7 @@
                 <label><input type="text" name="report-search-filter" value="" id="report-search-filter"></label> 
                 <input type="button" value="검색" class="btn-style" id="report-searchBtn" />
                 <input type="button" value="엑셀 다운로드" class="btn-style" id="report-downloadBtn" />
+                <input type="button" value="처리/미처리" class="btn-style" id="report-statusBtn" />
             </div>
 
             <!-- 리스트 영역 -->
@@ -162,10 +163,28 @@
                 </table>
             </div>
 
+			<!-- 팝업창 -->
+			<div id="report-detail-popup" class="popup" style="display: none;">
+			    <div class="popup-content">
+			        <span class="popup-close" id="popup-close">&times;</span>
+			        <h2>신고 상세 정보</h2>
+			        <p><strong>작성자:</strong> <span id="popup-mem-name"></span></p>			        
+					<p><strong>신고타입:</strong> <span id="popup-report-type"></span></p>
+					<p><strong>신고자:</strong> <span id="popup-reporter-id"></span></p>
+			        <p><strong>신고사유:</strong> <span id="popup-reason"></span></p>
+			        <p><strong>신고일:</strong> <span id="popup-report-date"></span></p>
+			        <p><strong>상태:</strong> <span id="popup-status"></span></p>
+			    
+					<button id="go-to-post" class="go-to-post-btn">게시글로 이동</button>   
+			    </div>
+			</div>
+			
             <div id="report-pagination">
                 <!-- 페이징 -->
             </div>
-        </div>
+       
+			
+		 </div>
     </div>
 </body>
 </html>
