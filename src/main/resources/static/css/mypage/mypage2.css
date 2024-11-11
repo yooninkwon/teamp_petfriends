@@ -158,24 +158,6 @@ h2 {
 	text-align: right;
 	margin-top: 5px;
 }
-.payment-method {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 5px;
-    width: 100%;
-}
-.payment-method button {
-    padding: 5px;
-    border: 2px solid black;
-    border-radius: 2px;
-    background-color: white;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 11px;
-}
-.payment-method button i {
-    font-size: 35px;
-}
 .payment-button {
 	width: 100%;
     background-color: #ff4081;

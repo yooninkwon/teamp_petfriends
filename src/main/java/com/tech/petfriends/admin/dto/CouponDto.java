@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class CouponDto {
 	private int cp_no;
+	private String mc_code;
 	private String cp_name;
 	private String cp_keyword;
 	private String cp_kind;

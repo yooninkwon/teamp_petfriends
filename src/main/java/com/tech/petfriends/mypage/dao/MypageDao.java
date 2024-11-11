@@ -69,6 +69,18 @@ public interface MypageDao {
 	
 	List<MyCartDto> getItemsByCartCodes(List<String> cartCodes);
 
+	void insertOrderCode(String cartCode, String o_code);
+	
+	void insertOrder(MyOrderDto orderData);
+	
+	void insertOrderStatus(String o_code);
+	
+	void updateCouponByOrder(String mc_code);
+	
+	void updateAmountByOrder(MyOrderDto orderData);
+	
+	ArrayList<MyOrderDto> getOrderByMemberCode(String mem_code);
+	
 	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
 	
 	List<MyOrderDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
