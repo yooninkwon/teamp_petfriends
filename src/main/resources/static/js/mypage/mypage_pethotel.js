@@ -2,10 +2,6 @@
  * 
  */
 
-
-//각각의 tr을 눌렀을 때 예약 상세정보 조회 페이지 필요
-//페이지네이션 필요
-
 $(document).ready(function() {
 	const itemsPerPage = 10; // 페이지 당 item 수 = 6
 	let currentPage = 1; // 현재 표시되는 페이지
@@ -56,7 +52,7 @@ $(document).ready(function() {
 		const sliceList = pethotelReserveList.pethotelMemDto.slice(start, end);
 		// .slice(start, end)는 배열에서 start부터 end 이전까지의 아이템들을 추출
 		// start가 0이고 end가 6이라면 인덱스 [0] ~ [9] 을 출력
-		console.log(sliceList);
+
 		// 데이터를 테이블로 출력
 		let table = '';
 		if (pethotelReserveList.pethotelMemDto.length == 0) {
@@ -74,12 +70,11 @@ $(document).ready(function() {
 			});
 		}
 		$('#pethotel-table tbody').html(table);
-		
+				
 		// 출력된 테이블의 'tr'이 클릭 될 때
 		$('#pethotel-table tbody').on('click', 'tr', function() {
 			// 클릭된 'tr'의 dataset 값을 불러옴
 			const reserveNo = $(this).data('reserveno');
-			console.log(reserveNo);
 			fetch('/mypage/pethotel/dataDetail?reserveNo=' + reserveNo, {
 				method: 'GET',
 				headers: {
@@ -154,13 +149,56 @@ $(document).ready(function() {
 		}
 		$('#reserveDetailMem').html(memPost);
 		$('#reserveDetailList').html(lists);
+
+		// 상세페이지로 진입할 때 '예약 취소하기' 버튼에 예약번호와 예약상태를 저장
+		$('#cancelReserve').attr('data-reserveno', data.pethotelMemDto.hph_reserve_no);
+		$('#cancelReserve').attr('data-status', data.pethotelMemDto.hph_status);
 	}
 	
+	// 목록으로 버튼 클릭시
 	$('.goBack').on('click', function(){
 		pageScroll(0);
+		// div의 클래스를 전환하여 화면에 표시되는 것을 교체
 		$("#reserveList").removeClass().addClass('on');
 		$("#reserveDetail").removeClass().addClass('off');
-	})
+	});
+
+	// 예약 취소하기 버튼 클릭시
+	$('#cancelReserve').on('click', function(){
+		let status = $('#cancelReserve').data('status');
+		
+		// dataset에 저장된 상태가 '취소됨' 일 시
+		if(status === '취소됨') {
+			alert('이미 취소된 예약입니다.');
+		} else {
+			// dataset에 저장된 상태가 '취소됨'이 아닐 경우
+			if(confirm('예약을 취소하시겠습니까?')) {
+				
+				// dataset에 저장된 예약번호 추출하여 요청 보냄
+				let reserveNo = $('#cancelReserve').data('reserveno');
+				
+				fetch('/mypage/pethotel/cancelReserve/?reserveNo=' + reserveNo, {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				})
+				.catch(error => {
+					console.error('ERROR:', error);
+				});
+				
+				pageScroll(0);
+				
+				// 예약 취소 완료 메세지
+				alert('예약이 취소되었습니다.');
+				
+				// 새로고침
+				location.href = location.href;
+			} else {
+				
+			}
+		}
+	});
 
 	// 페이지네이션 설정
 	function setupPagination() {

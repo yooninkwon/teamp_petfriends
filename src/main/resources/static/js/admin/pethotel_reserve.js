@@ -165,7 +165,7 @@ $(document).ready(function() {
 				// 예약 정보 상세페이지의 div를 보이게 한다.
 				document.getElementById('tab1').style.display = 'none';
 				document.getElementById('reserveDetailDiv').style.display = 'block';
-
+				
 				// memPost, lists는 각각 예약에 대한 정보, 예약된 펫에 대한 정보이다.
 				let memPost = '';
 				let lists = '';
@@ -174,6 +174,10 @@ $(document).ready(function() {
 				currStatus = data.reserveMem.hph_status;
 				currReserveNo = data.reserveMem.hph_reserve_no;
 
+				if(currStatus === '취소됨') {
+					$('input[name="reserve_status_set"]').prop('disabled', true);
+				}
+				
 				// 불러온 데이터 중 승인 날짜가 null 이라면, 
 				// null로 표시하는 대신 '-'로 표시한다.
 				let approval_date = '';
@@ -183,7 +187,7 @@ $(document).ready(function() {
 					// null이 아니라면 실제 데이터로 표시
 					approval_date = data.reserveMem.hph_approval_date;
 				}
-
+				
 				// 예약 정보
 				memPost += '<tr>';
 				memPost += '<td>' + data.reserveMem.hph_reserve_no + '</td>';

@@ -301,4 +301,10 @@
 		WHERE
 		HPH_RESERVE_NO = #{reserveNo}
 	</select>
+	<update id="pethotelReserveMyPageCancel">
+		UPDATE HELP_PETHOTEL_MEM 
+		SET HPH_STATUS = '취소됨' 
+		WHERE HPH_RESERVE_NO = #{reserveNo}
+	</update>
+
 </mapper>
