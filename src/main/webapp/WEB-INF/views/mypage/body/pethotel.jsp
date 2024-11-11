@@ -45,7 +45,10 @@
 
 <div id="reserveDetail" class="off">
 	<!-- 예약 상세정보 -->
-	<h3>예약 상세 정보</h3>
+	<h3>
+		예약 상세 정보
+		<button class="orderAllItem" id="cancelReserve" data-reserveno="0" data-status="-">예약 취소하기</button>
+	</h3>
     <hr />
 		<div id="reserveDetailMemTable">
 			<!-- 상세정보의 멤버 -->

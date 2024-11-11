@@ -94,4 +94,6 @@ public interface MypageDao {
 	PethotelMemDataDto pethotelReserveMypageMemNo(String reserveNo);
 
 	ArrayList<PethotelFormDataDto> pethotelReserveMypagePets(String reserveNo);
+
+	void pethotelReserveMyPageCancel(String reserveNo);
 }

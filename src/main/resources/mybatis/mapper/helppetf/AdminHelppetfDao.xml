@@ -111,6 +111,7 @@
 				<when test="reserveType == '신청중'">AND HPH_STATUS = '신청중'</when>
 				<when test="reserveType == '승인'">AND HPH_STATUS = '승인'</when>
 				<when test="reserveType == '거절'">AND HPH_STATUS = '거절'</when>
+				<when test="reserveType == '취소됨'">AND HPH_STATUS = '취소됨'</when>
 			</choose>
 			
 			<!-- 기간 필터 -->

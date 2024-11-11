@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -688,6 +689,15 @@ public class MyPageController {
 		map.put("pethotelPetsDto", pethotelPetsDto);
 		
 		return new ObjectMapper().writeValueAsString(map);
+	}
+	
+	@PutMapping("/pethotel/cancelReserve")
+	public void myPethotelCancelReserve(HttpServletRequest request) {
+		String reserveNo = request.getParameter("reserveNo");
+		mypageDao.pethotelReserveMyPageCancel(reserveNo);
+		
+		
+		
 	}
 	
 	@GetMapping("/logout")
