@@ -43,9 +43,10 @@ public class PethotelReserveService {
 		// 시작, 종료일의 "-"를 제거하여 배열에 저장
 		String memStartDate[] = hph_start_date.split("-");
 		String memEndDate[] = hph_end_date.split("-");
-		
-		// 예약번호를 시작일[0~2] + 종료일[0~2] + "_" + 멤버아이디[0] 으로 설정 => ex) 2024110620241206_dpoowa
-		String hph_reserve_no = memStartDate[0] + memStartDate[1] + memStartDate[2] + memEndDate[0] + memEndDate[1] + memEndDate[2] + "_" + memId[0];
+		int random = (int) (Math.random()*10000);
+		// 예약번호를 시작일[0~2] + 종료일[0~2] + 멤버아이디[0] + 랜덤숫자(0~9999) 로 설정 => ex) 2024110620241206_dpoowa
+		String hph_reserve_no = memStartDate[0] + memStartDate[1] + memStartDate[2] 
+				+ memEndDate[0] + memEndDate[1] + memEndDate[2] + memId[0] + random;
 		
 		// 예약한 동물의 마리 수 초기화
 		int numOfPet = 0;
