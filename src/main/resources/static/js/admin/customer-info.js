@@ -6,7 +6,7 @@ $(document).ready(function() {
     let totalPages = 0;
     let customerList = [];
     let filteredList = [];
-	
+	let selectedMembers = []; 
 	
     loadCustomerData();
 
@@ -222,23 +222,21 @@ $(document).ready(function() {
 	}
 	
 	document.getElementById('updateType').addEventListener('click', function() {
-	    // 선택된 회원들의 ID 가져오기
+	    // 선택된 회원들의 JSON 데이터 가져오기
 	    const selectedCheckboxes = document.querySelectorAll('.customer-checkbox:checked');
-	    const selectedIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+	    selectedMembers = Array.from(selectedCheckboxes).map(checkbox => JSON.parse(checkbox.value)); // 전역 변수에 할당
 
-	    if (selectedIds.length > 0) {
+	    if (selectedMembers.length > 0) {
 	        // 선택된 회원들이 있으면 팝업 열기
-	        openMemberTypePopup(selectedIds);
+	        openMemberTypePopup(selectedMembers);
 	    } else {
 	        alert('변경할 회원을 선택하세요.');
 	    }
 	});
-	
-	// 회원 유형 변경 버튼 클릭 시 팝업 열기
-	function openMemberTypePopup(selectedIds) {
-	    // 선택된 회원 정보를 가져와 표시
-	    selectedMembers = customerList.filter(member => selectedIds.includes(member.mem_code));
 
+	// 회원 유형 변경 버튼 클릭 시 팝업 열기
+	function openMemberTypePopup(selectedMembers) {
+	    // 선택된 회원 정보를 가져와 표시
 	    const memberContainer = document.getElementById('selectedMembersContainer');
 	    memberContainer.innerHTML = ''; // 기존 내용을 비움
 	    selectedMembers.forEach(member => {
@@ -263,12 +261,12 @@ $(document).ready(function() {
 	        closePopup();
 	    }
 	});
-	
+
 	// 회원 유형 변경 기능
 	document.getElementById('updateMemberTypeBtn').addEventListener('click', function() {
 	    const newType = document.getElementById('newMemberType').value;
 
-	    if (selectedMembers.length > 0) {
+	    if (selectedMembers && selectedMembers.length > 0) {
 	        const memberIds = selectedMembers.map(member => member.mem_code);
 	        fetch('/admin/updateCustomerType', {
 	            method: 'POST',
@@ -284,20 +282,20 @@ $(document).ready(function() {
 	            if (!response.ok) {
 	                throw new Error('요청이 실패했습니다. 상태 코드: ' + response.status);
 	            }
-	            return response.json(); // 응답이 JSON이라면 이 줄을 유지, 그렇지 않다면 필요에 따라 제거
+	            return response.json(); // 응답이 JSON이라면 유지, 텍스트라면 response.text() 사용
 	        })
 	        .then(() => {
 	            alert('회원 유형이 변경되었습니다.');
 	            closePopup();
 	            loadCustomerData(); // 필요시 UI 갱신 로직 호출
 	        })
-			.catch(error => {
-			    console.error('Error:', error);
+	        .catch(error => {
+	            console.error('Error:', error);
 
-			    // 에러 메시지가 존재하지 않는 경우 기본 메시지를 사용합니다.
-			    const errorMessage = error.message ? error.message : '알 수 없는 오류가 발생했습니다.';
-			    alert('오류가 발생했습니다. ' + errorMessage);
-			});
+	            // 에러 메시지가 존재하지 않는 경우 기본 메시지를 사용합니다.
+	            const errorMessage = error.message ? error.message : '알 수 없는 오류가 발생했습니다.';
+	            alert('오류가 발생했습니다. ' + errorMessage);
+	        });
 	    } else {
 	        alert('선택된 회원이 없습니다.');
 	    }

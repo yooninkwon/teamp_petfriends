@@ -276,6 +276,11 @@ public class AdminPageController {
 	public String customer_info() {
 		return "admin/customer_info";
 	}
+	
+	@GetMapping("/pet_info")
+	public String pet_info() {
+		return "admin/pet_info";
+	}
 
 	@GetMapping("/community")
 	public String community() {

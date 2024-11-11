@@ -31,6 +31,7 @@
                 <ul class="submenu">
                     <li><a href="customer_status" id="customer_status">회원 현황</a></li>
                     <li><a href="customer_info" id="customer_info">회원 정보 조회</a></li>
+                    <li><a href="pet_info" id="customer_info">내새꾸 조회</a></li>
                 </ul>
             </li>
             <li class="menu-item">

@@ -17,11 +17,8 @@
 	<div id="customer">
 		<!-- 필터링 영역 -->
 		<div class="tab-section">
-			<button class="tab-btn active" data-tab="customer-list-container">회원
-				조회/관리</button>
-			<button class="tab-btn" data-tab="customer-point-container">회원
-				적립금</button>
-			<button class="tab-btn" data-tab="mypet-container">내새꾸 조회</button>
+			<button class="tab-btn active" data-tab="customer-list-container">회원 조회/관리</button>
+			<button class="tab-btn" data-tab="customer-point-container">회원 적립금</button>
 		</div>
 
 		<!-- 리스트 영역 -->
@@ -29,7 +26,7 @@
 			class="customer-list-container tab-content">
 
 			<div class="search-group" style="width: 100%;">
-				<div class="filter-title">개인정보</div>
+				<div class="filter-title">회원정보</div>
 				<select name="" id="sk" style="margin-left: 5px;">
 					<option value="이름" checked>이름</option>
 					<option value="닉네임">닉네임</option>
@@ -118,24 +115,14 @@
 					</tr>
 				</thead>
 			</table>
-			<div id="pagination">
-				<!-- 페이징 -->
-			</div>
 		</div>
-		
+			
 		
 		<div id="customer-point-container"class="customer-point-container tab-content" style="display: none;">
 			dfdsfsdfdsfd
 			
 		</div>
-		
 	</div>
-
-	
-
-
-
-
 
 	<!-- Popup Modal -->
 	<div id="memberTypePopup" class="popup-modal" style="display: none;">
@@ -165,6 +152,10 @@
 				rows="4" cols="30" placeholder="보낼 내용을 입력하세요"></textarea>
 			<button id="sendSmsBtn">전송</button>
 		</div>
+	</div>
+
+	<div id="pagination">
+		<!-- 페이징 -->
 	</div>
 
 	<script src="/static/js/admin/customer-info.js"></script>
