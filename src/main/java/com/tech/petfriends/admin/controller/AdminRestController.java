@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -335,6 +336,21 @@ public class AdminRestController {
 		return memberlist;
 	}
 
+	@PostMapping("/updateCustomerType")
+	public ResponseEntity<Map<String, String>> updateCustomerType(@RequestBody Map<String, Object> request) {
+	    List<Long> ids = (List<Long>) request.get("ids");
+	    String newType = (String) request.get("newType");
 
+	    if (ids == null || ids.isEmpty() || newType == null || newType.isEmpty()) {
+	        return ResponseEntity.badRequest().body(Map.of("message", "유효하지 않은 요청입니다."));
+	    }
+
+	    try {
+	        memberMapper.updateCustomerType(ids, newType); // MyBatis 매퍼 호출
+	        return ResponseEntity.ok(Map.of("message", "회원 유형이 성공적으로 변경되었습니다."));
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "회원 유형 변경 중 오류가 발생했습니다."));
+	    }
+	}
 
 }

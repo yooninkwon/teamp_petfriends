@@ -25,11 +25,11 @@ $(document).ready(function() {
             const tabId = this.getAttribute('data-tab');
             document.getElementById(tabId).style.display = 'block';
 
-            if (tabId === 'customer-container') {
+            if (tabId === 'customer-list-container') {
                 loadCustomerData();
             }
             if (tabId === 'customer-point-container') {
-                loadEventData();
+                
             }
         });
     });
@@ -129,9 +129,12 @@ $(document).ready(function() {
             const memLogDate = formatDate(item.mem_logdate);
 			const memGrade = formatGrade(item.g_no);
 			
+			// 객체를 JSON 문자열로 변환하여 value에 저장
+		    const memberData = JSON.stringify(item);
+			
             member += `
                 <tr>
-                    <td><input type="checkbox" name="checkboxCustomer" class="customer-checkbox" value="${item.mem_code}" /></td>
+                    <td><input type="checkbox" name="checkboxCustomer" class="customer-checkbox" value='${memberData}' /></td>
                     <td>${memRegDate}</td>
                     <td>${memLogDate}</td>
                     <td>${item.mem_code}</td>
@@ -218,7 +221,151 @@ $(document).ready(function() {
 	    return gradeMap[g_no] || '알 수 없음'; // 매핑되지 않은 값일 경우 기본 메시지를 반환
 	}
 	
-	$('#upadteCare').on('click', function() {
-	        location.href("");
+	document.getElementById('updateType').addEventListener('click', function() {
+	    // 선택된 회원들의 ID 가져오기
+	    const selectedCheckboxes = document.querySelectorAll('.customer-checkbox:checked');
+	    const selectedIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+
+	    if (selectedIds.length > 0) {
+	        // 선택된 회원들이 있으면 팝업 열기
+	        openMemberTypePopup(selectedIds);
+	    } else {
+	        alert('변경할 회원을 선택하세요.');
+	    }
+	});
+	
+	// 회원 유형 변경 버튼 클릭 시 팝업 열기
+	function openMemberTypePopup(selectedIds) {
+	    // 선택된 회원 정보를 가져와 표시
+	    selectedMembers = customerList.filter(member => selectedIds.includes(member.mem_code));
+
+	    const memberContainer = document.getElementById('selectedMembersContainer');
+	    memberContainer.innerHTML = ''; // 기존 내용을 비움
+	    selectedMembers.forEach(member => {
+	        const memberInfo = document.createElement('div');
+	        memberInfo.innerHTML = `닉네임: ${member.mem_nick}`; // 닉네임 표시
+	        memberContainer.appendChild(memberInfo);
 	    });
+
+	    // 팝업 열기
+	    document.getElementById('memberTypePopup').style.display = 'flex';
+	}
+
+	// 팝업 닫기 기능
+	function closePopup() {
+	    document.getElementById('memberTypePopup').style.display = 'none';
+	}
+
+	// 팝업 외부를 클릭했을 때 닫기
+	window.addEventListener('click', function(event) {
+	    const popup = document.getElementById('memberTypePopup');
+	    if (event.target === popup) {
+	        closePopup();
+	    }
+	});
+	
+	// 회원 유형 변경 기능
+	document.getElementById('updateMemberTypeBtn').addEventListener('click', function() {
+	    const newType = document.getElementById('newMemberType').value;
+
+	    if (selectedMembers.length > 0) {
+	        const memberIds = selectedMembers.map(member => member.mem_code);
+	        fetch('/admin/updateCustomerType', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            body: JSON.stringify({
+	                ids: memberIds,
+	                newType: newType
+	            })
+	        })
+	        .then(response => {
+	            if (!response.ok) {
+	                throw new Error('요청이 실패했습니다. 상태 코드: ' + response.status);
+	            }
+	            return response.json(); // 응답이 JSON이라면 이 줄을 유지, 그렇지 않다면 필요에 따라 제거
+	        })
+	        .then(() => {
+	            alert('회원 유형이 변경되었습니다.');
+	            closePopup();
+	            loadCustomerData(); // 필요시 UI 갱신 로직 호출
+	        })
+			.catch(error => {
+			    console.error('Error:', error);
+
+			    // 에러 메시지가 존재하지 않는 경우 기본 메시지를 사용합니다.
+			    const errorMessage = error.message ? error.message : '알 수 없는 오류가 발생했습니다.';
+			    alert('오류가 발생했습니다. ' + errorMessage);
+			});
+	    } else {
+	        alert('선택된 회원이 없습니다.');
+	    }
+	});
+	
+	
+	// 문자 보내기 버튼 클릭 시 팝업 열기 (선택된 회원이 있는 경우에만)
+	document.getElementById('send-sms').addEventListener('click', function() {
+	    const selectedCheckboxes = document.querySelectorAll('.customer-checkbox:checked');
+	    if (selectedCheckboxes.length === 0) {
+	        alert('문자를 보낼 회원을 선택하세요.');
+	        return;
+	    }
+	    openSmsPopup(); // 선택된 회원이 있을 때만 팝업 열기
+	});
+
+	function openSmsPopup() {
+	    document.getElementById('smsPopup').style.display = 'flex';
+	}
+
+	// 팝업 외부를 클릭했을 때 닫기
+	window.addEventListener('click', function(event) {
+	    const popup = document.getElementById('smsPopup');
+	    if (popup && event.target === popup) {
+	        closeSmsPopup();
+	    }
+	});
+
+	// 팝업 닫기 함수
+	function closeSmsPopup() {
+	    document.getElementById('smsPopup').style.display = 'none';
+	}
+
+	// 문자 전송 버튼 클릭 시
+	document.getElementById('sendSmsBtn').addEventListener('click', function() {
+	    const smsContent = document.getElementById('smsContent').value.trim();
+
+	    if (!smsContent) {
+	        alert('문자 내용을 입력하세요.');
+	        return;
+	    }
+
+	    // 선택된 회원들의 전화번호 가져오기 (예시)
+		const selectedCheckboxes = document.querySelectorAll('.customer-checkbox:checked');
+		const phoneNumbers = Array.from(selectedCheckboxes).map(checkbox => {
+		    const member = JSON.parse(checkbox.value); // value를 JSON 객체로 변환
+		    return member.mem_tell; // 전화번호(mem_tell) 추출
+		});
+
+	    // 서버로 문자 전송 요청
+	    fetch('/send-sms-admin', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify({
+	            phoneNumbers: phoneNumbers,
+	            message: smsContent
+	        })
+	    })
+	    .then(response => response.ok ? response.json() : Promise.reject('문자 전송 실패'))
+	    .then(() => {
+	        alert('문자가 성공적으로 전송되었습니다.');
+	        closeSmsPopup();
+	    })
+	    .catch(error => {
+	        console.error('Error:', error);
+	        alert('문자 전송 중 오류가 발생했습니다.');
+	    });
+	});
 });

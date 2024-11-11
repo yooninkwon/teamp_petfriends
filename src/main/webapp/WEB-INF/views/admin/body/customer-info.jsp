@@ -14,81 +14,79 @@
 		<h3>회원 정보 조회</h3>
 	</div>
 
-	<!-- 게시글 등록 -->
 	<div id="customer">
 		<!-- 필터링 영역 -->
 		<div class="tab-section">
-			<button class="tab-btn active" data-tab="customer-container">회원
+			<button class="tab-btn active" data-tab="customer-list-container">회원
 				조회/관리</button>
 			<button class="tab-btn" data-tab="customer-point-container">회원
 				적립금</button>
 			<button class="tab-btn" data-tab="mypet-container">내새꾸 조회</button>
 		</div>
 
-		<div class="search-group" style="width: 100%;">
-			<div class="filter-title">개인정보</div>
-			<select name="" id="sk" style="margin-left: 5px;">
-				<option value="이름" checked>이름</option>
-				<option value="닉네임">닉네임</option>
-				<option value="회원코드">회원코드</option>
-				<option value="이메일">이메일</option>
-				<option value="이름">이름</option>
-				<option value="전화번호">전화번호</option>
-			</select> <input type="search" name="titleSearch" id="titleSearch" />
-		</div>
-		<div class="search-group" style="float: left;">
-			<div class="filter-title">회원등급</div>
-			<select name="" id="grade" style="margin-left: 5px;">
-				<option value="0" checked>전체</option>
-				<option value="1">설렘시작</option>
-				<option value="2">몽글몽글</option>
-				<option value="3">두근두근</option>
-				<option value="4">콩닥콩닥</option>
-				<option value="5">심쿵주의</option>
-				<option value="6">평생연분</option>
-			</select>
-		</div>
-		<div class="search-group" style="float: right;">
-			<div class="filter-title">회원유형</div>
-			<input type="radio" name="type" value="전체" checked />전체 <input
-				type="radio" name="type" value="일반" />일반회원 <input type="radio"
-				name="type" value="탈퇴" />탈퇴회원 <input type="radio" name="type"
-				value="휴먼" />휴면회원 <input type="radio" name="type" value="관리" />관리회원
-		</div>
-		<div class="search-group" style="float: left;">
-			<div class="filter-title">가입날짜</div>
-			<input type="date" name="regdate" id="regdate" />
-		</div>
-		<div class="search-group">
-			<div class="filter-title">접속날짜</div>
-			<input type="date" name="logdate" id="logdate" />
-		</div>
-		<div class="search-group" style="float: left;">
-			<div class="filter-title">구매금액</div>
-			<select name="" id="grade" style="margin-left: 5px;">
-				<option value="0" checked>전체</option>
-				<option value="1">~10만원</option>
-				<option value="2">~100만원</option>
-				<option value="3">~500만원</option>
-				<option value="4">~1000만원</option>
-				<option value="5">1000만원 초과</option>
-			</select>
-		</div>
-		<div class="search-group">
-			<div class="filter-title">성별</div>
-			<input type="radio" name="gender" value="" checked />전체 <input
-				type="radio" name="gender" value="M" />남성 <input type="radio"
-				name="gender" value="F" />여성
-		</div>
-
-		<div class="search-group" style="width: 100%; height: 50px;">
-			<button id="searchBtn">검색</button>
-		</div>
-
-
 		<!-- 리스트 영역 -->
 		<div id="customer-list-container"
 			class="customer-list-container tab-content">
+
+			<div class="search-group" style="width: 100%;">
+				<div class="filter-title">개인정보</div>
+				<select name="" id="sk" style="margin-left: 5px;">
+					<option value="이름" checked>이름</option>
+					<option value="닉네임">닉네임</option>
+					<option value="회원코드">회원코드</option>
+					<option value="이메일">이메일</option>
+					<option value="이름">이름</option>
+					<option value="전화번호">전화번호</option>
+				</select> <input type="search" name="titleSearch" id="titleSearch" />
+			</div>
+			<div class="search-group" style="float: left;">
+				<div class="filter-title">회원등급</div>
+				<select name="" id="totalAmount" style="margin-left: 5px;">
+					<option value="0" checked>전체</option>
+					<option value="1">설렘시작</option>
+					<option value="2">몽글몽글</option>
+					<option value="3">두근두근</option>
+					<option value="4">콩닥콩닥</option>
+					<option value="5">심쿵주의</option>
+					<option value="6">평생연분</option>
+				</select>
+			</div>
+			<div class="search-group" style="float: right;">
+				<div class="filter-title">회원유형</div>
+				<input type="radio" name="type" value="전체" checked />전체 <input
+					type="radio" name="type" value="일반" />일반회원 <input type="radio"
+					name="type" value="탈퇴" />탈퇴회원 <input type="radio" name="type"
+					value="휴먼" />휴면회원 <input type="radio" name="type" value="관리" />관리회원
+			</div>
+			<div class="search-group" style="float: left;">
+				<div class="filter-title">가입날짜</div>
+				<input type="date" name="regdate" id="regdate" />
+			</div>
+			<div class="search-group">
+				<div class="filter-title">접속날짜</div>
+				<input type="date" name="logdate" id="logdate" />
+			</div>
+			<div class="search-group" style="float: left;">
+				<div class="filter-title">구매금액</div>
+				<select name="" id="grade" style="margin-left: 5px;">
+					<option value="0" checked>전체</option>
+					<option value="1">~10만원</option>
+					<option value="2">~100만원</option>
+					<option value="3">~500만원</option>
+					<option value="4">~1000만원</option>
+					<option value="5">1000만원 초과</option>
+				</select>
+			</div>
+			<div class="search-group">
+				<div class="filter-title">성별</div>
+				<input type="radio" name="gender" value="" checked />전체 <input
+					type="radio" name="gender" value="M" />남성 <input type="radio"
+					name="gender" value="F" />여성
+			</div>
+
+			<div class="search-group" style="width: 100%; height: 50px;">
+				<button id="searchBtn">검색</button>
+			</div>
 			<div class="array-section">
 				<!-- 정렬 드롭다운 -->
 				<select id="sort-order">
@@ -98,9 +96,8 @@
 				</select>
 
 				<!-- 신규등록 버튼 -->
-				<button class="btn-style">문자보내기</button>
-				<button class="btn-style">회원 강제탈퇴</button>
-				<button id="updateCare" class="btn-style">관리회원 설정</button>
+				<button id="send-sms" class="btn-style">문자보내기</button>
+				<button id="updateType" class="btn-style">회원 유형변경</button>
 			</div>
 			<!-- 공지사항 리스트 테이블 -->
 			<table class="customer-list">
@@ -125,27 +122,49 @@
 				<!-- 페이징 -->
 			</div>
 		</div>
-
-
+		
+		
+		<div id="customer-point-container"class="customer-point-container tab-content" style="display: none;">
+			dfdsfsdfdsfd
+			
+		</div>
+		
 	</div>
+
 	
+
+
+
+
+
 	<!-- Popup Modal -->
 	<div id="memberTypePopup" class="popup-modal" style="display: none;">
-	    <div class="popup-content">
-	        <span class="close-btn" onclick="closePopup()">&times;</span>
-	        <h3>회원 유형 변경</h3>
-	        <div id="selectedMembersContainer">
-	            <!-- 선택된 회원 정보가 여기에 표시됩니다 -->
-	        </div>
-	        <label for="newMemberType">회원 유형 선택:</label>
-	        <select id="newMemberType">
-	            <option value="일반">일반</option>
-	            <option value="탈퇴">탈퇴</option>
-	            <option value="휴면">휴면</option>
-	            <option value="관리">관리</option>
-	        </select>
-	        <button id="updateMemberTypeBtn">변경</button>
-	    </div>
+		<div class="popup-content">
+			<h3>회원 유형 변경</h3>
+			<br />
+			<div id="selectedMembersContainer">
+				<!-- 선택된 회원 정보가 여기에 표시됩니다 -->
+			</div>
+			<br /> <label for="newMemberType">회원 유형 선택:</label> <select
+				id="newMemberType">
+				<option value="일반">일반</option>
+				<option value="탈퇴">탈퇴</option>
+				<option value="휴면">휴면</option>
+				<option value="관리">관리</option>
+			</select>
+			<button id="updateMemberTypeBtn">변경</button>
+		</div>
+	</div>
+
+	<!-- Popup Modal for SMS -->
+	<div id="smsPopup" class="popup-modal" style="display: none;">
+		<div class="popup-content">
+			<h3>문자 보내기</h3>
+			<label for="smsContent">문자 내용:</label>
+			<textarea id="smsContent" style="width: 100%; min-height: 300px;"
+				rows="4" cols="30" placeholder="보낼 내용을 입력하세요"></textarea>
+			<button id="sendSmsBtn">전송</button>
+		</div>
 	</div>
 
 	<script src="/static/js/admin/customer-info.js"></script>
