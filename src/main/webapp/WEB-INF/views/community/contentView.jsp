@@ -56,7 +56,7 @@
 	        var memCode = '${sessionScope.loginUser.mem_code}';
 	        var boardNo = '${contentView.board_no}';
 	        var memName = '${sessionScope.loginUser.mem_nick}';
-	      
+			var userId = '${contentView.user_id}';
 
 	        var xhr = new XMLHttpRequest();
 	        xhr.open("POST", "/community/updateLike", true);
@@ -71,7 +71,7 @@
 	                document.getElementById("like-button").innerHTML = likes ? "❤️" : "🤍";
 	            }
 	        };
-	        xhr.send(JSON.stringify({ mem_code: memCode, board_no: boardNo, mem_nick: memName }));
+	        xhr.send(JSON.stringify({ mem_code: memCode, board_no: boardNo, mem_nick: memName, user_id :userId }));
 	    }
 
 	/*     window.onload = initializeLikeButton; */
@@ -188,6 +188,7 @@
 
 				<!-- 좋아요 버튼 -->
 				<button id="like-button" onclick="updateLike()">
+				<input type="hidden" name="parent_user_nick" value="${contentView.user_id}">
 					<c:choose>
 						<c:when test="${isliked == 1}">
 					                        ❤️ <!-- 채워진 하트: 이미 좋아요를 누른 경우 -->

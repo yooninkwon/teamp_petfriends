@@ -94,7 +94,9 @@ public interface IDao {
 	
 	public void commentActivity( String user_id, String related_user_id,String board_no,String content);
 
-//	public void likeActivity( String user_id, String related_user_id,String board_no,String content);
+	public void likeActivity( String user_id, String related_user_id,String board_no);
+
+	public void friendActivity( String user_id, String related_user_id);
 
 }
 

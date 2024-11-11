@@ -35,7 +35,7 @@ public class CFriendService implements CServiceInterface {
 		String friend_mem_nick = request.getParameter("mem_nick");
 		System.out.println("friend_mem_nick: " + friend_mem_nick);
 		
-		
+
 		   // 친구 관계 여부 확인 (1이면 친구, 0이면 친구 아님)
 	    Integer isFriendBool = iDao.isFriend(mem_nick, friend_mem_nick); 
 	    
@@ -45,6 +45,7 @@ public class CFriendService implements CServiceInterface {
 	    // 친구 추가 또는 삭제 처리
 	    if (isFriendBool == 0 || isFriendBool == null) {
 	        iDao.addFriend(mem_nick, friend_mem_nick);
+	        iDao.friendActivity(mem_nick, friend_mem_nick);
 	    } else if (isFriendBool == 1) {
 	        iDao.deleteFriend(mem_nick);
 	    }

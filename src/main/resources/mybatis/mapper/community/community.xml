@@ -349,12 +349,18 @@
 	</insert>
 
 
-<!-- 	<insert id="likeActivity">
+	<insert id="likeActivity">
 		INSERT INTO COMMUNITY_ACTIVITY(ACTIVITY_NO, USER_ID,
-		ACTIVITY_TYPE, RELATED_USER_ID, BOARD_NO, CONTENT,CREATED_AT) VALUES
+		ACTIVITY_TYPE, RELATED_USER_ID, BOARD_NO, CREATED_AT) VALUES
 		(COMMUNITY_ACTIVITY_SEQ.NEXTVAL, #{user_id},
-		'좋아요', #{related_user_id}, #{board_no}, #{content}, SYSDATE)
-	</insert> -->
+		'좋아요', #{related_user_id}, #{board_no}, SYSDATE)
+	</insert> 
 
 
+	<insert id="friendActivity">
+		INSERT INTO COMMUNITY_ACTIVITY(ACTIVITY_NO, USER_ID,
+		ACTIVITY_TYPE, RELATED_USER_ID, CREATED_AT) VALUES
+		(COMMUNITY_ACTIVITY_SEQ.NEXTVAL, #{user_id},
+		'친구추가', #{related_user_id}, SYSDATE)
+	</insert> 
 </mapper>
