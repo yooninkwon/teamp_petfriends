@@ -8,6 +8,14 @@ body, html {
     flex-direction: column;
 }
 
+.on {
+	display: block;
+}
+
+.off {
+	display: none;
+}
+
 #container {
     display: flex;
     flex-direction: column;
@@ -1076,7 +1084,9 @@ h2 {
     font-size: 13px;
     color: #848684;
 }
+
 .pethotel-table td {
+    cursor: pointer;
     border-bottom: 1px solid #ddd;
     padding: 10px;
     text-align: center;
@@ -1094,4 +1104,28 @@ h2 {
 .status {
 	font-weight: bold;
     color: #333;
+}
+
+.space {
+    padding: 10px 0;
+    border:none;
+}
+h3 .orderAllItem {
+	cursor: pointer;
+	margin-left: 73%;
+}
+.detail-comment {
+	word-break: break-all;
+	max-width: 1140px;
+}
+
+#reserveDetailListTable .goBack {
+	cursor: pointer;
+	margin-top: 15px;
+	margin-left: 43%;
+}
+
+#reserveDetailList,
+#reserveList {
+	width: 1170px;
 }
