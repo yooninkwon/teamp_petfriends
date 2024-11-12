@@ -165,7 +165,7 @@ $(document).ready(function() {
 				// 예약 정보 상세페이지의 div를 보이게 한다.
 				document.getElementById('tab1').style.display = 'none';
 				document.getElementById('reserveDetailDiv').style.display = 'block';
-
+				
 				// memPost, lists는 각각 예약에 대한 정보, 예약된 펫에 대한 정보이다.
 				let memPost = '';
 				let lists = '';
@@ -174,6 +174,10 @@ $(document).ready(function() {
 				currStatus = data.reserveMem.hph_status;
 				currReserveNo = data.reserveMem.hph_reserve_no;
 
+				if(currStatus === '취소됨') {
+					$('input[name="reserve_status_set"]').prop('disabled', true);
+				}
+				
 				// 불러온 데이터 중 승인 날짜가 null 이라면, 
 				// null로 표시하는 대신 '-'로 표시한다.
 				let approval_date = '';
@@ -183,7 +187,7 @@ $(document).ready(function() {
 					// null이 아니라면 실제 데이터로 표시
 					approval_date = data.reserveMem.hph_approval_date;
 				}
-
+				
 				// 예약 정보
 				memPost += '<tr>';
 				memPost += '<td>' + data.reserveMem.hph_reserve_no + '</td>';
@@ -195,10 +199,17 @@ $(document).ready(function() {
 				memPost += '<td>' + data.reserveMem.hph_status + '</td>';
 				memPost += '<td>' + approval_date + '</td>';
 				memPost += '<td>' + data.reserveMem.hph_refusal_reason + '</td>';
-				memPost += '</tr>';
+				memPost += '</tr><tr><td class="space"></td></tr>';
 
 				// 펫 정보
 				for (var i = 0; i < data.reservePets.length; i++) {
+					lists += '<tr><th class="thead">펫 코드</th>';
+					lists += '<th class="thead">이름</th>';
+					lists += '<th class="thead">동물 종류</th>';
+					lists += '<th class="thead">성별</th>';
+					lists += '<th class="thead">중성화</th>';
+					lists += '<th class="thead">생일</th>';
+					lists += '<th class="thead">체중(Kg)</th></tr>';
 					lists += '<tr>';
 					lists += '<td>' + data.reservePets[i].hphp_reserve_pet_no + '</td>';
 					lists += '<td>' + data.reservePets[i].hphp_pet_name + '</td>';
@@ -206,10 +217,9 @@ $(document).ready(function() {
 					lists += '<td>' + data.reservePets[i].hphp_pet_gender + '</td>';
 					lists += '<td>' + data.reservePets[i].hphp_pet_neut + '</td>';
 					lists += '<td>' + data.reservePets[i].hphp_pet_birth + '</td>';
-					lists += '<td>' + data.reservePets[i].hphp_pet_weight + '</td>';
-					lists += '<td>' + data.reservePets[i].hphp_comment + '</td>';
-					lists += '</tr>';
-
+					lists += '<td>' + data.reservePets[i].hphp_pet_weight + '</td></tr>';
+					lists += '<tr><th class="detail-comment-th thead" colspan="7">전달사항</th></tr><tr><td colspan="7" class="detail-comment">' + data.reservePets[i].hphp_comment + '</td>';
+					lists += '</tr> <tr><td class="space"></td></tr>';
 				}
 				// 예약 상태 라디오버튼을 현재 예약 상태 데이터에 맞게 체크하도록 한다.
 				$('input[name="reserve_status_set"][value="' + currStatus + '"]').prop("checked", true);
@@ -285,12 +295,12 @@ $(document).ready(function() {
 		$('input[name="reserve_status_set"][value="거절"]').on('change', function() {
 			openModal();
 		});
-		
+
 		// 거절사유 작성하는 창 닫는 버튼 클릭시
 		$('.close-btn').on('click', function() {
 			closeModal();
 		});
-		
+
 		// 거절 사유 작성하는 창 열기
 		function openModal() {
 			document.getElementById('reasonModal').style.display = 'block';
@@ -309,7 +319,7 @@ $(document).ready(function() {
 			hph_refusal_reason = $('textarea[name="refusal_reason"]').val();
 			let statusObj = {};
 
-			if(hph_refusal_reason.replace(/\s/g, "").length != 0){
+			if (hph_refusal_reason.replace(/\s/g, "").length != 0) {
 				// 작성한 거절 사유를 오브젝트에 저장해 DB 업데이트 요청
 				statusObj = {
 					'hph_reserve_no': currReserveNo,
@@ -345,12 +355,12 @@ $(document).ready(function() {
 				fetchDataForStatus(statusObj);
 			}
 		});
-		
+
 		// 승인 상태 변경 DB 요청 함수
 		function fetchDataForStatus(statusObj) {
-		
+
 			fetch('/admin/pethotel_reserve_update', {
-				method: 'POST',
+				method: 'PUT',
 				headers: {
 					"Content-Type": 'application/json'
 				},
@@ -376,7 +386,7 @@ $(document).ready(function() {
 		$(document).on('click', '#goBack', function() {
 			location.replace(location.href);
 		});
-		
+
 		// 필터 초기화 버튼 클릭시
 		$(document).on('click', '#filterReset', function() {
 			// 필터를 기본값으로 변경
@@ -387,14 +397,14 @@ $(document).ready(function() {
 				memberCode: '',
 				reserveCode: ''
 			};
-			
+
 			// 필터를 초기화 한 뒤, input 태그의 값을 초기화
 			$(`input[name="reserve-type-filter"][value="전체"]`).prop('checked', true);
 			$('#start-date').val('');
 			$('#end-date').val('');
 			$('#search-mem-code').val('');
 			$('#search-reserve-code').val('');
-			
+
 			// 초기화한 뒤 데이터 새로 요청
 			fetchData(currentPage, currPageGroup, filterParam);
 		});

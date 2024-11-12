@@ -342,6 +342,8 @@ html, body {
 }
 
 #welcome {
+    font-family: 'Noto Sans KR';
+    color: #333;
 	float: right;
 	margin-top: -10px;
 	margin-right: 20px;

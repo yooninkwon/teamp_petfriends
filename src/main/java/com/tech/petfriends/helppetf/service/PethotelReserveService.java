@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
@@ -17,15 +18,19 @@ import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 
 @Service
-public class PethotelReserveService {
+public class PethotelReserveService implements HelppetfExecuteModelRequestSession{
 
-	HelpPetfDao helpDao;
-
-	public PethotelReserveService(HelpPetfDao helpDao) {
+	private HelpPetfDao helpDao;
+		
+	private ArrayList<PethotelFormDataDto> formList;
+	
+	public PethotelReserveService(HelpPetfDao helpDao, ArrayList<PethotelFormDataDto> formList) {
 		this.helpDao = helpDao;
+		this.formList = formList;
 	}
-
-	public String execute(Model model, HttpSession session, HttpServletRequest request, ArrayList<PethotelFormDataDto> formList) throws Exception {
+	
+	@Override
+	public void execute(Model model, HttpServletRequest request, HttpSession session) {
 		
 		// request의 예약 시작, 종료일 저장
 		String hph_start_date = request.getParameter("start-date");
@@ -43,9 +48,10 @@ public class PethotelReserveService {
 		// 시작, 종료일의 "-"를 제거하여 배열에 저장
 		String memStartDate[] = hph_start_date.split("-");
 		String memEndDate[] = hph_end_date.split("-");
-		
-		// 예약번호를 시작일[0~2] + 종료일[0~2] + "_" + 멤버아이디[0] 으로 설정 => ex) 2024110620241206_dpoowa
-		String hph_reserve_no = memStartDate[0] + memStartDate[1] + memStartDate[2] + memEndDate[0] + memEndDate[1] + memEndDate[2] + "_" + memId[0];
+		int random = (int) (Math.random()*10000);
+		// 예약번호를 시작일[0~2] + 종료일[0~2] + 멤버아이디[0] + 랜덤숫자(0~9999) 로 설정 => ex) 2024110620241206_dpoowa
+		String hph_reserve_no = memStartDate[0] + memStartDate[1] + memStartDate[2] 
+				+ memEndDate[0] + memEndDate[1] + memEndDate[2] + memId[0] + random;
 		
 		// 예약한 동물의 마리 수 초기화
 		int numOfPet = 0;
@@ -107,11 +113,9 @@ public class PethotelReserveService {
 				helpDao.pethotelReserveErrorMem(hph_reserve_no);
 			} catch (Exception se) {
 				se.printStackTrace();
-				throw new Exception(se);
 			}
 			
 			e.printStackTrace();
-			throw new Exception(e);
 		}
 		
 		// Map 객체를 생성해 null을 제거한 ArrayList와 예약정보 Dto를 저장
@@ -120,7 +124,11 @@ public class PethotelReserveService {
 		map.put("mem_Dto", memDto);
 		
 		// Map 객체를 ObjectMapper를 사용하여 Json형식(String)으로 변환해 반환
-        return new ObjectMapper().writeValueAsString(map);
+         try {
+			model.addAttribute("jsonData", new ObjectMapper().writeValueAsString(map));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

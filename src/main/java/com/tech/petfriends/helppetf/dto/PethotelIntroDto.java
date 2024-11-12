@@ -2,11 +2,13 @@ package com.tech.petfriends.helppetf.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class PethotelIntroDto {
 	private String intro_line1;
 	private String intro_line2;

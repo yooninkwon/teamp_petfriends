@@ -62,7 +62,7 @@ $(document).ready(function() {
 			userAddress = data.userAddr;
 			
 			// 안내창에 적혀있는 유저 닉네임, 주소를 변경하는 함수
-			changeUserAddress(userAddress);
+			changeUserAddress(userAddress, true);
 		})
 		.catch(error => {
 			console.error('ERROR:', error);
@@ -70,23 +70,28 @@ $(document).ready(function() {
 	}
 
 	// 안내창에 적혀있는 유저 닉네임, 주소를 변경하는 함수
-	function changeUserAddress(userAddress) {
+	function changeUserAddress(userAddress, isFirst) {
 		post = '';
 		
 		// 유저 닉네임이 null이 아니라면 == 로그인 되어 있다면
-		if(userNick != null){
-			post += `<span class="user_nickname">${userNick }</span>님의 주소는 <span class="current_address">`;
-			post += `${userAddress }</span> 입니다. 주소를 기반으로 주변 동반 시설을 찾아볼게요.`;
+		if(isFirst){
+			if(userNick != null){
+				post += `<span class="user_nickname">${userNick }</span>님의 주소는 <span class="current_address">`;
+				post += `${userAddress }</span> 입니다. 주소를 기반으로 주변 ${searchKeyword} 시설을 찾아볼게요.`;
+			} else {
+				post += '<span class="user_nickname">로그인</span> 하시면 <span class="current_address">';
+				post += `배송지로 저장되어 있는 주소</span>로 주변 ${searchKeyword} 시설을 찾아보실 수 있습니다.`;
+			}
 		} else {
-			post += '<span class="user_nickname">로그인</span> 하시면 <span class="current_address">';
-			post += '배송지로 저장되어 있는 주소</span>로 주변 동반 시설을 찾아보실 수 있습니다.';
+			// 다른주소로 찾아보기 했을 경우 출력 메세지
+			post += `설정하신 주소는 <span class="current_address">`;
+			post += `${userAddress }</span> 입니다. 주소를 기반으로 주변 ${searchKeyword} 시설을 찾아볼게요.`;
 		}
-		
 		// 유저 닉네임, 주소를 html 태그와 함께 작성
 		$('.my_adress_box').html(post);
 		
 		// 주소를 입력하여 지도를 구성하는 함수
-		buildTMap(userAddress);
+		buildKakaoMap(userAddress);
 	}
 	
 	
@@ -111,7 +116,7 @@ $(document).ready(function() {
 	var ps = new kakao.maps.services.Places();
 	
 	// 주소를 입력하여 지도를 구성하는 함수
-	function buildTMap(userAddress) {
+	function buildKakaoMap(userAddress) {
 		
 		// 주소로 좌표를 검색
 		geocoder.addressSearch(userAddress, function(result, status) {
@@ -345,6 +350,8 @@ $(document).ready(function() {
 		// 우편번호 찾기 화면을 넣을 element
 	    var element_postCode_layer = document.getElementsByClassName('search_wrap')[0];
 	    var element_div_layer = document.getElementsByClassName('change_adress_wrap')[0];
+//	    var element_postCode_layer = document.getElementsByClassName('search_wrap')[0];     $('.search_wrap')[0];
+//	    var element_div_layer = document.getElementsByClassName('change_adress_wrap')[0];
 
 		$('.search_btn').on('click', function(){
 			let flag = $(this).attr('data-isOn');
@@ -379,7 +386,7 @@ $(document).ready(function() {
 	                    addr = data.jibunAddress;
 	                }
 					$('.search_btn').attr('data-isOn', 'off');
-					changeUserAddress(addr);
+					changeUserAddress(addr, false);
 					closePostcode();
 	            },
 	            width : '100%',

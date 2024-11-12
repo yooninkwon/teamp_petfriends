@@ -1,5 +1,6 @@
 package com.tech.petfriends.admin.controller;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +29,8 @@ import com.tech.petfriends.admin.dto.ACommunityDto;
 import com.tech.petfriends.admin.mapper.AdminCommunityDao;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.service.AdminCommunityReportService;
+import com.tech.petfriends.admin.service.AdminExecuteModel;
+import com.tech.petfriends.admin.service.AdminExecuteModelRequest;
 import com.tech.petfriends.admin.service.AdminPethotelDataService;
 import com.tech.petfriends.admin.service.AdminPethotelInfoData;
 import com.tech.petfriends.admin.service.AdminPethotelInfoEditService;
@@ -39,13 +43,14 @@ import com.tech.petfriends.admin.service.AdminPetteacherDeleteService;
 import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminPetteacherEditService;
 import com.tech.petfriends.admin.service.AdminPetteacherWriteService;
-import com.tech.petfriends.admin.service.AdminServiceInterface;
 import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
+import com.tech.petfriends.mypage.dao.MypageDao;
+import com.tech.petfriends.mypage.dto.MyPetDto;
 import com.tech.petfriends.notice.dao.NoticeDao;
 import com.tech.petfriends.notice.dto.EventDto;
 import com.tech.petfriends.notice.dto.NoticeDto;
@@ -62,37 +67,39 @@ public class AdminRestController {
 	
 	@Autowired
 	MemberMapper memberMapper;
+	
+	@Autowired
+	MypageDao mypageDao;
 
 	@Autowired
 	AdminCommunityDao communtiyDao;
+		
+	AdminExecuteModel adminExecuteM;
 
-	AdminServiceInterface adminServiceInterface;
+	AdminExecuteModelRequest adminExecuteMR;
 
-	@PostMapping("/pethotel_reserve_update")
+	@PutMapping("/pethotel_reserve_update")
 	public String pethotelReserveUpdate(@RequestBody Map<String, String> statusMap, HttpServletRequest request,
 			Model model) {
-		model.addAttribute("statusMap", statusMap);
-		model.addAttribute("request", request);
-
-		adminServiceInterface = new AdminPethotelReserveUpdateService(adminDao);
-		adminServiceInterface.execute(model);
+		adminExecuteM = new AdminPethotelReserveUpdateService(adminDao, statusMap);
+		adminExecuteM.execute(model);
 		
 		return "{\"status\": \"success\"}";
 	}
 
 	@GetMapping("/pethotel_admin_reserve_detail")
 	public String pethotelReserveDetail(HttpServletRequest request, Model model) throws JsonProcessingException {
-		AdminPethotelReserveDetailService adminService = new AdminPethotelReserveDetailService(adminDao);
+		adminExecuteMR = new AdminPethotelReserveDetailService(adminDao);
+		adminExecuteMR.execute(model, request);
 		
-		return adminService.execute(model, request);
+		return (String) model.getAttribute("jsonData");
 	}
 
 	@SuppressWarnings("unchecked")
 	@GetMapping("/pethotel_admin_reserve")
 	public ArrayList<PethotelMemDataDto> pethotelReserveData(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		adminServiceInterface = new AdminPethotelDataService(adminDao);
-		adminServiceInterface.execute(model);
+		adminExecuteMR = new AdminPethotelDataService(adminDao);
+		adminExecuteMR.execute(model, request);
 		
 		return (ArrayList<PethotelMemDataDto>) model.getAttribute("memSelectDto");
 	}
@@ -100,80 +107,70 @@ public class AdminRestController {
 	@SuppressWarnings("unchecked")
 	@GetMapping("/petteacher_admin_data")
 	public List<PetteacherDto> getPetteacherData(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		adminServiceInterface = new AdminPetteacherDataService(adminDao);
-		adminServiceInterface.execute(model);
+		adminExecuteMR = new AdminPetteacherDataService(adminDao);
+		adminExecuteMR.execute(model, request);
 		
 		return (List<PetteacherDto>) model.getAttribute("petteacherList");
 	}
 
 	@GetMapping("/petteacher_admin_data_forEdit")
 	public PetteacherDto petteacherDataForEdit(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		adminServiceInterface = new AdminPetteacherDetailService(adminDao);
-		adminServiceInterface.execute(model);
+		adminExecuteMR = new AdminPetteacherDetailService(adminDao);
+		adminExecuteMR.execute(model, request);
 
 		return (PetteacherDto) model.getAttribute("dto");
 	}
 
 	@DeleteMapping("/petteacher_admin_data_forDelete")
 	public String petteacherDataForDelete(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		adminServiceInterface = new AdminPetteacherDeleteService(adminDao);
-		adminServiceInterface.execute(model);
+		adminExecuteMR = new AdminPetteacherDeleteService(adminDao);
+		adminExecuteMR.execute(model, request);
 
 		return "{\"status\": \"success\"}";
 	}
 
 	@PostMapping("/petteacher_admin_data_forWrite")
 	public String petteacherDataForWrite(@RequestBody PetteacherDto dto, Model model) {
-		model.addAttribute("dto", dto);
-		adminServiceInterface = new AdminPetteacherWriteService(adminDao);
-		adminServiceInterface.execute(model);
+		adminExecuteM = new AdminPetteacherWriteService(adminDao, dto);
+		adminExecuteM.execute(model);
 		
 		return "{\"status\": \"success\"}";
 	}
 
 	@PutMapping("/petteacher_admin_data_forEdit")
 	public String petteacherDataForEdit(@RequestBody PetteacherDto dto, HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		model.addAttribute("dto", dto);
-		adminServiceInterface = new AdminPetteacherEditService(adminDao);
-		adminServiceInterface.execute(model);
+		adminExecuteMR = new AdminPetteacherEditService(adminDao, dto);
+		adminExecuteMR.execute(model, request);
 
 		return "{\"status\": \"success\"}";
 	}
 
 	@GetMapping("/pethotel_intro_data")
 	public PethotelIntroDto pethotelIntroData(Model model) {
-		adminServiceInterface = new AdminPethotelIntroData(adminDao);
-		adminServiceInterface.execute(model);
+		adminExecuteM = new AdminPethotelIntroData(adminDao);
+		adminExecuteM.execute(model);
 		return (PethotelIntroDto) model.getAttribute("dto");
 	}
 
 	@GetMapping("/pethotel_info_data")
 	public PethotelInfoDto pethotelInfoData(Model model) {
-		adminServiceInterface = new AdminPethotelInfoData(adminDao);
-		adminServiceInterface.execute(model);
+		adminExecuteM = new AdminPethotelInfoData(adminDao);
+		adminExecuteM.execute(model);
 		return (PethotelInfoDto) model.getAttribute("dto");
 	}
 
 	@PutMapping("/pethotel_admin_intro_dataForEdit")
 	public String pethotelIntroForEdit(@RequestBody PethotelIntroDto dto, HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		model.addAttribute("dto", dto);
-		adminServiceInterface = new AdminPethotelIntroEditService(adminDao);
-		adminServiceInterface.execute(model);
+		adminExecuteM = new AdminPethotelIntroEditService(adminDao, dto);
+		adminExecuteM.execute(model);
 
 		return "{\"status\": \"success\"}";
 	}
 
 	@PutMapping("/pethotel_admin_info_dataForEdit")
 	public String pethotelInfoForEdit(@RequestBody PethotelInfoDto dto, HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		model.addAttribute("dto", dto);
-		adminServiceInterface = new AdminPethotelInfoEditService(adminDao);
-		adminServiceInterface.execute(model);
+		adminExecuteM = new AdminPethotelInfoEditService(adminDao, dto);
+		adminExecuteM.execute(model);
 
 		return "{\"status\": \"success\"}";
 	}
@@ -296,8 +293,8 @@ public class AdminRestController {
 	public void updateReportStatus(@RequestBody ArrayList<Map<String, Object>> selectedReport, Model model)  {
 		  model.addAttribute("selectedReport", selectedReport);
 		  
-		  adminServiceInterface = new AdminCommunityReportService(communtiyDao);
-		  adminServiceInterface.execute(model);
+		  adminExecuteM = new AdminCommunityReportService(communtiyDao);
+		  adminExecuteM.execute(model);
 		  
 		  System.out.println("selectedReport:" + selectedReport);
 		  System.out.println("model:" + model);
@@ -354,10 +351,67 @@ public class AdminRestController {
 	
 	@GetMapping("/customer_list")
 	public ArrayList<MemberLoginDto> customerList() {
-		ArrayList<MemberLoginDto> memberlist = memberMapper.memberList();
-		
+		ArrayList<MemberLoginDto> memberlist = memberMapper.memberList();	
 		return memberlist;
 	}
+	
+	@GetMapping("/pet_list")
+	public ArrayList<MyPetDto> petList() {
+		ArrayList<MyPetDto> petlist = mypageDao.getPetList();
+		return petlist;
+	}
 
+	@PostMapping("/updateCustomerType")
+	public ResponseEntity<Map<String, String>> updateCustomerType(@RequestBody Map<String, Object> request) {
+	    List<Long> ids = (List<Long>) request.get("ids");
+	    String newType = (String) request.get("newType");
+
+	    if (ids == null || ids.isEmpty() || newType == null || newType.isEmpty()) {
+	        return ResponseEntity.badRequest().body(Map.of("message", "유효하지 않은 요청입니다."));
+	    }
+
+	    try {
+	        memberMapper.updateCustomerType(ids, newType); // MyBatis 매퍼 호출
+	        return ResponseEntity.ok(Map.of("message", "회원 유형이 성공적으로 변경되었습니다."));
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "회원 유형 변경 중 오류가 발생했습니다."));
+	    }
+	}
+	
+	@PostMapping("/deletePetImages")
+	public ResponseEntity<String> deletePetImages(@RequestBody Map<String, Object> request) {
+	    List<String> petCodes = (List<String>) request.get("petCodes");
+	    if (petCodes == null || petCodes.isEmpty()) {
+	        return ResponseEntity.badRequest().body("유효하지 않은 요청입니다.");
+	    }
+
+	    try {
+	        petCodes.forEach(petCode -> {
+	            String petImg = mypageDao.getPetImgForPetCode(petCode); // petCode로 이미지 파일명 조회
+	            if (petImg != null && !petImg.isEmpty()) {
+	                // 파일 경로 설정 (서버의 실제 경로를 절대 경로로 사용)
+	            	String imagesDir = new File("src/main/resources/static/Images/pet/").getAbsolutePath();
+	                File file = new File(imagesDir, petImg);
+	                
+	                // 파일 존재 여부 확인 및 삭제 처리
+	                if (file.exists()) {
+	                    boolean deleted = file.delete();
+	                    if (!deleted) {
+	                        System.err.println("이미지 삭제에 실패했습니다: " + file.getAbsolutePath());
+	                    } else {
+	                        System.out.println("이미지 삭제 성공: " + file.getAbsolutePath());
+	                    }
+	                } else {
+	                    System.out.println("이미지가 존재하지 않습니다: " + file.getAbsolutePath());
+	                }
+	            }
+	            mypageDao.deletePetImgForPetCode(petCode);
+	        });
+	        return ResponseEntity.ok("이미지 삭제가 완료되었습니다.");
+	    } catch (Exception e) {
+	        e.printStackTrace(); // 디버깅을 위한 예외 출력
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미지 삭제 중 오류가 발생했습니다.");
+	    }
+	}
 
 }

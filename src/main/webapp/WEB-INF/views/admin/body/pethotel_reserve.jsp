@@ -22,6 +22,7 @@
 					<label><input class="radio-group" type="radio" name="reserve-type-filter" value="신청중"> 신청중</label>
 					<label><input class="radio-group" type="radio" name="reserve-type-filter" value="승인"> 승인</label>
 					<label><input class="radio-group" type="radio" name="reserve-type-filter" value="거절"> 거절</label>
+					<label><input class="radio-group" type="radio" name="reserve-type-filter" value="취소됨"> 취소됨</label>
 					<button id="filterReset" class="btn-style">필터 초기화</button>
 				</div>
 			</div>
@@ -75,6 +76,7 @@
 			<label><input type="radio" name="reserve_status_set" value="신청중" /> 신청중</label>
 			<label><input type="radio" name="reserve_status_set" value="승인" /> 승인</label>
 			<label><input type="radio" name="reserve_status_set" value="거절" /> 거절</label>
+			<label><input type="radio" name="reserve_status_set" value="취소됨" disabled /> 취소됨</label>
 			<button id="reserveSubmit" class="btn-style">예약 상태 변경</button>
 		</div>
 		<div id="reserveDetailMemTable">
@@ -100,22 +102,8 @@
 		</div>
 		<div id="reserveDetailListTable">
 			<!-- 상세정보의 펫 목록 -->
-			<table width="100%">
-				<thead class="thead">
-					<tr>
-						<th>펫 코드</th>
-						<th>이름</th>
-						<th>동물 종류</th>
-						<th>성별</th>
-						<th>중성화</th>
-						<th>생일</th>
-						<th>체중(Kg)</th>
-						<th>전달사항</th>
-					</tr>
-				</thead>
-				<tbody id="reserveDetailList">
-					
-				</tbody>
+			<table width="100%" id="reserveDetailList">
+				
 			</table>
 		</div>
 	</div>

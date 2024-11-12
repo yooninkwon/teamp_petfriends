@@ -149,93 +149,111 @@
 
 	<!-- 이웃 목록 모달 -->
 	<div id="neighborListModal" class="modal">
-	    <div class="modal-content">
-	        <span class="close-btn" onclick="closeNeighborListModal()">&times;</span>
-	        <div id="neighborListContainer"></div>
-	    </div>
-	</div>	
+		<div class="modal-content">
+			<span class="close-btn" onclick="closeNeighborListModal()">&times;</span>
+			<div id="neighborListContainer"></div>
+		</div>
+	</div>
 
-	
+
 	<!-- 내 이웃 목록 모달 -->
 	<div id="myNeighborListModal" class="modal">
-	    <div class="modal-content">
-	        <span class="close-btn" onclick="closeMyNeighborListModal()">&times;</span>
-	        <div id="MyneighborListContainer"></div>
-	    </div>
-	</div>	
-	
-	
-	
-	<!-- 이벤트 이미지 -->
-<div class="feed-image">
-    <img src="<c:url value='/static/Images/communityorign_img/myfeed.jpg'/>" alt="Event 1">
-</div>
-
-<!-- 상단 프로필 영역 -->
-<div class="profile-section">
-    <div class="profile-info">
-        <c:choose>
-            <c:when test="${empty getpetimg.pet_img}">
-                <img src="/static/Images/pet/noPetImg.jpg" alt="프로필 이미지" class="main-profile-image">
-            </c:when>
-            <c:otherwise>
-                <img src="/static/Images/pet/${getpetimg.pet_img}" alt="프로필 이미지" class="main-profile-image">
-            </c:otherwise>
-        </c:choose>
-        <h2>${myFeedName.mem_nick}</h2>
-    </div>
-    <div class="profile-menu">
-		
-	
-		
-		<c:if test="${isFriendBool == 1}">
-			<a href="<c:url value='/community/addFriend/${mem_code}'/>?mem_nick=${myFeedName.mem_nick}"
-					       onclick="return checkDelFriend('${sessionScope.loginUser}');">친구 삭제</a> 
-		</c:if>
-
-		<c:if test="${isFriendBool == 0 || isFriendBool == null}">
-		    <a href="<c:url value='/community/addFriend/${mem_code}'/>?mem_nick=${myFeedName.mem_nick}"
-		       onclick="return checkAddFriend('${sessionScope.loginUser}');">+ 친구 추가</a> <!-- 친구가 아닐 때 -->
-		</c:if>
-        
-		<a href="#">메세지</a>
-        
-		<!-- 이웃 목록 버튼 -->
-		<a href="#" onclick="fetchNeighborList('${mem_code}', '${myFeedName.mem_nick}'); return false;">이웃 목록</a>
-		
-
-	
-		
-
-	
-	
+		<div class="modal-content">
+			<span class="close-btn" onclick="closeMyNeighborListModal()">&times;</span>
+			<div id="MyneighborListContainer"></div>
+		</div>
 	</div>
-</div>
 
 
-<!-- 컨테이너 시작 -->
-<div class="container">
-    <!-- 메인 영역 -->
-    <div class="my_feed">
-        <div class="profile">
-        </div>
-        <br>
-  
-        <div class="feed-images">
-            <c:forEach items="${myFeedList}" var="myFeedList">
-		  
-			<div class="feed-item"> <!-- 이미지와 정보를 감싸는 div 추가 -->
-                    <a href="<c:url value='/community/contentView/?board_no=${myFeedList.board_no}'/>"> <!-- 이미지 클릭 시 이동할 링크 추가 -->
-                        <img src="/static/images/community_img/${myFeedList.chrepfile}" alt="">
-                    </a>
-                    <div class="feed-info"> <!-- 제목과 날짜를 감싸는 div 추가 -->
-                        <a href="<c:url value='/community/contentView/?board_no=${myFeedList.board_no}'/>" class="post-title">${myFeedList.board_title}</a> <!-- 제목 클릭 시 이동할 링크 추가 -->
-                        <span class="post-time">${fn:substring(myFeedList.board_created, 0, 10)}</span>
-                    </div>
-                </div>
-            </c:forEach>
-        </div>
-    </div>
+
+	<!-- 이벤트 이미지 -->
+	<div class="feed-image">
+		<img
+			src="<c:url value='/static/Images/communityorign_img/myfeed.jpg'/>"
+			alt="Event 1">
+	</div>
+
+	<!-- 상단 프로필 영역 -->
+	<div class="profile-section">
+		<div class="profile-info">
+			<c:choose>
+				<c:when test="${empty getpetimg.pet_img}">
+					<img src="/static/Images/pet/noPetImg.jpg" alt="프로필 이미지"
+						class="main-profile-image">
+				</c:when>
+				<c:otherwise>
+					<img src="/static/Images/pet/${getpetimg.pet_img}" alt="프로필 이미지"
+						class="main-profile-image">
+				</c:otherwise>
+			</c:choose>
+			<h2>${myFeedName.mem_nick}</h2>
+		</div>
+		<div class="profile-menu">
+
+			<c:if
+				test="${myFeedName.mem_nick eq sessionScope.loginUser.mem_nick}">
+				<a href="">내 피드</a>
+			</c:if>
+
+			<c:if
+				test="${isFriendBool == 1 && myFeedName.mem_nick ne sessionScope.loginUser.mem_nick}">
+				<a
+					href="<c:url value='/community/addFriend/${mem_code}'/>?mem_nick=${myFeedName.mem_nick}"
+					onclick="return checkDelFriend('${sessionScope.loginUser}');">친구
+					삭제</a>
+			</c:if>
+
+			<c:if
+				test="${(isFriendBool == 0 || isFriendBool == null) && myFeedName.mem_nick ne sessionScope.loginUser.mem_nick}">
+				<a
+					href="<c:url value='/community/addFriend/${mem_code}'/>?mem_nick=${myFeedName.mem_nick}"
+					onclick="return checkAddFriend('${sessionScope.loginUser}');">+
+					친구 추가</a>
+				<!-- 친구가 아닐 때 -->
+			</c:if>
+
+			<a href="#">메세지</a>
+
+			<!-- 이웃 목록 버튼 -->
+			<a href="#"
+				onclick="fetchNeighborList('${mem_code}', '${myFeedName.mem_nick}'); return false;">이웃
+				목록</a>
+
+
+
+		</div>
+	</div>
+
+
+	<!-- 컨테이너 시작 -->
+	<div class="container">
+		<!-- 메인 영역 -->
+		<div class="my_feed">
+			<div class="profile"></div>
+			<br>
+
+			<div class="feed-images">
+				<c:forEach items="${myFeedList}" var="myFeedList">
+
+					<div class="feed-item">
+						<!-- 이미지와 정보를 감싸는 div 추가 -->
+						<a
+							href="<c:url value='/community/contentView/?board_no=${myFeedList.board_no}'/>">
+							<!-- 이미지 클릭 시 이동할 링크 추가 --> <img
+							src="/static/images/community_img/${myFeedList.chrepfile}" alt="">
+						</a>
+						<div class="feed-info">
+							<!-- 제목과 날짜를 감싸는 div 추가 -->
+							<a
+								href="<c:url value='/community/contentView/?board_no=${myFeedList.board_no}'/>"
+								class="post-title">${myFeedList.board_title}</a>
+							<!-- 제목 클릭 시 이동할 링크 추가 -->
+							<span class="post-time">${fn:substring(myFeedList.board_created, 0, 10)}</span>
+						</div>
+					</div>
+				</c:forEach>
+			</div>
+		</div>
 
 		<!-- 메인 구성 끝 -->
 
@@ -251,7 +269,15 @@
 				<div class="profile-info">
 
 					<c:if test="${sessionScope.loginUser ne null}">
-						<img src="/static/Images/pet/${logingetpetimg.pet_img}"
+						<img
+							src="<c:choose>
+				                <c:when test="${empty logingetpetimg.pet_img}">
+				                    /static/Images/pet/noPetImg.jpg
+				                </c:when>
+				                <c:otherwise>
+				                    /static/Images/pet/${logingetpetimg.pet_img}
+				                </c:otherwise>
+				              </c:choose>"
 							alt="Profile Image" class="profile-image">
 						<span class="user-name">${sessionScope.loginUser.mem_nick}</span>
 						<a href="/mypage/logout" class="logout-button">로그아웃</a>
@@ -269,16 +295,20 @@
 
 			<ul class="sidebar-menu">
 				<c:if test="${sessionScope.loginUser ne null}">
-				<li><a href="/community/myfeed/${sessionScope.loginUser.mem_code}">내 피드</a></li>			
-				<li><a href="/community/writeView">글쓰기</a></li>						
-				<li><a href="#">내 소식</a></li>
-				<li><a href="#">내 활동</a></li>
-				<a href="#" onclick="fetchMyNeighborList('${mem_code}'); return false;">내 이웃 목록</a>
-				</c:if>	
-		
-			
-			
-				</ul>
+					<li><a
+						href="/community/myfeed/${sessionScope.loginUser.mem_code}">내
+							피드</a></li>
+					<li><a href="/community/writeView">글쓰기</a></li>
+					<li><a href="#">내 소식</a></li>
+					<li><a href="#">내 활동</a></li>
+					<a href="#"
+						onclick="fetchMyNeighborList('${mem_code}'); return false;">내
+						이웃 목록</a>
+				</c:if>
+
+
+
+			</ul>
 			<div class="sidebar-notice">
 				<h3>소식상자</h3>
 				<p>새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다 새로운 소식이 없습니다새로운 소식이

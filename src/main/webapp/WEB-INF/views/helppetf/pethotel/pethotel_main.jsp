@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>펫호텔</title>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
+<script src="https://kit.fontawesome.com/6c32a5aaaa.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/static/css/helppetf/pethotel_main.css" />
 </head>
 <body>
@@ -64,7 +65,7 @@
 	
 	        <!-- 하단 버튼 -->
 	        <div class="bottom-section">
-	            <a href="#" id="right" class="button">예약하러 가기</a>
+	            <a href="#" id="right-2" class="button">예약하러 가기</a>
 	        </div>
 	    	<div class="back_link">
 	          	<a href="#" class="back-link">&lt; 돌아가기</a>
@@ -77,7 +78,7 @@
 		<div class="container" id="c-ontainer">
 			<!-- 상단 버튼 -->
 			<div class="top-buttons">
-				<button class="back-link">돌아가기</button>
+				<button class="back-link-reserve">돌아가기</button>
 				<button class="register-button">예약 등록</button>
 			</div>
 	
@@ -89,15 +90,14 @@
 				</p>
 				<label for="start-date">예약 기간</label>
 				<div class="date-selection">
-					<form action="#" id="start-end-date">
-						<input name="start-date" type="date" id="start-date" class="date-input"  max="9999-12-31" required> 부터 
+					<div id="start-end-date">
+						<input name="start-date" type="date" id="start-date" class="date-input"  max="9999-12-31" required> 부터 &nbsp;
 						<input name="end-date" type="date" id="end-date" class="date-input" max="9999-12-31" required> 까지
-					</form>
+					</div>
 				</div>
 	
 				<!-- 등록된 동물 표시 및 추가 버튼 -->
 				<div class="pet-section">
-	
 	
 					<div class="pet-wrapper">
 						<!-- 동물 등록 -->
@@ -115,7 +115,7 @@
 					<p id="select_already">펫프렌즈에 등록해 두신 아이가 있으신가요?</p>
 					<button id="select-pet-button">아이 선택하기</button> <br />
 	
-					<label for="pet-name">이름</label> 
+					<span>이름</span>
 					<input type="text" name="pet-name" id="pet-name" placeholder="이름 입력" class="text_input" required> 
 					<br />
 					<span>동물 종류</span>
@@ -124,7 +124,7 @@
 					<input type="radio" id="pet-type2" name="pet-type" value="강아지" class="radio_button" required>
 					<label for="pet-type2">강아지</label>
 					<br />
-					<label for="pet-birth">생일</label>
+					<span>생일</span>
 					<input name="pet-birth" type="date" id="pet-birth" max="9999-12-31"> 
 					<br />
 					<span>성별</span> 
@@ -133,7 +133,7 @@
 					<input type="radio" id="pet-gender2" name="pet-gender" value="F" class="radio_button">
 					<label for="pet-gender2">F </label> 
 					<br />
-					<label for="pet-weight">체중</label> 
+					<span>체중</span>
 					<input name="pet-weight" type="text" id="pet-weight" placeholder="Kg"> 
 					<br />
 					<span>중성화</span> 
@@ -142,7 +142,8 @@
 					<input type="radio" id="pet-neutered2" name="pet-neutered" value="N" class="radio_button"> 
 					<label for="pet-neutered2">N </label> 
 					<br />
-					<label for="pet-message">전달 사항</label> <br />
+					<br />
+					<span>전달 사항</span> <br />
 					<textarea name="pet-message" id="pet-message"
 						placeholder="그 외 전달해주실 사항을 적어주세요. 먹는 약, 알레르기, 좋아하는 것, 싫어하는 것 등 많을 수록 좋아요!"></textarea>
 					<button type="button" id="save-pet">저장</button>
@@ -153,6 +154,7 @@
 	
 	<!-- 펫호텔 예약 완료 페이지 -->
 	<div id="pethotel_reserve_done" class="off">
+		<!-- 예약 완료 정보 테이블 -->
 		
 	</div>
 	
@@ -180,7 +182,7 @@
 	</div>
 	
 	<!-- 로그인이 필요합니다 팝업 -->
-	<div id="loginPopup" class="popup-overlay">
+	<div id="loginPopup" class="off">
 		<div class="popup-content-login">
 			<p>로그인이 필요해요</p>
 			<button id="loginBtn" class="popup-btn">로그인 하러가기</button>

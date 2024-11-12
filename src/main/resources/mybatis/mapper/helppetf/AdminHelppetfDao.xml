@@ -104,12 +104,14 @@
 			 MEMBER MEM 
 		<where>
 			HPHM.MEM_CODE = MEM.MEM_CODE
+			
 			<!-- 예약상태 필터 -->
 			<choose>
 				<when test="reserveType == '전체'">AND HPH_STATUS IS NOT NULL</when>
 				<when test="reserveType == '신청중'">AND HPH_STATUS = '신청중'</when>
 				<when test="reserveType == '승인'">AND HPH_STATUS = '승인'</when>
 				<when test="reserveType == '거절'">AND HPH_STATUS = '거절'</when>
+				<when test="reserveType == '취소됨'">AND HPH_STATUS = '취소됨'</when>
 			</choose>
 			
 			<!-- 기간 필터 -->

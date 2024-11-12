@@ -40,11 +40,12 @@ a:hover  {
 
 /* 핫이슈 */
 .hot-topics {
+   	text-align:center;
     grid-column: 1; /* 핫토픽을 첫 번째 열에 배치 */
     margin-top: 0px; /* 핫이슈 섹션 위쪽 여백 줄이기 */
     padding: 10px; /* 패딩 줄이기 */
     background: #f9f9f9;
-	border: 5px solid #ffe5ee;
+	border: 2px solid #ffe5ee;
 }
 
 
@@ -62,8 +63,9 @@ a:hover  {
 .hot-topics h3 {
     color: #ff4081; /* 원하는 색상으로 변경 */
     font-size: 24px; /* 글씨 크기 조정 */
-    margin: 10px;; /* 여백 제거 */
-	margin-left: 6.5%;
+ 
+	margin-top: 10px;
+	
 
 }
 
@@ -121,17 +123,20 @@ a:hover  {
 	margin: 10px; /* 기본 마진 */
 }
 
-.container-box {
+.container-box {  
+
    	grid-column: 1;
     background: white; /* 배경색 설정 */
     padding: 0px; /* 내부 여백 설정 */
     margin: 0; /* 상하 여백 설정 */
-    border-radius: 5px; /* 모서리 둥글게 설정 */
+    border-radius: 2px; /* 모서리 둥글게 설정 */
     border: 3px solid #ff4081; /* 테두리 색 설정 (원하는 색상으로 변경) */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
 }
 
 .container-header {
+    display: flex;
+    align-items: center;
     background-color: #ff4081; /* 상단 배경색 (원하는 색상으로 변경) */
     color: white; /* 글씨 색상 */
     padding: 0; /* 상단의 여백 */
@@ -151,42 +156,62 @@ a:hover  {
 }
 
 
+/* 스토리 컨테이너 수평 정렬 */
 .story-container {
-	display: flex;
-	  flex-direction: column;
-	  align-items: flex-start; /* 기본적으로 왼쪽 정렬 */
-	  justify-content: flex-start;
-
-	}
-
-.story-item {
     display: flex;
-    flex-direction: column; /* 세로로 정렬 */
-    align-items: center; /* 수평 중앙 정렬 */
-    justify-content: center; /* 수직 중앙 정렬 */
-    text-align: center; /* 텍스트를 중앙 정렬 */
+    align-items: flex-start; /* 왼쪽 정렬 유지 */
+    justify-content: flex-start;
+}
+
+.story-list {
+    display: flex;
+    flex-wrap: wrap; /* 여러 줄로 나누어지도록 설정 */
+    gap: 10px; /* 아이템 간 간격 */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    align-items: center; /* 아이템을 수평 중앙 정렬 */
+    justify-content: flex-start; /* 아이템들을 왼쪽으로 정렬 */
+}
+
+/* 각 스토리 아이템을 수평으로 정렬 */
+.story-item {
+      display: inline-flex; /* 수평 정렬을 위해 inline-flex 사용 */
+    flex-direction: row; /* 이미지와 텍스트를 가로로 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 세로로 중앙 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
     margin: 13px;
-    width: 90px; /* 컨테이너 크기 설정 */	
+    width: auto; /* 자동 너비로 설정 */
 }
 
 .story-image {
-    width: 70px; /* 이미지 너비 */
-    height: 70px; /* 이미지 높이 */
-    border-radius: 50%; /* 원형으로 만들기 */
-    object-fit: cover; /* 이미지를 비율에 맞게 잘라서 꽉 차게 */
-    border: 5px solid #ff4081; /* 테두리 색상 */
+    width: 70px; /* 이미지 크기 */
+    height: 70px; /* 이미지 크기 */
+    border-radius: 50%; /* 원형으로 이미지 만들기 */
+    object-fit: cover; /* 비율 맞게 자르기 */
+    border: 2px solid #ff4081; /* 테두리 색상 */
     display: block; /* 블록 요소로 설정 */
-    margin: 0; /* 이미지 주변 여백을 제거 */
-    padding: 0; /* 내부 패딩 제거 */
+    margin-right: 8px; /* 이미지와 텍스트 간의 간격 */
 }
 
+/* 텍스트 스타일 */
+.story-item p {
+    margin: 0; /* 이미지와 텍스트 간의 여백 제거 */
+    font-size: 14px; /* 글씨 크기 */
+    font-weight: bold; /* 글씨 두껍게 */
+    line-height: 1.2; /* 줄 간격 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+/* 링크 스타일 */
 .story-item a {
     text-decoration: none; /* 링크 밑줄 제거 */
-	color: #333;
+    color: #333;
 }
 
 .story-item a:hover {
-    color: #ff4081; /* 호버 시 텍스트 색상 변경 */
+    color: #ff4081; /* 호버 시 색상 변경 */
 }
 
 .story-item p {
@@ -196,11 +221,6 @@ a:hover  {
     line-height: 1.2; /* 텍스트 줄 간격 */
     text-align: center; /* 텍스트를 중앙 정렬 */
 	
-}
-
-.container-header {
-    display: flex;
-    align-items: center;
 }
 
 .header-text {
@@ -252,7 +272,7 @@ a:hover  {
     background: #f9f9f9;
     padding: 20px;
     margin-bottom: 0;
-	border: 5px solid #ffe5ee;	
+	border: 2px solid #ffe5ee;	
 }
 
 .categories ul {
@@ -400,6 +420,7 @@ a:hover  {
     font-weight: normal !important; /* 굵기 조정 */
     font-size: 14px !important; /* 크기 조정 */
     color: black !important; /* 색상 조정 */
+  	margin-top: 10px;
 }
 
 
@@ -421,12 +442,11 @@ a:hover  {
     position: absolute; /* 절대 위치 설정 */
     top: 182px; /* 헤더의 높이에 따라 조정 */
     right: 180px; /* 오른쪽 정렬 */
-    width: 250px; /* 화면 비율에 따라 사이드바 너비를 설정 */
+    width: 280px; /* 화면 비율에 따라 사이드바 너비를 설정 */
     background-color: #fff; /* 배경색 */
     padding: 20px; /* 내부 여백 */
-    border: 1px solid #ccc; /* 테두리 */
     border-radius: 5px; /* 모서리 둥글게 */
-    border: 5px solid #ffe5ee;
+    border: 2px solid #ffe5ee;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }
 
@@ -452,7 +472,7 @@ a:hover  {
     display: flex !important;
     align-items: center !important; /* 수직 중앙 정렬 */
     justify-content: center !important; /* 수평 중앙 정렬 */
-    width: 320px !important;
+    width: 250px !important;
     height: 50px !important;
     margin: auto !important;
     text-align: center !important; /* 텍스트 가운데 정렬 */

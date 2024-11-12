@@ -1,7 +1,5 @@
 package com.tech.petfriends.admin.service;
 
-import java.util.Map;
-
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -9,21 +7,19 @@ import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 
 @Service
-public class AdminPetteacherWriteService implements AdminServiceInterface {
+public class AdminPetteacherWriteService implements AdminExecuteModel {
 
 	private AdminPageDao adminDao;
+	
+	private PetteacherDto dto;
 
-	public AdminPetteacherWriteService(AdminPageDao adminDao) {
+	public AdminPetteacherWriteService(AdminPageDao adminDao, PetteacherDto dto) {
 		this.adminDao = adminDao;
+		this.dto = dto;
 	}
 
 	@Override
 	public void execute(Model model) {
-		// model을 Map으로 변환
-		Map<String, Object> map = model.asMap();
-		
-		// RequestBody로 전달받은 DTO 추출
-		PetteacherDto dto = (PetteacherDto) map.get("dto");
 		
 		String hpt_title = dto.getHpt_title();
 		String hpt_exp = dto.getHpt_exp();

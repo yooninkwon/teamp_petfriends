@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tech.petfriends.admin.mapper.AdminSalesDao">
+	
+	<select id="todaySales" 
+		resultType="com.tech.petfriends.admin.dto.SalesDto">
+		SELECT 
+		    OS.OS_NAME,
+		    COUNT(DISTINCT OS.O_CODE) AS count,  
+		    SUM(CASE
+		            WHEN OS.OS_NAME = '결제완료' THEN O.O_AMOUNT
+		            WHEN OS.OS_NAME = '주문취소' THEN O.O_AMOUNT
+		            ELSE 0
+		        END) AS amount  
+		FROM 
+		    ORDER_STATUS OS
+		INNER JOIN 
+		    "ORDER" O ON OS.O_CODE = O.O_CODE 
+		WHERE 
+		    OS.OS_NAME IN ('결제완료', '주문취소')
+		    AND TRUNC(OS.OS_REGDATE) = TRUNC(SYSDATE) 
+		GROUP BY 
+		    OS.OS_NAME
+		ORDER BY 
+		    OS.OS_NAME
+	</select>
+
+	
+</mapper>

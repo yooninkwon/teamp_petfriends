@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.tech.petfriends.notice.dao.NoticeDao;
 
 @Service
-public class AdminNoticeWriteService implements AdminServiceInterface {
+public class AdminNoticeWriteService implements AdminExecuteModel {
 	
     private final NoticeDao noticeDao;
 
