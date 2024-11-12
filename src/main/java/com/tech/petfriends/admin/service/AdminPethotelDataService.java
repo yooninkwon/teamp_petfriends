@@ -1,7 +1,6 @@
 package com.tech.petfriends.admin.service;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,7 +9,7 @@ import org.springframework.ui.Model;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 
-public class AdminPethotelDataService implements AdminServiceInterface {
+public class AdminPethotelDataService implements AdminExecuteModelRequest {
 
 	private AdminPageDao adminDao;
 
@@ -19,11 +18,7 @@ public class AdminPethotelDataService implements AdminServiceInterface {
 	}
 
 	@Override
-	public void execute(Model model) {
-		// model을 Map으로 변환
-		Map<String, Object> map = model.asMap();
-		// request 추출
-		HttpServletRequest request = (HttpServletRequest) map.get("request");
+	public void execute(Model model, HttpServletRequest request) {
 
 		String reserveType = request.getParameter("reserveType");
 		String startDate = request.getParameter("startDate");

@@ -11,7 +11,7 @@ import com.tech.petfriends.admin.dto.ACommunityDto;
 import com.tech.petfriends.admin.mapper.AdminCommunityDao;
 
 
-public class AdminCommunityReportService implements AdminServiceInterface {
+public class AdminCommunityReportService implements AdminExecuteModel {
 
 	private AdminCommunityDao admincommunityDao;
 

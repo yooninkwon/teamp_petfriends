@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import com.tech.petfriends.admin.dto.SalesDto;
 import com.tech.petfriends.admin.mapper.AdminSalesDao;
 
-public class AdminSalesService implements AdminServiceInterface {
+public class AdminSalesService implements AdminExecuteModel {
 
 	private AdminSalesDao adminSalesDao ;
 

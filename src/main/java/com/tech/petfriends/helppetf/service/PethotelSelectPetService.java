@@ -1,7 +1,6 @@
 package com.tech.petfriends.helppetf.service;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,7 +10,7 @@ import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 
-public class PethotelSelectPetService implements HelppetfServiceInter {
+public class PethotelSelectPetService implements HelppetfExecuteModelSession {
 	
 	HelpPetfDao helpDao;
 	
@@ -20,12 +19,7 @@ public class PethotelSelectPetService implements HelppetfServiceInter {
 	}
 	
 	@Override
-	public void execute(Model model) {	
-		// model을 Map으로 변환
-		Map<String, Object> map = model.asMap();
-		
-		// 세션을 추출
-		HttpSession session = (HttpSession) map.get("session");
+	public void execute(Model model, HttpSession session) {	
 		
 		// 세션에서 로그인 정보를 추출
 		MemberLoginDto loginDto = (MemberLoginDto) session.getAttribute("loginUser");

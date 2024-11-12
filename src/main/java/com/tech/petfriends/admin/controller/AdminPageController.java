@@ -29,16 +29,15 @@ import com.tech.petfriends.admin.mapper.AdminProductDao;
 import com.tech.petfriends.admin.mapper.AdminSalesDao;
 import com.tech.petfriends.admin.mapper.CouponDao;
 import com.tech.petfriends.admin.service.AdminEventEditService;
+import com.tech.petfriends.admin.service.AdminExecuteModel;
 import com.tech.petfriends.admin.service.AdminNoticeEditService;
 import com.tech.petfriends.admin.service.AdminNoticeWriteService;
-import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminProductAddService;
 import com.tech.petfriends.admin.service.AdminProductDetailService;
 import com.tech.petfriends.admin.service.AdminProductListService;
 import com.tech.petfriends.admin.service.AdminProductModifyService;
 import com.tech.petfriends.admin.service.AdminSalesDetailService;
 import com.tech.petfriends.admin.service.AdminSalesService;
-import com.tech.petfriends.admin.service.AdminServiceInterface;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.notice.dao.NoticeDao;
@@ -67,21 +66,13 @@ public class AdminPageController {
 	@Autowired
 	MemberMapper memberDao;
 
-	AdminServiceInterface adminServInter;
+	AdminExecuteModel adminExcuteM;
+	
 
 	// 어드민 페이지 내부에서의 펫티쳐페이지로 이동
 	@GetMapping("/petteacher")
 	public String petteacherAdminPage(Model model) {
 		return "admin/petteacher";
-	}
-
-	// 어드민-펫티쳐 상세페이지
-	@GetMapping("/petteacher_admin_detail")
-	public String petteacherAdminDetail(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		adminServInter = new AdminPetteacherDetailService(adminDao);
-		adminServInter.execute(model);
-		return "admin/petteacher_detail";
 	}
 
 	@GetMapping("/home")
@@ -183,8 +174,8 @@ public class AdminPageController {
 	public List<ProductListDto> productList(@RequestBody Map<String, Object> data,Model model) {
 		model.addAllAttributes(data);
 		
-		adminServInter = new AdminProductListService(adminProductDao);
-		adminServInter.execute(model);
+		adminExcuteM = new AdminProductListService(adminProductDao);
+		adminExcuteM.execute(model);
 		
 		@SuppressWarnings("unchecked")
 		List<ProductListDto> productList = (List<ProductListDto>) model.getAttribute("productList");
@@ -208,8 +199,8 @@ public class AdminPageController {
 	    model.addAttribute("desImages", desImages);
 	    model.addAttribute("options", options);
 		
-		adminServInter = new AdminProductAddService(adminProductDao);
-		adminServInter.execute(model);
+		adminExcuteM = new AdminProductAddService(adminProductDao);
+		adminExcuteM.execute(model);
 		
 	}
 	
@@ -220,8 +211,8 @@ public class AdminPageController {
 		String proCode = request.getParameter("proCode");
 		model.addAttribute("proCode",proCode);
 		
-		adminServInter = new AdminProductDetailService(adminProductDao);
-		adminServInter.execute(model);
+		adminExcuteM = new AdminProductDetailService(adminProductDao);
+		adminExcuteM.execute(model);
 		
 		Map<String, Object> data = new HashMap<>();
 		data.put("pro", model.getAttribute("pro"));
@@ -253,8 +244,8 @@ public class AdminPageController {
 		    model.addAttribute("mainImagesPath", mainImagesPath);
 		    model.addAttribute("desImagesPath", desImagesPath);
 			
-			adminServInter = new AdminProductModifyService(adminProductDao);
-			adminServInter.execute(model);
+			adminExcuteM = new AdminProductModifyService(adminProductDao);
+			adminExcuteM.execute(model);
 			
 		}
 	
@@ -406,8 +397,8 @@ public class AdminPageController {
 	@GetMapping("/sales")
 	public String sales(Model model) {
 		
-		adminServInter = new AdminSalesService(adminSalesDao);
-		adminServInter.execute(model);
+		adminExcuteM = new AdminSalesService(adminSalesDao);
+		adminExcuteM.execute(model);
 		
 		return "admin/sales";
 	}
