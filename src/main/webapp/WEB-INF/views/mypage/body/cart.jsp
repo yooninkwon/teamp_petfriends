@@ -64,7 +64,9 @@
 		                    	<input type="checkbox" name="select-item" class="select-item" checked>
 		                    </td>
 		                    <td>
+			                    <a href="/product/productDetail?code=${item.pro_code}" class="product-link">
 		                    	<img src="/static/Images/ProductImg/MainImg/${item.main_img1}" alt="${item.pro_name}" class="product-image" style="margin: 0;">
+			                    </a>
 		                    </td>
 		                    <td style="text-align: left;">
 		                        <div class="pro-name">${item.pro_name}</div>
