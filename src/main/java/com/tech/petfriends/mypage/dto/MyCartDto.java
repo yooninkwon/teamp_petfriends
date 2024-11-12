@@ -15,4 +15,5 @@ public class MyCartDto {
 	private int cart_cnt;
 	private int proopt_stock;
 	private String cart_code;
+	private String o_code;
 }

@@ -286,7 +286,6 @@ $(document).ready(function() {
                 status: $('input[name="issue-filter"]:checked').map(function() { return $(this).val(); }).get().join(','),
                 searchOrder: $('#search-order').val(),
                 startDate: $('#start-date').val(),
-                startDate: $('#start-date').val(),
                 endDate: $('#end-date').val(),
                 memberCode: $('#search-member-code').val(),
                 couponCode: $('#search-coupon-code').val(),

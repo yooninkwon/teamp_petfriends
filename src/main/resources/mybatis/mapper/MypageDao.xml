@@ -25,13 +25,15 @@
 		FROM MEMBER_PET
 	</select>
 	
+	<!-- 회원가입시 펫등록 -->
 	<insert id="insertMyPet" parameterType="com.tech.petfriends.mypage.dto.MyPetDto">
 		INSERT INTO MEMBER_PET (PET_CODE, MEM_CODE, PET_TYPE, PET_NAME, PET_IMG, PET_BREED,
 		PET_BIRTH, PET_GENDER, PET_WEIGHT, PET_NEUT, PET_FORM, PET_CARE, PET_ALLERGY, PET_MAIN)
 		VALUES (#{pet_code}, #{mem_code}, #{pet_type}, #{pet_name}, #{pet_img}, #{pet_breed}, #{pet_birth}, #{pet_gender},
 		#{pet_weight}, #{pet_neut}, #{pet_form}, #{pet_care}, #{pet_allergy}, #{pet_main})
 	</insert>
-
+	
+	<!-- 내새꾸 -->
     <select id="getPetsByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyPetDto">
 		SELECT *
 		FROM MEMBER_PET P
@@ -90,6 +92,7 @@
 	    WHERE PET_CODE=#{petCode}
 	</delete>
 	
+	<!-- 쿠폰 -->
 	<select id="getAllCoupon" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT *
 		FROM COUPON
@@ -120,6 +123,7 @@
 		VALUES(#{param1},#{param2},#{param3},SYSDATE,NULL,NULL)
 	</insert>
 	
+	<!-- 내 정보 변경 -->
 	<select id="getAddrByMemberCode" resultType="com.tech.petfriends.login.dto.MemberAddressDto">
 		SELECT *
 		FROM ADDRESS
@@ -164,6 +168,7 @@
 		WHERE MEM_CODE = #{mem_code}
 	</update>
 	
+	<!-- 장바구니 -->
 	<select id="getCartByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyCartDto">
 		SELECT PI.MAIN_IMG1,
 		       P.PRO_NAME,
@@ -173,19 +178,20 @@
 		       PO.PROOPT_FINALPRICE,
 		       MC.CART_CNT,
 		       PO.PROOPT_STOCK,
-		       MC.CART_CODE
+		       MC.CART_CODE,
+		       MC.O_CODE
 		FROM PRODUCT_CART MC
 		LEFT JOIN PRODUCT_IMAGE PI ON MC.PRO_CODE = PI.PRO_CODE
 		LEFT JOIN PRODUCT P ON MC.PRO_CODE = P.PRO_CODE
 		LEFT JOIN PRODUCT_OPTION PO ON MC.PROOPT_CODE = PO.PROOPT_CODE
 		WHERE MC.MEM_CODE = #{mem_code} AND P.PRO_ONOFF = '판매' AND MC.O_CODE IS NULL
-		GROUP BY MC.CART_REGDATE, PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_PRICE, P.PRO_DISCOUNT, PO.PROOPT_FINALPRICE, MC.CART_CNT, PO.PROOPT_STOCK, MC.CART_CODE
+		GROUP BY MC.CART_REGDATE, PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_PRICE, P.PRO_DISCOUNT, PO.PROOPT_FINALPRICE, MC.CART_CNT, PO.PROOPT_STOCK, MC.CART_CODE, MC.O_CODE
 		ORDER BY MC.CART_REGDATE
 	</select>
 	
 	<delete id="deleteAllCartItems">
 		DELETE FROM PRODUCT_CART
-		WHERE MEM_CODE = #{mem_code}
+		WHERE MEM_CODE = #{mem_code} AND O_CODE IS NULL
 	</delete>
 	
 	<update id="updateCartQuantity">
@@ -210,41 +216,6 @@
 		LEFT JOIN PRODUCT_OPTION PO ON MC.PROOPT_CODE = PO.PROOPT_CODE
 		WHERE MC.CART_CODE = #{cartCode}
 		GROUP BY MC.CART_REGDATE, PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_PRICE, P.PRO_DISCOUNT, PO.PROOPT_FINALPRICE, MC.CART_CNT, PO.PROOPT_STOCK, MC.CART_CODE
-	</select>
-	
-	<update id="insertOrderCode">
-    	UPDATE PRODUCT_CART
-		SET O_CODE = #{o_code}
-		WHERE CART_CODE = #{cartCode}
-	</update>
-	
-	<insert id="insertOrder" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
-	    INSERT INTO "ORDER"
-	    VALUES (#{o_code}, #{mc_code}, #{mem_code}, #{o_resiver}, #{o_resiver_tell}, #{o_entry}, #{o_entry_detail}, #{o_memo}, #{o_point}, #{o_payment}, #{o_amount}, #{o_saving}, SYSDATE + INTERVAL '3' DAY, NULL, NULL)
-	</insert>
-	    
-	<insert id="insertOrderStatus">
-	    INSERT INTO ORDER_STATUS
-	    VALUES (#{o_code}, '결제완료', SYSDATE)
-	</insert>
-
-	<update id="updateCouponByOrder">
-    	UPDATE MEMBER_COUPON_BRIDGE
-	    SET MC_USE = SYSDATE
-	    WHERE MC_CODE = #{mc_code}
-	</update>
-
-	<update id="updateAmountByOrder" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
-	    UPDATE MEMBER
-	    SET MEM_POINT = MEM_POINT - #{o_point} + #{o_saving},
-	    	MEM_PAY_AMOUNT = o_amount
-	    WHERE MEM_CODE = #{mem_code}
-	</update>
-	
-	<select id="getOrderByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyOrderDto">
-		SELECT *
-		FROM "ORDER"
-		WHERE MEM_CODE = #{mem_code}
 	</select>
 	
 	<delete id="deleteCartItem">
@@ -273,6 +244,64 @@
 	    GROUP BY MC.CART_REGDATE, PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_PRICE, P.PRO_DISCOUNT, PO.PROOPT_FINALPRICE, MC.CART_CNT, PO.PROOPT_STOCK, MC.CART_CODE
 	</select>
 	
+	<!-- 결제 -->
+	<update id="insertOrderCode">
+    	UPDATE PRODUCT_CART
+		SET O_CODE = #{o_code}
+		WHERE CART_CODE = #{cartCode}
+	</update>
+	
+	<insert id="insertOrder" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
+	    INSERT INTO "ORDER"
+	    VALUES (#{o_code}, #{mem_code}, #{o_addr}, #{o_resiver}, #{o_resiver_tell}, #{o_entry}, #{o_entry_detail}, #{o_memo}, #{mc_code}, #{o_coupon}, #{o_point}, #{o_payment}, #{o_amount}, #{o_saving}, SYSDATE + INTERVAL '3' DAY, NULL, NULL)
+	</insert>
+	    
+	<insert id="insertOrderStatus">
+	    INSERT INTO ORDER_STATUS
+	    VALUES (#{o_code}, '결제완료', SYSDATE)
+	</insert>
+
+	<update id="updateCouponByOrder">
+    	UPDATE MEMBER_COUPON_BRIDGE
+	    SET MC_USE = SYSDATE
+	    WHERE MC_CODE = #{mc_code}
+	</update>
+
+	<update id="updateAmountByOrder" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
+	    UPDATE MEMBER
+	    SET MEM_POINT = MEM_POINT - #{o_point} + #{o_saving}
+	    WHERE MEM_CODE = #{mem_code}
+	</update>
+	
+	<!-- 주문내역 -->
+	<select id="getOrderByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyOrderDto">
+		SELECT *
+		FROM "ORDER"
+		WHERE MEM_CODE = #{mem_code}
+	</select>
+	
+	<select id="getStatusByOrderCode" resultType="com.tech.petfriends.admin.dto.OrderStatusDto">
+		SELECT *
+		FROM ORDER_STATUS
+		WHERE O_CODE = #{o_code}
+	</select>
+	
+	<select id="getCartByOrderCode" resultType="com.tech.petfriends.mypage.dto.MyCartDto">
+		SELECT PI.MAIN_IMG1,
+		       P.PRO_NAME,
+		       PO.PROOPT_NAME,
+		       PO.PROOPT_FINALPRICE,
+		       MC.CART_CNT,
+		       MC.O_CODE
+		FROM PRODUCT_CART MC
+		LEFT JOIN PRODUCT_IMAGE PI ON MC.PRO_CODE = PI.PRO_CODE
+		LEFT JOIN PRODUCT P ON MC.PRO_CODE = P.PRO_CODE
+		LEFT JOIN PRODUCT_OPTION PO ON MC.PROOPT_CODE = PO.PROOPT_CODE
+		WHERE MC.O_CODE = #{o_code}
+		GROUP BY PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_FINALPRICE, MC.CART_CNT, MC.O_CODE
+	</select>
+	
+	<!-- 즐겨찾는 상품 -->
 	<select id="getAllWishInfoByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyWishDto">
 		SELECT P.PRO_CODE,
 			   P.PRO_NAME,

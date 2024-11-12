@@ -179,7 +179,7 @@ function updateSummary(discountPoint) {
 function requestPay(buyerEmail, buyerName) {
     // 데이터 추출
     const cartCodes = Array.from(document.querySelectorAll('.cart-code')).map(input => input.value);
-	const memCpCode = document.getElementById("memCpCode").value;
+    const addr = document.getElementById("addr").textContent;
     const resiver = document.getElementById("resiver-name").value;
     const resiverTell = document.getElementById("resiver-tell").value;
 	
@@ -188,7 +188,9 @@ function requestPay(buyerEmail, buyerName) {
     const [entry, entryDetail] = entryMethod.split(' / ');
 	
     const memo = document.getElementById("delivMemo").value;
-	const point = parseInt(document.getElementById("used-point").value) || 0;
+	const memCpCode = document.getElementById("memCpCode").value;
+	const coupon = parseInt(document.getElementById("discount_coupon").textContent.replace(/[^0-9]/g, '')) || 0;
+	const point = parseInt(document.getElementById("discount_point").textContent.replace(/[^0-9]/g, '')) || 0;
 	const amount = parseInt(document.getElementById("final_price").textContent.replace(/[^0-9]/g, ''));
 	const saving = parseInt(document.getElementById("final_point").textContent.replace(/[^0-9]/g, ''));
 	
@@ -200,12 +202,14 @@ function requestPay(buyerEmail, buyerName) {
 
     // 전달할 데이터 구성
     const orderData = {
-        mc_code: memCpCode,
+        o_addr: addr,
         o_resiver: resiver,
         o_resiver_tell: resiverTell,
         o_entry: entry,
         o_entry_detail: entryDetail,
         o_memo: memo,
+        mc_code: memCpCode,
+        o_coupon: coupon,
         o_point: point,
 		o_payment : '',
         o_amount: amount,
