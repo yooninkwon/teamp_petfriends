@@ -151,6 +151,7 @@
 	<!-- 장바구니 -->
 	<select id="getCartByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyCartDto">
 		SELECT PI.MAIN_IMG1,
+			   MC.PRO_CODE,
 		       P.PRO_NAME,
 		       PO.PROOPT_NAME,
 		       PO.PROOPT_PRICE,
@@ -165,7 +166,7 @@
 		LEFT JOIN PRODUCT P ON MC.PRO_CODE = P.PRO_CODE
 		LEFT JOIN PRODUCT_OPTION PO ON MC.PROOPT_CODE = PO.PROOPT_CODE
 		WHERE MC.MEM_CODE = #{mem_code} AND P.PRO_ONOFF = '판매' AND MC.O_CODE IS NULL
-		GROUP BY MC.CART_REGDATE, PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_PRICE, P.PRO_DISCOUNT, PO.PROOPT_FINALPRICE, MC.CART_CNT, PO.PROOPT_STOCK, MC.CART_CODE, MC.O_CODE
+		GROUP BY MC.CART_REGDATE, MC.PRO_CODE, PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_PRICE, P.PRO_DISCOUNT, PO.PROOPT_FINALPRICE, MC.CART_CNT, PO.PROOPT_STOCK, MC.CART_CODE, MC.O_CODE
 		ORDER BY MC.CART_REGDATE
 	</select>
 	
@@ -268,6 +269,7 @@
 	
 	<select id="getCartByOrderCode" resultType="com.tech.petfriends.mypage.dto.MyCartDto">
 		SELECT PI.MAIN_IMG1,
+			   MC.PRO_CODE,
 		       P.PRO_NAME,
 		       PO.PROOPT_NAME,
 		       PO.PROOPT_FINALPRICE,
@@ -278,8 +280,26 @@
 		LEFT JOIN PRODUCT P ON MC.PRO_CODE = P.PRO_CODE
 		LEFT JOIN PRODUCT_OPTION PO ON MC.PROOPT_CODE = PO.PROOPT_CODE
 		WHERE MC.O_CODE = #{o_code}
-		GROUP BY PI.MAIN_IMG1, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_FINALPRICE, MC.CART_CNT, MC.O_CODE
+		GROUP BY PI.MAIN_IMG1, MC.PRO_CODE, P.PRO_NAME, PO.PROOPT_NAME, PO.PROOPT_FINALPRICE, MC.CART_CNT, MC.O_CODE
 	</select>
+	
+	<select id="getOrderByOrderCode" resultType="com.tech.petfriends.mypage.dto.MyOrderDto">
+		SELECT *
+		FROM "ORDER"
+		WHERE O_CODE = #{o_code}
+	</select>
+
+	<update id="updateCancelByOrderCode">
+    	UPDATE "ORDER"
+	    SET O_CANCEL = #{o_cancel},
+	    	O_CANCEL_DETAIL = #{o_cancel_detail}
+	    WHERE O_CODE = #{o_code}
+	</update>
+	    
+	<insert id="insertCancelStatus">
+	    INSERT INTO ORDER_STATUS
+	    VALUES (#{o_code}, '주문취소', SYSDATE)
+	</insert>
 	
 	<!-- 즐겨찾는 상품 -->
 	<select id="getAllWishInfoByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyWishDto">

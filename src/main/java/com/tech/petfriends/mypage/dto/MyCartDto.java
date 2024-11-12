@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class MyCartDto {
 	private String main_img1;
+	private String pro_code;
 	private String pro_name;
 	private String proopt_name;
 	private int proopt_price;

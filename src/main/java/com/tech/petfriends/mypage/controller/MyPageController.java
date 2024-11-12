@@ -2,6 +2,7 @@ package com.tech.petfriends.mypage.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.http.HttpRequest;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -561,12 +562,12 @@ public class MyPageController {
 	
 	// 결제
 	@GetMapping("/payment/delivEnterMethod")
-	public String delivEnterMethod(Model model) {
+	public String delivEnterMethod() {
 		return "/mypage/popup/delivEnterMethod";
 	}
 	
 	@GetMapping("/payment/delivMemo")
-	public String delivMemo(Model model) {
+	public String delivMemo() {
 		return "/mypage/popup/delivMemo";
 	}
 	
@@ -633,6 +634,54 @@ public class MyPageController {
 	    response.put("items", items);
 
 	    return response;
+	}
+	
+	@GetMapping("/order/orderDetail")
+	public String orderDetail(Model model, HttpServletRequest request) {
+		
+		MyOrderDto order = mypageDao.getOrderByOrderCode(request.getParameter("orderCode"));
+		ArrayList<OrderStatusDto> orderStatuses = mypageDao.getStatusByOrderCode(request.getParameter("orderCode"));
+		ArrayList<MyCartDto> items = mypageDao.getCartByOrderCode(request.getParameter("orderCode"));
+		
+		model.addAttribute("order", order);
+		model.addAttribute("orderStatuses", orderStatuses);
+		model.addAttribute("items", items);
+		
+		return "mypage/order/orderDetail";
+	}
+	
+	@GetMapping("/order/delivDetail")
+	public String delivDetail(Model model, HttpServletRequest request) {
+		
+		MyOrderDto order = mypageDao.getOrderByOrderCode(request.getParameter("orderCode"));
+		ArrayList<OrderStatusDto> orderStatuses = mypageDao.getStatusByOrderCode(request.getParameter("orderCode"));
+		
+		model.addAttribute("order", order);
+		model.addAttribute("orderStatuses", orderStatuses);
+		
+		return "mypage/order/delivDetail";
+	}
+	
+	@GetMapping("/order/cancelRequest")
+	public String cancelRequest(Model model, HttpServletRequest request) {
+		
+		model.addAttribute("orderCode", request.getParameter("orderCode"));
+		
+		return "/mypage/popup/cancelRequest";
+	}
+	
+	@Transactional
+	@PostMapping("/order/cancel")
+	public String cancelOrder(HttpServletRequest request) {
+
+	    String o_code = request.getParameter("orderCode");
+	    String o_cancel = request.getParameter("o_cancel");
+	    String o_cancel_detail = request.getParameter("o_cancel_detail");
+	    
+	    mypageDao.updateCancelByOrderCode(o_code, o_cancel, o_cancel_detail);
+	    mypageDao.insertCancelStatus(o_code);
+
+	    return "redirect:/mypage/order";
 	}
 	
 	// 구매후기
