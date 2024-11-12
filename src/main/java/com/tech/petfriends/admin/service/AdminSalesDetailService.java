@@ -1,15 +1,10 @@
 package com.tech.petfriends.admin.service;
 
-import java.util.Date;
-import java.util.List;
-
 import org.springframework.ui.Model;
 
-import com.tech.petfriends.admin.dto.SalesDetailDto;
-import com.tech.petfriends.admin.dto.SalesDto;
 import com.tech.petfriends.admin.mapper.AdminSalesDao;
 
-public class AdminSalesDetailService implements AdminServiceInterface {
+public class AdminSalesDetailService implements AdminExecuteModel {
 
 	private AdminSalesDao adminSalesDao ;
 
