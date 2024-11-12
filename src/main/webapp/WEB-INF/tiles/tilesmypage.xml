@@ -48,4 +48,11 @@
 	<definition name="mypage/mypet/modify" extends="mypage_baselayout">
 		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/mypetModify.jsp" />
 	</definition>
+	
+	<definition name="mypage/order/orderDetail" extends="mypage_baselayout">
+		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/orderDetail.jsp" />
+	</definition>
+	<definition name="mypage/order/delivDetail" extends="mypage_baselayout">
+		<put-attribute name="mypage_body" value="/WEB-INF/views/mypage/body/delivDetail.jsp" />
+	</definition>
 </tiles-definitions>

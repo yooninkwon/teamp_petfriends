@@ -983,11 +983,14 @@ h2 {
     display: flex;
     justify-content: space-between;
 }
-.order-header span, a{
+.order-header span {
+    color: #9ee7ea;
+}
+.order-header a {
     color: gray;
     text-decoration: none;
 }
-.order-info{
+.order-info {
 	display: flex;
     justify-content: space-between;
     padding: 15px;
@@ -998,7 +1001,7 @@ h2 {
 }
 .order-status span{
 	font-weight: normal;
-	font-size: 18px;
+    font-size: 16px;
     color: gray;
 }
 .item {
@@ -1034,11 +1037,70 @@ h2 {
     text-align: center;
     width: 170px;
     font-size: 15px;
+    color: #ff4081;
+    border: 1px solid #ff4081;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px;
+}
+.order-actions button {
+    width: 182px;
+    font-size: 15px;
+    background-color: white;
     color: gray;
     border: 1px solid gray;
     padding: 5px;
     border-radius: 5px;
     margin: 5px;
+    cursor: pointer;
+}
+
+/* 주문상세내역 */
+.item-info {
+    border-bottom: 1px dotted #ddd;
+    padding: 15px;
+}
+.pay-info {
+    padding: 20px;
+    border-bottom: 1px dotted #ddd;
+    display: flex;
+    align-items: flex-end;
+}
+.pay-info span {
+	font-weight: bold;
+    font-size: 19px;
+}
+.info-title div {
+	margin-top: 10px;
+	color: gray;
+	font-weight: bold;
+}
+.info-content div {
+	margin: 10px 0 0 30px;
+}
+
+/* 배송조회 */
+.deliv-header {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	padding: 30px;
+	background-color: #ff4081;
+	color: #fff;
+	font-weight: bold;
+    font-size: 22px;
+    text-align: center;
+}
+.deliv-info {
+	padding: 10px;
+	display: flex;
+	justify-content: space-around;
+}
+.deliv-detail {
+	padding: 15px;
+	display: flex;
+	justify-content: space-around;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 
 /* 즐겨찾는 상품 */
