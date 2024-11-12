@@ -34,21 +34,21 @@
 				<div class="statsRow">
 					<div class="statsItem">
 						<span class="statsTitle">● 결제금액</span> 
-						<span class="statsValue" id="paymentAmount"> <fmt:formatNumber value="${result[0].amount }" pattern="#,###"></fmt:formatNumber> </span>
+						<span class="statsValue" id="paymentAmount"> <fmt:formatNumber value="${result[0].amount != null ? result[0].amount : 0}" pattern="#,###"></fmt:formatNumber> </span>
 					</div>
 					<div class="statsItem">
 						<span class="statsTitle">● 결제건수</span>
-						<span class="statsValue">${result[0].count }</span>
+						<span class="statsValue">${result[0].count != null ? result[0].count : 0}</span>
 					</div>
 				</div>
 				<div class="statsRow">
 					<div class="statsItem">
 						<span class="statsTitle">● 환불금액</span> 
-						<span class="statsValue" id="refundAmount"> <fmt:formatNumber value="${result[1].amount }" pattern="#,###"></fmt:formatNumber> </span>
+						<span class="statsValue" id="refundAmount"> <fmt:formatNumber value="${result[1].amount != null ? result[1].amount : 0}" pattern="#,###"></fmt:formatNumber> </span>
 					</div>
 					<div class="statsItem">
 						<span class="statsTitle">● 취소/반품 수</span> 
-						<span class="statsValue">${result[1].count }</span>
+						<span class="statsValue">${result[1].count != null ? result[1].count : 0}</span>
 					</div>
 				</div>
 			</div>
@@ -100,7 +100,6 @@
 			            <th>일자</th>
 			            <th>주문수</th>
 			            <th>상품수</th>
-			            <th>상품구매내역</th>
 			            <th>쿠폰(차감금액)</th>
 			            <th>포인트(차감금액)</th>
 			            <th>결제합계</th>

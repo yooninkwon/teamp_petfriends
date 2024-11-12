@@ -19,6 +19,10 @@ public class AdminSalesService implements AdminServiceInterface {
 	public void execute(Model model) {
 		
 		List<SalesDto> result = adminSalesDao.todaySales();
+		
+	
+		
+		
 		model.addAttribute("result",result);
 		
 		

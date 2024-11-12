@@ -36,6 +36,7 @@ import com.tech.petfriends.admin.service.AdminProductAddService;
 import com.tech.petfriends.admin.service.AdminProductDetailService;
 import com.tech.petfriends.admin.service.AdminProductListService;
 import com.tech.petfriends.admin.service.AdminProductModifyService;
+import com.tech.petfriends.admin.service.AdminSalesDetailService;
 import com.tech.petfriends.admin.service.AdminSalesService;
 import com.tech.petfriends.admin.service.AdminServiceInterface;
 import com.tech.petfriends.login.dto.MemberLoginDto;
@@ -404,6 +405,16 @@ public class AdminPageController {
 		adminServInter.execute(model);
 		
 		return "admin/sales";
+	}
+	
+	@PostMapping("/salesDetail")
+	@ResponseBody
+	public void salesDetail(@RequestBody Map<String, Object> data, Model model) {
+		
+		model.addAllAttributes(data);
+		adminServInter = new AdminSalesDetailService(adminSalesDao);
+		adminServInter.execute(model);
+		
 	}
 
 	@GetMapping("/customer")

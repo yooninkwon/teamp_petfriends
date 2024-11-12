@@ -31,7 +31,7 @@ $(document).ready(function() {
 
 
 	const dataValues = [paymentAmount, refundAmount, todayText2_2_total];
-	
+
 	const maxValue = Math.max(...dataValues); // 데이터에서 가장 큰 값
 	const maxY = Math.ceil(maxValue * 1.2 / 1000) * 1000; // 1000의 배수로 맞추기
 
@@ -88,7 +88,7 @@ $(document).ready(function() {
 			}
 		}
 	});
-	
+
 
 	// 현재 날짜를 'YYYY-MM' 형식으로 가져오기
 	const today = new Date();
@@ -176,62 +176,125 @@ $(document).ready(function() {
 			$('#start-month, #end-month').prop('disabled', true);
 		}
 	});
-	
-	
+
+
 	const ctxTotal = document.getElementById('totalChart').getContext('2d');
-	
+
 	const totalChart = new Chart(ctxTotal, {
-			type: 'bar',
-			data: {
-				labels: ['결제금액', '환불금액', '순매출액'],
-				datasets: [{
-					data: dataValues,
-					backgroundColor: [
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-
-					],
-					borderColor: [
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 99, 132, 1)',
-						'rgba(255, 206, 86, 1)',
-
-					],
+		type: 'bar',
+		data: {
+			labels: ['2022', '2023', '2024'],
+			datasets: [
+				{
+					label: '결제금액',
+					data: [10, 20, 30, 40],
+					backgroundColor: 'rgba(54, 162, 235, 0.2)',
+					borderColor: 'rgba(54, 162, 235, 1)',
 					borderWidth: 1,
-					barThickness: 50, // 막대의 고정 두께 설정
-				}]
-			},
-			options: {
-				responsive: true, // 기본값 (차트를 컨테이너에 맞춤)
-				maintainAspectRatio: false, // 비율 유지 해제 (부모 크기와 맞춤)
-				plugins: {
-					legend: { display: false }, // 범례를 숨김
-					datalabels: {
-						display: true, // 데이터 레이블 표시
-						color: 'black', // 레이블 색상
-						font: {
-							size: 14 // 글자 크기
-						},
-						anchor: 'end', // 레이블 위치 (끝 부분)
-						align: 'top', // 레이블의 위치 (위쪽)
-						formatter: (value) => {
-							return value.toLocaleString(); // 세 자리마다 , 추가
-						}
-					}
+					barThickness: 50 // 막대의 고정 두께 설정
 				},
-				scales: {
-					x: {
+				{
+					label: '환불금액',
+					data: [5, 10, 15, 20],
+					backgroundColor: 'rgba(255, 99, 132, 0.2)',
+					borderColor: 'rgba(255, 99, 132, 1)',
+					borderWidth: 1,
+					barThickness: 50 // 막대의 고정 두께 설정
+				},
+				{
+					label: '순매출액',
+					data: [5, 10, 15, 20],
+					backgroundColor: 'rgba(255, 206, 86, 0.2)',
+					borderColor: 'rgba(255, 206, 86, 1)',
+					borderWidth: 1,
+					barThickness: 50 // 막대의 고정 두께 설정
+				}
 
 
+
+			]
+		},
+		options: {
+			responsive: true, // 기본값 (차트를 컨테이너에 맞춤)
+			maintainAspectRatio: false, // 비율 유지 해제 (부모 크기와 맞춤)
+			plugins: {
+				legend: { display: true }, // 범례를 숨김
+				datalabels: {
+					display: true, // 데이터 레이블 표시
+					color: 'black', // 레이블 색상
+					font: {
+						size: 14 // 글자 크기
 					},
-					y: {
-						beginAtZero: true,
-						max: maxY
+					anchor: 'end', // 레이블 위치 (끝 부분)
+					align: 'top', // 레이블의 위치 (위쪽)
+					formatter: (value) => {
+						return value.toLocaleString(); // 세 자리마다 , 추가
 					}
+				}
+			},
+			scales: {
+				x: {
+
+
+				},
+				y: {
+					beginAtZero: true,
 
 				}
+
+			}
+		}
+	});
+
+
+
+	function loadSalesList() {
+		let type = $('input[name="type-filter"]:checked').val();
+		let detail = $('input[name="type-day"]:checked').val();
+		let startDay = '';
+		let endDay = '';
+
+		if (detail === '직접선택일') {
+			startDay = $('#start-day').val();
+			endDay = $('#end-day').val();
+			if (startDay === '' || endDay === '') {
+				alert(`날짜를 선택해주세요`);
+				return;
+			}
+		} else if (detail === '직접선택월') {
+			startDay = $('#start-month').val();
+			endDay = $('#end-month').val();
+			if (startDay === '' || endDay === '') {
+				alert(`날짜를 선택해주세요`);
+				return;
+			}
+		}
+
+		$.ajax({
+			url: '/admin/salesDetail',
+			method: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify({
+				type,
+				detail,
+				startDay,
+				endDay
+			}),
+			success: function(list) {
+
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching data:', error);
 			}
 		});
+	}
+
+	$('#searchBtn').on('click', function(event) {
+		loadSalesList();
+	});
+
+
+
+
 
 });
