@@ -96,8 +96,8 @@
 					<th style="width: 2%;"><input type="checkbox" name="selectAll"
 						class="selectAll" /></th>
 					<th style="width: 3%;">대분류</th>
-					<th style="width: 5%;">회원 닉네임</th>
-					<th style="width: 5%;">대표이미지</th>
+					<th style="width: 7%;">회원 닉네임</th>
+					<th style="width: 5%;">이미지</th>
 					<th style="width: 5%;">이름</th>
 					<th style="width: 10%;">견종/묘종</th>
 					<th style="width: 7%;">생일</th>

@@ -168,8 +168,8 @@ $(document).ready(function () {
                     <td><input type="checkbox" name="checkboxPet" class="pet-checkbox" value='${item.pet_code}' /></td>
                     <td>${item.pet_type}</td>
                     <td>${memberInfo.nick}</td>
-					<td>
-					    <img src="/static/Images/pet/${item.pet_img ? item.pet_img : 'noPetImg.jpg'}" alt="" style="width: 100%;" />
+					<td style="padding: 0px;">
+					    <img src="/static/Images/pet/${item.pet_img ? item.pet_img : 'noPetImg.jpg'}" alt="" style="width: 100%; height:100px" />
 					</td>
                     <td>${item.pet_name}</td>
                     <td>${item.pet_breed}</td>
@@ -259,8 +259,8 @@ $(document).ready(function () {
            },
            body: JSON.stringify({ petCodes: petCodes })
        })
-       .then(response => response.ok ? response.json() : Promise.reject('이미지 삭제 실패'))
-       .then(data => {
+       .then(response => response.ok ? response.text() : Promise.reject('이미지 삭제 실패'))
+       .then(() => {
            alert('이미지가 성공적으로 삭제되었습니다.');
            // 필요시 UI 갱신 로직 추가 (예: 펫 리스트 재로딩)
            loadPetData();

@@ -378,7 +378,7 @@ public class AdminRestController {
 	            if (petImg != null && !petImg.isEmpty()) {
 	                // 파일 경로 설정 (서버의 실제 경로를 절대 경로로 사용)
 	            	String imagesDir = new File("src/main/resources/static/Images/pet/").getAbsolutePath();
-	                File file = new File(imagesDir, petImg).getAbsoluteFile();
+	                File file = new File(imagesDir, petImg);
 	                
 	                // 파일 존재 여부 확인 및 삭제 처리
 	                if (file.exists()) {
