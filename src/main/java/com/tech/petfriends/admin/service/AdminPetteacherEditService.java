@@ -17,6 +17,7 @@ public class AdminPetteacherEditService implements AdminExecuteModelRequest {
 
 	public AdminPetteacherEditService(AdminPageDao adminDao, PetteacherDto dto) {
 		this.adminDao = adminDao;
+		this.dto = dto;
 	}
 
 	@Override

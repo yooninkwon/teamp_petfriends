@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,18 +23,29 @@ import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
 @Service
-public class AdoptionGetJson {
-
+public class AdoptionGetJson implements HelppetfExecuteModelRequest{
+	
 	// WebClient는 비동기적으로 HTTP 요청을 보내기 위해 사용되는 스프링 WebFlux의 클라이언트이다.
 	private final WebClient webClient;
 
-	@Autowired // api key 주입
 	ApikeyConfig apikeyConfig;
 
-	public AdoptionGetJson(final WebClient webClient) {
+	public AdoptionGetJson(ApikeyConfig apikeyConfig, WebClient webClient) {
+		this.apikeyConfig = apikeyConfig;
 		this.webClient = webClient;
 	}
-
+	
+	@Override
+	public void execute(Model model, HttpServletRequest request) {
+		
+		try {
+			model.addAttribute("jsonData", fetchAdoptionData(model, request));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
     /**
      * 비동기적으로 JSON 데이터를 API로부터 받아온 후 HelpPetfAdoptionItemsVo 타입으로 변환하여 반환한다.
      * Mono는 단일 데이터 또는 빈 데이터를 발행하는 비동기 스트림을 의미하며, 비동기 HTTP 요청의 응답을 관리하는 데 사용한다.
@@ -44,6 +55,7 @@ public class AdoptionGetJson {
      * @throws Exception 예외 발생 시
      * 	빈 리스트를 가진 HelpPetfAdoptionItemsVo를 생성하고, 내부 서버 오류 상태를 반환
      */
+	@Cacheable("adoptionData")
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionData(Model model, HttpServletRequest request) throws Exception {
 
 		// api 요청주소 End point
@@ -75,7 +87,7 @@ public class AdoptionGetJson {
 				.onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Client Error")))
 				.onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new Exception("Server Error")))
 				.bodyToMono(String.class) // JSON 데이터를 문자열로 받음
-				.retryWhen(Retry.backoff(3, Duration.ofSeconds(2)))
+				.retryWhen(Retry.backoff(3, Duration.ofSeconds(5)))
 				.map(json -> {
 					HelpPetfAdoptionItemsVo adoptionItems;
 					try { // try: json 파싱
@@ -142,5 +154,7 @@ public class AdoptionGetJson {
 		}
 
 	}
+
+
 
 }
