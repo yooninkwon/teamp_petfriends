@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,10 +22,10 @@
         </c:forEach>
         <c:choose>
             <c:when test="${latestStatus.os_name == '배송완료'}">
-                <div style="font-size: 30px;">${latestStatus.os_regdate} 도착 완료</div><div>고객님이 주문하신 상품이 배송완료 되었습니다.</div>
+                <div style="font-size: 30px;">${fn:substring(latestStatus.os_regdate, 0, 16)} 도착 완료</div><div>고객님이 주문하신 상품이 배송완료 되었습니다.</div>
             </c:when>
             <c:otherwise>
-                <div style="font-size: 30px;">${myorder.o_expecdate} 도착 예정</div><div>고객님이 주문하신 상품이 배송중입니다.</div>
+                <div style="font-size: 30px;">${fn:substring(order.o_expecdate, 0, 16)} 도착 예정</div><div>고객님이 주문하신 상품이 배송중입니다.</div>
             </c:otherwise>
         </c:choose>
     </div>
@@ -58,7 +59,7 @@
 	</div>
 	<c:forEach var="status" items="${orderStatuses}">
 		<div class="deliv-detail" style="border: none;">
-			<span>${status.os_regdate}</span>
+			<span>${fn:substring(status.os_regdate, 0, 16)}</span>
 			<span>${status.os_name}</span>
 		</div>
 	</c:forEach>

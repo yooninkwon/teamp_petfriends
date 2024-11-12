@@ -3,6 +3,7 @@
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +20,7 @@
          주문번호 ${order.o_code}
          <c:forEach var="status" items="${orderStatuses}">
              <c:if test="${status.os_name == '결제완료'}">
-                 <span> | ${status.os_regdate}</span>
+                 <span> | ${fn:substring(status.os_regdate, 0, 16)}</span>
              </c:if>
          </c:forEach>
     	</div>
@@ -31,15 +32,7 @@
 	                <c:set var="latestStatus" value="${status}" />
 	            </c:if>
 	        </c:forEach>
-	        ${latestStatus.os_name}
-	        <c:choose>
-	            <c:when test="${latestStatus.os_name == '배송완료'}">
-	                <span>${latestStatus.os_regdate}</span>
-	            </c:when>
-	            <c:otherwise>
-	                <span>${myorder.o_expecdate}</span>
-	            </c:otherwise>
-	        </c:choose>
+	        ${latestStatus.os_name}<span> ${fn:substring(latestStatus.os_regdate, 0, 16)}</span>
 	    </div>
 	    <c:forEach var="item" items="${items}">
 	        <div class="item">

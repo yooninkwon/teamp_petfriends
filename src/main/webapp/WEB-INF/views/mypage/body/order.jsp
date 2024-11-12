@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +45,7 @@
     </div>
     
 	<!-- 페이지네이션 -->
-    <div id="orderlist-pagination" class="pagination"></div>
+    <div id="orderlist-pagination" class="pagination" style="margin-top: 20px;"></div>
 </div>
 
 <script src="/static/js/mypage/order.js"></script>

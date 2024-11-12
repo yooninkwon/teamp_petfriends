@@ -63,7 +63,7 @@ $(document).ready(function() {
     });
 
     function loadOrderData(tabType) {
-        const itemsPerPage = 4;
+        const itemsPerPage = 4; // 페이지 당 item 수
         let currentPage = 1;
 
         const startDate = $('#start-date').val() ? new Date($('#start-date').val()) : null;
@@ -86,19 +86,47 @@ $(document).ready(function() {
                     ? orderList.filter(order => order.o_cancel === null)
                     : orderList.filter(order => order.o_cancel !== null);
 
-                // 날짜 필터 적용
+				// 탭별 날짜 필터 적용
                 if (startDate && endDate) {
                     filteredList = filteredList.filter(order => {
-                        const orderDateStr = orderStatuses.find(status => status.o_code === order.o_code && status.os_name === '결제완료')?.os_regdate;
-                        if (!orderDateStr) return false;
+                        let dateToCheck;
+                        
+                        if (tabType === 'orderlist') {
+                            // 주문내역 탭: 결제완료 날짜로 필터링
+                            dateToCheck = orderStatuses.find(status => status.o_code === order.o_code && status.os_name === '결제완료')?.os_regdate;
+                        } else {
+                            // 취소/반품 탭: 최신 상태의 등록일로 필터링
+                            dateToCheck = orderStatuses.filter(status => status.o_code === order.o_code)
+                                .reduce((latest, current) => current.os_regdate > latest.os_regdate ? current : latest, { os_regdate: '' }).os_regdate;
+                        }
+                        
+                        if (!dateToCheck) return false;
 
-                        const orderDate = new Date(orderDateStr);
-                        orderDate.setHours(0, 0, 0, 0); // 시간 제거
+                        const checkDate = new Date(dateToCheck);
+                        checkDate.setHours(0, 0, 0, 0); // 시간 제거
 
-                        return orderDate >= startDate && orderDate <= endDate;
+                        return checkDate >= startDate && checkDate <= endDate;
                     });
                 }
-
+				
+				// 최신순 정렬
+                filteredList.sort((a, b) => {
+                    // 주문내역 탭: orderDate 기준 최신순 정렬
+                    if (tabType === 'orderlist') {
+                        const dateA = new Date(orderStatuses.find(status => status.o_code === a.o_code && status.os_name === '결제완료')?.os_regdate);
+                        const dateB = new Date(orderStatuses.find(status => status.o_code === b.o_code && status.os_name === '결제완료'));
+                        return dateB - dateA;
+                    }
+                    // 취소/반품 탭: regdate 기준 최신순 정렬
+                    else {
+                        const dateA = new Date(orderStatuses.filter(status => status.o_code === a.o_code)
+                            .reduce((latest, current) => current.os_regdate > latest.os_regdate ? current : latest, { os_regdate: '' }).os_regdate);
+                        const dateB = new Date(orderStatuses.filter(status => status.o_code === b.o_code)
+                            .reduce((latest, current) => current.os_regdate > latest.os_regdate ? current : latest, { os_regdate: '' }).os_regdate);
+                        return dateB - dateA;
+                    }
+                });
+				
                 const totalItems = filteredList.length;
                 const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -110,7 +138,7 @@ $(document).ready(function() {
             }
         });
     }
-
+	
     function displayItems(currentPage, itemsPerPage, myorders, orderStatuses, items, tabType) {
         const start = (currentPage - 1) * itemsPerPage;
         const end = start + itemsPerPage;
@@ -125,17 +153,21 @@ $(document).ready(function() {
             $('#empty-list').hide();
 
             sliceList.forEach(myorder => {
+                let OrderDate = orderStatuses.find(status => status.o_code === myorder.o_code && status.os_name === '결제완료')?.os_regdate;
                 let latestStatus = orderStatuses.filter(status => status.o_code === myorder.o_code)
                     .reduce((latest, current) => current.os_regdate > latest.os_regdate ? current : latest, { os_name: '', os_regdate: '' });
-                
                 let orderItems = items.filter(item => item.o_code === myorder.o_code);
-
+				
+				// 날짜 포맷 적용
+				OrderDate = OrderDate ? formatDate(OrderDate) : '';
+				latestStatus.os_regdate = latestStatus.os_regdate ? formatDate(latestStatus.os_regdate) : '';
+				
                 lists += `
                     <div class="order-box">
                         <div class="order-header">
                             <div>
                                 주문번호 ${myorder.o_code}
-                                <span> | ${orderStatuses.find(status => status.o_code === myorder.o_code && status.os_name === '결제완료')?.os_regdate}</span>
+                                <span> | ${OrderDate}</span>
                             </div>
                             <a href="/mypage/order/orderDetail?orderCode=${myorder.o_code}">주문상세 ></a>
                         </div>
@@ -143,7 +175,7 @@ $(document).ready(function() {
                             <div>
                                 <div class="order-status">
                                     ${latestStatus.os_name}
-                                    <span>${latestStatus.os_name === '배송완료' ? latestStatus.os_regdate : myorder.o_expecdate}</span>
+                                    <span>${latestStatus.os_regdate}</span>
                                 </div>
                 `;
 
@@ -196,7 +228,7 @@ $(document).ready(function() {
 
     function setupPagination(totalPages, currentPage, itemsPerPage, myorders, orderStatuses, items, tabType) {
         let paginationHtml = '';
-        if (totalPages > 1) {
+        if (totalPages >= 1) {
             for (let i = 1; i <= totalPages; i++) {
                 paginationHtml += `<a href="#" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`;
             }
@@ -209,6 +241,18 @@ $(document).ready(function() {
             });
         }
     }
+	
+	// 날짜 형식 변환
+	function formatDate(dateString) {
+	    const date = new Date(dateString);
+		const year = date.getFullYear();
+	    const month = String(date.getMonth() + 1).padStart(2, '0');
+	    const day = String(date.getDate()).padStart(2, '0');
+	    const hours = String(date.getHours()).padStart(2, '0');
+	    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+	    return `${year}-${month}-${day} ${hours}:${minutes}`;
+	}
 });
 
 // 취소 요청 팝업 창 열기

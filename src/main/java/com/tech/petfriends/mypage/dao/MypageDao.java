@@ -82,7 +82,7 @@ public interface MypageDao {
 	
 	// 즐겨찾는 상품
 	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
-	List<MyOrderDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
+	List<MyWishDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
 	void deleteWishByProCode(String mem_code, String pro_code);
 
   // 펫호텔 예약내역

@@ -51,7 +51,7 @@
     <div id="buyoften" class="tab-content">
     	<!-- 필터링 영역 -->
 	    <div class="sort-section">
-            <label><input type="checkbox" name="buyoften-filter" value="구매 가능한 상품"> 구매 가능한 상품</label>
+            <label><input type="checkbox" id="orderable" value="판매"> 구매 가능한 상품</label>
 	    </div>
 	    
 	    <!-- 리스트 영역 -->
