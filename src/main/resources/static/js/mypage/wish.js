@@ -28,7 +28,7 @@ $(document).ready(function() {
         buyoftenData();
     });
 
-    // 쿠폰 등록 탭 데이터 로드 함수
+    // 찜목록 탭 데이터 로드 함수
     function wishData() {
         const itemsPerPage = 8; // 페이지 당 item 수
         let currentPage = 1;

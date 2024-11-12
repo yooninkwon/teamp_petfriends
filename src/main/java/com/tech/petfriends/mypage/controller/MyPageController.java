@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.admin.dto.CouponDto;
+import com.tech.petfriends.admin.dto.OrderStatusDto;
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
@@ -49,6 +50,7 @@ public class MyPageController {
 	@Autowired
 	ApikeyConfig apikeyConfig;
 	
+	// 내새꾸
 	@GetMapping("/mypet")
 	public String mypet(Model model, HttpSession session) {
 		
@@ -224,6 +226,7 @@ public class MyPageController {
 		return "redirect:/mypage/mypet";
 	}
 	
+	// 등급
 	@GetMapping("/grade")
 	public String grade(Model model, HttpSession session) {
 
@@ -236,11 +239,13 @@ public class MyPageController {
 		return "mypage/grade";
 	}
 	
+	// 포인트
 	@GetMapping("/point")
 	public String point() {
 		return "mypage/point";
 	}
 	
+	// 쿠폰
 	@GetMapping("/coupon")
 	public String coupon(Model model, HttpSession session) {
 		
@@ -333,6 +338,7 @@ public class MyPageController {
         return "mypage/coupon";
 	}
 	
+	// 내 정보 변경
 	@GetMapping("/setting")
 	public String setting(Model model, HttpSession session) {
 		
@@ -462,6 +468,7 @@ public class MyPageController {
 		return "/mypage/withdrawal";
 	}
 	
+	// 장바구니
 	@GetMapping("/cart")
 	public String cart(Model model, HttpSession session) {
 		
@@ -552,6 +559,7 @@ public class MyPageController {
 	    return "mypage/payment";
 	}
 	
+	// 결제
 	@GetMapping("/payment/delivEnterMethod")
 	public String delivEnterMethod(Model model) {
 		return "/mypage/popup/delivEnterMethod";
@@ -597,23 +605,43 @@ public class MyPageController {
         return "redirect:/mypage/order";
     }
 	
+	// 주문내역
 	@GetMapping("/order")
-	public String order(Model model, HttpSession session) {
-		
-		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
-		
-		ArrayList<MyOrderDto> myorders = mypageDao.getOrderByMemberCode(loginUser.getMem_code());
-		
-        model.addAttribute("myorders",myorders);
-		
+	public String order() {
 		return "mypage/order";
 	}
 	
+	@GetMapping("/order/data")
+	@ResponseBody
+	public Map<String, Object> getOrderData(HttpSession session) {
+		
+	    MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+	    
+	    List<MyOrderDto> myorders = mypageDao.getOrderByMemberCode(loginUser.getMem_code());
+
+	    ArrayList<OrderStatusDto> orderStatuses = new ArrayList<>();
+	    ArrayList<MyCartDto> items = new ArrayList<>();
+
+	    for (MyOrderDto order : myorders) {
+	    	orderStatuses.addAll(mypageDao.getStatusByOrderCode(order.getO_code()));
+	        items.addAll(mypageDao.getCartByOrderCode(order.getO_code()));
+	    }
+
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("myorders", myorders);
+	    response.put("orderStatuses", orderStatuses);
+	    response.put("items", items);
+
+	    return response;
+	}
+	
+	// 구매후기
 	@GetMapping("/review")
 	public String review() {
 		return "mypage/review";
 	}
 	
+	// 즐겨찾는 상품
 	@GetMapping("/wish")
 	public String wish() {
 	    return "mypage/wish";
@@ -653,6 +681,7 @@ public class MyPageController {
 		return "redirect:/mypage/wish";
 	}
 	
+	// 고객센터
 	@GetMapping("/cscenter")
 	public String cscenter() {
 		return "/mypage/cscenter";
