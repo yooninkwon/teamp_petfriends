@@ -2,7 +2,6 @@ package com.tech.petfriends.mypage.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.http.HttpRequest;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -721,12 +720,12 @@ public class MyPageController {
 
 	@GetMapping("/buyoften/data")
 	@ResponseBody
-	public List<MyOrderDto> buyoftenData(HttpServletRequest request, HttpSession session) {
+	public List<MyWishDto> buyoftenData(HttpServletRequest request, HttpSession session) {
 
 		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
-		String orderable = request.getParameter("");
+		String orderable = request.getParameter("orderable");
 
-		List<MyOrderDto> buyoften = mypageDao.getAllOrderInfoByMemberCode(loginUser.getMem_code(), orderable);
+		List<MyWishDto> buyoften = mypageDao.getAllOrderInfoByMemberCode(loginUser.getMem_code(), orderable);
 
 		return buyoften;
 	}

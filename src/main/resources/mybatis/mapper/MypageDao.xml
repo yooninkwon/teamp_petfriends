@@ -345,11 +345,33 @@
 		</choose>
 	</select>
 	
+	<select id="getAllOrderInfoByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyWishDto">
+		SELECT COUNT(DISTINCT P.PRO_CODE) AS BUY_COUNT,
+       		   P.PRO_CODE,
+			   P.PRO_NAME,
+		       MIN(PO.PROOPT_FINALPRICE) AS MIN_PRICE,
+		       COALESCE(AVG(PR.REVIEW_RATING), 0) AS REVIEW_AVG,
+		       COUNT(PR.REVIEW_CODE) AS REVIEW_COUNT,
+		       PI.MAIN_IMG1
+		FROM PRODUCT_CART PC
+		JOIN PRODUCT P ON PC.PRO_CODE = P.PRO_CODE
+		LEFT JOIN PRODUCT_OPTION PO ON P.PRO_CODE = PO.PRO_CODE
+		LEFT JOIN PRODUCT_IMAGE PI ON P.PRO_CODE = PI.PRO_CODE
+		LEFT JOIN PRODUCT_REVIEW PR ON P.PRO_CODE = PR.PRO_CODE
+		WHERE PC.MEM_CODE = #{mem_code} AND PC.O_CODE IS NOT NULL
+		<choose>
+			<when test="orderable == '판매'">AND P.PRO_ONOFF = '판매'</when>
+		</choose>
+		GROUP BY P.PRO_CODE, P.PRO_NAME, PI.MAIN_IMG1
+	</select>
+	
 	<delete id="deleteWishByProCode">
 	    DELETE
 	    FROM MEMBER_WISHLIST
 	    WHERE MEM_CODE = #{mem_code} AND PRO_CODE = #{pro_code}
 	</delete>
+	
+	<!-- 펫호텔 -->
 	<select id="pethotelReserveMypageMem" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
 		SELECT HPHM.*, MEM.MEM_NICK 
 		FROM HELP_PETHOTEL_MEM HPHM, MEMBER MEM 
