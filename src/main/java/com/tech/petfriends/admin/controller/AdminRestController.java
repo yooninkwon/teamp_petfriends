@@ -78,7 +78,7 @@ public class AdminRestController {
 
 	AdminExecuteModelRequest adminExecuteMR;
 
-	@PostMapping("/pethotel_reserve_update")
+	@PutMapping("/pethotel_reserve_update")
 	public String pethotelReserveUpdate(@RequestBody Map<String, String> statusMap, HttpServletRequest request,
 			Model model) {
 		adminExecuteM = new AdminPethotelReserveUpdateService(adminDao, statusMap);

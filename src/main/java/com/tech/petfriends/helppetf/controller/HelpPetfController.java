@@ -36,6 +36,7 @@ public class HelpPetfController {
 	public String adoptionMain(Model model) {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "adoption");
+		model.addAttribute("apiKey", apikeyConfig.getKakaoApikey());
 		return "/helppetf/adoption/adoption_main";
 	}
 	

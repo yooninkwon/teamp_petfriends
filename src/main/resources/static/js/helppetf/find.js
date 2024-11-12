@@ -91,7 +91,7 @@ $(document).ready(function() {
 		$('.my_adress_box').html(post);
 		
 		// 주소를 입력하여 지도를 구성하는 함수
-		buildTMap(userAddress);
+		buildKakaoMap(userAddress);
 	}
 	
 	
@@ -116,7 +116,7 @@ $(document).ready(function() {
 	var ps = new kakao.maps.services.Places();
 	
 	// 주소를 입력하여 지도를 구성하는 함수
-	function buildTMap(userAddress) {
+	function buildKakaoMap(userAddress) {
 		
 		// 주소로 좌표를 검색
 		geocoder.addressSearch(userAddress, function(result, status) {
