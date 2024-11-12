@@ -28,6 +28,9 @@
 	<definition name="admin/customer_info" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/customer-info.jsp" />
 	</definition>
+	<definition name="admin/pet_info" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/pet-info.jsp" />
+	</definition>
 	<definition name="admin/community" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/community.jsp" />
 	</definition>

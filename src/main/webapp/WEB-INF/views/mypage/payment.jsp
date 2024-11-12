@@ -32,7 +32,7 @@
         <div class="delivery-address">
             <c:forEach var="address" items="${address}">
                 <c:if test="${address.addr_default.toString() == 'Y'}">
-                    <div>${address.addr_line1} ${address.addr_line2}</div>
+                    <div id="addr">${address.addr_line1} ${address.addr_line2}</div>
                 </c:if>
             </c:forEach>
         </div>
@@ -92,12 +92,12 @@
     <section class="payment-summary" style="border: none;">
         <h3>결제금액</h3>
         <div class="summary-item">총 상품 금액 <span id="price_sum"><fmt:formatNumber value="${priceSum}" type="number" groupingUsed="true"/>원</span></div>
-        <div class="summary-item">배송비 <span id="price_deliv">0원</span></div>
-        <div class="summary-item">주문 쿠폰 <span id="discount_coupon">0원</span></div>
-        <div class="summary-item">사용 포인트 <span id="discount_point">0원</span></div>
+        <div class="summary-item">배송비 <span id="price_deliv"></span></div>
+        <div class="summary-item">주문 쿠폰 <span id="discount_coupon"></span></div>
+        <div class="summary-item">사용 포인트 <span id="discount_point"></span></div>
         <hr />
-        <div class="total-amount">총 결제 금액 <span id="final_price">0원</span></div>
-        <div class="total-point">구매 시 <span id="final_point" style="color: #ff4081;">0원 적립</span></div>
+        <div class="total-amount">총 결제 금액 <span id="final_price"></span></div>
+        <div class="total-point">구매 시 <span id="final_point" style="color: #ff4081;"></span></div>
     </section>
 
     <button class="payment-button" onclick="requestPay('${loginUser.mem_email}','${loginUser.mem_name}')">결제하기</button>

@@ -1,5 +1,6 @@
 package com.tech.petfriends.admin.controller;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,6 +49,8 @@ import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
+import com.tech.petfriends.mypage.dao.MypageDao;
+import com.tech.petfriends.mypage.dto.MyPetDto;
 import com.tech.petfriends.notice.dao.NoticeDao;
 import com.tech.petfriends.notice.dto.EventDto;
 import com.tech.petfriends.notice.dto.NoticeDto;
@@ -63,6 +67,9 @@ public class AdminRestController {
 	
 	@Autowired
 	MemberMapper memberMapper;
+	
+	@Autowired
+	MypageDao mypageDao;
 
 	@Autowired
 	AdminCommunityDao communtiyDao;
@@ -344,10 +351,67 @@ public class AdminRestController {
 	
 	@GetMapping("/customer_list")
 	public ArrayList<MemberLoginDto> customerList() {
-		ArrayList<MemberLoginDto> memberlist = memberMapper.memberList();
-		
+		ArrayList<MemberLoginDto> memberlist = memberMapper.memberList();	
 		return memberlist;
 	}
+	
+	@GetMapping("/pet_list")
+	public ArrayList<MyPetDto> petList() {
+		ArrayList<MyPetDto> petlist = mypageDao.getPetList();
+		return petlist;
+	}
 
+	@PostMapping("/updateCustomerType")
+	public ResponseEntity<Map<String, String>> updateCustomerType(@RequestBody Map<String, Object> request) {
+	    List<Long> ids = (List<Long>) request.get("ids");
+	    String newType = (String) request.get("newType");
+
+	    if (ids == null || ids.isEmpty() || newType == null || newType.isEmpty()) {
+	        return ResponseEntity.badRequest().body(Map.of("message", "유효하지 않은 요청입니다."));
+	    }
+
+	    try {
+	        memberMapper.updateCustomerType(ids, newType); // MyBatis 매퍼 호출
+	        return ResponseEntity.ok(Map.of("message", "회원 유형이 성공적으로 변경되었습니다."));
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "회원 유형 변경 중 오류가 발생했습니다."));
+	    }
+	}
+	
+	@PostMapping("/deletePetImages")
+	public ResponseEntity<String> deletePetImages(@RequestBody Map<String, Object> request) {
+	    List<String> petCodes = (List<String>) request.get("petCodes");
+	    if (petCodes == null || petCodes.isEmpty()) {
+	        return ResponseEntity.badRequest().body("유효하지 않은 요청입니다.");
+	    }
+
+	    try {
+	        petCodes.forEach(petCode -> {
+	            String petImg = mypageDao.getPetImgForPetCode(petCode); // petCode로 이미지 파일명 조회
+	            if (petImg != null && !petImg.isEmpty()) {
+	                // 파일 경로 설정 (서버의 실제 경로를 절대 경로로 사용)
+	            	String imagesDir = new File("src/main/resources/static/Images/pet/").getAbsolutePath();
+	                File file = new File(imagesDir, petImg);
+	                
+	                // 파일 존재 여부 확인 및 삭제 처리
+	                if (file.exists()) {
+	                    boolean deleted = file.delete();
+	                    if (!deleted) {
+	                        System.err.println("이미지 삭제에 실패했습니다: " + file.getAbsolutePath());
+	                    } else {
+	                        System.out.println("이미지 삭제 성공: " + file.getAbsolutePath());
+	                    }
+	                } else {
+	                    System.out.println("이미지가 존재하지 않습니다: " + file.getAbsolutePath());
+	                }
+	            }
+	            mypageDao.deletePetImgForPetCode(petCode);
+	        });
+	        return ResponseEntity.ok("이미지 삭제가 완료되었습니다.");
+	    } catch (Exception e) {
+	        e.printStackTrace(); // 디버깅을 위한 예외 출력
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미지 삭제 중 오류가 발생했습니다.");
+	    }
+	}
 
 }
