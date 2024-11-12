@@ -44,12 +44,73 @@
 				</table>
 				<input type="text" id="petInterInfo" name="petInterInfo" placeholder="직접 작성하기" />
 			</div> <br />
+			
 			<div id="allerge">
 				<h2>[선택] 아이가 혹시 알러지가 있나요?</h2>
 				<input type="button" value="네, 있어요" onclick="selectAllergy(this)" />
 				<input type="button" value="아니요, 없어요" onclick="selectAllergy(this)" />
-			</div>
-			<input type="text" id="allergyInput" name="allergyInput" placeholder="알러지를 모두 입력 해 주세요" />
+			</div> <br />
+			
+		    <div id="allerge-input" >
+		            <h2>어떤 알러지가 있나요?</h2> <br />
+		            <h2>단백질원</h2>
+		            <table class="selectAllerge1">
+		            	<tr>
+							<td><input type="button" value="소" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="돼지" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="양" onclick="selectInfo(this)" /></td>
+						</tr>
+						<tr>
+							<td><input type="button" value="오리" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="닭" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="칠면조" onclick="selectInfo(this)" /></td>
+						</tr>
+						<tr>
+							<td><input type="button" value="연어" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="참치" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="삼치" onclick="selectInfo(this)" /></td>
+						</tr>
+						<tr>
+							<td><input type="button" value="캥거루" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="흑염소" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="사슴" onclick="selectInfo(this)" /></td>
+						</tr>
+		            	<tr>
+							<td><input type="button" value="계란" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="뼈간식" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="치즈" onclick="selectInfo(this)" /></td>
+						</tr>
+						<tr>
+							<td><input type="button" value="펫밀크" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="우유" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="치즈" onclick="selectInfo(this)" /></td>
+						</tr>
+		            </table>
+		            <h2>기타</h2>
+		            <table class="selectAllerge1">
+		            	<tr>
+							<td><input type="button" value="콩" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="옥수수" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="귀리" onclick="selectInfo(this)" /></td>
+						</tr>
+						<tr>
+							<td><input type="button" value="밀가루" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="고구마" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="감자" onclick="selectInfo(this)" /></td>
+						</tr>
+						<tr>
+							<td><input type="button" value="단호박" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="양배추" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="브로콜리" onclick="selectInfo(this)" /></td>
+						</tr>
+						<tr>
+							<td><input type="button" value="사과" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="바나나" onclick="selectInfo(this)" /></td>
+							<td><input type="button" value="크랜베리" onclick="selectInfo(this)" /></td>
+						</tr>
+		            </table>
+		            <input type="text" id="petInterAllerge" name="petInterAllerge" placeholder="직접 작성하기" />      
+		    </div>
 			
 			<input type="hidden" name="petName" value="${petName }" />
 			<input type="hidden" name="petType" value="${petType }" />
@@ -101,9 +162,9 @@ function selectAllergy(selectedButton) {
     });
 	
     if (selectedButton.value === "네, 있어요") {
-    	document.getElementById('allergyInput').style.display = "block";
+    	document.getElementById('allerge-input').style.display = "block";
     } else {
-    	document.getElementById('allergyInput').style.display = "none";
+    	document.getElementById('allerge-input').style.display = "none";
     }
     
     selectedButton.style.backgroundColor = "#ff4081";
