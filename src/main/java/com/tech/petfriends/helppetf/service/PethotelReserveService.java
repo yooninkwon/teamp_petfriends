@@ -18,22 +18,19 @@ import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 
 @Service
-public class PethotelReserveService implements HelppetfExecuteModelRequest{
+public class PethotelReserveService implements HelppetfExecuteModelRequestSession{
 
 	private HelpPetfDao helpDao;
-	
-	private HttpSession session;
-	
+		
 	private ArrayList<PethotelFormDataDto> formList;
 	
-	public PethotelReserveService(HelpPetfDao helpDao, HttpSession session, ArrayList<PethotelFormDataDto> formList) {
+	public PethotelReserveService(HelpPetfDao helpDao, ArrayList<PethotelFormDataDto> formList) {
 		this.helpDao = helpDao;
-		this.session = session;
 		this.formList = formList;
 	}
 	
 	@Override
-	public void execute(HttpServletRequest request, Model model) {
+	public void execute(Model model, HttpServletRequest request, HttpSession session) {
 		
 		// request의 예약 시작, 종료일 저장
 		String hph_start_date = request.getParameter("start-date");

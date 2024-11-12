@@ -18,7 +18,7 @@ public class PetteacherDetailService implements HelppetfExecuteModelRequest {
 	}
 
 	@Override
-	public void execute(HttpServletRequest request, Model model) {
+	public void execute(Model model, HttpServletRequest request) {
 		
 		// 파라미터의 값을 저장
 		String hpt_seq = request.getParameter("hpt_seq");

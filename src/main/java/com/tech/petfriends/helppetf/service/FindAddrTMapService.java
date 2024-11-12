@@ -22,7 +22,7 @@ public class FindAddrTMapService implements HelppetfExecuteModelSession {
 	}
 
 	@Override
-	public void execute(HttpSession session, Model model) {
+	public void execute(Model model, HttpSession session) {
 		String userAddr = "";
 		String mem_nick = null;
 		String mem_code = "";

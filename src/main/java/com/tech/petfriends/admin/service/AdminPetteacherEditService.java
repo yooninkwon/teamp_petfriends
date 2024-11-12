@@ -20,7 +20,7 @@ public class AdminPetteacherEditService implements AdminExecuteModelRequest {
 	}
 
 	@Override
-	public void execute(HttpServletRequest request, Model model) {
+	public void execute(Model model, HttpServletRequest request) {
 		
 		String hpt_seq = request.getParameter("hpt_seq");
 

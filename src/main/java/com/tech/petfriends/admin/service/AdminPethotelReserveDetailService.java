@@ -23,7 +23,7 @@ public class AdminPethotelReserveDetailService implements AdminExecuteModelReque
 	}
 	
 	@Override
-	public void execute(HttpServletRequest request, Model model) {
+	public void execute(Model model, HttpServletRequest request) {
 		// 전달받은 예약번호 저장
 		String hph_reserve_no = request.getParameter("hph_reserve_no");
 				

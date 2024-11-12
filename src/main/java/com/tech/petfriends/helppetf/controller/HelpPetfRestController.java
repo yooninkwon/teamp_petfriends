@@ -23,6 +23,7 @@ import com.tech.petfriends.helppetf.service.AdoptionGetJson;
 import com.tech.petfriends.helppetf.service.FindAddrTMapService;
 import com.tech.petfriends.helppetf.service.HelppetfExecuteModel;
 import com.tech.petfriends.helppetf.service.HelppetfExecuteModelRequest;
+import com.tech.petfriends.helppetf.service.HelppetfExecuteModelRequestSession;
 import com.tech.petfriends.helppetf.service.HelppetfExecuteModelSession;
 import com.tech.petfriends.helppetf.service.PethotelMainService;
 import com.tech.petfriends.helppetf.service.PethotelReserveService;
@@ -46,7 +47,7 @@ public class HelpPetfRestController {
 	public HelpPetfRestController(AdoptionGetJson adoptionGetJson) {
 		this.adoptionGetJson = adoptionGetJson;
 	}
-
+	
 	@Autowired
 	HelpPetfDao helpDao;
 
@@ -56,11 +57,13 @@ public class HelpPetfRestController {
 
 	HelppetfExecuteModelSession helppetfMS;
 
+	HelppetfExecuteModelRequestSession helppetfMRS;
+
 	@SuppressWarnings("unchecked")
 	@GetMapping("/pethotel/pethotel_select_pet")
 	public ArrayList<MyPetDto> pethotelSelectPet(Model model, HttpSession session) {
 		helppetfMS = new PethotelSelectPetService(helpDao);
-		helppetfMS.execute(session, model);
+		helppetfMS.execute(model, session);
 		return (ArrayList<MyPetDto>) model.getAttribute("petDto");
 	}
 
@@ -68,8 +71,8 @@ public class HelpPetfRestController {
 	public String pethotelReserveData(@RequestBody ArrayList<PethotelFormDataDto> formList, HttpServletRequest request,
 			Model model, HttpSession session) {
 		
-		helppetfMR = new PethotelReserveService(helpDao, session, formList);
-		helppetfMR.execute(request, model); 
+		helppetfMRS = new PethotelReserveService(helpDao, formList);
+		helppetfMRS.execute(model, request, session); 
 		
 		return (String) model.getAttribute("jsonData"); // execute 메서드를 실행하여 모델에 저장한 json 형식의 데이터 반환
 	}
@@ -92,21 +95,21 @@ public class HelpPetfRestController {
 	@GetMapping("/petteacher/petteacher_data")
 	public ArrayList<PetteacherDto> petteacherData(HttpServletRequest request, Model model) {
 		helppetfMR = new PetteacherService(helpDao);
-		helppetfMR.execute(request, model);
+		helppetfMR.execute(model, request);
 		return (ArrayList<PetteacherDto>) model.getAttribute("ylist");
 	}
 	
 	@GetMapping("/petteacher/petteacher_detail_data")
 	public PetteacherDto petteacherDetailData(HttpServletRequest request, Model model) {
 		helppetfMR = new PetteacherDetailService(helpDao);
-		helppetfMR.execute(request, model);
+		helppetfMR.execute(model, request);
 		return (PetteacherDto) model.getAttribute("petteacherDetailDto");
 	}
 	
 	@GetMapping("/find/adress_data") // 주변 반려동물 시설 찾기 페이지
 	public String pet_facilities(Model model, HttpSession session) throws JsonProcessingException {
 		helppetfMS = new FindAddrTMapService(helpDao);
-		helppetfMS.execute(session, model);
-		return "";
+		helppetfMS.execute(model, session);
+		return (String) model.getAttribute("jsonData");
 	}
 }

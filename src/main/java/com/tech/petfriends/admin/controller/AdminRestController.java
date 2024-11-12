@@ -66,7 +66,7 @@ public class AdminRestController {
 
 	@Autowired
 	AdminCommunityDao communtiyDao;
-
+		
 	AdminExecuteModel adminExecuteM;
 
 	AdminExecuteModelRequest adminExecuteMR;
@@ -83,7 +83,7 @@ public class AdminRestController {
 	@GetMapping("/pethotel_admin_reserve_detail")
 	public String pethotelReserveDetail(HttpServletRequest request, Model model) throws JsonProcessingException {
 		adminExecuteMR = new AdminPethotelReserveDetailService(adminDao);
-		adminExecuteMR.execute(request, model);
+		adminExecuteMR.execute(model, request);
 		
 		return (String) model.getAttribute("jsonData");
 	}
@@ -92,7 +92,7 @@ public class AdminRestController {
 	@GetMapping("/pethotel_admin_reserve")
 	public ArrayList<PethotelMemDataDto> pethotelReserveData(HttpServletRequest request, Model model) {
 		adminExecuteMR = new AdminPethotelDataService(adminDao);
-		adminExecuteMR.execute(request, model);
+		adminExecuteMR.execute(model, request);
 		
 		return (ArrayList<PethotelMemDataDto>) model.getAttribute("memSelectDto");
 	}
@@ -101,7 +101,7 @@ public class AdminRestController {
 	@GetMapping("/petteacher_admin_data")
 	public List<PetteacherDto> getPetteacherData(HttpServletRequest request, Model model) {
 		adminExecuteMR = new AdminPetteacherDataService(adminDao);
-		adminExecuteMR.execute(request, model);
+		adminExecuteMR.execute(model, request);
 		
 		return (List<PetteacherDto>) model.getAttribute("petteacherList");
 	}
@@ -109,7 +109,7 @@ public class AdminRestController {
 	@GetMapping("/petteacher_admin_data_forEdit")
 	public PetteacherDto petteacherDataForEdit(HttpServletRequest request, Model model) {
 		adminExecuteMR = new AdminPetteacherDetailService(adminDao);
-		adminExecuteMR.execute(request, model);
+		adminExecuteMR.execute(model, request);
 
 		return (PetteacherDto) model.getAttribute("dto");
 	}
@@ -117,7 +117,7 @@ public class AdminRestController {
 	@DeleteMapping("/petteacher_admin_data_forDelete")
 	public String petteacherDataForDelete(HttpServletRequest request, Model model) {
 		adminExecuteMR = new AdminPetteacherDeleteService(adminDao);
-		adminExecuteMR.execute(request, model);
+		adminExecuteMR.execute(model, request);
 
 		return "{\"status\": \"success\"}";
 	}
@@ -133,7 +133,7 @@ public class AdminRestController {
 	@PutMapping("/petteacher_admin_data_forEdit")
 	public String petteacherDataForEdit(@RequestBody PetteacherDto dto, HttpServletRequest request, Model model) {
 		adminExecuteMR = new AdminPetteacherEditService(adminDao, dto);
-		adminExecuteMR.execute(request, model);
+		adminExecuteMR.execute(model, request);
 
 		return "{\"status\": \"success\"}";
 	}

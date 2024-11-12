@@ -19,7 +19,7 @@ public class PethotelSelectPetService implements HelppetfExecuteModelSession {
 	}
 	
 	@Override
-	public void execute(HttpSession session, Model model) {	
+	public void execute(Model model, HttpSession session) {	
 		
 		// 세션에서 로그인 정보를 추출
 		MemberLoginDto loginDto = (MemberLoginDto) session.getAttribute("loginUser");

@@ -6,5 +6,5 @@ import org.springframework.ui.Model;
 
 
 public interface HelppetfExecuteModelSession {
-	public void execute(HttpSession session, Model model);
+	public void execute(Model model, HttpSession session);
 }

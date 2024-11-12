@@ -5,5 +5,5 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 
 public interface AdminExecuteModelRequest {
-	public void execute(HttpServletRequest request, Model model);
+	public void execute(Model model, HttpServletRequest request);
 }

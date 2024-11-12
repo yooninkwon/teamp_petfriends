@@ -20,7 +20,7 @@ public class PetteacherService implements HelppetfExecuteModelRequest {
 	}
 
 	@Override
-	public void execute(HttpServletRequest request, Model model) {
+	public void execute(Model model, HttpServletRequest request) {
 		
 		String petType = request.getParameter("petType");
 		String category = request.getParameter("category");

@@ -18,7 +18,7 @@ public class AdminPethotelDataService implements AdminExecuteModelRequest {
 	}
 
 	@Override
-	public void execute(HttpServletRequest request, Model model) {
+	public void execute(Model model, HttpServletRequest request) {
 
 		String reserveType = request.getParameter("reserveType");
 		String startDate = request.getParameter("startDate");
