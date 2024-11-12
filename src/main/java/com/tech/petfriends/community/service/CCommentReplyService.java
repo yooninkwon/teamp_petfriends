@@ -30,10 +30,12 @@ public class CCommentReplyService implements CServiceInterface {
 		String parent_comment_no = request.getParameter("parent_comment_no");
 		String comment_level = request.getParameter("comment_level");
 		String comment_order_no = request.getParameter("comment_order_no");
-		
+		String related_user_id = request.getParameter("parent_user_nick");
+	
 		iDao.commentShape(parent_comment_no, comment_level);
 		iDao.commentReply(board_no, mem_nick,comment_content,parent_comment_no,comment_level,comment_order_no,mem_code);
 		
+		iDao.commentActivity(mem_nick, related_user_id, board_no, comment_content);
 	
 	}
 	

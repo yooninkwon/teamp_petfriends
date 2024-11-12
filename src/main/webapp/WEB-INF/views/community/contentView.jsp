@@ -56,7 +56,7 @@
 	        var memCode = '${sessionScope.loginUser.mem_code}';
 	        var boardNo = '${contentView.board_no}';
 	        var memName = '${sessionScope.loginUser.mem_nick}';
-	      
+			var userId = '${contentView.user_id}';
 
 	        var xhr = new XMLHttpRequest();
 	        xhr.open("POST", "/community/updateLike", true);
@@ -71,7 +71,7 @@
 	                document.getElementById("like-button").innerHTML = likes ? "❤️" : "🤍";
 	            }
 	        };
-	        xhr.send(JSON.stringify({ mem_code: memCode, board_no: boardNo, mem_nick: memName }));
+	        xhr.send(JSON.stringify({ mem_code: memCode, board_no: boardNo, mem_nick: memName, user_id :userId }));
 	    }
 
 	/*     window.onload = initializeLikeButton; */
@@ -165,19 +165,17 @@
 	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
 	<div class="container">
-		<input type="hidden" name="board_views" value="${contentView.board_views}">
+		<input type="hidden" name="board_views"
+			value="${contentView.board_views}">
 
-		<h1 class="post-title">${contentView.board_title}</h1> 
-		<div class="view-num">
-		조회수 ${contentView.board_views}
-		</div>
+		<h1 class="post-title">${contentView.board_title}</h1>
+		<div class="view-num">조회수 ${contentView.board_views}</div>
 		<div class="post-header">
-		    <a href="/community/myfeed/${contentView.mem_code}" class="profile-link">
-		        <img src="/static/Images/pet/${contentView.pet_img}" alt="프로필 이미지"
-		            class="profile-image" />
-		        <span class="user-name">${contentView.user_id}</span>
-		    </a>
-		    <span class="post-time">${contentView.board_created}</span>
+			<a href="/community/myfeed/${contentView.mem_code}"
+				class="profile-link"> <img
+				src="/static/Images/pet/${contentView.pet_img}" alt="프로필 이미지"
+				class="profile-image" /> <span class="user-name">${contentView.user_id}</span>
+			</a> <span class="post-time">${contentView.board_created}</span>
 		</div>
 		<hr />
 		<div class="post-content">${contentView.board_content}</div>
@@ -190,6 +188,7 @@
 
 				<!-- 좋아요 버튼 -->
 				<button id="like-button" onclick="updateLike()">
+				<input type="hidden" name="parent_user_nick" value="${contentView.user_id}">
 					<c:choose>
 						<c:when test="${isliked == 1}">
 					                        ❤️ <!-- 채워진 하트: 이미 좋아요를 누른 경우 -->
@@ -257,14 +256,23 @@
 
 
 			<c:forEach var="comment" items="${commentList}">
+			
+				
 				<div class="comment"
 					style="padding-left: ${comment.comment_order_no * 20}px;">
-			<a href="/community/myfeed/${comment.mem_code}" class="profile-link">
-					<img src="/static/Images/pet/${comment.pet_img}"
-						alt="Profile Image" class="profile-image"> <span
-						class="user-name">${comment.user_id}</span>: <span
-						class="comment-content preformatted-text">${fn:escapeXml(comment.comment_content)}</span> </a>
-					<span class="comment-time">${comment.created_date}</span>
+					<a href="/community/myfeed/${comment.mem_code}"
+						class="profile-link"> <c:choose>
+							<c:when test="${empty comment.pet_img}">
+								<img src="/static/Images/pet/noPetImg.jpg" alt="Profile Image"
+									class="profile-image">
+							</c:when>
+							<c:otherwise>
+								<img src="/static/Images/pet/${comment.pet_img}"
+									alt="Profile Image" class="profile-image">
+							</c:otherwise>
+						</c:choose><span class="user-name">${comment.user_id}</span>:&nbsp;&nbsp;<span
+						class="comment-content preformatted-text">${fn:escapeXml(comment.comment_content)}</span>
+						<span class="comment-time">${comment.created_date}</span></a>
 					<button onclick="openReportPopup(${comment.comment_no},'댓글')"
 						class="report-comment-button">🚨 신고</button>
 					<div class="button-group">
@@ -297,6 +305,7 @@
 					<div id="replyForm-${comment.comment_no}" class="reply-section"
 						style="display: none;">
 						<form action="/community/commentReply" method="post">
+							<input type="hidden" name="parent_user_nick" value="${comment.user_id}">
 							<input type="hidden" name="mem_code"
 								value="${sessionScope.loginUser.mem_code}"> <input
 								type="hidden" name="mem_nick"
@@ -308,7 +317,7 @@
 							<input type="hidden" name="comment_level"
 								value="${comment.comment_level}"> <input type="hidden"
 								name="comment_order_no" value="${comment.comment_order_no}">
-
+						
 							<textarea name="comment_content" placeholder="대댓글을 입력하세요..."
 								required></textarea>
 							<button type="submit">답글 달기</button>
@@ -322,16 +331,25 @@
 							test="${commentReply.parent_comment_no == comment.comment_no}">
 							<div class="commentReply"
 								style="padding-left: ${(commentReply.comment_order_no) * 50}px;">
-						<a href="/community/myfeed/${commentReply.mem_code}" class="profile-link">
-								<img src="/static/Images/pet/${commentReply.pet_img}"
+								<a href="/community/myfeed/${commentReply.mem_code}"
+									class="profile-link"> <img
+									src="<c:choose>
+		                            <c:when test="${empty commentReply.pet_img}">
+		                                /static/Images/pet/noPetImg.jpg
+		                            </c:when>
+		                            <c:otherwise>
+		                                /static/Images/pet/${commentReply.pet_img}
+		                            </c:otherwise>
+		                            </c:choose>"
 									alt="Profile Image" class="profile-image"> <span
-									class="user-name">${commentReply.user_id}</span>: <span
+									class="user-name">${commentReply.user_id}</span>:&nbsp;&nbsp; <span
 									class="commentReply-content preformatted-text">${fn:escapeXml(commentReply.comment_content)}</span></a>
 								<span class="commentReply-time">${commentReply.created_date}</span>
 								<button onclick="openReportPopup(${commentReply.comment_no})"
 									class="report-comment-button">🚨 신고</button>
 								<div class="button-group">
-									<button onclick="toggleReplyForm(${commentReply.comment_no},'댓글')">답글</button>
+									<button
+										onclick="toggleReplyForm(${commentReply.comment_no},'댓글')">답글</button>
 
 									<!-- 대댓글 삭제 버튼: 현재 로그인한 사용자와 대댓글 작성자가 같을 경우만 보이기 -->
 									<c:if
@@ -359,6 +377,7 @@
 								<div id="replyForm-${commentReply.comment_no}"
 									class="reply-section" style="display: none;">
 									<form action="/community/commentReply" method="post">
+										<input type="hidden" name="parent_user_nick" value="${commentReply.user_id}">
 										<input type="hidden" name="mem_nick"
 											value="${sessionScope.loginUser.mem_nick}"> <input
 											type="hidden" name="mem_code"
@@ -386,7 +405,7 @@
 			<!-- 댓글 작성 폼 -->
 			<div class="comment-input">
 				<form action="/community/comment" method="post">
-
+				<input type="hidden" name="parent_user_nick" value="${contentView.user_id}">
 					<input type="hidden" name="mem_code"
 						value="${sessionScope.loginUser.mem_code}"> <input
 						type="hidden" name="mem_nick"

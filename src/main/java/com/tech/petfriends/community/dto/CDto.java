@@ -28,7 +28,7 @@ public class CDto {
     private String board_tag;
     private int board_likes;
     private int board_comment_count;
-
+    private String board_content_input;
 	
 //    RE_CBOARD_IMAGE 테이블
 	private int rebno;

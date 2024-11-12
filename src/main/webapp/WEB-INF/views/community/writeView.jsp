@@ -26,14 +26,22 @@
        <input type="hidden" name="mem_code" value="${sessionScope.loginUser.mem_code}">
        <input type="hidden" name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
        <input type="hidden" name="pet_img" value="${getpetimg.pet_img}">
-     
+       <input type="hidden" name="board_content_input" id="board_content_input">
       
-	   <div class="form-group">
-	       <div class="profile-info">
-	           <img src="/static/Images/pet/${getpetimg.pet_img}" alt="프로필 이미지 1" class="profile-image" />
-	           <label for="user_id" class="author-label">${sessionScope.loginUser.mem_nick}</label>
-	       </div>
-	   </div>
+		<div class="form-group">
+		    <div class="profile-info">
+		        <img src="<c:choose>
+		                    <c:when test="${empty getpetimg.pet_img}">
+		                        /static/Images/pet/noPetImg.jpg
+		                    </c:when>
+		                    <c:otherwise>
+		                        /static/Images/pet/${getpetimg.pet_img}
+		                    </c:otherwise>
+		                  </c:choose>" 
+		             alt="프로필 이미지 1" class="profile-image" />
+		        <label for="user_id" class="author-label">${sessionScope.loginUser.mem_nick}</label>
+		    </div>
+		</div>
        
         
         <label for="b_cate_no">카테고리</label>
@@ -97,6 +105,18 @@
         }
     });
 
+    // CKEditor에서 텍스트만 추출하여 숨겨진 input 필드에 저장
+    function setBoardContentInput() {
+        var textContent = CKEDITOR.instances.board_content.document.getBody().getText();
+        document.getElementById('board_content_input').value = textContent;
+    }
+
+    // 폼 제출 시 텍스트만 추출하여 board_content_input에 저장
+    document.getElementById('postForm').onsubmit = function() {
+        setBoardContentInput();
+    };
+    
+    
     // 대표 이미지 미리보기 함수
     function previewRepImage(event) {
         const file = event.target.files[0]; 
