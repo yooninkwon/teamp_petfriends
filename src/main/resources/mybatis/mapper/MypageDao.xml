@@ -4,6 +4,26 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.tech.petfriends.mypage.dao.MypageDao">
+
+	<update id="deletePetImgForPetCode">
+		UPDATE MEMBER_PET
+		SET PET_IMG = NULL
+		WHERE PET_CODE = #{pet_code}
+	</update>
+
+
+	<!-- 펫 코드로 펫 이미지 가져오기 -->
+	<select id="getPetImgForPetCode" resultType="String">
+		SELECT PET_IMG
+		FROM MEMBER_PET
+		WHERE PET_CODE = #{pet_code}
+	</select>
+
+	<!-- 펫 전체 리스트 -->
+	<select id="getPetList" resultType="com.tech.petfriends.mypage.dto.MyPetDto">
+		SELECT *
+		FROM MEMBER_PET
+	</select>
 	
 	<insert id="insertMyPet" parameterType="com.tech.petfriends.mypage.dto.MyPetDto">
 		INSERT INTO MEMBER_PET (PET_CODE, MEM_CODE, PET_TYPE, PET_NAME, PET_IMG, PET_BREED,

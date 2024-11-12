@@ -18,6 +18,15 @@ import com.tech.petfriends.mypage.dto.MyWishDto;
 @Mapper
 public interface MypageDao {
 	void insertMyPet(MyPetDto pet);
+	
+	// 펫 이미지 삭제
+	void deletePetImgForPetCode(String petCode);
+	
+	// 펫 전체 리스트 가져오기
+	ArrayList<MyPetDto> getPetList();
+	
+	// 펫코드로 이미지 가져오기
+	String getPetImgForPetCode(String petCode);
 
 	ArrayList<MyPetDto> getPetsByMemberCode(String mem_code);
 

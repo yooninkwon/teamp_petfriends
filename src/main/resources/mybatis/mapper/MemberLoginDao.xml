@@ -5,6 +5,16 @@
 
 <mapper namespace="com.tech.petfriends.login.mapper.MemberMapper">
 
+
+	<update id="updateCustomerType">
+	    UPDATE MEMBER
+	    SET mem_type = #{newType}
+	    WHERE mem_code IN
+	    <foreach item="id" collection="ids" open="(" separator="," close=")">
+	        #{id}
+	    </foreach>
+	</update>
+
 	<select id="memberList" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
 		SELECT *
 		FROM MEMBER

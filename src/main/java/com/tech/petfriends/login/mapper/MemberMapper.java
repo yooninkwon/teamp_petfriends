@@ -1,8 +1,10 @@
 package com.tech.petfriends.login.mapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
@@ -10,6 +12,9 @@ import com.tech.petfriends.mypage.dto.GradeDto;
 
 @Mapper
 public interface MemberMapper {
+	
+	// 회원 유형 변경
+	void updateCustomerType(@Param("ids") List<Long> ids, @Param("newType") String newType);
 	
 	// 회원 리스트
 	ArrayList<MemberLoginDto> memberList();
