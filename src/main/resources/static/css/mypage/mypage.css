@@ -8,6 +8,14 @@ body, html {
     flex-direction: column;
 }
 
+.on {
+	display: block;
+}
+
+.off {
+	display: none;
+}
+
 #container {
     display: flex;
     flex-direction: column;
@@ -24,7 +32,7 @@ body, html {
     background-color: #fff;
     width: 200px;
     height: auto;
-    max-height: 475px;
+    max-height: 520px;
     padding: 20px 0;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
@@ -806,18 +814,7 @@ h2 {
 .cart-container {
     padding: 20px;
 }
-.form-col {
-	display: flex;
-	text-align: center;
-    align-items: center;
-}
-.form-col input {
-	width: 100px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-}
+
 .addressModifyBtn {
 	background-color: white;
     border: black 2px solid;
@@ -1155,4 +1152,65 @@ h2 {
 .pagination a.active {
 	background-color: #545454;
 	color: white;
+}
+
+/* 펫호텔 예약내역 */ 
+
+.pethotel-table, .cart-summary {
+    margin-bottom: 40px;
+    width: 100%;
+    border-collapse: collapse;
+}
+.pethotel-table th {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+    color: #848684;
+}
+
+.pethotel-table td {
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+.pethotel-table .reserve-no {
+    font-weight: bold;
+    color: #333;
+}
+
+.numofpet {
+	font-weight: bold;
+	font-size: 14px;
+    color: #333;
+}
+.status {
+	font-weight: bold;
+    color: #333;
+}
+
+.space {
+    padding: 10px 0;
+    border:none;
+}
+h3 .orderAllItem {
+	cursor: pointer;
+	margin-left: 72%;
+}
+.detail-comment {
+	word-break: break-all;
+	max-width: 1140px;
+}
+
+#reserveDetailListTable .goBack {
+	cursor: pointer;
+	margin-top: 15px;
+	margin-left: 43%;
+}
+
+#reserveDetailList,
+#reserveList {
+	width: 1170px;
 }

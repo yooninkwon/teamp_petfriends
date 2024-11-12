@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.admin.dto.OrderStatusDto;
+import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
+import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dto.MyCartDto;
@@ -22,6 +24,15 @@ public interface MypageDao {
 	void insertMyPet(MyPetDto pet);
 	
 	// 내새꾸
+	// 펫 이미지 삭제
+	void deletePetImgForPetCode(String petCode);
+	
+	// 펫 전체 리스트 가져오기
+	ArrayList<MyPetDto> getPetList();
+	
+	// 펫코드로 이미지 가져오기
+	String getPetImgForPetCode(String petCode);
+
 	ArrayList<MyPetDto> getPetsByMemberCode(String mem_code);
 	void removeMainPet(String mem_code);
 	void setMainPet(String newlyChecked);
@@ -72,4 +83,11 @@ public interface MypageDao {
 	List<MyOrderDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
 	void deleteWishByProCode(String mem_code, String pro_code);
 
+	ArrayList<PethotelMemDataDto> pethotelReserveMypageMem(String mem_code);
+
+	PethotelMemDataDto pethotelReserveMypageMemNo(String reserveNo);
+
+	ArrayList<PethotelFormDataDto> pethotelReserveMypagePets(String reserveNo);
+
+	void pethotelReserveMyPageCancel(String reserveNo);
 }

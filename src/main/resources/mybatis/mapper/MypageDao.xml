@@ -4,6 +4,26 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.tech.petfriends.mypage.dao.MypageDao">
+
+	<update id="deletePetImgForPetCode">
+		UPDATE MEMBER_PET
+		SET PET_IMG = NULL
+		WHERE PET_CODE = #{pet_code}
+	</update>
+
+
+	<!-- 펫 코드로 펫 이미지 가져오기 -->
+	<select id="getPetImgForPetCode" resultType="String">
+		SELECT PET_IMG
+		FROM MEMBER_PET
+		WHERE PET_CODE = #{pet_code}
+	</select>
+
+	<!-- 펫 전체 리스트 -->
+	<select id="getPetList" resultType="com.tech.petfriends.mypage.dto.MyPetDto">
+		SELECT *
+		FROM MEMBER_PET
+	</select>
 	
 	<!-- 회원가입시 펫등록 -->
 	<insert id="insertMyPet" parameterType="com.tech.petfriends.mypage.dto.MyPetDto">
@@ -310,4 +330,30 @@
 	    FROM MEMBER_WISHLIST
 	    WHERE MEM_CODE = #{mem_code} AND PRO_CODE = #{pro_code}
 	</delete>
+	<select id="pethotelReserveMypageMem" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
+		SELECT HPHM.*, MEM.MEM_NICK 
+		FROM HELP_PETHOTEL_MEM HPHM, MEMBER MEM 
+		WHERE
+		HPHM.MEM_CODE = MEM.MEM_CODE
+		AND HPHM.MEM_CODE = #{mem_code}
+		ORDER BY HPH_RGE_DATE DESC
+	</select>
+	<select id="pethotelReserveMypageMemNo" resultType="com.tech.petfriends.helppetf.dto.PethotelMemDataDto">
+		SELECT * 
+		FROM HELP_PETHOTEL_MEM
+		WHERE
+		HPH_RESERVE_NO = #{reserveNo}
+	</select>
+	<select id="pethotelReserveMypagePets" resultType="com.tech.petfriends.helppetf.dto.PethotelFormDataDto">
+		SELECT * 
+		FROM HELP_PETHOTEL_PETS
+		WHERE
+		HPH_RESERVE_NO = #{reserveNo}
+	</select>
+	<update id="pethotelReserveMyPageCancel">
+		UPDATE HELP_PETHOTEL_MEM 
+		SET HPH_STATUS = '취소됨' 
+		WHERE HPH_RESERVE_NO = #{reserveNo}
+	</update>
+
 </mapper>
