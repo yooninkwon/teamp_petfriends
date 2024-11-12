@@ -7,7 +7,7 @@ import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 
 @Service
-public class AdminPethotelIntroData implements AdminServiceInterface {
+public class AdminPethotelIntroData implements AdminExecuteModel {
 	
 	AdminPageDao adminDao;
 	

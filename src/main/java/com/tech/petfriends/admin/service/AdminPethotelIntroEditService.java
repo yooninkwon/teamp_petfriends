@@ -7,18 +7,20 @@ import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 
 @Service
-public class AdminPethotelIntroEditService implements AdminServiceInterface {
+public class AdminPethotelIntroEditService implements AdminExecuteModel {
 	
-	AdminPageDao adminDao;
+	private AdminPageDao adminDao;
 	
-	public AdminPethotelIntroEditService(AdminPageDao adminDao) {
+	private PethotelIntroDto dto;
+	
+	public AdminPethotelIntroEditService(AdminPageDao adminDao, PethotelIntroDto dto) {
 		this.adminDao = adminDao;
+		this.dto = dto;
 	}
 	
 	@Override
 	public void execute(Model model) {
-		// RequestBody로 전달받은 DTO 추출
-		PethotelIntroDto dto = (PethotelIntroDto) model.getAttribute("dto");
+
 		String intro_line1 = dto.getIntro_line1();
 		String intro_line2 = dto.getIntro_line2();
 		String intro_line3 = dto.getIntro_line3();

@@ -1,7 +1,6 @@
 package com.tech.petfriends.admin.service;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,7 +11,7 @@ import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 
 @Service
-public class AdminPetteacherDataService implements AdminServiceInterface {
+public class AdminPetteacherDataService implements AdminExecuteModelRequest {
 
 	private AdminPageDao adminDao;
 
@@ -21,10 +20,7 @@ public class AdminPetteacherDataService implements AdminServiceInterface {
 	}
 
 	@Override
-	public void execute(Model model) {
-		Map<String, Object> map = model.asMap();
-		
-		HttpServletRequest request = (HttpServletRequest) map.get("request");
+	public void execute(HttpServletRequest request, Model model) {
 		
 		String type = request.getParameter("type");
 		String category = request.getParameter("category");

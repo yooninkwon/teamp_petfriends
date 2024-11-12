@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
-import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
+import com.tech.petfriends.helppetf.service.HelppetfExecuteModel;
 
 
 @Controller
@@ -23,7 +23,7 @@ public class HelpPetfController {
 	@Autowired
 	HelpPetfDao helpDao;
 	
-	HelppetfServiceInter helpServiceInterface;
+	HelppetfExecuteModel helpServiceInterface;
 
 	@GetMapping("/pethotel/pethotel_main") // 펫호텔 메인
 	public String pethotelMain(Model model) {
