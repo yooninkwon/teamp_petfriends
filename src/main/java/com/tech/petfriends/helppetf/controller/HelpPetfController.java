@@ -52,7 +52,6 @@ public class HelpPetfController {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "pet_hospital");
 		model.addAttribute("apiKey", apikeyConfig.getKakaoApikey());
-
 		return "/helppetf/find/pet_hospital";
 	}
 
@@ -61,7 +60,6 @@ public class HelpPetfController {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "pet_facilities");
 		model.addAttribute("apiKey", apikeyConfig.getKakaoApikey());
-		
 		return "/helppetf/find/pet_facilities";
 	}
 }

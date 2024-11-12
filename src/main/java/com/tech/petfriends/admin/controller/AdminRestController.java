@@ -79,12 +79,10 @@ public class AdminRestController {
 	AdminExecuteModelRequest adminExecuteMR;
 
 	@PutMapping("/pethotel_reserve_update")
-	public String pethotelReserveUpdate(@RequestBody Map<String, String> statusMap, HttpServletRequest request,
+	public void pethotelReserveUpdate(@RequestBody Map<String, String> statusMap, HttpServletRequest request,
 			Model model) {
 		adminExecuteM = new AdminPethotelReserveUpdateService(adminDao, statusMap);
 		adminExecuteM.execute(model);
-		
-		return "{\"status\": \"success\"}";
 	}
 
 	@GetMapping("/pethotel_admin_reserve_detail")
@@ -122,27 +120,21 @@ public class AdminRestController {
 	}
 
 	@DeleteMapping("/petteacher_admin_data_forDelete")
-	public String petteacherDataForDelete(HttpServletRequest request, Model model) {
+	public void petteacherDataForDelete(HttpServletRequest request, Model model) {
 		adminExecuteMR = new AdminPetteacherDeleteService(adminDao);
 		adminExecuteMR.execute(model, request);
-
-		return "{\"status\": \"success\"}";
 	}
 
 	@PostMapping("/petteacher_admin_data_forWrite")
-	public String petteacherDataForWrite(@RequestBody PetteacherDto dto, Model model) {
+	public void petteacherDataForWrite(@RequestBody PetteacherDto dto, Model model) {
 		adminExecuteM = new AdminPetteacherWriteService(adminDao, dto);
 		adminExecuteM.execute(model);
-		
-		return "{\"status\": \"success\"}";
 	}
 
 	@PutMapping("/petteacher_admin_data_forEdit")
-	public String petteacherDataForEdit(@RequestBody PetteacherDto dto, HttpServletRequest request, Model model) {
+	public void petteacherDataForEdit(@RequestBody PetteacherDto dto, HttpServletRequest request, Model model) {
 		adminExecuteMR = new AdminPetteacherEditService(adminDao, dto);
 		adminExecuteMR.execute(model, request);
-
-		return "{\"status\": \"success\"}";
 	}
 
 	@GetMapping("/pethotel_intro_data")
@@ -160,19 +152,15 @@ public class AdminRestController {
 	}
 
 	@PutMapping("/pethotel_admin_intro_dataForEdit")
-	public String pethotelIntroForEdit(@RequestBody PethotelIntroDto dto, HttpServletRequest request, Model model) {
+	public void pethotelIntroForEdit(@RequestBody PethotelIntroDto dto, HttpServletRequest request, Model model) {
 		adminExecuteM = new AdminPethotelIntroEditService(adminDao, dto);
 		adminExecuteM.execute(model);
-
-		return "{\"status\": \"success\"}";
 	}
 
 	@PutMapping("/pethotel_admin_info_dataForEdit")
-	public String pethotelInfoForEdit(@RequestBody PethotelInfoDto dto, HttpServletRequest request, Model model) {
+	public void pethotelInfoForEdit(@RequestBody PethotelInfoDto dto, HttpServletRequest request, Model model) {
 		adminExecuteM = new AdminPethotelInfoEditService(adminDao, dto);
 		adminExecuteM.execute(model);
-
-		return "{\"status\": \"success\"}";
 	}
 
 	@GetMapping("/notice_notice_list")

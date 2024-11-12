@@ -14,10 +14,11 @@ import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 
 @Service
-public class FindAddrTMapService implements HelppetfExecuteModelSession {
+public class FindAddrMapService implements HelppetfExecuteModelSession {
 	
 	private HelpPetfDao helpDao;
-	public FindAddrTMapService(HelpPetfDao helpDao) {
+	
+	public FindAddrMapService(HelpPetfDao helpDao) {
 		this.helpDao = helpDao;
 	}
 

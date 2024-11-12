@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tech.petfriends.configuration.ApikeyConfig;
@@ -20,7 +21,7 @@ import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 import com.tech.petfriends.helppetf.service.AdoptionGetJson;
-import com.tech.petfriends.helppetf.service.FindAddrTMapService;
+import com.tech.petfriends.helppetf.service.FindAddrMapService;
 import com.tech.petfriends.helppetf.service.HelppetfExecuteModel;
 import com.tech.petfriends.helppetf.service.HelppetfExecuteModelRequest;
 import com.tech.petfriends.helppetf.service.HelppetfExecuteModelRequestSession;
@@ -42,11 +43,8 @@ public class HelpPetfRestController {
 	@Autowired
 	ApikeyConfig apikeyConfig;
 	
-	private final AdoptionGetJson adoptionGetJson;
-
-	public HelpPetfRestController(AdoptionGetJson adoptionGetJson) {
-		this.adoptionGetJson = adoptionGetJson;
-	}
+	@Autowired
+	WebClient webClient;
 	
 	@Autowired
 	HelpPetfDao helpDao;
@@ -85,10 +83,13 @@ public class HelpPetfRestController {
 		return (String) model.getAttribute("json");
 	}
 	
+	@SuppressWarnings("unchecked")
 	@GetMapping("/adoption/getJson")
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson(HttpServletRequest request, Model model)
 			throws Exception {
-		return adoptionGetJson.fetchAdoptionData(model, request);
+		helppetfMR = new AdoptionGetJson(apikeyConfig, webClient);
+		helppetfMR.execute(model, request);
+		return (Mono<ResponseEntity<HelpPetfAdoptionItemsVo>>) model.getAttribute("jsonData");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -108,7 +109,7 @@ public class HelpPetfRestController {
 	
 	@GetMapping("/find/adress_data") // 주변 반려동물 시설 찾기 페이지
 	public String pet_facilities(Model model, HttpSession session) throws JsonProcessingException {
-		helppetfMS = new FindAddrTMapService(helpDao);
+		helppetfMS = new FindAddrMapService(helpDao);
 		helppetfMS.execute(model, session);
 		return (String) model.getAttribute("jsonData");
 	}
