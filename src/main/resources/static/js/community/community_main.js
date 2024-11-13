@@ -122,7 +122,6 @@ function fetchMyActivity() {
 			console.log("data:", data);
 			const activityBox = document.querySelector('.sidebar-notice p');
 			activityBox.innerHTML = '';  // 기존 내용을 지우고 새 내용으로 업데이트합니다.
-
 			if (data.length > 0) {
 				data.forEach(activity => {
 					let activityMessage = ''; // 기본 메시지 변수
@@ -167,6 +166,7 @@ function fetchUserActivity() {
 	})
 		.then(response => response.json())
 		.then(data => {
+			console.log("data:", data);
 			const activityBox = document.querySelector('.sidebar-notice p');
 			activityBox.innerHTML = '';  // 기존 내용을 지우고 새 내용으로 업데이트합니다.
 

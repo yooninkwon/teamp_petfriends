@@ -8,10 +8,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/static/js/community/community_main.js"></script>
 <link rel="stylesheet" href="/static/css/community/community_main.css">
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -105,15 +105,15 @@
 
 						<li><a href="/community/writeView">글쓰기</a></li>
 						
-					    <li><a href="#" onclick="fetchUserActivity()">내 소식 <span id="activity-count" class="activity-count"></span></a></li>
-						<li><a href="#" onclick="fetchMyActivity()">내 활동</a></li>
+					    <li><a href="javascript:void(0);" onclick="fetchUserActivity()">내 소식</a></li>
+						<li><a href="javascript:void(0);" onclick="fetchMyActivity()">내 활동</a></li>
 						<a href="#" onclick="fetchMyNeighborList()">내 이웃 목록</a>
 				</ul>
-				</c:if>
 				<div class="sidebar-notice">
 					<h3>소식상자</h3>
 					<p></p>
 				</div>
+				</c:if>
 				<div class="sidebar-from">
 					<h4>From. 블로그씨</h4>
 					<p>블로그씨는 최근 다녀온 몽골여행 기록으로 브이로그를 만들었어요.</p>

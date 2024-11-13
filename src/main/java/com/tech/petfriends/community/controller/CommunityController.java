@@ -1,7 +1,6 @@
 package com.tech.petfriends.community.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import com.tech.petfriends.community.dto.CCommunityFriendDto;
 import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.dto.CReportDto;
 import com.tech.petfriends.community.mapper.IDao;
+import com.tech.petfriends.community.service.CChatService;
 import com.tech.petfriends.community.service.CCommentReplyService;
 import com.tech.petfriends.community.service.CCommentService;
 import com.tech.petfriends.community.service.CContentViewService;
@@ -53,7 +53,8 @@ public class CommunityController {
 	@Autowired
 	private IDao iDao;
 
-	@Autowired
+	
+	 @Autowired
 	private CServiceInterface serviceInterface;
 
 	// 커뮤니티 페이지로 이동
@@ -362,7 +363,7 @@ public class CommunityController {
 	    System.out.println("Returned activityList: " + activityList);
 	
 	    return activityList;
-     
 	}
 	
+
 }

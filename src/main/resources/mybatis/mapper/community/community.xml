@@ -84,15 +84,15 @@
 	<select id="getPostsByCategory" parameterType="int"
 		resultType="com.tech.petfriends.community.dto.CDto">
 		SELECT
-		CB.*,
-		RCI.CHREPFILE,
-		NVL(MP.PET_IMG, 'noPetImg.jpg') AS PET_IMG
+		    CB.*,
+		    RCI.CHREPFILE,
+		    NVL(MP.PET_IMG, 'NOPETIMG.JPG') AS PET_IMG
 		FROM
-		COMMUNITY_BOARD CB
+		    COMMUNITY_BOARD CB
 		LEFT JOIN
-		RE_CBOARD_IMAGE RCI ON CB.BOARD_NO = RCI.BOARD_NO
+		    RE_CBOARD_IMAGE RCI ON CB.BOARD_NO = RCI.BOARD_NO
 		LEFT JOIN
-		MEMBER_PET MP ON CB.mem_code = MP.mem_code
+		    MEMBER_PET MP ON CB.MEM_CODE = MP.MEM_CODE AND MP.PET_MAIN = 'Y'
 		<if test="b_cate_no != 0">
 			WHERE CB.B_CATE_NO = #{b_cate_no}
 		</if>
@@ -130,23 +130,28 @@
 
 
 	<delete id="deleteLikes">
-		DELETE FROM COMMUNITY_LIKES WHERE BOARD_NO = #{board_no}
+		DELETE FROM COMMUNITY_LIKES WHERE BOARD_NO =
+		#{board_no}
 	</delete>
 
 	<delete id="deleteComments">
-		DELETE FROM COMMUNITY_COMMENT WHERE BOARD_NO = #{board_no}
+		DELETE FROM COMMUNITY_COMMENT WHERE BOARD_NO =
+		#{board_no}
 	</delete>
 
 	<delete id="delete">
-		DELETE FROM COMMUNITY_BOARD WHERE BOARD_NO = #{board_no}
+		DELETE FROM COMMUNITY_BOARD WHERE BOARD_NO =
+		#{board_no}
 	</delete>
 
 	<delete id="deleteReports">
-		DELETE FROM COMMUNITY_REPORT WHERE BOARD_NO = #{board_no}
+		DELETE FROM COMMUNITY_REPORT WHERE BOARD_NO =
+		#{board_no}
 	</delete>
 
 	<delete id="deleteImages">
-		DELETE FROM RE_CBOARD_IMAGE WHERE BOARD_NO = #{board_no}
+		DELETE FROM RE_CBOARD_IMAGE WHERE BOARD_NO =
+		#{board_no}
 	</delete>
 
 
@@ -167,11 +172,10 @@
 		resultType="com.tech.petfriends.community.dto.CCommentDto">
 		SELECT DISTINCT CC.*, MP.PET_IMG
 		FROM COMMUNITY_COMMENT CC
-		JOIN MEMBER_PET MP ON CC.MEM_CODE = MP.MEM_CODE
-		WHERE CC.COMMENT_LEVEL
-		= 0
+		LEFT JOIN MEMBER_PET MP ON CC.MEM_CODE = MP.MEM_CODE AND MP.PET_MAIN =
+		'Y'
+		WHERE CC.COMMENT_LEVEL = 0
 		AND CC.BOARD_NO = #{board_no}
-		AND MP.PET_MAIN = 'Y'
 		ORDER BY
 		CC.COMMENT_NO
 	</select>
@@ -193,11 +197,11 @@
 		resultType="com.tech.petfriends.community.dto.CCommentDto">
 		SELECT CC.*, MP.PET_IMG
 		FROM COMMUNITY_COMMENT CC
-		JOIN
-		MEMBER_PET MP ON CC.MEM_CODE = MP.MEM_CODE
-		WHERE CC.COMMENT_LEVEL >= 1
+		LEFT JOIN
+		MEMBER_PET MP ON CC.MEM_CODE = MP.MEM_CODE AND MP.PET_MAIN = 'Y'
+		WHERE
+		CC.COMMENT_LEVEL >= 1
 		AND CC.BOARD_NO = #{board_no}
-		AND MP.PET_MAIN = 'Y'
 		ORDER BY
 		CC.COMMENT_LEVEL
 	</select>
@@ -349,33 +353,34 @@
 		resultType="com.tech.petfriends.community.dto.CCommunityFriendDto">
 		SELECT
 		CF.FRIEND_MEM_NICK,
-		COALESCE(MP_FRIEND.PET_IMG, 'noPetImg.jpg') AS PET_IMG,
-		M.MEM_NICK AS USER_MEM_NICK,
-		MF.MEM_NICK AS FRIEND_MEM_NICK,
-		MF.MEM_CODE AS FRIEND_MEM_CODE
-		FROM COMMUNITY_FRIEND CF
-		JOIN MEMBER M ON
-		CF.MEM_NICK = M.MEM_NICK
-		LEFT JOIN MEMBER_PET MP ON M.MEM_CODE =
-		MP.MEM_CODE
-		JOIN MEMBER MF ON CF.FRIEND_MEM_NICK = MF.MEM_NICK
+		M.MEM_CODE AS FRIEND_MEM_CODE,
+		MP.PET_IMG
+		FROM
+		COMMUNITY_FRIEND CF
 		LEFT JOIN
-		MEMBER_PET MP_FRIEND ON MF.MEM_CODE = MP_FRIEND.MEM_CODE
+		MEMBER M ON M.MEM_NICK = CF.FRIEND_MEM_NICK
+		LEFT JOIN
+		MEMBER_PET MP ON MP.MEM_CODE = M.MEM_CODE AND MP.PET_MAIN = 'Y'
 		WHERE
-		MP_FRIEND.PET_MAIN = 'Y' AND CF.MEM_NICK = #{mem_nick}
+		CF.MEM_NICK = #{mem_nick}
 	</select>
 
 	<select id="storyList"
 		resultType="com.tech.petfriends.community.dto.CDto">
 		SELECT * FROM (
 		SELECT B.*,
-		NVL(P.PET_IMG, 'NOPETIMG.JPG') AS PET_IMG,
+		NVL(P.PET_IMG, 'NOPETIMG.JPG') AS
+		PET_IMG,
 		F.FRIEND_MEM_NICK,
-		ROW_NUMBER() OVER (PARTITION BY B.USER_ID ORDER BY B.BOARD_CREATED DESC) AS rn
+		ROW_NUMBER() OVER (PARTITION BY B.USER_ID
+		ORDER BY B.BOARD_CREATED DESC) AS rn
 		FROM COMMUNITY_BOARD B
-		LEFT JOIN MEMBER_PET P ON B.MEM_CODE = P.MEM_CODE AND P.PET_MAIN = 'Y'
-		LEFT JOIN COMMUNITY_FRIEND F ON B.USER_ID = F.MEM_NICK
-		WHERE B.BOARD_CREATED >= SYSDATE - INTERVAL '1' DAY
+		LEFT JOIN
+		MEMBER_PET P ON B.MEM_CODE = P.MEM_CODE AND P.PET_MAIN = 'Y'
+		LEFT JOIN
+		COMMUNITY_FRIEND F ON B.USER_ID = F.MEM_NICK
+		WHERE B.BOARD_CREATED >=
+		SYSDATE - INTERVAL '1' DAY
 		AND F.FRIEND_MEM_NICK = #{mem_nick}
 		) story
 		WHERE story.rn = 1
@@ -388,13 +393,18 @@
 	<!-- 제목, 내용, 작성자에서 검색 -->
 	<select id="searchPosts"
 		resultType="com.tech.petfriends.community.dto.CDto">
-		SELECT CD.*, RCI.*, COALESCE(MP.PET_IMG, 'noPetImg.jpg') AS PET_IMG
+		SELECT CD.*, RCI.*, COALESCE(MP.PET_IMG, 'noPetImg.jpg') AS
+		PET_IMG
 		FROM COMMUNITY_BOARD CD
-		LEFT JOIN RE_CBOARD_IMAGE RCI ON CD.BOARD_NO = RCI.BOARD_NO
-		LEFT JOIN MEMBER_PET MP ON CD.MEM_CODE = MP.MEM_CODE AND MP.PET_MAIN = 'Y'
-		WHERE BOARD_TITLE LIKE '%' || #{query} || '%'
+		LEFT JOIN RE_CBOARD_IMAGE RCI ON
+		CD.BOARD_NO = RCI.BOARD_NO
+		LEFT JOIN MEMBER_PET MP ON CD.MEM_CODE =
+		MP.MEM_CODE AND MP.PET_MAIN = 'Y'
+		WHERE BOARD_TITLE LIKE '%' ||
+		#{query} || '%'
 		OR BOARD_CONTENT_INPUT LIKE '%' || #{query} || '%'
-		OR USER_ID LIKE '%' || #{query} || '%'
+		OR
+		USER_ID LIKE '%' || #{query} || '%'
 		ORDER BY BOARD_CREATED DESC
 	</select>
 
@@ -430,13 +440,16 @@
 		SELECT
 		CA.*,
 		M1.MEM_CODE AS USER_MEM_CODE,
-		M2.MEM_CODE AS RELATED_USER_MEM_CODE
+		M2.MEM_CODE AS
+		RELATED_USER_MEM_CODE
 		FROM
 		COMMUNITY_ACTIVITY CA
 		JOIN
-		MEMBER M1 ON CA.USER_ID = M1.MEM_NICK
+		MEMBER M1 ON
+		CA.USER_ID = M1.MEM_NICK
 		JOIN
-		MEMBER M2 ON CA.RELATED_USER_ID = M2.MEM_NICK
+		MEMBER M2 ON CA.RELATED_USER_ID =
+		M2.MEM_NICK
 		WHERE
 		M1.MEM_NICK = #{user_id}
 		ORDER BY
@@ -458,5 +471,9 @@
 		ca.CREATED_AT DESC
 	</select>
 
+	<insert id="insertMessage" parameterType="com.tech.petfriends.community.dto.CDto">
+        INSERT INTO COMMUNITY_CHAT (message_id, sender, receiver, message_content, message_date)
+        VALUES (COMMUNITY_CHAT_SEQ.NEXTVAL,#{sender}, #{receiver}, #{message_content}, SYSDATE)
+    </insert>
 
 </mapper>

@@ -56,6 +56,10 @@ public class CDto {
 	private String content;
 	private Date created_at;
 	private String related_user_mem_code ;
+
+
+	
+	
 }
 
 

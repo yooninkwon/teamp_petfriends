@@ -102,5 +102,8 @@ public interface IDao {
 	public ArrayList<CDto> myActivityList(String user_id);
 
 	public ArrayList<CDto> userActivityList(String user_id);
+	
+	public void insertMessage (String sender, String receiver, String message_content );
+
 }
 
