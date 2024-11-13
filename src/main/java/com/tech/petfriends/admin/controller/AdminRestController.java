@@ -137,14 +137,14 @@ public class AdminRestController {
 		adminExecuteMR.execute(model, request);
 	}
 
-	@GetMapping("/pethotel_intro_data")
+	@GetMapping("/pethotel_admin_intro_data")
 	public PethotelIntroDto pethotelIntroData(Model model) {
 		adminExecuteM = new AdminPethotelIntroData(adminDao);
 		adminExecuteM.execute(model);
 		return (PethotelIntroDto) model.getAttribute("dto");
 	}
 
-	@GetMapping("/pethotel_info_data")
+	@GetMapping("/pethotel_admin_info_data")
 	public PethotelInfoDto pethotelInfoData(Model model) {
 		adminExecuteM = new AdminPethotelInfoData(adminDao);
 		adminExecuteM.execute(model);

@@ -61,7 +61,7 @@ $(document).ready(function() {
 		// 데이터를 요청하여 DB에 저장된 펫호텔 소개글 데이터 불러옴
 		function fetchData() {
 			$.ajax({
-				url: '/admin/pethotel_intro_data',
+				url: '/admin/pethotel_admin_intro_data',
 				method: 'GET',
 				dataType: 'json',
 				success: function(data) {
@@ -110,7 +110,7 @@ $(document).ready(function() {
 
 		function fetchData() {
 			$.ajax({
-				url: '/admin/pethotel_info_data',
+				url: '/admin/pethotel_admin_info_data',
 				method: 'GET',
 				dataType: 'json',
 				success: function(data) {
