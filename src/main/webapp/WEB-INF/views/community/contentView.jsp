@@ -274,7 +274,7 @@
 						class="comment-content preformatted-text">${fn:escapeXml(comment.comment_content)}</span>
 						<span class="comment-time">${comment.created_date}</span></a>
 					<button onclick="openReportPopup(${comment.comment_no},'댓글')"
-						class="report-comment-button">🚨 신고</button>
+						class="report-comment-button">🚨 신고</button> </a>
 					<div class="button-group">
 						<button onclick="toggleReplyForm(${comment.comment_no})">답글</button>
 
@@ -331,7 +331,7 @@
 							test="${commentReply.parent_comment_no == comment.comment_no}">
 							<div class="commentReply"
 								style="padding-left: ${(commentReply.comment_order_no) * 50}px;">
-								<a href="/community/myfeed/${commentReply.mem_code}"
+								<a href="/community/myfeed/${commentReply.mem_code}" 
 									class="profile-link"> <img
 									src="<c:choose>
 		                            <c:when test="${empty commentReply.pet_img}">
@@ -343,8 +343,8 @@
 		                            </c:choose>"
 									alt="Profile Image" class="profile-image"> <span
 									class="user-name">${commentReply.user_id}</span>:&nbsp;&nbsp; <span
-									class="commentReply-content preformatted-text">${fn:escapeXml(commentReply.comment_content)}</span></a>
-								<span class="commentReply-time">${commentReply.created_date}</span>
+									class="commentReply-content preformatted-text">${fn:escapeXml(commentReply.comment_content)}</span>
+								<span class="commentReply-time">${commentReply.created_date}</span></a>
 								<button onclick="openReportPopup(${commentReply.comment_no})"
 									class="report-comment-button">🚨 신고</button>
 								<div class="button-group">

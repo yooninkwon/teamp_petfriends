@@ -1,6 +1,7 @@
 package com.tech.petfriends.community.mapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -97,6 +98,12 @@ public interface IDao {
 	public void likeActivity( String user_id, String related_user_id,String board_no);
 
 	public void friendActivity( String user_id, String related_user_id);
+
+	public ArrayList<CDto> myActivityList(String user_id);
+
+	public ArrayList<CDto> userActivityList(String user_id);
+	
+	public void insertMessage (String sender, String receiver, String message_content );
 
 }
 

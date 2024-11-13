@@ -11,136 +11,51 @@
 <link rel="stylesheet" href="/static/css/community/community_myfeed.css">
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+<script src="/static/js/community/community_myfeed.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <script>
-	function checkAddFriend(loginUser) {
-	    var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}"; // 로그인 여부 확인
+var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
 
-	    if (isLoggedIn === "false") { // 로그인되지 않은 경우
-	        alert('로그인이 필요합니다');
-	        return false;  // 링크 이동 막기
-	    } else {
-	        alert('친구가 추가됐습니다');
-	        return true;  // 친구 추가 실행
-	    }
-	}
-	
-	function checkDelFriend(loginUser) {
-	    var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}"; // 로그인 여부 확인
+var sender = "${sessionScope.loginUser.mem_nick}";
+var receiver = "${myFeedName.mem_nick}";
+var socket;
 
-	    if (isLoggedIn === "false") { // 로그인되지 않은 경우
-	        alert('로그인이 필요합니다');
-	        return false;  // 링크 이동 막기
-	    } else {
-	        alert('친구가 삭제됐습니다');
-	        return true;  // 친구 추가 실행
-	    }
-	}
-	function fetchNeighborList(mem_code, mem_nick) {
-	    $.ajax({
-	        url: '/community/neighborList/' + mem_code,
-	        method: 'GET',
-	        data: { mem_nick: mem_nick }, // mem_nick 전달
-	        success: function(data) {
-	            console.log("data:", data);
-	            let html = '<h4>' + mem_nick + '의 이웃 목록</h4><ul>';
+function openChat(receiver) {
+    document.getElementById("chatBox").style.display = "block";
+    socket = new WebSocket("ws://localhost:9002/ws/chat");
+    console.log("done")
+    socket.onmessage = function(event) {
+        var chatMessages = document.getElementById("chatMessages");
+        
+        var messageData = JSON.parse(event.data);
+        
+        var newMessage = document.createElement("div");
+        newMessage.innerText =  messageData.sender + " : " + messageData.message_content;
+        
+        chatMessages.appendChild(newMessage);
+    };
+}
 
-	            if (data.length === 0) {
-	                html += '<li>이웃이 없습니다.</li>'; // 이웃 목록이 없을 경우 메시지 출력
-	            } else {
-	                // 이웃 목록 데이터 순회
-	                data.forEach(neighbor => {
-	                    // 이웃의 이름과 프로필 이미지 출력
-	                    html += `
-	                        <div class="neighbor-item">
-	                            <div class="neighbor-pet-img-container">
-	                                <a href="/community/myfeed/\${neighbor.friend_mem_code}" target="_blank">
-	                                    <img src="/static/Images/pet/\${neighbor.pet_img || 'noPetImg.jpg'}" alt="${neighbor.friend_mem_nick}" class="neighbor-pet-img">
-	                                </a>
-	                            </div>
-	                            <div class="neighbor-name">
-	                                <a href="/community/myfeed/\${neighbor.friend_mem_code}" target="_blank">
-	                                    \${neighbor.friend_mem_nick}
-	                                </a>
-	                            </div>
-	                        </div>
-	                    `;
-	                });
-	            }
+function sendMessage(event) {
+    if (event.key === "Enter") {
+        var message = document.getElementById("chatInput").value;
+        socket.send(JSON.stringify({    	
+            sender: sender,           // JSP에서 받은 sender 값
+            receiver: receiver,       // JSP에서 받은 receiver 값
+            message_content: message  // 입력된 메시지 내용
+        }));
+         	console.log("sender",sender);
+         	console.log("receiver",receiver);
+         	console.log("message_content",message);
+        document.getElementById("chatInput").value = "";
+    }
+}
 
-	            html += '</ul>';
-	            $('#neighborListContainer').html(html); // 모달에 이웃 목록 삽입
-
-	            // 이웃 모달 열기
-	            openNeighborListModal();
-	        },
-	        error: function(error) {
-	            console.log('이웃 목록을 가져오는 중 오류 발생:', error);
-	        }
-	    });
-	}
-
-	function fetchMyNeighborList(mem_code) {
-	    $.ajax({
-	        url: '/community/myNeighborList/' + mem_code,
-	        method: 'GET',
-	      
-	        success: function(data) {
-	            console.log("data:", data);
-	            let html = '<h4>내 이웃 목록</h4><ul>';
-
-	            if (data.length === 0) {
-	                html += '<li>이웃이 없습니다.</li>'; // 이웃 목록이 없을 경우 메시지 출력
-	            } else {
-	                // 이웃 목록 데이터 순회
-	                data.forEach(Myneighbor => {
-	                    // 이웃의 이름과 프로필 이미지 출력
-	                    html += `
-	                        <div class="neighbor-item">
-	                            <div class="neighbor-pet-img-container">
-	                                <a href="/community/myfeed/\${Myneighbor.friend_mem_code}" target="_blank">
-	                                    <img src="/static/Images/pet/\${Myneighbor.pet_img || 'noPetImg.jpg'}" alt="${Myneighbor.friend_mem_nick}" class="neighbor-pet-img">
-	                                </a>
-	                            </div>
-	                            <div class="neighbor-name">
-	                                <a href="/community/myfeed/\${Myneighbor.friend_mem_code}" target="_blank">
-	                                    \${Myneighbor.friend_mem_nick}
-	                                </a>
-	                            </div>
-	                        </div>
-	                    `;
-	                });
-	            }
-
-	            html += '</ul>';
-	            $('#MyneighborListContainer').html(html); // 모달에 이웃 목록 삽입
-
-	            // 내 이웃 모달 열기
-	            openMyNeighborListModal();
-	        },
-	        error: function(error) {
-	            console.log('이웃 목록을 가져오는 중 오류 발생:', error);
-	        }
-	    });
-	}
-
-	function openNeighborListModal() {
-	    document.getElementById("neighborListModal").style.display = "block"; // 이웃 목록 모달 열기
-	}
-
-	function closeNeighborListModal() {
-	    document.getElementById("neighborListModal").style.display = "none"; // 이웃 목록 모달 닫기
-	}
-
-	function openMyNeighborListModal() {
-	    document.getElementById("myNeighborListModal").style.display = "block"; // 내 이웃 목록 모달 열기
-	}
-
-	function closeMyNeighborListModal() {
-	    document.getElementById("myNeighborListModal").style.display = "none"; // 내 이웃 목록 모달 닫기
-	}
-	
+function closeChat() {
+    document.getElementById("chatBox").style.display = "none";
+    socket.close();
+}	
 	
 	
 </script>
@@ -212,19 +127,24 @@
 				<!-- 친구가 아닐 때 -->
 			</c:if>
 
-			<a href="#">메세지</a>
+			<a href="#" onclick="openChat('${myFeedName.mem_nick}'); return false;">메시지</a>
 
 			<!-- 이웃 목록 버튼 -->
 			<a href="#"
 				onclick="fetchNeighborList('${mem_code}', '${myFeedName.mem_nick}'); return false;">이웃
 				목록</a>
-
-
-
 		</div>
 	</div>
 
+	<!-- 채팅 창 HTML -->
+	<div id="chatBox" style="display:none; position:fixed; bottom:10px; right:10px; width:300px; border:1px solid #ccc; padding:10px; background-color:white;">
+	    <h3>채팅 - ${myFeedName.mem_nick}</h3>
+	    <div id="chatMessages" style="height:200px; overflow-y:auto;"></div>
+	    <input type="text" id="chatInput" placeholder="메시지 입력..." onkeypress="sendMessage(event)">
+	    <button onclick="closeChat()">닫기</button>
+	</div>
 
+	
 	<!-- 컨테이너 시작 -->
 	<div class="container">
 		<!-- 메인 영역 -->
@@ -299,8 +219,8 @@
 						href="/community/myfeed/${sessionScope.loginUser.mem_code}">내
 							피드</a></li>
 					<li><a href="/community/writeView">글쓰기</a></li>
-					<li><a href="#">내 소식</a></li>
-					<li><a href="#">내 활동</a></li>
+					<li><a href="javascript:void(0);" onclick="fetchUserActivity()">내 소식</a></li>
+					<li><a href="javascript:void(0);" onclick="fetchMyActivity()">내 활동</a></li>
 					<a href="#"
 						onclick="fetchMyNeighborList('${mem_code}'); return false;">내
 						이웃 목록</a>
@@ -311,9 +231,7 @@
 			</ul>
 			<div class="sidebar-notice">
 				<h3>소식상자</h3>
-				<p>새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다 새로운 소식이 없습니다새로운 소식이
-					없습니다새로운 소식이 없습니다. 새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다 새로운 소식이
-					없습니다새로운 소식이 없습니다새로운 소식이 없습니다 새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다</p>
+				<p></p>
 			</div>
 			<div class="sidebar-from">
 				<h4>From. 블로그씨</h4>

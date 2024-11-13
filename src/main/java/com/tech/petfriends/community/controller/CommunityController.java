@@ -27,6 +27,7 @@ import com.tech.petfriends.community.dto.CCommunityFriendDto;
 import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.dto.CReportDto;
 import com.tech.petfriends.community.mapper.IDao;
+import com.tech.petfriends.community.service.CChatService;
 import com.tech.petfriends.community.service.CCommentReplyService;
 import com.tech.petfriends.community.service.CCommentService;
 import com.tech.petfriends.community.service.CContentViewService;
@@ -43,6 +44,7 @@ import com.tech.petfriends.community.service.CServiceInterface;
 import com.tech.petfriends.community.service.CUpdateLikeService;
 import com.tech.petfriends.community.service.CWriteService;
 import com.tech.petfriends.community.service.CWriteViewService;
+import com.tech.petfriends.login.dto.MemberLoginDto;
 
 @Controller
 @RequestMapping("/community")
@@ -51,7 +53,8 @@ public class CommunityController {
 	@Autowired
 	private IDao iDao;
 
-	@Autowired
+	
+	 @Autowired
 	private CServiceInterface serviceInterface;
 
 	// 커뮤니티 페이지로 이동
@@ -335,8 +338,32 @@ public class CommunityController {
 	    return "redirect:/community/myfeed/" + mem_code;
 	}
 	
+	@GetMapping("/myActivity")
+	@ResponseBody
+	public ArrayList<CDto> activityList (Model model, HttpSession session) {
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser"); 
+		String user_id = loginUser.getMem_nick();
+		System.out.println("user_id: "+ user_id);
+           
+	    ArrayList<CDto> activityList = iDao.myActivityList(user_id);
+	    System.out.println("Returned activityList: " + activityList);
 	
+	    return activityList;
+     
+	}
 	
+	@GetMapping("/userActivity")
+	@ResponseBody
+	public ArrayList<CDto> userActivityList (Model model, HttpSession session) {
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser"); 
+		String user_id = loginUser.getMem_nick();
+		System.out.println("user_id: "+ user_id);
+           
+	    ArrayList<CDto> activityList = iDao.userActivityList(user_id);
+	    System.out.println("Returned activityList: " + activityList);
 	
+	    return activityList;
+	}
 	
+
 }
