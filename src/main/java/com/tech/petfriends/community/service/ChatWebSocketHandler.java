@@ -35,10 +35,11 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         String sender = (String) map.get("sender");
         String receiver = (String) map.get("receiver");
         String message_content = (String) map.get("message_content");
+        String room_id = (String) map.get("roomId");
         
-        System.out.println(map.get("sender") + " || " + map.get("receiver") + " || " + map.get("message_content"));
+        System.out.println(sender + " || " + receiver + " || " + message_content + " || " + room_id);
         // 메시지 저장
-        cChatService.saveMessage(sender, receiver, message_content);
+        cChatService.saveMessage(sender, receiver, message_content, room_id);
     	
     	
     	
