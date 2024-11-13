@@ -200,9 +200,8 @@
 	width: 36px;
 	height: 37px;
 	margin: 10px 0 0 10px;
-	background:
-		url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png)
-		no-repeat;
+	background-image:url(/static/Images/helppetf/kakaoMap/marker_number_pink-Photoroom.png);
+	background-repeat: no-repeat;
 }
 
 #placesList .item .marker_1 {
