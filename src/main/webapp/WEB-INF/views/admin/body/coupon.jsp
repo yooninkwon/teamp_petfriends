@@ -39,6 +39,15 @@
 		        <label><input type="radio" name="kind-filter" value="전체" checked> 전체</label>
 		        <label><input type="radio" name="kind-filter" value="P"> 일반</label>
 		        <label><input type="radio" name="kind-filter" value="G"> 등급</label>
+		        <select id="grade-order" class="search-order" disabled>
+		        	<option value="">전체</option>
+	                <option value="1">설렘시작</option>
+	                <option value="2">몽글몽글</option>
+	                <option value="3">두근두근</option>
+	                <option value="4">콩닥콩닥</option>
+	                <option value="5">심쿵주의</option>
+	                <option value="6">평생연분</option>
+	            </select>
 		    </div>
 		    <div class="radio-group" id="type-filter">
 		        <div class="filter-title">할인 타입</div>
@@ -105,10 +114,10 @@
 		<div class="filter-section-1">
 	        <div class="date-group">
 	            <div class="filter-title">조회기간</div>
-	            <select id="search-order">
-		            <option value="mc_issue">발급</option>
-		            <option value="mc_use">사용</option>
-		            <option value="mc_dead">만료</option>
+	            <select id="search-order" class="search-order">
+		            <option value="발급">발급</option>
+		            <option value="사용">사용</option>
+		            <option value="만료">만료</option>
 		        </select>
 	            <label><input type="date" id="start-date">부터</label>
 	            <label><input type="date" id="end-date">까지</label>
@@ -120,10 +129,9 @@
 	    <div class="filter-section-1">
 	        <div class="search-group">
 	            <div class="filter-title">검색</div>
-	            <label>회원코드<input type="text" id="search-member-code"></label>
-	            <label>쿠폰번호<input type="text" id="search-coupon-code"></label>
-	            <label>결제코드<input type="text" id="search-order-code"></label>
-	            <button id="search-btn" class="btn-style">조회</button>
+	            <label>회원코드<input type="text" name="ketword-filter" id="search-member-code"></label>
+	            <label>쿠폰번호<input type="text" name="ketword-filter" id="search-coupon-code"></label>
+	            <label>결제코드<input type="text" name="ketword-filter" id="search-order-code"></label>
 	        </div>
 	    </div>
 	</div>

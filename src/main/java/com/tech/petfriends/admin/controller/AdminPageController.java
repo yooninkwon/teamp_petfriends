@@ -96,10 +96,11 @@ public class AdminPageController {
 
 		String status = request.getParameter("status");
 		String kind = request.getParameter("kind");
+		String grade = request.getParameter("grade");
 		String type = request.getParameter("type");
 		String sort = request.getParameter("sort");
 
-		List<CouponDto> coupons = couponDao.getAllCoupons(status, kind, type, sort);
+		List<CouponDto> coupons = couponDao.getAllCoupons(status, kind, grade, type, sort);
 
 		return coupons;
 	}
@@ -116,8 +117,7 @@ public class AdminPageController {
 		String couponCode = request.getParameter("couponCode");
 		String orderCode = request.getParameter("orderCode");
 
-		List<MemberCouponDto> coupons = couponDao.getMemberCoupons(status, searchOrder, startDate, endDate, memberCode,
-				couponCode, orderCode);
+		List<MemberCouponDto> coupons = couponDao.getMemberCoupons(status, searchOrder, startDate, endDate, memberCode, couponCode, orderCode);
 		return coupons;
 	}
 
