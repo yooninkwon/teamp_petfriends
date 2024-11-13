@@ -408,8 +408,8 @@ public class AdminPageController {
 	public void salesDetail(@RequestBody Map<String, Object> data, Model model) {
 		
 		model.addAllAttributes(data);
-		adminServInter = new AdminSalesDetailService(adminSalesDao);
-		adminServInter.execute(model);
+		adminExcuteM = new AdminSalesDetailService(adminSalesDao);
+		adminExcuteM.execute(model);
 		
 	}
 

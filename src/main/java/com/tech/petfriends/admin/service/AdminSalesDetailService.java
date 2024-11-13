@@ -9,7 +9,7 @@ import com.tech.petfriends.admin.dto.SalesDetailDto;
 import com.tech.petfriends.admin.dto.SalesDto;
 import com.tech.petfriends.admin.mapper.AdminSalesDao;
 
-public class AdminSalesDetailService implements AdminServiceInterface {
+public class AdminSalesDetailService implements AdminExecuteModel {
 
 	private AdminSalesDao adminSalesDao ;
 

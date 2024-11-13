@@ -8,123 +8,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Insert title here</title>
+<script src="/static/js/community/community_main.js"></script>
 <link rel="stylesheet" href="/static/css/community/community_main.css">
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<script>
-	function fetchMyNeighborList() {
-	    $.ajax({
-	        url: '/community/MainNeighborList',
-	        method: 'GET',
-	        success: function(data) {
-	            console.log("data:", data);
-	            let html = '<h4>내 이웃 목록</h4><ul>';
-
-	            if (data.length === 0) {
-	                html += '<li>이웃이 없습니다.</li>'; // 이웃 목록이 없을 경우 메시지 출력
-	            } else {
-	                // 이웃 목록 데이터 순회
-	                data.forEach(Myneighbor => {
-	                    // 이웃의 이름과 프로필 이미지 출력
-	                    html += `
-	                        <div class="neighbor-item">
-	                            <div class="neighbor-pet-img-container">
-	                                <a href="/community/myfeed/\${Myneighbor.friend_mem_code}" target="_blank">
-	                                    <img src="/static/Images/pet/\${Myneighbor.pet_img || 'noPetImg.jpg'}" alt="${Myneighbor.friend_mem_nick}" class="neighbor-pet-img">
-	                                </a>
-	                            </div>
-	                            <div class="neighbor-name">
-	                                <a href="/community/myfeed/\${Myneighbor.friend_mem_code}" target="_blank">
-	                                    \${Myneighbor.friend_mem_nick}
-	                                </a>
-	                            </div>
-	                        </div>
-	                    `;
-	                });
-	            }
-
-	            html += '</ul>';
-	            $('#MyneighborListContainer').html(html); // 모달에 이웃 목록 삽입
-
-	            // 내 이웃 모달 열기
-	            openMyNeighborListModal();
-	        },
-	        error: function(error) {
-	            console.log('이웃 목록을 가져오는 중 오류 발생:', error);
-	        }
-	    });
-	}
-
-	// 문서가 로드된 후에 다른 이벤트 처리
-	$(document).ready(function() {
-	    $('.category-button').click(function(e) {
-	        e.preventDefault(); // 기본 링크 클릭 이벤트 방지
-
-	        var cateNo = $(this).data('cate-no'); // 클릭한 카테고리 번호
-
-	        $.ajax({
-	            url : '/community/getPostsByCategory', // 카테고리별 게시글 조회 URL
-	            type : 'GET',
-	            data : {
-	                b_cate_no : cateNo
-	            }, // 카테고리 번호 전달
-	            success : function(data) {
-	                // postContainer 영역 업데이트
-	                $('#postContainer').html(data);
-	            },
-	            error : function() {
-	                alert('게시글을 불러오는 데 실패했습니다.');
-	            }
-	        });
-	    });
-	});
-
-	// 내 이웃 목록 모달 열기
-	function openMyNeighborListModal() {
-	    document.getElementById("myNeighborListModal").style.display = "block"; // 내 이웃 목록 모달 열기
-	}
-
-	// 내 이웃 목록 모달 닫기
-	function closeMyNeighborListModal() {
-	    document.getElementById("myNeighborListModal").style.display = "none"; // 내 이웃 목록 모달 닫기
-	}
-
-	// 이미지 클릭 시 회색으로 처리하는 함수
-	function applyGrayFilter(storyId) {
-	    const imageElement = document.querySelector(`#story-img-${storyId}`);
-	    if (imageElement) {
-	        imageElement.classList.add("gray-filter"); // 회색 필터 적용
-
-	        // 클릭 상태 서버에 저장
-	        $.ajax({
-	            url: '/community/updateImageClickStatus',
-	            type: 'POST',
-	            data: { storyId: storyId, clicked: true },
-	            success: function(response) {
-	                console.log("이미지 클릭 상태가 서버에 저장되었습니다.");
-	            },
-	            error: function(error) {
-	                console.log("이미지 클릭 상태 저장 중 오류 발생:", error);
-	            }
-	        });
-	    }
-	}
-
-	// 클릭 이벤트 리스너 설정
-	document.addEventListener("DOMContentLoaded", function() {
-	    document.querySelectorAll(".story-image").forEach(image => {
-	        image.addEventListener("click", function() {
-	            const storyId = this.dataset.storyId;
-	            applyGrayFilter(storyId);
-	        });
-	    });
-	});
-	
-	
-	
-</script>
-
 
 <body>
 
@@ -216,17 +104,15 @@
 								피드</a></li>
 
 						<li><a href="/community/writeView">글쓰기</a></li>
-
-						<li><a href="#">내 소식</a></li>
-						<li><a href="#">내 활동</a></li>
+						
+					    <li><a href="#" onclick="fetchUserActivity()">내 소식 <span id="activity-count" class="activity-count"></span></a></li>
+						<li><a href="#" onclick="fetchMyActivity()">내 활동</a></li>
 						<a href="#" onclick="fetchMyNeighborList()">내 이웃 목록</a>
 				</ul>
 				</c:if>
 				<div class="sidebar-notice">
 					<h3>소식상자</h3>
-					<p>새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다 새로운 소식이 없습니다새로운 소식이
-						없습니다새로운 소식이 없습니다. 새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다 새로운 소식이
-						없습니다새로운 소식이 없습니다새로운 소식이 없습니다 새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다</p>
+					<p></p>
 				</div>
 				<div class="sidebar-from">
 					<h4>From. 블로그씨</h4>
@@ -260,11 +146,12 @@
 							<!-- 로그인 상태일 때: 게시글 리스트를 동적으로 출력 -->
 							<c:forEach var="storyList" items="${storyList}">
 								<div class="story-item">
-								<a href="/community/myfeed/${storyList.mem_code}"> 
-								<img src="/static/Images/pet/${storyList.pet_img}" alt="스토리 이미지"
+									<a href="/community/myfeed/${storyList.mem_code}"> <img
+										src="/static/Images/pet/${storyList.pet_img}" alt="스토리 이미지"
 										class="story-image" />
-										 <p>${storyList.user_id}</p>	</a> 
-							</div>
+										<p>${storyList.user_id}</p>
+									</a>
+								</div>
 							</c:forEach>
 
 							<!-- 게시글 리스트가 비어있을 경우 -->

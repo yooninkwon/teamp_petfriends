@@ -47,6 +47,15 @@ public class CDto {
 
 	//친구 테이블
 	private String friend_mem_code;
+
+	//활동 테이블
+
+	private int activity_no;
+	private String activity_type;
+	private String related_user_id;
+	private String content;
+	private Date created_at;
+	private String related_user_mem_code ;
 }
 
 
