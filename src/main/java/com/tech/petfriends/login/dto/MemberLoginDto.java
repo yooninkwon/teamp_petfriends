@@ -22,7 +22,6 @@ public class MemberLoginDto {
     private int mem_pay_amount;
     private int g_no;
     private String mem_type;
-    private String mem_funnel;
     private Timestamp mem_regdate;
     private Timestamp mem_logdate;
     
