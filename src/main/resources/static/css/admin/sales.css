@@ -73,8 +73,8 @@
 .statsContainer {
 	display: flex;
 	justify-content: space-between; /* 양 끝으로 배치 */
-	gap: 0px; /* 아이템 간 간격 */
 	width: 100%; /* 가로 영역 사용 */
+	
 	
 }
 
@@ -89,7 +89,10 @@
 	justify-content: space-between; /* 값과 텍스트를 양 끝으로 배치 */
 	width: 100%; /* 각 항목의 너비 설정 (두 개씩 한 줄에 배치) */
 	font-size: 14px; /* 글자 크기 */
-	border: 1px solid white; /* 외곽선 추가 (두께 1px, 실선, 검은색) */
+	border: 1px solid white;
+	
+	
+	
 }
 
 /* 제목 */
@@ -130,7 +133,8 @@
 	margin-top: 10px;
 	font-size: 18px;
 	text-align: left; /* 텍스트를 왼쪽 정렬 */
-	margin: 0 3px;
+	margin: 3px 3px;
+	margin-top: 10px;
 	padding: 5px 5px;
 }
 
@@ -169,7 +173,7 @@
 .product-list {
 	width: 100%;
 	border-collapse: collapse;
-	table-layout: fixed; /* 고정 테이블 레이아웃 설정 */
+	
 }
 .thead {
 	background-color: #dddddd;
@@ -185,10 +189,23 @@
 }
 
 .totalResultGraph{
-	height: 400px;	
+	height: 300px;	
 	border: 1px solid #cdcdcd;
 	margin-bottom: 3px;
+	width: 100%;  /* 컨테이너의 너비를 100%로 설정 */
+    overflow-x: auto;  /* 내용이 넘칠 때 가로 스크롤을 추가 */
+    white-space: nowrap; /* 차트가 가로로 늘어나도록 설정 */
 }
-.product-list{
-	height: 400px;	
+
+
+.totalResultText{
+	height: 200px;
+	overflow: hidden; /* 초과된 내용 숨기기 */
+	overflow-y: auto; /* 세로 스크롤 추가 */
+	
+}
+
+
+.noWay{
+	height: 50px;
 }
