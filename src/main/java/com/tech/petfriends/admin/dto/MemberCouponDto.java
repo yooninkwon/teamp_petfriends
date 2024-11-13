@@ -17,4 +17,5 @@ public class MemberCouponDto {
 
     private String mem_name;
     private String cp_name;
+    private String o_code;
 }

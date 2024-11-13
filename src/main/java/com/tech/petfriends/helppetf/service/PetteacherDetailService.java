@@ -1,7 +1,5 @@
 package com.tech.petfriends.helppetf.service;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
@@ -11,7 +9,7 @@ import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 
 @Service
-public class PetteacherDetailService implements HelppetfServiceInter {
+public class PetteacherDetailService implements HelppetfExecuteModelRequest {
 	
 	private HelpPetfDao helpDao;
 	
@@ -20,13 +18,7 @@ public class PetteacherDetailService implements HelppetfServiceInter {
 	}
 
 	@Override
-	public void execute(Model model) {
-		
-		// model을 Map으로 변환
-		Map<String, Object> map = model.asMap();
-		
-		// Map에서 request를 추출
-		HttpServletRequest request = (HttpServletRequest) map.get("request");
+	public void execute(Model model, HttpServletRequest request) {
 		
 		// 파라미터의 값을 저장
 		String hpt_seq = request.getParameter("hpt_seq");

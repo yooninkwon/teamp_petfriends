@@ -48,6 +48,7 @@ $(document).ready(function() {
         let filterParam = {
             status: '전체',
             kind: '전체',
+            grade: '',
             type: '전체',
             sort: '최신순'
         };
@@ -101,12 +102,16 @@ $(document).ready(function() {
                     lists += '<td>' + coupon.cp_amount + '%</td>';
                 }
 
-                lists += '<td>' + coupon.issueCount + '</td>';
-                lists += '<td>' + (coupon.totalUsage || '') + '</td>';
-				lists += `<td>
-			                  <button class="btn-style modify-coupon-btn" data-coupon-id="${coupon.cp_no}">수정</button>
-			                  <button class="btn-style delete-coupon-btn" data-coupon-id="${coupon.cp_no}">삭제</button>
-			              </td>`;
+                lists += '<td>' + coupon.issueCount || 0 + '</td>';
+                lists += '<td>' + coupon.totalUsage || 0 + '</td>';
+		        if (coupon.issueCount > 0 || coupon.totalUsage > 0) {
+		            lists += `<td style="color: red;">수정불가</td>`;
+		        } else {
+		            lists += `<td>
+		                          <button class="btn-style modify-coupon-btn" data-coupon-id="${coupon.cp_no}">수정</button>
+		                          <button class="btn-style delete-coupon-btn" data-coupon-id="${coupon.cp_no}">삭제</button>
+		                      </td>`;
+		        }
 			    lists += '</tr>';
             });
 
@@ -171,16 +176,27 @@ $(document).ready(function() {
         }
 
         // 필터링 코드
-	    $('#status-filter-all').on('change', function() {
+	    $('#regist-status-filter').on('change', function() {
 	       filterParam = {
 				status: $('input[name="status-filter"]:checked').val(),
 				kind: $('input[name="kind-filter"]:checked').val(),
+				grade: $('#grade-order').val(),
                 type: $('input[name="type-filter"]:checked').val(),
                 sort: $('#sort-order').val()
 	       };
 	
 	       fetchData(currentPage, currPageGroup, filterParam);
 	    });
+		
+		// 쿠폰 종류 '등급' 선택 시 드롭다운 활성화 설정
+		$('input[name="kind-filter"]').on('change', function() {
+		    if ($(this).val() === 'G') {
+		        $('#grade-order').prop('disabled', false); // 'G'가 선택되면 활성화
+		    } else {
+		        $('#grade-order').prop('disabled', true);  // 다른 값이 선택되면 비활성화
+		        $('#grade-order').val(''); // 비활성화 시 선택값 초기화
+		    }
+		});
     }
 
 	// 회원 쿠폰 탭 데이터 로드 함수
@@ -193,10 +209,12 @@ $(document).ready(function() {
         let totalPages = 0;
         let filterParam = {
             status: '발급,사용,만료', 
+            searchOrder: '발급', 
             startDate: '', 
             endDate: '', 
             memberCode: '', 
-            couponCode: ''
+            couponCode: '',
+            orderCode: ''
         };
 		
 		
@@ -234,9 +252,9 @@ $(document).ready(function() {
                 lists += '<td>' + coupon.mem_name + '</td>';
                 lists += '<td>' + coupon.cp_name + '</td>';
                 lists += '<td>' + coupon.mc_issue + '</td>';
-                lists += '<td>' + coupon.mc_use + '</td>';
-                lists += '<td>' + (coupon.payment_code || 'N/A') + '</td>';
-                lists += '<td>' + coupon.mc_dead + '</td>';
+                lists += '<td>' + (coupon.mc_use || '') + '</td>';
+                lists += '<td><a href="">' + (coupon.o_code || '') + '</a></td>';
+                lists += '<td>' + (coupon.mc_dead || '') + '</td>';
                 lists += '</tr>';
             });
 
@@ -279,43 +297,34 @@ $(document).ready(function() {
                 setupPagination(currentPage, currPageGroup);
             });
         }
-
-        // 필터 적용
-        function applyFilters() {
-            filterParam = {
-                status: $('input[name="issue-filter"]:checked').map(function() { return $(this).val(); }).get().join(','),
-                searchOrder: $('#search-order').val(),
-                startDate: $('#start-date').val(),
-                endDate: $('#end-date').val(),
-                memberCode: $('#search-member-code').val(),
-                couponCode: $('#search-coupon-code').val(),
-                orderCode: $('#search-order-code').val()
-            };
-			
-            fetchData(currentPage, currPageGroup, filterParam);
-        }
-
-        // 쿠폰 상태 필터 적용
-        $('input[name="issue-filter"]').on('change', function() {
-            applyFilters();
-        });
 		
-        // 조회 기간 필터 적용
-        $('#search-order, #start-date, #end-date').on('change', function() {
-            applyFilters();
-        });
+		// 필터 적용
+		function applyFilters() {
+		    const filterParam = {
+		        status: $('input[name="issue-filter"]:checked').map(function() { return $(this).val(); }).get().join(','),
+		        searchOrder: $('#search-order').val(),
+		        startDate: $('#start-date').val(),
+		        endDate: $('#end-date').val(),
+		        memberCode: $('#search-member-code').val(),
+		        couponCode: $('#search-coupon-code').val(),
+		        orderCode: $('#search-order-code').val()
+		    };
+		    console.log(filterParam);
+		    fetchData(currentPage, currPageGroup, filterParam);
+		}
 
-        // 검색 필터 적용
-        $('#search-btn').on('click', function() {
-            applyFilters();
-        });
+		// 필터 적용 이벤트
+        $('input[name="issue-filter"], #search-order, #start-date, #end-date').on('change', applyFilters);
+        $('input[name="ketword-filter"]').on('input', applyFilters);
 
-        // 조회 기간 리셋
-        $('#reset-date').on('click', function() {
-            $('#start-date').val('');
-            $('#end-date').val('');
-            applyFilters();
-        });
+		// 조회 기간 리셋 버튼 클릭 시
+		$('#reset-date').on('click', function() {
+		    // 필터값 초기화
+		    $('#start-date').val('');
+		    $('#end-date').val('');
+		    
+		    applyFilters();
+		});
     }
 });
 

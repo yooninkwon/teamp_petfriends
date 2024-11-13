@@ -13,7 +13,7 @@ import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
 
 @Service
-public class PethotelMainService implements HelppetfServiceInter {
+public class PethotelMainService implements HelppetfExecuteModel {
 	
 	HelpPetfDao helpDao;
 	

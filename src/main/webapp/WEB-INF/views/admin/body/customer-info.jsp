@@ -102,16 +102,17 @@
 					<tr>
 						<th style="width: 2%;"><input type="checkbox"
 							name="selectAll" class="selectAll" /></th>
-						<th style="width: 8%;">가입일</th>
-						<th style="width: 8%;">마지막 접속 일</th>
+						<th style="width: 7%;">가입일</th>
+						<th style="width: 7%;">마지막 접속 일</th>
 						<th style="width: 18%;">회원 코드</th>
 						<th style="width: 7%;">이름</th>
 						<th style="width: 9%;">닉네임</th>
 						<th style="width: 7%;">등급</th>
-						<th style="width: 10%;">전화번호</th>
+						<th style="width: 10%;">구매 금액</th>
+						<th style="width: 7%;">전화번호</th>
 						<th style="width: 15%;">이메일</th>
 						<th style="width: 5%;">성별</th>
-						<th style="width: 10%;">회원 유형</th>
+						<th style="width: 5%;">회원 유형</th>
 					</tr>
 				</thead>
 			</table>

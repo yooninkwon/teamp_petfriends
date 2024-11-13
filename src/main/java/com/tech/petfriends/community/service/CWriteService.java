@@ -28,11 +28,11 @@ public class CWriteService implements CServiceInterface {
 		String board_title = mtfRequest.getParameter("board_title");
 		String board_content = mtfRequest.getParameter("board_content");
 		int b_cate_no = Integer.parseInt(mtfRequest.getParameter("b_cate_no"));
-
+		String board_content_input = mtfRequest.getParameter("board_content_input");
 		// 게시글 작성
-		iDao.write(mem_nick, mem_code, board_title, board_content, b_cate_no);
+		iDao.write(mem_nick, mem_code, board_title, board_content, b_cate_no, board_content_input);
 
-	
+		System.out.println("board_content_input: " +board_content_input);
 		
 		// 방금 작성한 게시글의 id 가져오기
 		int board_no = iDao.selBid();

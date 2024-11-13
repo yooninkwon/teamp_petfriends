@@ -209,6 +209,7 @@ a {
 .comment-time {
     font-size: 12px;
     color: #999;
+	margin-left: 20px;
 }
 
 .commentReply-time{

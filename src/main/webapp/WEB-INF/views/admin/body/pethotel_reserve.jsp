@@ -76,7 +76,7 @@
 			<label><input type="radio" name="reserve_status_set" value="신청중" /> 신청중</label>
 			<label><input type="radio" name="reserve_status_set" value="승인" /> 승인</label>
 			<label><input type="radio" name="reserve_status_set" value="거절" /> 거절</label>
-			<label><input type="radio" name="reserve_status_set" value="취소됨" /> 취소됨</label>
+			<label><input type="radio" name="reserve_status_set" value="취소됨" disabled /> 취소됨</label>
 			<button id="reserveSubmit" class="btn-style">예약 상태 변경</button>
 		</div>
 		<div id="reserveDetailMemTable">

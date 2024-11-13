@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
-import com.tech.petfriends.helppetf.service.HelppetfServiceInter;
+import com.tech.petfriends.helppetf.service.HelppetfExecuteModel;
 
 
 @Controller
@@ -23,7 +23,7 @@ public class HelpPetfController {
 	@Autowired
 	HelpPetfDao helpDao;
 	
-	HelppetfServiceInter helpServiceInterface;
+	HelppetfExecuteModel helpServiceInterface;
 
 	@GetMapping("/pethotel/pethotel_main") // 펫호텔 메인
 	public String pethotelMain(Model model) {
@@ -36,6 +36,7 @@ public class HelpPetfController {
 	public String adoptionMain(Model model) {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "adoption");
+		model.addAttribute("apiKey", apikeyConfig.getKakaoApikey());
 		return "/helppetf/adoption/adoption_main";
 	}
 	
@@ -51,7 +52,6 @@ public class HelpPetfController {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "pet_hospital");
 		model.addAttribute("apiKey", apikeyConfig.getKakaoApikey());
-
 		return "/helppetf/find/pet_hospital";
 	}
 
@@ -60,7 +60,6 @@ public class HelpPetfController {
 		model.addAttribute("main_navbar_id", "helppetf");
 		model.addAttribute("sub_navbar_id", "pet_facilities");
 		model.addAttribute("apiKey", apikeyConfig.getKakaoApikey());
-		
 		return "/helppetf/find/pet_facilities";
 	}
 }

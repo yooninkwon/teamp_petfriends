@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
 
-public class AdminProductAddService implements AdminServiceInterface {
+public class AdminProductAddService implements AdminExecuteModel {
 
 	private AdminProductDao adminProductDao;
 

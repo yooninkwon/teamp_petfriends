@@ -1,7 +1,6 @@
 package com.tech.petfriends.mypage.dao;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -75,19 +74,20 @@ public interface MypageDao {
 	
 	// 주문내역
 	ArrayList<MyOrderDto> getOrderByMemberCode(String mem_code);
-	Collection<? extends OrderStatusDto> getStatusByOrderCode(String o_code);
-	Collection<? extends MyCartDto> getCartByOrderCode(String o_code);
+	ArrayList<OrderStatusDto> getStatusByOrderCode(String o_code);
+	ArrayList<MyCartDto> getCartByOrderCode(String o_code);
+	MyOrderDto getOrderByOrderCode(String o_code);
+	void updateCancelByOrderCode(String o_code, String o_cancel, String o_cancel_detail);
+	void insertCancelStatus(String o_code);
 	
 	// 즐겨찾는 상품
 	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
-	List<MyOrderDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
+	List<MyWishDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
 	void deleteWishByProCode(String mem_code, String pro_code);
 
+  // 펫호텔 예약내역
 	ArrayList<PethotelMemDataDto> pethotelReserveMypageMem(String mem_code);
-
 	PethotelMemDataDto pethotelReserveMypageMemNo(String reserveNo);
-
 	ArrayList<PethotelFormDataDto> pethotelReserveMypagePets(String reserveNo);
-
 	void pethotelReserveMyPageCancel(String reserveNo);
 }

@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import com.tech.petfriends.notice.dao.NoticeDao;
 
 @Service
-public class AdminNoticeEditService implements AdminServiceInterface {
+public class AdminNoticeEditService implements AdminExecuteModel {
 	
     private NoticeDao noticeDao;
 

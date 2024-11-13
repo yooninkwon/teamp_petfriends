@@ -41,7 +41,9 @@ public class CUpdateLikeService implements CServiceInterface {
 	        String boardNo = likeData.get("board_no");
 	        String memNick = likeData.get("mem_nick");
 	        String memCode = likeData.get("mem_code");
-
+	        String related_user_id = likeData.get("user_id");
+	           
+	        System.out.println("related_user_id:"+ related_user_id);
 	        // 좋아요 여부 확인
 	              
 	        int likesCount = iDao.isLiked(boardNo, memCode); // int 타입으로 받아옴
@@ -55,6 +57,12 @@ public class CUpdateLikeService implements CServiceInterface {
 	        
 	            iDao.addLike(boardNo, memNick, memCode); // 좋아요 추가
 	            System.out.println("좋아요 추가");
+	           
+	            iDao.likeActivity(memNick, related_user_id, boardNo);
+          
+	            
+//	            public void likeActivity( String user_id, String related_user_id,String board_no,String content);
+	            
 	        }
 	        int updatedLikesCount = iDao.getLikesCount(boardNo); // 전체 좋아요 수를 가져옴
 	        model.addAttribute("likesCount", updatedLikesCount); // 업데이트된 좋아요 수

@@ -162,14 +162,13 @@ html, body {
 /* 사이드바 */
 
 .sidebar {
-	flex: 0.7;
+	flex: 0.85;
 	position: relative; /* 사이드바를 메인 영역 옆에 정렬 */
     top: 20px; /* 헤더의 높이에 따라 조정 */
     background-color: #fff; /* 배경색 */
     padding: 20px; /* 내부 여백 */
-    border: 1px solid #ccc; /* 테두리 */
+    border: 1px solid #ffe5ee; /* 테두리 */
     border-radius: 5px; /* 모서리 둥글게 */
-    border: 5px solid #ffe5ee;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }
 

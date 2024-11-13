@@ -6,14 +6,16 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.tech.petfriends.notice.dao.NoticeDao;
 import com.tech.petfriends.notice.dto.EventDto;
 
 @Service
-public class AdminEventEditService implements AdminServiceInterface {
+public class AdminEventEditService implements AdminExecuteModel {
 
 	private final NoticeDao noticeDao;
 

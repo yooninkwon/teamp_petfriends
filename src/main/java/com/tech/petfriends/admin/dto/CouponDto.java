@@ -21,4 +21,5 @@ public class CouponDto {
 	private int cp_amount;
 	
     private int issueCount;
+    private int totalUsage;
 }

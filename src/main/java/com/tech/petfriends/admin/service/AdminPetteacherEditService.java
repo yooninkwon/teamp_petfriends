@@ -1,7 +1,5 @@
 package com.tech.petfriends.admin.service;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
@@ -11,26 +9,22 @@ import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 
 @Service
-public class AdminPetteacherEditService implements AdminServiceInterface {
+public class AdminPetteacherEditService implements AdminExecuteModelRequest {
 
 	private AdminPageDao adminDao;
 
-	public AdminPetteacherEditService(AdminPageDao adminDao) {
+	private PetteacherDto dto;
+
+	public AdminPetteacherEditService(AdminPageDao adminDao, PetteacherDto dto) {
 		this.adminDao = adminDao;
+		this.dto = dto;
 	}
 
 	@Override
-	public void execute(Model model) {
-		// model을 Map으로 변환
-		Map<String, Object> map = model.asMap();
-		
-		// request를 추출
-		HttpServletRequest request = (HttpServletRequest) map.get("request");
+	public void execute(Model model, HttpServletRequest request) {
 		
 		String hpt_seq = request.getParameter("hpt_seq");
-		
-		// RequestBody로 전달받은 DTO 추출
-		PetteacherDto dto = (PetteacherDto) map.get("dto");
+
 		String hpt_title = dto.getHpt_title();
 		String hpt_exp = dto.getHpt_exp();
 		String hpt_content = dto.getHpt_content();

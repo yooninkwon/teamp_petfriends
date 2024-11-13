@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>입양 센터</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey }&libraries=services"></script>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet" href="/static/css/helppetf/adoption_main.css" />
 </head>
@@ -98,6 +98,7 @@
 		<table id="selectedAnimalTable">
 			<!-- 클릭한 동물의 상세 정보 테이블 -->
 		</table>
+		
 		<!-- 목록으로 돌아가는 버튼 -->
 		<button type="button" id="goMain">목록으로</button>
 	</div>

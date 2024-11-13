@@ -54,6 +54,7 @@ public class WebClientComponent implements DisposableBean {
         return WebClient.builder()
                 .uriBuilderFactory(builderFactory())
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(HttpHeaders.CACHE_CONTROL, "max-age=3600")  // 1시간 동안 캐싱
                 .clientConnector(new ReactorClientHttpConnector(
                 		HttpClient.create(connectionProvider).runOn(loopResources)))
                 .build();

@@ -137,9 +137,9 @@ public class MyPetController {
 		System.out.println("펫등록 완료 페이지");
 		
 		String petType = request.getParameter("petType");
-		if (petType == "dog") {
+		if (petType == "dog" || petType.equals("dog")) {
 			petType = "D";
-		} else {
+		} else if(petType == "cat" || petType.equals("cat")) { 
 			petType = "C";
 		}
 		String petName = request.getParameter("petName");
@@ -151,10 +151,15 @@ public class MyPetController {
 		String petWeight = request.getParameter("petWeight");
 		String petBodyType = request.getParameter("petBodyType");
 		String petInterInfo = request.getParameter("petInterInfo");
-		String petAllergy = request.getParameter("allergyInput");
-		if (petAllergy == "") {
-			petAllergy = "x";
+		String petAllergy = request.getParameter("petInterAllerge");
+		
+		if (petInterInfo == null || petInterInfo.equals("")) {
+			petInterInfo = "X";
 		}
+		if (petAllergy == null || petAllergy.equals("")) {
+			petAllergy = "X";
+		}
+		
 		
 		MemberLoginDto member = new MemberLoginDto();
 		member = (MemberLoginDto) session.getAttribute("loginUser");

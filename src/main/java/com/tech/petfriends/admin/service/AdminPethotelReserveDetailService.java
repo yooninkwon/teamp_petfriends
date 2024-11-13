@@ -14,15 +14,16 @@ import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 
-public class AdminPethotelReserveDetailService {
+public class AdminPethotelReserveDetailService implements AdminExecuteModelRequest{
 	
 	private AdminPageDao adminDao;
 
 	public AdminPethotelReserveDetailService(AdminPageDao adminDao) {
 		this.adminDao = adminDao;
 	}
-
-	public String execute(Model model, HttpServletRequest request) throws JsonProcessingException {
+	
+	@Override
+	public void execute(Model model, HttpServletRequest request) {
 		// 전달받은 예약번호 저장
 		String hph_reserve_no = request.getParameter("hph_reserve_no");
 				
@@ -38,8 +39,12 @@ public class AdminPethotelReserveDetailService {
 		map.put("reservePets", reservePets);
 		map.put("reserveMem", reserveMem);
 		
-		// Map을 json(String) 형식으로 변환하여 리턴
-        return new ObjectMapper().writeValueAsString(map);
+		// Map을 json(String) 형식으로 변환하여 모델에 전달
+		try {
+			model.addAttribute("jsonData", new ObjectMapper().writeValueAsString(map));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

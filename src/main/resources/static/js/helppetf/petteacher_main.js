@@ -272,12 +272,6 @@ $(document).ready(function() {
 		let content_desc = '<div>' + data.hpt_content + '</div>';
 		$('.content_desc').html(content_desc);
 		
-		// 
-//		let content_footer = '';
-//		content_footer += '<a class="prev_content_btn _content_detail_btn" href="#;">&lt;이전으로</a> ';
-//		content_footer += '<a class="next_content_btn _content_detail_btn" href="#;">다음으로&gt;</a>';
-	//	$('.content_footer').html(content_footer);
-
 		// 비디오 아이디 첨부하여 유튜브 iframe 생성 함수호출 
 		buildVideo(data.hpt_yt_videoid);
 

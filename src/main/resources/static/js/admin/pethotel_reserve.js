@@ -360,7 +360,7 @@ $(document).ready(function() {
 		function fetchDataForStatus(statusObj) {
 
 			fetch('/admin/pethotel_reserve_update', {
-				method: 'POST',
+				method: 'PUT',
 				headers: {
 					"Content-Type": 'application/json'
 				},

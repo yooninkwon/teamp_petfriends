@@ -329,7 +329,7 @@ $(document).ready(function() {
 		if (startDate && endDate && formDataObj.length != 0) {
 			// 예약기간 (시작, 종료 날짜)폼을 시리얼라이즈해서 파라미터로 첨부
 			let form_data = `start-date=${startDate}&end-date=${endDate}`;
-
+	
 			fetch('/helppetf/pethotel/pethotel_reserve_data?' + form_data, {
 				method: 'POST',
 				headers: {
@@ -362,6 +362,8 @@ $(document).ready(function() {
 	// 페이지를 재구성하고 예약 완료 정보를 표시하는 함수
 	function showReserveDonePage(data) {
 
+		alert('예약에 성공하였습니다.');
+		
 		// 기존 예약 div를 보이지 않게, 예약완료 div를 보이게 설정
 		$('#information').removeClass().addClass('off');
 		$('#introduction').removeClass().addClass('off');
@@ -430,6 +432,7 @@ $(document).ready(function() {
 		function displaySelectModal(data) {
 			$('#select-pet-modal').removeClass().addClass('on');
 			let petType = '';
+			let petImage = '';
 			let table = '';
 
 			// 받아온 데이터의 길이가 0이 아니라면 (데이터가 존재한다면)
@@ -441,9 +444,17 @@ $(document).ready(function() {
 					} else {
 						petType = '강아지';
 					}
+					
+					// 펫 이미지가 없는 경우 설정
+					if (pets.pet_img == null) {
+						petImage = 'noPetImg.jpg';
+					} else {
+						petImage = pets.pet_img;
+					}
+					
 					// 테이블 생성
 					table += '<tr data-index="' + index + '"><td><div style="height: 100%; width:50%;">';
-					table += '<img height="100%" width="100%" src="/static/Images/pet/' + pets.pet_img;
+					table += '<img height="100%" width="100%" src="/static/Images/pet/' + petImage;
 					table += '" alt="저장된 펫 이미지" width=20% height=20% /></div>';
 					table += '<td>' + pets.pet_name + '</td>';
 					table += '<td>' + petType + '</td>';

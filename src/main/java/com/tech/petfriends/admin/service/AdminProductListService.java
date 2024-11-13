@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import com.tech.petfriends.admin.dto.ProductListDto;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
 
-public class AdminProductListService implements AdminServiceInterface {
+public class AdminProductListService implements AdminExecuteModel {
 
 	private AdminProductDao adminProductDao;
 

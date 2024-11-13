@@ -34,7 +34,28 @@
 			
 			<div id="weight-group">
 				<h2>몸무게를 입력해주세요(kg)</h2>
-				<input type="number" id="weight" name="weight" placeholder="-모름-" step="0.01" max="99.9"/>
+				<select id="weight" name="weight">
+	            <option value="- 모름 -">- 모름 -</option>
+	            <option value="0kg 이상 ~ 1kg 미만">0kg 이상 ~ 1kg 미만</option>
+	            <option value="1kg 이상 ~ 2kg 미만">1kg 이상 ~ 2kg 미만</option>
+	            <option value="2kg 이상 ~ 3kg 미만">2kg 이상 ~ 3kg 미만</option>
+	            <option value="3kg 이상 ~ 4kg 미만">3kg 이상 ~ 4kg 미만</option>
+	            <option value="4kg 이상 ~ 5kg 미만">4kg 이상 ~ 5kg 미만</option>
+	            <option value="5kg 이상 ~ 7kg 미만">5kg 이상 ~ 7kg 미만</option>
+	            <option value="7kg 이상 ~ 9kg 미만">7kg 이상 ~ 9kg 미만</option>
+	            <option value="9kg 이상 ~ 11kg 미만">9kg 이상 ~ 11kg 미만</option>
+	            <option value="11kg 이상 ~ 14kg 미만">11kg 이상 ~ 14kg 미만</option>
+	            <option value="14kg 이상 ~ 17kg 미만">14kg 이상 ~ 17kg 미만</option>
+	            <option value="17kg 이상 ~ 20kg 미만">17kg 이상 ~ 20kg 미만</option>
+	            <option value="20kg 이상 ~ 24kg 미만">20kg 이상 ~ 24kg 미만</option>
+	            <option value="24kg 이상 ~ 28kg 미만">24kg 이상 ~ 28kg 미만</option>
+	            <option value="28kg 이상 ~ 32kg 미만">28kg 이상 ~ 32kg 미만</option>
+	            <option value="32kg 이상 ~ 37kg 미만">32kg 이상 ~ 37kg 미만</option>
+	            <option value="37kg 이상 ~ 42kg 미만">37kg 이상 ~ 42kg 미만</option>
+	            <option value="42kg 이상 ~ 47kg 미만">42kg 이상 ~ 47kg 미만</option>
+	            <option value="47kg 이상 ~ 52kg 미만">47kg 이상 ~ 52kg 미만</option>
+	            <option value="52kg 이상">52kg 이상</option>
+        	</select>
 			</div>
 			
 			<div id="body-group">

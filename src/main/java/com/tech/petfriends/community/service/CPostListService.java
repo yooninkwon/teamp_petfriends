@@ -40,10 +40,23 @@ public class CPostListService implements CServiceInterface{
         model.addAttribute("getpetimg",getpetimg);
 		}
 		
-		ArrayList<CDto> postList = iDao.getPostList(); // DAO 호출
-        model.addAttribute("postList", postList); // 모델에 게시글 리스트 추가
+		  // 검색어 처리
+        String query = request.getParameter("query");
+		if (query != null && !query.isEmpty()) {
+	        // 검색어가 있을 경우, 제목, 콘텐츠, 작성자에서 검색
+			ArrayList<CDto> postList = iDao.searchPosts(query);
+	        model.addAttribute("postList", postList); // 검색된 게시글 리스트
+	  
+		} else {
+	        // 검색어가 없으면 모든 게시글 목록 조회
+	    	ArrayList<CDto> postList = iDao.getPostList(); // DAO 호출    
+			model.addAttribute("postList", postList); // 모델에 게시글 리스트 추가
+	    }
+	
 	
     
+        
+        
         ArrayList<CDto> getHotTopicList = iDao.getHotTopicList();
         model.addAttribute("getHotTopicList",getHotTopicList);
         		
@@ -56,16 +69,7 @@ public class CPostListService implements CServiceInterface{
              model.addAttribute("storyList",storyList);
     		}
         
-        String board_title = request.getParameter("board_title") ;
-        String board_content = request.getParameter("board_content") ;
-        String user_id = request.getParameter("user_id") ;
-        
-        System.out.println("board_title: "+board_title);		
-        
-		/*
-		 * ArrayList<CDto> searchPosts = iDao.searchPosts(board_title, board_content,
-		 * user_id); model.addAttribute("searchPosts",searchPosts);
-		 */
+  
 	
 	} 
 	

@@ -23,6 +23,7 @@
     
     <!-- 필터링 -->
     <div class="date-group">
+        <button>전체</button>
         <button>오늘</button>
         <button>1주일</button>
         <button>1개월</button>
@@ -44,7 +45,7 @@
     </div>
     
 	<!-- 페이지네이션 -->
-    <div id="orderlist-pagination" class="pagination"></div>
+    <div id="orderlist-pagination" class="pagination" style="margin-top: 20px;"></div>
 </div>
 
 <script src="/static/js/mypage/order.js"></script>
