@@ -55,7 +55,7 @@ public class AdoptionGetJson implements HelppetfExecuteModelRequest{
      * @throws Exception 예외 발생 시
      * 	빈 리스트를 가진 HelpPetfAdoptionItemsVo를 생성하고, 내부 서버 오류 상태를 반환
      */
-	@Cacheable("adoptionData")
+	@Cacheable("adoptionData") // 캐싱 가능 어노테이션
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionData(Model model, HttpServletRequest request) throws Exception {
 
 		// api 요청주소 End point
@@ -81,7 +81,7 @@ public class AdoptionGetJson implements HelppetfExecuteModelRequest{
 		 * 오류일 시 예외 발생 .bodyToMono(String.class) : 응답 본문을 String으로 받음
 		 * 
 		 * 파싱 -> .map(json -> ... )} : parsingJsonObject() 메서드 호출
-		 */
+		 */		
 		return webClient.get().uri(baseUrl + addParameters)
 				.retrieve()
 				.onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Client Error")))

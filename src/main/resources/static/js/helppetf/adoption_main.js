@@ -17,6 +17,8 @@
  * 메인 페이지 전체가 포함되어 있는 div의 스타일을 display: none으로 만들어 보이지 않게 하고,
  * 상세 페이지 전체가 포함되어 있는 div의 스타일을 display: block으로 만들어 보이게 한다.
  * (목록으로 클릭 시 반대로 적용)
+ * 상세 페이지 진입 시 해당하는 게시글의 주소를 표시하는 지도를 생성한다.
+ * 
  * 
  * dataset을 이용해 메인 페이지에 카드레이아웃이 배치될 때 각각에 해당하는 인덱스 번호를 저장한다.
  * 카드레이아웃을 눌렀을 때, 해당 카드에 저장되어 있는 글 번호를 추출하여 전송, 상세 내용을 불러온다.
@@ -304,7 +306,7 @@ $(document).ready(function() {
 		selectedPetTable += '</div></div></div></td></tr>';
 		
 		$('#selectedAnimalTable').html(selectedPetTable);
-		buildKakaoMap(selectedPetData.careAddr, selectedPetData.careNm); 
+		buildKakaoMap(selectedPetData.careAddr, selectedPetData.careNm, selectedPetData.careTel); 
 		
 	});
 	
@@ -325,8 +327,7 @@ $(document).ready(function() {
 	}
 	
 	/* 카카오맵 API */
-	function buildKakaoMap(careAddr, careNm) {
-		console.log(careAddr)
+	function buildKakaoMap(careAddr, careNm, careTel) {
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		    mapOption = {
 		        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -338,29 +339,39 @@ $(document).ready(function() {
 	
 		// 주소-좌표 변환 객체를 생성합니다
 		var geocoder = new kakao.maps.services.Geocoder();
-	
+		
 		// 주소로 좌표를 검색합니다
 		geocoder.addressSearch(careAddr, function(result, status) {
-	
+			console.log('result: ', result, 'status: ', status);
 		    // 정상적으로 검색이 완료됐으면 
 		     if (status === kakao.maps.services.Status.OK) {
 	
 		        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-	
+				
+				// 커스텀 마커 이미지 생성
+				var imageSrc = '/static/Images/helppetf/kakaoMap/애완동물_아이콘_제작자_monkik_Flaticon.png',
+					imageSize = new kakao.maps.Size(64, 64);
+
+				var makerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+				
 		        // 결과값으로 받은 위치를 마커로 표시합니다
 		        var marker = new kakao.maps.Marker({
 		            map: map,
-		            position: coords
+		            position: coords,
+					image: makerImage
 		        });
-	
+					
 		        // 인포윈도우로 장소에 대한 설명을 표시합니다
 		        var infowindow = new kakao.maps.InfoWindow({
-		            content: '<div style="width:150px;text-align:center;padding:6px 0;">' + careNm + '</div>'
+		            content: '<div class="careNm" style="width:200px; text-align:center; font-family: sans-serif; padding:10px 5px;">' + careNm + '</div>'
 		        });
 		        infowindow.open(map, marker);
-	
+				
 		        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 		        map.setCenter(coords);
+				
+				
+				$('.careNm').parent().parent().css('border-radius', '10px');
 		    } 
 		});    
 	}
