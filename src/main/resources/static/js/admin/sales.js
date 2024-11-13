@@ -178,76 +178,6 @@ $(document).ready(function() {
 	});
 
 
-	const ctxTotal = document.getElementById('totalChart').getContext('2d');
-
-	const totalChart = new Chart(ctxTotal, {
-		type: 'bar',
-		data: {
-			labels: ['2022', '2023', '2024'],
-			datasets: [
-				{
-					label: '결제금액',
-					data: [10, 20, 30, 40],
-					backgroundColor: 'rgba(54, 162, 235, 0.2)',
-					borderColor: 'rgba(54, 162, 235, 1)',
-					borderWidth: 1,
-					barThickness: 50 // 막대의 고정 두께 설정
-				},
-				{
-					label: '환불금액',
-					data: [5, 10, 15, 20],
-					backgroundColor: 'rgba(255, 99, 132, 0.2)',
-					borderColor: 'rgba(255, 99, 132, 1)',
-					borderWidth: 1,
-					barThickness: 50 // 막대의 고정 두께 설정
-				},
-				{
-					label: '순매출액',
-					data: [5, 10, 15, 20],
-					backgroundColor: 'rgba(255, 206, 86, 0.2)',
-					borderColor: 'rgba(255, 206, 86, 1)',
-					borderWidth: 1,
-					barThickness: 50 // 막대의 고정 두께 설정
-				}
-
-
-
-			]
-		},
-		options: {
-			responsive: true, // 기본값 (차트를 컨테이너에 맞춤)
-			maintainAspectRatio: false, // 비율 유지 해제 (부모 크기와 맞춤)
-			plugins: {
-				legend: { display: true }, // 범례를 숨김
-				datalabels: {
-					display: true, // 데이터 레이블 표시
-					color: 'black', // 레이블 색상
-					font: {
-						size: 14 // 글자 크기
-					},
-					anchor: 'end', // 레이블 위치 (끝 부분)
-					align: 'top', // 레이블의 위치 (위쪽)
-					formatter: (value) => {
-						return value.toLocaleString(); // 세 자리마다 , 추가
-					}
-				}
-			},
-			scales: {
-				x: {
-
-
-				},
-				y: {
-					beginAtZero: true,
-
-				}
-
-			}
-		}
-	});
-
-
-
 	function loadSalesList() {
 		let type = $('input[name="type-filter"]:checked').val();
 		let detail = $('input[name="type-day"]:checked').val();
@@ -261,6 +191,10 @@ $(document).ready(function() {
 				alert(`날짜를 선택해주세요`);
 				return;
 			}
+			// endDay에 1일을 더하는 로직
+			let endDate = new Date(endDay);
+			endDate.setDate(endDate.getDate() + 1); // 1일을 더함
+			endDay = endDate.toISOString().split('T')[0]; // 'YYYY-MM-DD' 형식으로 변경
 		} else if (detail === '직접선택월') {
 			startDay = $('#start-month').val();
 			endDay = $('#end-month').val();
@@ -268,6 +202,10 @@ $(document).ready(function() {
 				alert(`날짜를 선택해주세요`);
 				return;
 			}
+			// endDay에 1개월을 더하는 로직
+			let endMonth = new Date(endDay);
+			endMonth.setMonth(endMonth.getMonth() + 1); // 1개월을 더함
+			endDay = endMonth.toISOString().split('T')[0].slice(0, 7); // 'YYYY-MM' 형식으로 변경
 		}
 
 		$.ajax({
@@ -281,6 +219,31 @@ $(document).ready(function() {
 				endDay
 			}),
 			success: function(list) {
+				// 기존 테이블 내용 비우기 (새로고침 시)
+				$('#product-table-body').empty();
+
+				// list를 반복하면서 테이블에 추가
+				list.forEach(function(item) {
+					var row = '<tr>' +
+						'<td>' + item.order_date + '</td>' +
+						'<td>' + item.completed_count.toLocaleString() + '</td>' +
+						'<td>' + item.cancelled_count.toLocaleString() + '</td>' +
+						'<td>' + item.total_coupon.toLocaleString() + '</td>' +
+						'<td>' + item.total_point.toLocaleString() + '</td>' +
+						'<td>' + item.total_amount.toLocaleString() + '</td>' +
+						'<td>' + item.cancel_amount.toLocaleString() + '</td>' +
+						'<td>' + item.net_amount.toLocaleString() + '</td>' +
+						'</tr>';
+
+					// 테이블 본문에 행 추가
+					$('#product-table-body').append(row);
+
+
+
+					salesGraph(list);
+
+				});
+
 
 			},
 			error: function(xhr, status, error) {
@@ -289,9 +252,142 @@ $(document).ready(function() {
 		});
 	}
 
+
+
+
+
+	let totalChart = null;
+
+
+	function salesGraph(list) {
+		const totalAmountData = [];
+		const cancelAmountData = [];
+		const netAmountData = [];
+		const labels = [];
+
+		list.slice().reverse().forEach(function(item) {
+
+			labels.push(item.order_date);  // 날짜 추가
+			totalAmountData.push(item.total_amount);  // total_amount 값 추가
+			cancelAmountData.push(item.cancel_amount);  // cancel_amount 값 추가
+			netAmountData.push(item.net_amount);  // net_amount 값 추가
+
+		});
+
+		// 기존 차트가 있다면 destroy()로 제거
+		if (totalChart) {
+			totalChart.destroy();
+		}
+
+		const ctxTotal = document.getElementById('totalChart').getContext('2d');
+
+		const maxtotal = Math.max(...totalAmountData); // 데이터에서 가장 큰 값
+		const maxcancel = Math.max(...cancelAmountData); // 데이터에서 가장 큰 값
+		const maxY = maxtotal + maxcancel;
+
+
+		totalChart = new Chart(ctxTotal, {
+			type: 'bar',
+			data: {
+				labels: labels,
+				datasets: [
+					{
+						label: '결제금액',
+						data: totalAmountData,
+						backgroundColor: 'rgba(54, 162, 235, 0.2)',
+						borderColor: 'rgba(54, 162, 235, 1)',
+						borderWidth: 1
+
+
+					},
+
+					{
+						label: '환불금액',
+						data: cancelAmountData,
+						backgroundColor: 'rgba(255, 99, 132, 0.2)',
+						borderColor: 'rgba(255, 99, 132, 1)',
+						borderWidth: 1
+
+					},
+
+					{
+						label: '순매출액',
+						data: netAmountData,
+						backgroundColor: 'rgba(255, 206, 86, 0.2)',
+						borderColor: 'rgba(255, 206, 86, 1)',
+						borderWidth: 1
+
+					}
+
+
+
+				]
+			},
+			options: {
+				responsive: true, // 기본값 (차트를 컨테이너에 맞춤)
+				maintainAspectRatio: false, // 비율 유지 해제 (부모 크기와 맞춤)
+				plugins: {
+					legend: { display: true }, // 범례를 숨김
+					datalabels: {
+						display: true, // 데이터 레이블 표시
+						color: 'black', // 레이블 색상
+						font: {
+							size: 10 // 글자 크기
+						},
+						anchor: 'end', // 레이블 위치 (끝 부분)
+						align: 'top', // 레이블의 위치 (위쪽)
+						formatter: (value) => {
+							return value.toLocaleString(); // 세 자리마다 , 추가
+						}
+					},
+					plugins: {
+					    zoom: {
+					        pan: {
+					            enabled: true, // 드래그로 이동
+					            mode: 'x'      // x축 이동만 허용
+					        },
+					        zoom: {
+					            enabled: true, // 줌 활성화
+					            mode: 'x'      // x축 줌만 허용
+					        }
+					    }
+					}
+				},
+				scales: {
+					x: {
+						ticks: {
+							autoSkip: false,  // 너무 많은 항목이 있을 경우, 자동으로 건너뛰지 않도록 설정
+							maxRotation: 0,  // 레이블 기울임 방지
+				            minRotation: 0   // 레이블 기울임 방지
+						}
+
+					},
+					y: {
+						beginAtZero: true,
+						max: maxY
+					}
+
+				}
+			}
+		});
+
+
+
+	}
+
+
 	$('#searchBtn').on('click', function(event) {
 		loadSalesList();
 	});
+
+
+
+
+
+
+
+
+
 
 
 

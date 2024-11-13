@@ -1,12 +1,10 @@
 package com.tech.petfriends.admin.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.dto.SalesDetailDto;
-import com.tech.petfriends.admin.dto.SalesDto;
 import com.tech.petfriends.admin.mapper.AdminSalesDao;
 
 public class AdminSalesDetailService implements AdminServiceInterface {
@@ -25,7 +23,7 @@ public class AdminSalesDetailService implements AdminServiceInterface {
 		String startDay = (String) model.getAttribute("startDay");
 		String endDay = (String) model.getAttribute("endDay");
 		
-//		List<SalesDetailDto> list = adminSalesDao.salesDetail(type,detail,startDay,endDay);
+		List<SalesDetailDto> list = adminSalesDao.salesDetail(type,detail,startDay,endDay);
 		System.out.println(type + ": type");
 		System.out.println(detail + ": detail");
 		System.out.println(startDay + ": startDay");
@@ -33,7 +31,7 @@ public class AdminSalesDetailService implements AdminServiceInterface {
 	
 		
 		
-//		model.addAttribute("list",list);
+		model.addAttribute("list",list);
 		
 		
 		
