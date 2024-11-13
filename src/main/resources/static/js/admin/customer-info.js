@@ -141,6 +141,7 @@ $(document).ready(function() {
                     <td>${item.mem_name}</td>
                     <td>${item.mem_nick}</td>
                     <td>${memGrade}</td>
+                    <td>${item.mem_pay_amount}</td>
                     <td>${item.mem_tell}</td>
                     <td>${item.mem_email}</td>
                     <td>${item.mem_gender}</td>

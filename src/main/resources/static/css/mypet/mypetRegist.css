@@ -337,6 +337,10 @@
     color: gray;
 }
 
+#allerge-input{
+	display: none;
+}
+
 #allerge-input input[type="text"] {
 	width: 48%;
 	height: 30px;

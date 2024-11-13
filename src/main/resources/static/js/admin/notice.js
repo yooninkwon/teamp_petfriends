@@ -9,37 +9,72 @@ $(document).ready(function() {
 	let filteredList = [];
 
 	loadNoticeData();
+	
+	// 정렬 옵션 변경 이벤트 핸들러
+    $('#sort-order').on('change', function() {
+        const selectedOrder = $(this).val();
+        sortAndDisplayList(selectedOrder);
+    });
+	
+	function sortAndDisplayList(order) {
+	    const activeTab = document.querySelector('.tab-btn.active').getAttribute('data-tab');
+
+	    if (activeTab === 'notice-list-container') {
+	        if (order === '최신순') {
+	            filteredList.sort((a, b) => new Date(b.notice_date) - new Date(a.notice_date));
+	        } else if (order === '오래된순') {
+	            filteredList.sort((a, b) => new Date(a.notice_date) - new Date(b.notice_date));
+	        } else if (order === '조회수순') {
+	            filteredList.sort((a, b) => b.notice_hit - a.notice_hit);
+	        }
+	        displayNoticeList(currentPage);
+	    } else if (activeTab === 'event-list-container') {
+	        if (order === '최신순') {
+	            filteredList.sort((a, b) => new Date(b.event_startdate) - new Date(a.event_startdate));
+	        } else if (order === '오래된순') {
+	            filteredList.sort((a, b) => new Date(a.event_startdate) - new Date(b.event_startdate));
+	        } else if (order === '조회수순') {
+	            filteredList.sort((a, b) => b.event_hit - a.event_hit);
+	        }
+	        displayEventList(currentPage);
+	    }
+
+	    // 페이징도 새로 설정
+	    totalItems = filteredList.length;
+	    totalPages = Math.ceil(totalItems / itemsPerPage);
+	    setupPagination(currentPage, currPageGroup);
+	}
 
 	// 검색 버튼 클릭 이벤트
-		$('#searchButton').on('click', function() {
-			const searchKeyword = $('#titleSearch').val().trim().toLowerCase();
-			const activeTab = document.querySelector('.tab-btn.active').getAttribute('data-tab');
+	$('#searchButton').on('click', function() {
+		const searchKeyword = $('#titleSearch').val().trim().toLowerCase();
+		const activeTab = document.querySelector('.tab-btn.active').getAttribute('data-tab');
 
-			if (searchKeyword) {
-				// 활성화된 탭에 따라 필터링된 리스트 설정
-				if (activeTab === 'notice-list-container') {
-					filteredList = noticeList.filter(item => item.notice_title.toLowerCase().includes(searchKeyword));
-				} else if (activeTab === 'event-list-container') {
-					filteredList = eventList.filter(item => item.event_title.toLowerCase().includes(searchKeyword));
-				}
-			} else {
-				// 검색어가 없을 경우 전체 리스트로 설정
-				filteredList = activeTab === 'notice-list-container' ? noticeList : eventList;
-			}
-
-			currentPage = 1;
-			totalItems = filteredList.length;
-			totalPages = Math.ceil(totalItems / itemsPerPage);
-
-			// 리스트를 표시하는 함수 호출
+		if (searchKeyword) {
+			// 활성화된 탭에 따라 필터링된 리스트 설정
 			if (activeTab === 'notice-list-container') {
-				displayNoticeList(currentPage);
-				setupPagination(currentPage, currPageGroup, 'notice');
+				filteredList = noticeList.filter(item => item.notice_title.toLowerCase().includes(searchKeyword));
 			} else if (activeTab === 'event-list-container') {
-				displayEventList(currentPage);
-				setupPagination(currentPage, currPageGroup, 'event');
+				filteredList = eventList.filter(item => item.event_title.toLowerCase().includes(searchKeyword));
 			}
-		});
+		} else {
+			// 검색어가 없을 경우 전체 리스트로 설정
+			filteredList = activeTab === 'notice-list-container' ? noticeList : eventList;
+		}
+
+		currentPage = 1;
+		totalItems = filteredList.length;
+		totalPages = Math.ceil(totalItems / itemsPerPage);
+
+		// 리스트를 표시하는 함수 호출
+		if (activeTab === 'notice-list-container') {
+			displayNoticeList(currentPage);
+			setupPagination(currentPage, currPageGroup, 'notice');
+		} else if (activeTab === 'event-list-container') {
+			displayEventList(currentPage);
+			setupPagination(currentPage, currPageGroup, 'event');
+		}
+	});
 
 	// 탭 전환
 	document.querySelectorAll('.tab-btn').forEach(function(tabBtn) {

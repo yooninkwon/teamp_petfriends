@@ -57,19 +57,19 @@
 					<th>기타</th>
 				</tr>
 				<tr>
-					<td>1</td>
-					<td>2</td>
-					<td>4</td>
-					<td>22</td>
-					<td>5</td>
-					<td>223</td>
-					<td>44</td>
-					<td>23</td>
-					<td>1</td>
-					<td>2</td>
-					<td>1234</td>
-					<td>23</td>
-					<td>23</td>
+					<td id="count-관절">0</td>
+			        <td id="count-모질">0</td>
+			        <td id="count-소화기">0</td>
+			        <td id="count-눈">0</td>
+			        <td id="count-눈물">0</td>
+			        <td id="count-체중">0</td>
+			        <td id="count-치아">0</td>
+			        <td id="count-피부">0</td>
+			        <td id="count-신장">0</td>
+			        <td id="count-귀">0</td>
+			        <td id="count-심장">0</td>
+			        <td id="count-호흡기">0</td>
+			        <td id="count-기타">0</td>
 				</tr>
 			</table>
 		</div>
