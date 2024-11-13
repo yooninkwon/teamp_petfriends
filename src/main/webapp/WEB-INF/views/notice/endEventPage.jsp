@@ -23,7 +23,7 @@
 	<h1>EVENT</h1>
     
     <c:forEach var="event" items="${event }" >
-    		<div class="events" onclick="location.href='/notice/eventView?id=${event.event_no }'">
+    		<div class="events" onclick="location.href='/notice/eventView?id=${event.event_no }&active=N'">
 	    		<div class="thumbnail-ended">
 	    			<h2>종료된 이벤트 입니다.</h2>
 	    			<img src="/static/Images/thumbnail/${event.event_thumbnail }" alt="" />

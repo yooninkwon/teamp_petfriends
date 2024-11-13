@@ -55,13 +55,22 @@ public class NoticeController {
 	}
 	
 	@GetMapping("/eventView")
-	public String eventView(@RequestParam("id") int eventNo, HttpServletRequest request, Model model) {
-		model.addAttribute("main_navbar_id","notice");
-		model.addAttribute("sub_navbar_id","notice_event");
-		EventDto event = noticeDao.findEventById(eventNo);
-		noticeDao.increaseEventHit(eventNo);	
-		model.addAttribute("event",event);
-		return "/notice/eventView";
+	public String eventView(
+	    @RequestParam("id") int eventNo, 
+	    @RequestParam(value = "active", required = false, defaultValue = "Y") String active, 
+	    HttpServletRequest request, 
+	    Model model) {
+	    model.addAttribute("main_navbar_id", "notice");   
+	    // active 값에 따라 sub_navbar_id 설정
+	    if ("N".equals(active)) {
+	        model.addAttribute("sub_navbar_id", "notice_endEvent");
+	    } else {
+	        model.addAttribute("sub_navbar_id", "notice_event");
+	    }    
+	    EventDto event = noticeDao.findEventById(eventNo);
+	    noticeDao.increaseEventHit(eventNo);    
+	    model.addAttribute("event", event);  
+	    return "/notice/eventView";
 	}
 	
 	@GetMapping("/endEventPage")

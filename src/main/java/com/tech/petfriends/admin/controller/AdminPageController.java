@@ -414,7 +414,9 @@ public class AdminPageController {
 	}
 
 	@GetMapping("/customer")
-	public String customer() {
+	public String customer(Model model) {
+		ArrayList<MemberLoginDto> newMemberList = memberDao.newMemberList();
+		model.addAttribute("newMemberList",newMemberList);
 		return "admin/customer";
 	}
 

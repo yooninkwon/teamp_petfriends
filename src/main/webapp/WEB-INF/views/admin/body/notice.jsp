@@ -99,6 +99,6 @@
    
 </div>
 
-<script src="/static/js/admin/notice.js"></script>
+<script src="/static/js/admin/notice.js" defer></script>
 </body>
 </html>
