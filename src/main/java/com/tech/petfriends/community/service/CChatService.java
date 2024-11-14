@@ -30,4 +30,9 @@ public class CChatService {
         iDao.insertMessage(sender, receiver, messageContent,roomId);
         
     }
+
+	public static void saveMessag(String sender, String receiver, String roomId) {
+		// TODO Auto-generated method stub
+		
+	}
 }

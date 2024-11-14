@@ -31,15 +31,15 @@
 		INSERT INTO COMMUNITY_BOARD (BOARD_NO,
 		B_CATE_NO,
 		MEM_CODE, USER_ID,
-		BOARD_TITLE, BOARD_PASSWORD, BOARD_CONTENT,
+		BOARD_TITLE, BOARD_CONTENT,
 		BOARD_CREATED,
 		BOARD_MODIFIED,
-		BOARD_VIEWS,BOARD_TAG, BOARD_LIKES,
+		BOARD_VIEWS, BOARD_LIKES,
 		BOARD_COMMENT_COUNT, BOARD_CONTENT_INPUT)
 		VALUES
 		(COMMUNITY_BOARD_SEQ.NEXTVAL, #{b_cate_no},#{mem_code}, #{mem_nick},
 		#{board_title},
-		1234, #{board_content},SYSDATE, null, 0, 'tag1', 0,
+		#{board_content},SYSDATE, null, 0, 0,
 		0,#{board_content_input} )
 	</insert>
 
@@ -305,10 +305,10 @@
 	<insert id="report">
 		INSERT INTO COMMUNITY_REPORT (REPORT_ID, BOARD_NO,
 		REPORTER_ID,
-		REASON, REPORT_DATE, STATUS, COMMENT_NO, REPORT_TYPE)
+		REASON, REPORT_DATE, STATUS, COMMENT_NO, REPORT_TYPE, MEM_CODE)
 		VALUES
 		(COMMUNITY_REPORT_SEQ.NEXTVAL, #{board_no}, #{reporter_id},
-		#{reason}, SYSDATE, DEFAULT, #{comment_no}, #{report_type})
+		#{reason}, SYSDATE, DEFAULT, #{comment_no}, #{report_type}, #{mem_code})
 	</insert>
 
 	<update id="incrementViews" parameterType="String">

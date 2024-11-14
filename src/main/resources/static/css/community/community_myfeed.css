@@ -11,8 +11,10 @@ a {
    	color:#333
 }
 a:hover  {
-    color: #ff4081; /* 마우스를 올렸을 때 색상 변경 */
+    color: #333; /* 마우스를 올렸을 때 색상 변경 */
 }
+
+
 .container {
 	display: flex;
 	width: 80%; /* 전체 너비를 80%로 조정 */
@@ -21,6 +23,7 @@ a:hover  {
 	justify-content: space-between;
 	margin: 0 auto; /* 중앙 정렬을 위해 자동 마진 추가 */
 }
+
 
 /* 메인 영역 설정 */
 .my_feed {
@@ -226,7 +229,7 @@ a:hover  {
 	padding: 10px; /* 내부 여백 */
 	border-radius: 5px; /* 모서리 둥글게 */
 	margin: 20px 0; /* 위아래 여백 추가 */
-	max-height: 200px; /* 최대 높이 설정 (원하는 높이로 조정 가능) */
+	max-height: 250px; /* 최대 높이 설정 (원하는 높이로 조정 가능) */
 	overflow-y: auto; /* 세로 스크롤바 추가 */
 }
 
@@ -341,3 +344,39 @@ a:hover  {
 	font-size: 16px; /* 이름 폰트 크기 */
 }
 
+
+/* 현재 채팅방에 활성화된 표시 */
+#chatRoomsList .active {
+    font-weight: bold;
+    color: #ff4081;  /* 활성화된 채팅방을 강조하는 색상 */
+}
+
+/* '내 소식을 눌러보세요!' 텍스트 색상 변경 */
+.notice-text {
+	color: #828282; /* 원하는 색상 코드로 변경 */
+	margin-top: 10px;
+}
+
+/* 채팅 메시지 스타일 */
+#chatMessages {
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    max-width: 60%;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 10px;
+    word-wrap: break-word;
+}
+
+.message.sender {
+    align-self: flex-end; /* 내 메시지는 오른쪽 */
+    background-color: #ffe5ee; /* 내 메시지 배경색 */
+}
+
+.message.receiver {
+    align-self: flex-start; /* 상대방 메시지는 왼쪽 */
+    background-color: #f1f1f1; /* 상대방 메시지 배경색 */
+}

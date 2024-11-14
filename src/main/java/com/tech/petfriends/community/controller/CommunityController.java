@@ -304,11 +304,14 @@ public class CommunityController {
 		System.out.println("communityReport");
 		
 		model.addAttribute("board_no", reportDto.getBoard_no());
+		model.addAttribute("mem_code", reportDto.getMem_code());
 	    model.addAttribute("reporter_id", reportDto.getReporter_id());
 	    model.addAttribute("reason", reportDto.getReason());
 	    model.addAttribute("comment_no", reportDto.getComment_no());
 	    model.addAttribute("report_type", reportDto.getReport_type());
 	   
+	
+	    System.out.println("reportDto.getMem_code() " + reportDto.getMem_code());
 	    System.out.println("reportDto.getBoard_no() " + reportDto.getBoard_no());
 	    System.out.println("reportDto.reporter_id() " + reportDto.getReporter_id());
 	    System.out.println("reportDto.reason() " + reportDto.getReason());
@@ -372,7 +375,7 @@ public class CommunityController {
       System.out.println("roomId:"+roomId);
     	// 서비스에서 roomId로 메시지 리스트 조회
     	List<CChatDto> getChatHistory = iDao.getChatHistory(roomId);
-    	System.out.println("getChatHistory" + getChatHistory);
+    	
     	
     	return getChatHistory;
     }
@@ -387,6 +390,9 @@ public class CommunityController {
         List<CChatDto> getChatRooms = iDao.getChatRooms(sender);
         return getChatRooms;
     }
+    
+    
+    
     
 
 }

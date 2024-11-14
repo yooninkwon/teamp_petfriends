@@ -53,7 +53,7 @@
 	            return;
 	        }
 
-	        var memCode = '${sessionScope.loginUser.mem_code}';
+	        var memCode = '${sessionScope.loginUser.mem_code}';	     
 	        var boardNo = '${contentView.board_no}';
 	        var memName = '${sessionScope.loginUser.mem_nick}';
 			var userId = '${contentView.user_id}';
@@ -81,7 +81,7 @@
 		let currentCommentNo;
 		let currentReportType;
 	    
-		function openReportPopup(commentNO,reportType) {
+		function openReportPopup(commentNO, reportType) {
 		
 			var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
 	        
@@ -118,11 +118,13 @@
 		    // 신고 내용을 서버에 전송하는 코드
 		    const boardNo = "${contentView.board_no}"; // 게시물 번호
 		    const reporterId = "${sessionScope.loginUser.mem_nick}"; // 신고자 ID (로그인된 사용자 ID)
-		
+		    const memCode = "${contentView.mem_code}"; // 신고자 ID (로그인된 사용자 ID)
+			
 		    console.log("Board No:", boardNo); // 디버깅을 위한 로그
 		    console.log("Reporter ID:", reporterId); // 디버깅을 위한 로그
 		    console.log("Comment NO:", currentCommentNo); // 디버깅을 위한 로그
 		    console.log("Report Type:", currentReportType); // 디버깅을 위한 로그
+		    console.log("mem_code:", memCode); // 디버깅을 위한 로그
 		    
 		    fetch('/community/report', {
 		        method: 'POST',
@@ -134,7 +136,8 @@
 		            reporter_id: reporterId,
 		            reason: reportText,
 		            comment_no: currentCommentNo,
-		            report_type: currentReportType
+		            report_type: currentReportType,
+		      		mem_code: memCode
 		        })
 		    })
 		    .then(response => {

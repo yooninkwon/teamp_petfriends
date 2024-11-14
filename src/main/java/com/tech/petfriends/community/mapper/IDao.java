@@ -77,7 +77,7 @@ public interface IDao {
 
 	public CDto myFeedName (String mem_code);
 	
-	public void report(int board_no, String reporter_id, String reason, int comment_no, String report_type);
+	public void report(int board_no, String reporter_id, String reason, int comment_no, String report_type, String mem_code);
 
 	public void incrementViews(String board_no);
 
