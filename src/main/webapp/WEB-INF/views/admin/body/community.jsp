@@ -136,6 +136,8 @@
                     <option value="all">전체</option>
                     <option value="user_name">작성자</option>
                     <option value="reporter">신고자</option>
+              
+                
                 </select> 
                 <label><input type="text" name="report-search-filter" value="" id="report-search-filter"></label> 
                 <input type="button" value="검색" class="btn-style" id="report-searchBtn" />
@@ -168,7 +170,9 @@
 			    <div class="popup-content">
 			        <span class="popup-close" id="popup-close">&times;</span>
 			        <h2>신고 상세 정보</h2>
+			        			        
 			        <p><strong>작성자:</strong> <span id="popup-mem-name"></span></p>			        
+			        <p><strong>회원코드:</strong> <span id="popup-mem-code"></span></p>			        
 					<p><strong>신고타입:</strong> <span id="popup-report-type"></span></p>
 					<p><strong>신고자:</strong> <span id="popup-reporter-id"></span></p>
 			        <p><strong>신고사유:</strong> <span id="popup-reason"></span></p>

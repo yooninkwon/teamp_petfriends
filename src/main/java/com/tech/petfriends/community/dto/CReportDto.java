@@ -22,5 +22,5 @@ public class CReportDto {
 	private String status;
 	private int comment_no;
 	private String report_type;
-
+	private String mem_code;
 }

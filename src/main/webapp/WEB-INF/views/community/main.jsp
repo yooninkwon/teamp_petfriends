@@ -111,14 +111,13 @@
 				</ul>
 				<div class="sidebar-notice">
 					<h3>소식상자</h3>
-					<p></p>
+					<p class="notice-text">내 소식을 눌러보세요!</p>
 				</div>
+				
+				
+				
 				</c:if>
-				<div class="sidebar-from">
-					<h4>From. 블로그씨</h4>
-					<p>블로그씨는 최근 다녀온 몽골여행 기록으로 브이로그를 만들었어요.</p>
-					<p>나의 특별한 여행지에서의 영상도 보여드릴게요!</p>
-				</div>
+	
 				<div class="ad-banner">
 					<a href="http://localhost:9002/notice/eventView?id=50"> <img
 						src="/static/Images/thumbnail/페스룸카카오친추썸네일.gif" alt="광고 배너" />

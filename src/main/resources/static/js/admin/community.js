@@ -169,6 +169,7 @@ $(document).ready(function() {
 				            if (reportData) {
 				                // 팝업창에 상세 정보 표시
 				                $("#popup-mem-name").text(reportData.mem_name);			                
+				                $("#popup-mem-code").text(reportData.mem_code);			                
 								$("#popup-report-type").text(reportData.report_type);
 								$("#popup-reporter-id").text(reportData.reporter_id);
 				                $("#popup-reason").text(reportData.reason);
