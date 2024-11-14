@@ -126,19 +126,7 @@ $(document).ready(function() {
 	function goToMain(event) {
 		event.preventDefault();
 		pageScroll(0);
-		
-		// 메인페이지 제외 모두 보이지 않게 설정
-		$('#information').removeClass().addClass('on');
-		$('#introduction').removeClass().addClass('off');
-		$('#pethotel_reserve').removeClass().addClass('off');
-		$('#pethotel_reserve_done').removeClass().addClass('off');
-		$('#popup-form').removeClass().addClass('off');
-		
-		// form의 내용들을 제거
-		$('.registered-pet-circle').remove();
-		$('#start-date').val('');
-		$('#end-date').val('');
-		$('#pet-form')[0].reset();
+		window.location.href = window.location.href;
 	}
 
 	// #right, right-2는 "예약하러 가기"버튼이다. 버튼이 눌린 경우
@@ -282,7 +270,6 @@ $(document).ready(function() {
 			formDataObj[petHiddenVal].hphp_pet_weight = petWeight;
 			formDataObj[petHiddenVal].hphp_pet_neut = petNeutered;
 			formDataObj[petHiddenVal].hphp_comment = petMessage;
-			console.log('저장: ',formDataObj)
 			// 등록한 순서 +1 해서 폼 넘버의 id값 변경
 			$('#pet-form-no').val(Number(petHiddenVal) + 1)
 

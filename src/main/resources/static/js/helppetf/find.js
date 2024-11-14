@@ -250,10 +250,10 @@ $(document).ready(function() {
 
 			return el;
 		}
-
+		
 		// 마커를 생성하고 지도 위에 마커를 표시하는 함수
 		function addMarker(placeId, position, idx, title) {
-			var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 사용
+			var imageSrc = '/static/Images/helppetf/kakaoMap/marker_number_pink-Photoroom.png', // 마커 이미지 url, 스프라이트 이미지를 사용
 				imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
 				imgOptions = {
 					spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기

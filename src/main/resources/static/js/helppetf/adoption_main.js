@@ -28,7 +28,7 @@
  */
 
 
-import { kindOptions } from '/static/js/helppetf/kind_data.js'; // 품종 데이터 Object import
+// import { kindOptions } from '/static/js/helppetf/kind_data.js'; // 품종 데이터 Object import
 import { orgCdOptions } from '/static/js/helppetf/org_data.js'; // 지역 데이터 Object import
 
 
@@ -174,31 +174,8 @@ $(document).ready(function() {
 	});
 }
 
-	// 필터링
-	// 오브젝트 : 지역, 품종 데이터 저장 되어 있음
-	$('#upKind').on('change', function() { // id="upKind" 요소의 값이 변경될 때마다 호출
-
-		const selectedKindVal = $(this).val(); // selectedKindVal을 누른 요소의 value로 지정
-
-		$('#kind').empty(); // 내용을 바꿀 select 태그 내용 초기화
-
-		if (kindOptions[selectedKindVal]) { // kindOptions 오브젝트의 [selectedKindVal]에 해당하는 데이터를 찾음 
-			kindOptions[selectedKindVal].forEach(option => {
-				$('#kind').append(`<option value="${option.value}">${option.text}</option>`);
-				/** 람다식 설명 :
-				* forEach: 배열의 각 요소를 순차적으로 처리하는 메서드
-				* option => {} : 배열의 각 항목(객체)을 option이라는 변수로 전달
-				* 배열의 첫 번째 요소부터 마지막 요소까지 차례로 진행 (forEach)
-				* option 객체의 구조는 { value: "어쩌구", text: "저쩌구" } 형태로 각 항목을 처리
-				* #kind 요소에 .append()로 <option> 태그를 동적으로 추가
-				* ${option.value}, ${option.text}: option 객체의 value와 text 값을 가져와 <option>의 속성과 텍스트로 사용
-				*/
-			});
-		} else {
-			$('#kind').append('<option value="any" selected>품종</option>');
-		}
-	});
-
+//	// 필터링
+//	// 오브젝트 : 지역 데이터 저장 되어 있음
 	$('#upr_cd').on('change', function() { // id="upr_cd" 요소의 값이 변경될 때마다 호출
 
 		const selectedUprVal = $(this).val(); // selectedUprVal을 누른 요소의 value로 지정
@@ -241,15 +218,10 @@ $(document).ready(function() {
 		$('#org_cd').append(`<option value="any" selected>시, 군, 구</option>`);
 		$('#org_cd').append(`<option value="any" selected>지역을 먼저 골라주세요</option>`);
 
-		$('#kind').empty();
-		$('#kind').append(`<option value="any" selected>품종</option>`);
-		$('#kind').append(`<option value="any" selected>동물종류를 먼저 골라주세요</option>`);
-
 		// option 태그의 선택값을 인덱스넘버 0으로 바꿈
 		$("#upr_cd option:eq(0)").prop("selected", true);
 		$("#upKind option:eq(0)").prop("selected", true);
 		$("#org_cd option:eq(0)").prop("selected", true);
-		$("#kind option:eq(0)").prop("selected", true);
 
 		fetchData(currentPage, currPageGroup, formParam); // 필터 데이터 초기화한 뒤 fetchData 재호출
 	});

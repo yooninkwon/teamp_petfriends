@@ -15,6 +15,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <script>
+
 	var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
 	var sender = "${sessionScope.loginUser.mem_nick}";
 	var receiver = "${myFeedName.mem_nick}";
@@ -129,8 +130,6 @@
 	           })
 	           .catch(error => console.error('Error fetching chat rooms:', error));
 	   }
-
-
 
 </script>
 

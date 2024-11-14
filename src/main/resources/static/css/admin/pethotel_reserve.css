@@ -182,7 +182,8 @@ input[type="text"] {
 }
 
 .input-group textarea {
-	width: 200px;
+	width: 260px;
+	height: 50px;
 	padding: 5px;
 	border: 1px solid #ccc;
 	font-size: 15px;
