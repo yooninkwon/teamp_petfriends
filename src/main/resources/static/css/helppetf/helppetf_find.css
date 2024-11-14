@@ -1,5 +1,13 @@
 @charset "UTF-8";
 
+.on {
+	display: block;
+}
+
+.off {
+	display: none;
+}
+
 .my_adress {
 	border-bottom: 1px solid #F4EDED;
 	margin-bottom: 10px;
@@ -90,6 +98,12 @@
     width: 1000px;
     margin: 0 auto;
 }
+
+/* #load-view { */
+/* 	position: relative; */
+/*     width: 1000px; */
+/*     margin: 0 auto; */
+/* } */
 
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active {
 	color: #000;
@@ -278,4 +292,54 @@
 	font-weight: bold;
 	cursor: default;
 	color: #777;
+}
+
+/* 모달창 */
+#road-view-modal {
+    position: fixed; 
+    z-index: 9999; 
+    left: 0; 
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.4); /* 반투명 검정 배경 */
+}
+
+#road-view-container {
+    position: relative;
+    margin: 5% auto; /* 중앙 정렬 */
+    padding: 10px 10px;
+    height: 700px;
+    width: 1200px;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+#road-view {
+    position: relative;
+    margin: 1% auto 0;
+    padding: 40px;
+    width: 1000px;
+    height:500px;
+    background-color: #f4f4f4;
+    text-align: left;
+}
+
+#road-view-title span {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+}
+
+.click-info {
+	font-size: 18px;
+	color: #3a3a3a;
+	margin-top: 10px;
+	text-align: center;
 }

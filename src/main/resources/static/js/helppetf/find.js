@@ -94,6 +94,9 @@ $(document).ready(function() {
 		buildKakaoMap(userAddress);
 	}
 
+	$('.close-btn').on('click', function() {
+		$('#road-view-modal').removeClass().addClass('off');
+	});
 
 	// 카카오맵 API // 
 
@@ -115,6 +118,16 @@ $(document).ready(function() {
 	// 장소 검색 객체를 생성
 	var ps = new kakao.maps.services.Places();
 
+	// 로드뷰 표시할 div 설정
+	var roadviewContainer = document.getElementById('road-view');
+
+	//로드뷰 객체 생성
+	var roadview = new kakao.maps.Roadview(roadviewContainer);
+
+	//좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper 객체 생성
+	var roadviewClient = new kakao.maps.RoadviewClient();
+
+	
 	// 주소를 입력하여 지도를 구성하는 함수
 	function buildKakaoMap(userAddress) {
 
@@ -191,9 +204,8 @@ $(document).ready(function() {
 			for (var i = 0; i < places.length; i++) {
 				// 마커를 생성하고 지도에 표시
 				var placePosition = new kakao.maps.LatLng(places[i].y,
-					places[i].x), marker = addMarker(places[i].id, placePosition, i),
-					itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성
-
+					places[i].x), marker = addMarker(placePosition, places[i].place_name, placePosition, i),
+					itemEl = getListItem(placePosition, places[i].place_name, i, places[i]); // 검색 결과 항목 Element를 생성
 
 				// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
 				// LatLngBounds 객체에 좌표를 추가
@@ -226,13 +238,13 @@ $(document).ready(function() {
 
 			// 검색된 장소 위치를 기준으로 지도 범위를 재설정
 			map.setBounds(bounds);
-		}
-
+		}		
+		
 		// 검색결과 항목을 Element로 반환하는 함수
-		function getListItem(index, places) {
+		function getListItem(placePosition, placeName, index, places) {
 			var el = document.createElement('li');
 			itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>';
-			itemStr += '<div class="info"><a href="https://place.map.kakao.com/' + places.id + '" target="_blank">';
+			itemStr += '<div class="info index_' + index + '_">';
 			itemStr += '<h5>' + places.place_name + '</h5>';
 
 			if (places.road_address_name) {
@@ -247,12 +259,18 @@ $(document).ready(function() {
 
 			el.innerHTML = itemStr;
 			el.className = 'item';
-
+			
+			// 각 인덱스넘버의 div에 클릭이벤트
+			$(document).on('click', '.index_' + index + '_', function() {
+				// 로드뷰 표시하는 함수 호출
+				viewRoadView(placePosition, placeName);
+			});
+			
 			return el;
 		}
-		
+
 		// 마커를 생성하고 지도 위에 마커를 표시하는 함수
-		function addMarker(placeId, position, idx, title) {
+		function addMarker(placePosition, placeName, position, idx, title) {
 			var imageSrc = '/static/Images/helppetf/kakaoMap/marker_number_pink-Photoroom.png', // 마커 이미지 url, 스프라이트 이미지를 사용
 				imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
 				imgOptions = {
@@ -265,10 +283,11 @@ $(document).ready(function() {
 						position: position, // 마커의 위치
 						image: markerImage
 					});
-
+			//
 			// 마커 이벤트리스너 부착 - 클릭시 새 페이지로 해당 시설의 카카오맵 상세 페이지 이동			
 			kakao.maps.event.addListener(marker, 'click', function() {
-				window.open('https://place.map.kakao.com/' + placeId);
+				// 로드뷰 표시하는 함수 호출
+				viewRoadView(placePosition, placeName);
 			});
 
 			marker.setMap(map); // 지도 위에 마커를 표출
@@ -277,6 +296,47 @@ $(document).ready(function() {
 			return marker;
 		}
 
+		// 로드뷰 표시하는 함수
+		function viewRoadView(placePosition, placeName) {
+			$('#road-view-modal').removeClass().addClass('on');
+						
+			// 로드뷰에 올릴 마커를 생성합니다.
+			var rMarker = new kakao.maps.Marker({
+			    position: placePosition,
+			    map: roadview //map 대신 rv(로드뷰 객체)로 설정하면 로드뷰에 올라갑니다.
+			});
+
+			// 로드뷰에 올릴 장소명 인포윈도우를 생성합니다.
+			var rLabel = new kakao.maps.InfoWindow({
+			    position: placePosition,
+			    content: placeName
+			});
+			rLabel.open(roadview, rMarker);
+
+			// 로드뷰 마커가 중앙에 오도록 로드뷰의 viewpoint 조정 합니다.
+			var projection = roadview.getProjection(); // viewpoint(화면좌표)값을 추출할 수 있는 projection 객체를 가져옵니다.
+
+			// 마커의 position과 altitude값을 통해 viewpoint값(화면좌표)를 추출합니다.
+			var viewpoint = projection.viewpointFromCoords(rMarker.getPosition(), rMarker.getAltitude());
+			roadview.setViewpoint(viewpoint); //로드뷰에 뷰포인트를 설정합니다.
+
+			// placeName을 전달하고 로드뷰 표시
+			let title = '<br /><span>' + placeName + '</span> - 로드뷰 열람';
+			$('#road-view-title').html(title);
+
+			// 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
+			roadviewClient.getNearestPanoId(placePosition, 50, function(panoId) {
+				roadview.setPanoId(panoId, placePosition); //panoId와 중심좌표를 통해 로드뷰 실행
+			});
+		}
+	
+		//로드뷰 이동 이벤트 핸들러
+		function moveKakaoRoadview(self){
+		    var panoId = roadview.getPanoId(); //현 로드뷰의 panoId값을 가져옵니다.
+		    var viewpoint = roadview.getViewpoint(); //현 로드뷰의 viewpoint(pan,tilt,zoom)값을 가져옵니다.
+		    self.href = 'https://map.kakao.com/?panoid='+panoId+'&pan='+viewpoint.pan+'&tilt='+viewpoint.tilt+'&zoom='+viewpoint.zoom; //Kakao 지도 로드뷰로 보내는 링크
+		}
+		
 		// 지도 위에 표시되고 있는 마커를 모두 제거
 		function removeMarker() {
 			for (var i = 0; i < markers.length; i++) {
