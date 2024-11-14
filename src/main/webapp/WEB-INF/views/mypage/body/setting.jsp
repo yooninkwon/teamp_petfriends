@@ -77,12 +77,15 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault(); // 기본 동작 방지
         if (confirm("정말 탈퇴하시겠습니까?")) {
             var reason = prompt("회원 정보는 3개월간 유지됩니다. 탈퇴 사유를 입력 해 주세요.");
-            if (reason !== null) { // 사용자가 "취소"를 누르지 않은 경우
-                window.location.href = "/login/withdraw"; // 회원탈퇴 URL로 이동
-            } else {
-                // 사용자가 "취소"를 누른 경우, 아무 동작도 하지 않음
-                alert("탈퇴가 취소되었습니다."); // 필요 시 메시지 표시
+            if (reason === null) {
+                alert("탈퇴가 취소되었습니다.");
+                return; // 더 이상 진행하지 않음
             }
+            if (reason.trim() === "") {
+                reason = '없음';
+            }
+            // URL에 탈퇴 사유를 쿼리 파라미터로 추가하여 이동
+            window.location.href = "/login/withdraw?reason=" + encodeURIComponent(reason);
         }
     });
 });

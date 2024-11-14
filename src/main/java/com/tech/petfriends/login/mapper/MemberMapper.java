@@ -8,10 +8,20 @@ import org.apache.ibatis.annotations.Param;
 
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.dto.MemberPointsDto;
 import com.tech.petfriends.mypage.dto.GradeDto;
 
 @Mapper
 public interface MemberMapper {
+	
+	// 포인트 테이블 가져오기
+	ArrayList<MemberPointsDto> pointsList();
+	
+	// 포인트 테이블 인서트
+	void insertPoints(MemberPointsDto memberPoints);
+	
+	// 주문 결제시 총 구매금액 업데이트
+	void updatePayAmount(String mem_code, int order_amount);
 	
 	// 회원 유형 변경
 	void updateCustomerType(@Param("ids") List<Long> ids, @Param("newType") String newType);
@@ -73,7 +83,7 @@ public interface MemberMapper {
 	void deleteWindowPro(String mem_code);
 	
 	// 회원탈퇴
-	void withdraw(String mem_code);
+	void withdraw(String mem_code, String reason);
 	
 	// 탈퇴회원 복구
 	void deleteRestoration(String mem_code);

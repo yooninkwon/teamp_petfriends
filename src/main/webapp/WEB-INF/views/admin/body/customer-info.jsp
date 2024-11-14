@@ -15,12 +15,6 @@
 	</div>
 
 	<div id="customer">
-		<!-- 필터링 영역 -->
-		<div class="tab-section">
-			<button class="tab-btn active" data-tab="customer-list-container">회원 조회/관리</button>
-			<button class="tab-btn" data-tab="customer-point-container">회원 적립금</button>
-		</div>
-
 		<!-- 리스트 영역 -->
 		<div id="customer-list-container"
 			class="customer-list-container tab-content">
@@ -38,7 +32,7 @@
 			</div>
 			<div class="search-group" style="float: left;">
 				<div class="filter-title">회원등급</div>
-				<select name="" id="totalAmount" style="margin-left: 5px;">
+				<select name="" id="grade" style="margin-left: 5px;">
 					<option value="0" checked>전체</option>
 					<option value="1">설렘시작</option>
 					<option value="2">몽글몽글</option>
@@ -50,10 +44,12 @@
 			</div>
 			<div class="search-group" style="float: right;">
 				<div class="filter-title">회원유형</div>
-				<input type="radio" name="type" value="전체" checked />전체 <input
-					type="radio" name="type" value="일반" />일반회원 <input type="radio"
-					name="type" value="탈퇴" />탈퇴회원 <input type="radio" name="type"
-					value="휴먼" />휴면회원 <input type="radio" name="type" value="관리" />관리회원
+				<input type="radio" name="type" value="전체" checked />전체 
+				<input type="radio" name="type" value="일반" />일반회원 
+				<input type="radio" name="type" value="탈퇴" />탈퇴회원
+				<input type="radio" name="type" value="휴먼" />휴면회원
+				<input type="radio" name="type" value="경고" />경고회원
+				<input type="radio" name="type" value="강제탈퇴" />강제탈퇴
 			</div>
 			<div class="search-group" style="float: left;">
 				<div class="filter-title">가입날짜</div>
@@ -64,14 +60,14 @@
 				<input type="date" name="logdate" id="logdate" />
 			</div>
 			<div class="search-group" style="float: left;">
-				<div class="filter-title">구매금액</div>
-				<select name="" id="grade" style="margin-left: 5px;">
+				<div class="filter-title">누적 구매금액</div>
+				<select name="" id="payAmount" style="margin-left: 5px;">
 					<option value="0" checked>전체</option>
-					<option value="1">~10만원</option>
-					<option value="2">~100만원</option>
-					<option value="3">~500만원</option>
-					<option value="4">~1000만원</option>
-					<option value="5">1000만원 초과</option>
+					<option value="~10만원">0~10만원</option>
+					<option value="~100만원">10~100만원</option>
+					<option value="~500만원">100~500만원</option>
+					<option value="~1000만원">500~1000만원</option>
+					<option value="1000만원~">1000만원 초과</option>
 				</select>
 			</div>
 			<div class="search-group">
@@ -108,21 +104,19 @@
 						<th style="width: 7%;">이름</th>
 						<th style="width: 9%;">닉네임</th>
 						<th style="width: 7%;">등급</th>
-						<th style="width: 10%;">구매 금액</th>
+						<th style="width: 12%;">누적 구매금액</th>
 						<th style="width: 7%;">전화번호</th>
-						<th style="width: 15%;">이메일</th>
+						<th style="width: 13%;">이메일</th>
 						<th style="width: 5%;">성별</th>
 						<th style="width: 5%;">회원 유형</th>
 					</tr>
 				</thead>
 			</table>
 		</div>
-			
-		
-		<div id="customer-point-container"class="customer-point-container tab-content" style="display: none;">
-			dfdsfsdfdsfd
-			
+		<div id="pagination">
+		<!-- 페이징 -->
 		</div>
+		
 	</div>
 
 	<!-- Popup Modal -->
@@ -136,9 +130,9 @@
 			<br /> <label for="newMemberType">회원 유형 선택:</label> <select
 				id="newMemberType">
 				<option value="일반">일반</option>
-				<option value="탈퇴">탈퇴</option>
 				<option value="휴면">휴면</option>
-				<option value="관리">관리</option>
+				<option value="경고">경고</option>
+				<option value="강제탈퇴">강제탈퇴</option>
 			</select>
 			<button id="updateMemberTypeBtn">변경</button>
 		</div>
@@ -154,11 +148,36 @@
 			<button id="sendSmsBtn">전송</button>
 		</div>
 	</div>
-
-	<div id="pagination">
-		<!-- 페이징 -->
+	
+	<div id="pointsList" class="popup-modal" style="display: none;">
+		<div class="pointPopup">
+			<h3>적립금 내역</h3>
+			<div id="customer-info">
+				<h4 id="nameLabel"></h4>
+				<h4 id="codeLabel"></h4>
+				<h4 id="amountLabel"></h4>
+				<h4 id="pointLabel"></h4>
+			</div>
+			
+			<div id="customer_point">
+				<table id="point_table">
+					<tr>
+						<th>날짜</th>
+						<th>회원 코드</th>
+						<th>주문 코드</th>
+						<th>증감</th>
+						<th>금액</th>
+						<th>사유</th>
+					</tr>
+				</table>
+			</div>
+			
+		</div>
 	</div>
+	
+	
 
+	
 	<script src="/static/js/admin/customer-info.js"></script>
 </body>
 </html>

@@ -5,7 +5,25 @@
 
 <mapper namespace="com.tech.petfriends.login.mapper.MemberMapper">
 
+	<select id="pointsList" resultType="com.tech.petfriends.login.dto.MemberPointsDto">
+		SELECT *
+		FROM MEMBER_POINT ORDER BY POINT_NO DESC
+	</select>
 
+	<!-- 적립금 테이블 인서트 -->
+	<insert id="insertPoints" parameterType="com.tech.petfriends.login.dto.MemberPointsDto">
+		INSERT INTO MEMBER_POINT 
+		VALUES(POINT_SEQ.NEXTVAL,#{mem_code},#{o_code},#{points},#{point_type},SYSDATE,#{point_info})
+	</insert>
+
+	<!-- 총 주문금액 업데이트 -->
+	<update id="updatePayAmount">
+		UPDATE MEMBER
+		SET MEM_PAY_AMOUNT = MEM_PAY_AMOUNT + #{order_amount}
+		WHERE MEM_CODE = #{mem_code}
+	</update>
+
+	<!-- 회원 유형 변경 -->
 	<update id="updateCustomerType">
 	    UPDATE MEMBER
 	    SET mem_type = #{newType}
@@ -15,6 +33,7 @@
 	    </foreach>
 	</update>
 
+	<!-- 회원 리스트 가입일 정렬 -->
 	<select id="memberList" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
 		SELECT *
 		FROM MEMBER
@@ -60,7 +79,7 @@
 		WHERE ROWNUM &lt; = 5
 	</select>
 	
-	<!-- 최근 탈퇴회원 35명 조회 -->
+	<!-- 최근 탈퇴회원 5명 조회 -->
 	<select id="withdrawMemberList" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
 		SELECT *
 		FROM (
@@ -151,14 +170,14 @@
 	<!-- 회원 탈퇴 -->
 	<update id="withdraw" parameterType="String">
 		UPDATE MEMBER
-		SET MEM_TYPE = '탈퇴'
+		SET MEM_TYPE = '탈퇴', MEM_WD_MEMO = #{reason}
 		WHERE MEM_CODE = #{mem_code}
 	</update>
 	
 	<!-- 탈퇴회원 복구 -->
 	<update id="deleteRestoration" parameterType="String">
 		UPDATE MEMBER
-		SET MEM_TYPE = '일반'
+		SET MEM_TYPE = '일반', MEM_WD_MEMO = NULL
 		WHERE MEM_CODE = #{mem_code}
 	</update>
 	

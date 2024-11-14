@@ -253,12 +253,6 @@ input[type="date"] {
     width: 400px;
     text-align: center;
 }
-.close-btn {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    cursor: pointer;
-}
 
 #selectedMembersContainer{
 	font-size: 20px;
@@ -293,6 +287,43 @@ input[type="date"] {
 #popup h2 {
     text-align: center;
     margin-bottom: 20px;
+}
+
+.pointPopup{
+	width: 50%;
+	height: 800px;
+	background-color: white;
+	border-radius: 5%;
+}
+
+.pointPopup h3 {
+	margin-top: 30px;
+}
+
+#customer-info{
+	margin: 0 auto;
+	margin-top: 30px;
+	width: 90%;
+	text-align: left;
+}
+
+#customer_point{
+	margin: 0 auto;
+	height: 71%;
+	margin-top: 30px;
+	width: 90%;
+	border: 1px solid gray;
+}
+
+#point_table{
+	width: 100%;
+	margin: 0 auto;
+
+}
+
+#point_table th{
+	background-color: #efefef;
+	border: 1px solid gray;
 }
 
 .close-btn {
