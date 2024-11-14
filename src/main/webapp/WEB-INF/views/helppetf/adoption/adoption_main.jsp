@@ -60,13 +60,7 @@
 						<option value="422400">고양이</option>
 						<option value="429900">기타</option>
 					</select>
-	
-					<!-- 품종 선택 -->
-					<select id="kind" name="kind">
-						<option value="any" selected>품종</option>
-						<option value="any">동물종류를 먼저 골라주세요</option>
-					</select>
-	
+		
 					<!-- 검색 버튼 -->
 					<button type="button" id="filterSubmit">검색</button>
 					<button type="button" id="filterReset">선택 초기화</button>

@@ -84,30 +84,39 @@ $(document).ready(function() {
 			// start = (현재페이지 - 이전마지막페이지 - 1) * itemsPerPage(6)
 			var start = ((currentPage - preEndPage) - 1) * itemsPerPage;
 		}
-
-		// end = 시작 인덱스번호 + itemsPerPage(6)
-		const end = start + itemsPerPage;
-		const sliceList = petteacherList.slice(start, end);
-		// .slice(start, end)는 배열에서 start부터 end 이전까지의 아이템들을 추출
-		// start가 0이고 end가 6이라면 인덱스 [0] ~ [5] 을 출력
-
-		// 데이터를 테이블로 출력
+		
 		let cards = '';
-		$.each(sliceList, function(index, ylist) {
-			// 인덱스가 0~5 고정이 아니므로 페이지가 넘어가도 인덱스 번호가 정상적으로 불러와지도록 현재 페이지의 시작 인덱스 번호를 더해준다
-			cards += '<div class="video-card" data-hphseq="' + ylist.hpt_seq + '">'; //<a href="/helppetf/petteacher/petteacher_detail?hpt_seq=' + ylist.hpt_seq + '" class="video-link" data-index="' + (start + index) + '">';
-			cards += '<img src="https://i.ytimg.com/vi/' + ylist.hpt_yt_videoid + '/hqdefault.jpg" alt="비디오 썸네일" class="video-thumbnail">';
-			cards += '<div class="content">';
-			cards += '<h3 class="info">' + ylist.hpt_title + '</h3>';
-			cards += '<div><div><span>' + ylist.hpt_channal + '</span></div>';
-			cards += '<div class="video_desc">' + ylist.hpt_exp + '</div></div>';
-			cards += '<div class="flex"><div><span>등록일 </span>' + ylist.hpt_rgedate + '</div>';
-			cards += '<div class="views-date"><span>조회수 </span>' + ylist.hpt_hit + '회</div></div>';
-			cards += '</div>';
-			cards += '</a></div>';
-		});
-
+		if(totalItems === 0) {
+			// 필터링 또는 표시 결과가 없을 경우
+			alert('요청하신 필터의 결과가 존재하지 않습니다.');
+			// 새로고침
+			location.href = location.href;
+		} else {
+			// end = 시작 인덱스번호 + itemsPerPage(6)
+			const end = start + itemsPerPage;
+			const sliceList = petteacherList.slice(start, end);
+			// .slice(start, end)는 배열에서 start부터 end 이전까지의 아이템들을 추출
+			// start가 0이고 end가 6이라면 인덱스 [0] ~ [5] 을 출력
+	
+			// 데이터를 테이블로 출력
+			
+			$.each(sliceList, function(index, ylist) {
+				cards += '<div class="video-card" data-hphseq="' + ylist.hpt_seq + '">';
+				cards += '<img src="https://i.ytimg.com/vi/' + ylist.hpt_yt_videoid + '/hqdefault.jpg" alt="비디오 썸네일" class="video-thumbnail">';
+				cards += '<div class="content">';
+				cards += '<h3 class="info">' + ylist.hpt_title + '</h3>';
+				cards += '<div><div><span>' + ylist.hpt_channal + '</span></div>';
+				cards += '<div class="video_desc">' + ylist.hpt_exp + '</div></div>';
+				cards += '<div class="flex"><div><span>등록일 </span>' + ylist.hpt_rgedate + '</div>';
+				cards += '<div class="views-date"><span>조회수 </span>' + ylist.hpt_hit + '회</div></div>';
+				cards += '</div>';
+				cards += '</a></div>';
+			});
+	
+		}
+		
 		$('#videoContainer').html(cards);
+	
 	}
 
 	// 페이지네이션 설정

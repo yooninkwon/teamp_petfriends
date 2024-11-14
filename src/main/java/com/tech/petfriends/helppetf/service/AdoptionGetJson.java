@@ -69,12 +69,11 @@ public class AdoptionGetJson implements HelppetfExecuteModelRequest{
 		String upr_cd = setValueOfParam(request, "upr_cd");
 		String org_cd = setValueOfParam(request, "org_cd");
 		String upKind = setValueOfParam(request, "upKind");
-		String kind = setValueOfParam(request, "kind");
 
 		String numOfRows = "&numOfRows=" + "80";
 		String _type = "&_type=" + "json";
 		String extraParam = pageNo + numOfRows + _type;
-		String addParameters = apikey + upr_cd + org_cd + upKind + kind + extraParam;
+		String addParameters = apikey + upr_cd + org_cd + upKind + extraParam;
 
 		/**
 		 * 작동 : .get() : http get 요청 보냄 .retrieve() : 서버로부터 응답 받아옴 .onStatus() : 4xx, 5xx
