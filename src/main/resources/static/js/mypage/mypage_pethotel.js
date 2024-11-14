@@ -91,33 +91,35 @@ $(document).ready(function() {
 			});
 		}
 		$('#pethotel-table tbody').html(table);
-				
-		// 출력된 테이블의 'tr'이 클릭 될 때
-		$('#pethotel-table tbody').on('click', 'tr', function() {
-			// 클릭된 'tr'의 dataset 값을 불러옴
-			const reserveNo = $(this).data('reserveno');
-			fetch('/mypage/pethotel/dataDetail?reserveNo=' + reserveNo, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			.then(response => {
-				if(response.ok) {
-					// 서버에 데이터 전송 성공 후 간단히 콘솔에 로그 출력
-					console.log('Data successfully sent to server');
-					return response.json();
-				} else {
-					console.error('Failed to send data');
-				}
-			})
-			.then(data => {
-				displayItemsForDetail(data);
-			})
-			.catch(error => {
-				console.error('ERROR:', error);
+		
+		// 출력된 테이블의 'tr'이 클릭 될 때 (리스트가 비어있지 않다면)
+		if(pethotelReserveList.pethotelMemDto.length != 0) {
+			$('#pethotel-table tbody').on('click', 'tr', function() {
+				// 클릭된 'tr'의 dataset 값을 불러옴
+				const reserveNo = $(this).data('reserveno');
+				fetch('/mypage/pethotel/dataDetail?reserveNo=' + reserveNo, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				})
+				.then(response => {
+					if(response.ok) {
+						// 서버에 데이터 전송 성공 후 간단히 콘솔에 로그 출력
+						console.log('Data successfully sent to server');
+						return response.json();
+					} else {
+						console.error('Failed to send data');
+					}
+				})
+				.then(data => {
+					displayItemsForDetail(data);
+				})
+				.catch(error => {
+					console.error('ERROR:', error);
+				});
 			});
-		});
+		}
 	}
 	
 	function displayItemsForDetail(data) {

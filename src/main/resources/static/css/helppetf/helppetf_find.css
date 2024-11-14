@@ -306,6 +306,7 @@
 }
 
 #road-view-container {
+	border-radius: 10px;
     position: relative;
     margin: 5% auto; /* 중앙 정렬 */
     padding: 10px 10px;
@@ -319,8 +320,8 @@
     position: relative;
     margin: 1% auto 0;
     padding: 40px;
-    width: 1000px;
-    height:500px;
+    width: 1100px;
+    height:515px;
     background-color: #f4f4f4;
     text-align: left;
 }

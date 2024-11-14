@@ -54,11 +54,11 @@
 			<div id="road-view">
 			<!-- 로드뷰 -->
 			</div>
-			<span><br />로드뷰가 정확하지 않을 수 있습니다.</span>
+			<span><br />* 로드뷰가 정확하지 않을 수 있습니다. *</span>
 		</div>
 	</div>
 	<div class="click-info">
-		<span>각 마커 혹은 결과 리스트를 클릭하시면, 카카오맵에서 제공하는 로드뷰를 보실 수 있습니다.</span>
+		<span>* 각 마커 혹은 결과 리스트를 클릭하시면, 카카오맵에서 제공하는 로드뷰를 보실 수 있습니다. *</span>
 	</div>
 	<script src="/static/js/helppetf/find.js"></script>
 	<jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />

@@ -122,10 +122,10 @@ $(document).ready(function() {
 	var roadviewContainer = document.getElementById('road-view');
 
 	//로드뷰 객체 생성
-	var roadview = new kakao.maps.Roadview(roadviewContainer);
+	//var roadview = new kakao.maps.Roadview(roadviewContainer);
 
 	//좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper 객체 생성
-	var roadviewClient = new kakao.maps.RoadviewClient();
+	//var roadviewClient = new kakao.maps.RoadviewClient();
 
 	
 	// 주소를 입력하여 지도를 구성하는 함수
@@ -298,35 +298,59 @@ $(document).ready(function() {
 
 		// 로드뷰 표시하는 함수
 		function viewRoadView(placePosition, placeName) {
+			//로드뷰 객체 생성
+			var roadview = new kakao.maps.Roadview(roadviewContainer);
+	
+			//좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper 객체 생성
+			var roadviewClient = new kakao.maps.RoadviewClient();
+			
 			$('#road-view-modal').removeClass().addClass('on');
 						
-			// 로드뷰에 올릴 마커를 생성합니다.
-			var rMarker = new kakao.maps.Marker({
-			    position: placePosition,
-			    map: roadview //map 대신 rv(로드뷰 객체)로 설정하면 로드뷰에 올라갑니다.
-			});
-
-			// 로드뷰에 올릴 장소명 인포윈도우를 생성합니다.
-			var rLabel = new kakao.maps.InfoWindow({
-			    position: placePosition,
-			    content: placeName
-			});
-			rLabel.open(roadview, rMarker);
-
-			// 로드뷰 마커가 중앙에 오도록 로드뷰의 viewpoint 조정 합니다.
-			var projection = roadview.getProjection(); // viewpoint(화면좌표)값을 추출할 수 있는 projection 객체를 가져옵니다.
-
-			// 마커의 position과 altitude값을 통해 viewpoint값(화면좌표)를 추출합니다.
-			var viewpoint = projection.viewpointFromCoords(rMarker.getPosition(), rMarker.getAltitude());
-			roadview.setViewpoint(viewpoint); //로드뷰에 뷰포인트를 설정합니다.
-
-			// placeName을 전달하고 로드뷰 표시
+			// placeName을 전달하여 텍스트 출력
 			let title = '<br /><span>' + placeName + '</span> - 로드뷰 열람';
 			$('#road-view-title').html(title);
 
 			// 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
 			roadviewClient.getNearestPanoId(placePosition, 50, function(panoId) {
 				roadview.setPanoId(panoId, placePosition); //panoId와 중심좌표를 통해 로드뷰 실행
+			});
+			
+			// 로드뷰 초기화 이벤트
+			kakao.maps.event.addListener(roadview, 'init', function() {
+				// 커스텀 마커 이미지 생성
+				var roadviewImageSrc = '/static/Images/helppetf/kakaoMap/roadview_marker.png',
+					roadviewImageSize = new kakao.maps.Size(29, 42);
+
+				var makerImage = new kakao.maps.MarkerImage(roadviewImageSrc, roadviewImageSize);
+				// 로드뷰에 올릴 마커를 생성합니다.
+				var rMarker = new kakao.maps.Marker({
+				    position: placePosition,
+				    map: roadview, //map 대신 rv(로드뷰 객체)로 설정하면 로드뷰에 올라갑니다.
+					image: makerImage
+				});
+			    rMarker.setAltitude(6); //마커의 높이를 설정합니다. (단위는 m입니다.)
+			    rMarker.setRange(100); //마커가 보일 수 있는 범위를 설정합니다. (단위는 m입니다.)
+				
+				// 로드뷰에 올릴 장소명 인포윈도우를 생성합니다.
+				var rLabel = new kakao.maps.InfoWindow({
+				    position: placePosition
+				});
+				
+				var content = '<div class="roadview-marker" style="width:150px; text-align:center; font-family: sans-serif; padding:10px 9px; z-index: 1;">'
+												+ placeName + '</div>';
+				rLabel.setContent(content); // 인포윈도우의 내용 설정
+			    rLabel.setRange(100); //마커가 보일 수 있는 범위를 설정합니다. (단위는 m입니다.)
+			    rLabel.open(roadview, rMarker); // open시 마커를 넣어주면, 마커의 altitude와 position값을 모두 따라 갑니다.				
+
+				$('.roadview-marker').parent().parent().css('border-radius', '10px');
+
+				// 로드뷰 마커가 중앙에 오도록 로드뷰의 viewpoint 조정 합니다.
+				var projection = roadview.getProjection(); // viewpoint(화면좌표)값을 추출할 수 있는 projection 객체를 가져옵니다.
+
+				// 마커의 position과 altitude값을 통해 viewpoint값(화면좌표)를 추출합니다.
+				var viewpoint = projection.viewpointFromCoords(rMarker.getPosition(), rMarker.getAltitude());
+				roadview.setViewpoint(viewpoint); //로드뷰에 뷰포인트를 설정합니다.
+				
 			});
 		}
 			
