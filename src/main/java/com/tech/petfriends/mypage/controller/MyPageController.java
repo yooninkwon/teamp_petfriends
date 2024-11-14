@@ -38,6 +38,8 @@ import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.dto.MemberPointsDto;
+import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.mypage.dao.MypageDao;
 import com.tech.petfriends.mypage.dto.GradeDto;
 import com.tech.petfriends.mypage.dto.MyCartDto;
@@ -51,6 +53,8 @@ public class MyPageController {
 
 	@Autowired
 	private MypageDao mypageDao;
+	@Autowired
+	private MemberMapper memberMapper;
 	@Autowired
 	ApikeyConfig apikeyConfig;
 	
@@ -603,11 +607,51 @@ public class MyPageController {
 
 		orderData.setO_code(UUID.randomUUID().toString());
 		orderData.setMem_code(loginUser.getMem_code());
-
+		
 		for (String cartCode : cartCodes) {
 			mypageDao.insertOrderCode(cartCode, orderData.getO_code());
 		}
+		
+		// 등급별 적립율 적용
+		int grade = loginUser.getG_no();
+		double pointRate = 0;
+		switch (grade) {
+		    case 1:
+		    case 2: pointRate = 0.5; break;
+		    case 3: pointRate = 1.0; break;
+		    case 4: pointRate = 1.5; break;
+		    case 5: pointRate = 2.0; break;
+		    case 6: pointRate = 2.5; break;
+		    default: pointRate = 0; break;
+		}
+		double orderAmount = orderData.getO_amount(); // 결제 금액
+		int points = (int) (orderAmount * (pointRate / 100)); // 소수점 이하 절삭	
+		MemberPointsDto memberPoints = new MemberPointsDto();
+		
+		// 적립금 사용
+		int used_point = orderData.getO_point();
+		if (used_point != 0) {
+			memberPoints.setMem_code(orderData.getMem_code());
+			memberPoints.setO_code(orderData.getO_code());
+			memberPoints.setPoints(orderData.getO_point());
+			memberPoints.setPoint_type('-');
+			memberPoints.setPoint_info("사용");
+			memberMapper.insertPoints(memberPoints);
+		}
+		
+		// 적립금 적립
+		memberPoints.setMem_code(loginUser.getMem_code());
+		memberPoints.setO_code(orderData.getO_code());
+		memberPoints.setPoints(points);
+		memberPoints.setPoint_type('+');
+		memberPoints.setPoint_info("적립");
+		memberMapper.insertPoints(memberPoints);
 
+		// 주문시 멤버 총 구매금액 증가
+		String mem_code = orderData.getMem_code();
+		int order_amount = orderData.getO_amount();
+		memberMapper.updatePayAmount(mem_code, order_amount);
+		
     	mypageDao.insertOrder(orderData);
     	mypageDao.insertOrderStatus(orderData.getO_code());
     	mypageDao.updateCouponByOrder(orderData.getMc_code());

@@ -61,15 +61,16 @@ $(document).ready(function() {
 			url: '/admin/customer_list', // 데이터를 가져오는 URL
 			method: 'GET',
 			success: function(response) {
-				const memberTotal = response.length;
-				$('#mem_total').text(memberTotal);
+				const activeMembers = response.filter(member => member.mem_type !== '탈퇴');
+	            const memberTotal = activeMembers.length;
+	            $('#mem_total').text(memberTotal);
 				const now = new Date();
 				now.setUTCHours(0, 0, 0, 0); // 시간 초기화
 				let labels = [];
 				let activeCountMap = {};
 				let dormantCountMap = {};
 				let withdrawnCountMap = {};
-				let careCountMap = {}; // 관리 회원 카운트
+
 
 				// 일별, 주별, 월별에 따라 라벨 생성 및 초기화
 				switch (dateType) {
@@ -82,7 +83,7 @@ $(document).ready(function() {
 							activeCountMap[formattedDate] = 0;
 							dormantCountMap[formattedDate] = 0;
 							withdrawnCountMap[formattedDate] = 0;
-							careCountMap[formattedDate] = 0;
+
 						}
 						break;
 					case 'week':
@@ -97,7 +98,7 @@ $(document).ready(function() {
 							activeCountMap[weekLabel] = 0;
 							dormantCountMap[weekLabel] = 0;
 							withdrawnCountMap[weekLabel] = 0;
-							careCountMap[weekLabel] = 0;
+
 						}
 						break;
 					case 'month':
@@ -109,7 +110,7 @@ $(document).ready(function() {
 							activeCountMap[monthLabel] = 0;
 							dormantCountMap[monthLabel] = 0;
 							withdrawnCountMap[monthLabel] = 0;
-							careCountMap[monthLabel] = 0;
+
 						}
 						break;
 					default:
@@ -137,7 +138,7 @@ $(document).ready(function() {
 					logDate.setUTCHours(0, 0, 0, 0); // 시간 초기화
 					const diffInDays = (now - logDate) / (1000 * 60 * 60 * 24);
 
-					if (member.mem_type === '탈퇴') {
+					if (member.mem_type === '탈퇴' || member.mem_type === '강제탈퇴') {
 						// 탈퇴 회원의 로그 날짜를 기준으로 처리
 						let withdrawalDateFormatted;
 						if (dateType === 'day') {
@@ -151,21 +152,6 @@ $(document).ready(function() {
 						}
 						if (withdrawnCountMap[withdrawalDateFormatted] !== undefined) {
 							withdrawnCountMap[withdrawalDateFormatted]++;
-						}
-					} else if (member.mem_type === '관리') {
-						// 관리 회원의 로그 날짜를 기준으로 처리
-						let careDateFormatted;
-						if (dateType === 'day') {
-							careDateFormatted = logDate.toISOString().split('T')[0];
-						} else if (dateType === 'week') {
-							const weekStart = new Date(logDate);
-							weekStart.setDate(logDate.getDate() - logDate.getDay() + 1);
-							careDateFormatted = `${weekStart.getFullYear()}-${String(weekStart.getMonth() + 1).padStart(2, '0')}-${String(weekStart.getDate()).padStart(2, '0')}`;
-						} else if (dateType === 'month') {
-							careDateFormatted = `${logDate.getFullYear()}-${String(logDate.getMonth() + 1).padStart(2, '0')}`;
-						}
-						if (careCountMap[careDateFormatted] !== undefined) {
-							careCountMap[careDateFormatted]++;
 						}
 					} else if (diffInDays > 30) {
 						// 휴면 회원의 로그 날짜를 기준으로 처리
@@ -193,10 +179,10 @@ $(document).ready(function() {
 				const activeData = labels.map(label => activeCountMap[label]);
 				const dormantData = labels.map(label => dormantCountMap[label]);
 				const withdrawnData = labels.map(label => withdrawnCountMap[label]);
-				const careData = labels.map(label => careCountMap[label]);
+
 
 				// 차트 생성
-				renderLineChart(labels, activeData, dormantData, withdrawnData, careData);
+				renderLineChart(labels, activeData, dormantData, withdrawnData);
 			},
 			error: function(error) {
 				console.error('회원 통계 데이터 로드 중 오류 발생:', error);
@@ -235,12 +221,6 @@ $(document).ready(function() {
 						borderColor: 'rgba(255, 99, 132, 1)',
 						fill: false
 					},
-					{
-						label: '관리 회원',
-						data: careData,
-						borderColor: 'black',
-						fill: false
-					}
 				]
 			},
 			options: {

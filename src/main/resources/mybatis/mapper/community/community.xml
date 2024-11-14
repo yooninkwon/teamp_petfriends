@@ -82,25 +82,15 @@
 
 
 	<select id="getPostsByCategory" parameterType="int"
-		resultType="com.tech.petfriends.community.dto.CDto">
-		SELECT
-		    CB.*,
-		    RCI.CHREPFILE,
-		    NVL(MP.PET_IMG, 'NOPETIMG.JPG') AS PET_IMG
-		FROM
-		    COMMUNITY_BOARD CB
-		LEFT JOIN
-		    RE_CBOARD_IMAGE RCI ON CB.BOARD_NO = RCI.BOARD_NO
-		LEFT JOIN
-		    MEMBER_PET MP ON CB.MEM_CODE = MP.MEM_CODE AND MP.PET_MAIN = 'Y'
-		<if test="b_cate_no != 0">
+		resultType="com.tech.petfriends.community.dto.CDto"> SELECT CB.*,
+		RCI.CHREPFILE, NVL(MP.PET_IMG, 'NOPETIMG.JPG') AS PET_IMG FROM
+		COMMUNITY_BOARD CB LEFT JOIN RE_CBOARD_IMAGE RCI ON CB.BOARD_NO =
+		RCI.BOARD_NO LEFT JOIN MEMBER_PET MP ON CB.MEM_CODE = MP.MEM_CODE AND
+		MP.PET_MAIN = 'Y' <if test="b_cate_no != 0">
 			WHERE CB.B_CATE_NO = #{b_cate_no}
 		</if>
 		<if test="b_cate_no == 0">
-		</if>
-		ORDER BY
-		CB.BOARD_NO DESC
-	</select>
+		</if> ORDER BY CB.BOARD_NO DESC </select>
 
 
 	<select id="getAllPosts"
@@ -389,7 +379,6 @@
 	</select>
 
 
-
 	<!-- 제목, 내용, 작성자에서 검색 -->
 	<select id="searchPosts"
 		resultType="com.tech.petfriends.community.dto.CDto">
@@ -471,9 +460,32 @@
 		ca.CREATED_AT DESC
 	</select>
 
-	<insert id="insertMessage" parameterType="com.tech.petfriends.community.dto.CDto">
-        INSERT INTO COMMUNITY_CHAT (message_id, sender, receiver, message_content, message_date)
-        VALUES (COMMUNITY_CHAT_SEQ.NEXTVAL,#{sender}, #{receiver}, #{message_content}, SYSDATE)
-    </insert>
+	<insert id="insertMessage"
+		parameterType="com.tech.petfriends.community.dto.CDto">
+		INSERT INTO COMMUNITY_CHAT (MESSAGE_ID, SENDER, RECEIVER,
+		MESSAGE_CONTENT, MESSAGE_DATE, ROOM_ID)
+		VALUES (COMMUNITY_CHAT_SEQ.NEXTVAL,#{sender}, #{receiver},
+		#{message_content}, SYSDATE, #{room_id})
+	</insert>
+
+	<select id="getChatHistory"
+		resultType="com.tech.petfriends.community.dto.CChatDto">
+
+		SELECT *
+		FROM COMMUNITY_CHAT WHERE ROOM_ID = #{room_id}
+	</select>
+
+
+	<select id="getChatRooms"
+		resultType="com.tech.petfriends.community.dto.CChatDto">
+
+		SELECT ROOM_ID,
+		MIN(sender) AS sender,
+		MIN(receiver) AS receiver
+		FROM COMMUNITY_CHAT
+		WHERE ROOM_ID LIKE '%' || #{sender} || '%'
+		GROUP BY ROOM_ID
+	</select>
+
 
 </mapper>

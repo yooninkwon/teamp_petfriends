@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tech.petfriends.community.dto.CCategoryDto;
+import com.tech.petfriends.community.dto.CChatDto;
 import com.tech.petfriends.community.dto.CCommunityFriendDto;
 import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.dto.CReportDto;
 import com.tech.petfriends.community.mapper.IDao;
-import com.tech.petfriends.community.service.CChatService;
 import com.tech.petfriends.community.service.CCommentReplyService;
 import com.tech.petfriends.community.service.CCommentService;
 import com.tech.petfriends.community.service.CContentViewService;
@@ -365,5 +365,28 @@ public class CommunityController {
 	    return activityList;
 	}
 	
+	
+    @GetMapping("/getChatHistory")
+    @ResponseBody
+    public List<CChatDto> getChatHistory(@RequestParam("roomId") String roomId) {
+      System.out.println("roomId:"+roomId);
+    	// 서비스에서 roomId로 메시지 리스트 조회
+    	List<CChatDto> getChatHistory = iDao.getChatHistory(roomId);
+    	System.out.println("getChatHistory" + getChatHistory);
+    	
+    	return getChatHistory;
+    }
+	
+    @GetMapping("/getChatRooms")
+    @ResponseBody
+    public List<CChatDto> getChatRooms(HttpSession session) {
+    	String sender = ((MemberLoginDto) session.getAttribute("loginUser")).getMem_nick();
+    	System.out.println("sender:"+ sender);
+    
+              
+        List<CChatDto> getChatRooms = iDao.getChatRooms(sender);
+        return getChatRooms;
+    }
+    
 
 }
