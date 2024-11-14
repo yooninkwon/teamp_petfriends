@@ -15,49 +15,123 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <script>
-var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
+	var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
+	var sender = "${sessionScope.loginUser.mem_nick}";
+	var receiver = "${myFeedName.mem_nick}";
+	var currentRoomId = null;
+	var socket;
+	// 페이지 로드 시 채팅방 목록을 불러오기
+	   document.addEventListener('DOMContentLoaded', function() {
+	       fetchChatRooms(sender);  // 로그인 여부와 상관없이 채팅방 목록을 불러옴
+	       document.getElementById("chatContainer").style.display = "none"; // 채팅 창 숨기기
+	   });
 
-var sender = "${sessionScope.loginUser.mem_nick}";
-var receiver = "${myFeedName.mem_nick}";
-var socket;
+	   // 메시지 버튼 클릭 시 채팅창 열기
+	   function openMessageBox() {
+	       document.getElementById("chatContainer").style.display = "flex"; // 채팅창 표시
+	       var roomId = generateRoomId(sender, receiver);
+	       openChat(roomId, receiver); // 새로운 채팅방 열기
+	   }
 
-function openChat(receiver) {
-    document.getElementById("chatBox").style.display = "block";
-    socket = new WebSocket("ws://localhost:9002/ws/chat");
-    console.log("done")
-    socket.onmessage = function(event) {
-        var chatMessages = document.getElementById("chatMessages");
-        
-        var messageData = JSON.parse(event.data);
-        
-        var newMessage = document.createElement("div");
-        newMessage.innerText =  messageData.sender + " : " + messageData.message_content;
-        
-        chatMessages.appendChild(newMessage);
-    };
-}
+	   // 채팅방 ID를 생성하는 함수
+	   function generateRoomId(sender, receiver) {
+	       return sender < receiver ? sender + '_' + receiver : receiver + '_' + sender;
+	   }
 
-function sendMessage(event) {
-    if (event.key === "Enter") {
-        var message = document.getElementById("chatInput").value;
-        socket.send(JSON.stringify({    	
-            sender: sender,           // JSP에서 받은 sender 값
-            receiver: receiver,       // JSP에서 받은 receiver 값
-            message_content: message  // 입력된 메시지 내용
-        }));
-         	console.log("sender",sender);
-         	console.log("receiver",receiver);
-         	console.log("message_content",message);
-        document.getElementById("chatInput").value = "";
-    }
-}
+	   // 채팅 창을 여는 함수
+	   function openChat(roomId, receiver) {
+	       document.getElementById("chatBox").style.display = "block"; // 채팅창 본문 표시
+	       if (socket) {
+	           socket.close(); // 기존 소켓 연결을 닫음
+	       }
+	       currentRoomId = roomId;  // 현재 채팅방 ID 저장
+	       socket = new WebSocket("ws://localhost:9002/ws/chat/" + roomId); // WebSocket 연결
 
-function closeChat() {
-    document.getElementById("chatBox").style.display = "none";
-    socket.close();
-}	
-	
-	
+	       socket.onmessage = function(event) {
+	           var chatMessages = document.getElementById("chatMessages");
+	           var messageData = JSON.parse(event.data);
+	           var newMessage = document.createElement("div");
+	           newMessage.innerText = messageData.sender + " : " + messageData.message_content;
+	           chatMessages.appendChild(newMessage);
+	       };
+
+	       loadChatHistory(roomId);  // 채팅 히스토리 불러오기
+	   }
+
+	   // 메시지를 전송하는 함수
+	   function sendMessage(event) {
+	       if (event.key === "Enter" && socket && currentRoomId) {
+	           var message = document.getElementById("chatInput").value;
+	           socket.send(JSON.stringify({
+	               sender: sender,
+	               receiver: receiver,
+	               message_content: message,
+	               roomId: currentRoomId
+	           }));
+	           document.getElementById("chatInput").value = "";
+	       }
+	   }
+
+	   // 채팅 창을 닫는 함수
+	   function closeChat() {
+	       document.getElementById("chatContainer").style.display = "none";  // 채팅 창 숨기기
+	       document.getElementById("chatBox").style.display = "none";  // 채팅창 본문 숨기기
+	       if (socket) {
+	           socket.close();
+	       }
+	   }
+
+	   // 채팅 히스토리를 불러오는 함수
+	   function loadChatHistory(roomId) {
+	       $.ajax({
+	           url: '/community/getChatHistory',
+	           type: 'GET',
+	           data: { roomId: roomId },
+	           success: function(messages) {
+	               var chatMessages = document.getElementById("chatMessages");
+	               chatMessages.innerHTML = ""; // 기존 메시지 초기화
+	               messages.forEach(function(message) {
+	                   var newMessage = document.createElement("div");
+	                   newMessage.innerText = message.sender + " : " + message.message_content;
+	                   chatMessages.appendChild(newMessage);
+	               });
+	           }
+	       });
+	   }
+
+	   // 채팅방 목록을 불러오는 함수
+	   function fetchChatRooms(sender) {
+	        fetch(`/community/getChatRooms?sender=${sender}&receiver=\${receiver}`)
+		   	   .then(response => response.json())
+	           .then(data => {
+	               var chatRoomsList = document.getElementById("chatRoomsList");
+	               chatRoomsList.innerHTML = '';  // 기존 채팅방 목록 초기화
+
+	           console.log("sender",sender);
+	           console.log("receiver",receiver);
+	               data.forEach(chatRoom => {
+	                   var roomLink = document.createElement("a");
+	                  
+	                   roomLink.innerText = chatRoom.room_id;
+	                   roomLink.onclick = function() {
+	                       openChat(chatRoom.room_id, chatRoom.receiver);  // 클릭 시 채팅방 열기
+	                       document.getElementById("chatContainer").style.display = "flex"; // 채팅창 표시
+	                   };
+	                   var roomItem = document.createElement("div");
+	                   roomItem.appendChild(roomLink);
+	                   chatRoomsList.appendChild(roomItem);
+	               });
+
+	               // 첫 번째 채팅방 자동 연결 (옵션)
+	               if (data.length > 0) {
+	                   openChat(data[0].room_id, data[0].receiver);
+	               }
+	           })
+	           .catch(error => console.error('Error fetching chat rooms:', error));
+	   }
+
+
+
 </script>
 
 <body>
@@ -127,23 +201,48 @@ function closeChat() {
 				<!-- 친구가 아닐 때 -->
 			</c:if>
 
-			<a href="#" onclick="openChat('${myFeedName.mem_nick}'); return false;">메시지</a>
+			<a href="javascript:void(0);" onclick="openMessageBox(); return false;">메시지</a>
 
 			<!-- 이웃 목록 버튼 -->
-			<a href="#"
+			<a href="javascript:void(0);"
 				onclick="fetchNeighborList('${mem_code}', '${myFeedName.mem_nick}'); return false;">이웃
 				목록</a>
 		</div>
 	</div>
 
-	<!-- 채팅 창 HTML -->
-	<div id="chatBox" style="display:none; position:fixed; bottom:10px; right:10px; width:300px; border:1px solid #ccc; padding:10px; background-color:white;">
-	    <h3>채팅 - ${myFeedName.mem_nick}</h3>
-	    <div id="chatMessages" style="height:200px; overflow-y:auto;"></div>
-	    <input type="text" id="chatInput" placeholder="메시지 입력..." onkeypress="sendMessage(event)">
-	    <button onclick="closeChat()">닫기</button>
+
+
+
+
+	<!-- 채팅창 전체 컨테이너 (기본적으로 숨겨짐) -->
+	<div id="chatContainer" class="chat-container" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; width: 60%; height: 70%; border: 1px solid #ccc; border-radius: 10px; background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); z-index: 9999;">
+
+	    <!-- 왼쪽: 채팅방 목록 -->
+	    <div id="chatRooms" class="chat-rooms" style="flex: 1; padding: 10px; border-right: 1px solid #ccc; overflow-y: auto;">
+	        <h3 class="chat-title" style="text-align: center;">채팅방 목록</h3>
+	        <div id="chatRoomsList"></div> <!-- 채팅방 목록 표시 -->
+	    </div>
+
+	    <!-- 오른쪽: 채팅창 -->
+	    <div id="chatBox" class="chat-box" style="flex: 2; display: flex; flex-direction: column; padding: 10px; position: relative;">
+	        <h3 class="chat-title" style="text-align: center;">채팅창</h3>
+	        <div id="chatMessages" class="chat-messages" style="flex: 1; overflow-y: auto; margin-bottom: 10px;"></div>
+	        
+	        <!-- 메시지 입력창 -->
+	        <input type="text" id="chatInput" class="chat-input" placeholder="메시지 입력..." onkeypress="sendMessage(event)" style="padding: 10px; width: calc(100% - 20px); border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+	        
+	        <!-- 오른쪽 상단에 닫기 버튼 (X 표시) -->
+	        <button onclick="closeChat()" class="chat-close-btn" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 18px; background-color: transparent; border: none; color: #f44336; cursor: pointer; font-weight: bold;">&times;</button>
+	        
+	        <div class="resize-handle" style="height: 10px; background-color: #ccc; cursor: row-resize; margin-top: 10px;"></div> <!-- 크기 조정 핸들 -->
+	    </div>
+
 	</div>
 
+	
+	
+	
+	
 	
 	<!-- 컨테이너 시작 -->
 	<div class="container">

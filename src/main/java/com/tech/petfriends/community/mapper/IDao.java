@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.tech.petfriends.community.dto.CCategoryDto;
+import com.tech.petfriends.community.dto.CChatDto;
 import com.tech.petfriends.community.dto.CCommentDto;
 import com.tech.petfriends.community.dto.CCommunityFriendDto;
 import com.tech.petfriends.community.dto.CDto;
@@ -103,7 +103,11 @@ public interface IDao {
 
 	public ArrayList<CDto> userActivityList(String user_id);
 	
-	public void insertMessage (String sender, String receiver, String message_content );
+	public void insertMessage (String sender, String receiver, String message_content, String room_id );
+
+	public List<CChatDto> getChatHistory(String room_id);
+
+	public List<CChatDto> getChatRooms(String sender);
 
 }
 

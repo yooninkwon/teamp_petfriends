@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,6 +32,6 @@ public class CChatDto {
 	private String message_content;
 		
 	private Timestamp message_date;
-	
+	private String room_id;
 
 }
