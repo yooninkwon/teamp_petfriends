@@ -24,5 +24,5 @@ public class MemberLoginDto {
     private String mem_type;
     private Timestamp mem_regdate;
     private Timestamp mem_logdate;
-    
+    private String mem_wd_memo;
 }

@@ -70,6 +70,12 @@ public class LoginController {
 
                 GradeDto userGrade = memberMapper.getGradeByMemberCode(member.getMem_code());
                 
+                if (member.getMem_type().equals("강제탈퇴")) {
+					System.out.println("관리자에 의해 탈퇴된 회원입니다.");
+					rs.addFlashAttribute("message","관리자에 의해 탈퇴처리 된 회원입니다. 고객센터에 문의 해주세요.");
+					return "redirect:/login/loginPage";
+				}
+                
                 if (member.getMem_type().equals("탈퇴")) {
 					System.out.println("탈퇴한 회원입니다.");
 					model.addAttribute("withdraw","탈퇴한 회원입니다. 정보를 복구하시겠습니까?");
@@ -155,14 +161,15 @@ public class LoginController {
    }
    
    @GetMapping("/withdraw")
-   public String withdraw(HttpSession session, HttpServletResponse response, RedirectAttributes re) {
-	   // 쿠키 삭제
+   public String withdraw(@RequestParam(required = false, defaultValue = "없음") String reason, 
+		   HttpSession session, HttpServletResponse response, RedirectAttributes re) {
+	    // 쿠키 삭제
 	    Cookie emailCookie = new Cookie("email", null);
 	    emailCookie.setMaxAge(0); // 쿠키 유효 기간을 0으로 설정하여 무효화
 	    emailCookie.setPath("/"); // 설정된 경로와 일치시켜야 삭제됨
 	    response.addCookie(emailCookie);
 	    MemberLoginDto member = (MemberLoginDto) session.getAttribute("loginUser");
-	    memberMapper.withdraw(member.getMem_code());
+	    memberMapper.withdraw(member.getMem_code(),reason);
 	    re.addFlashAttribute("message","회원 탈퇴가 완료되었습니다.");
 	    session.invalidate();
 	    return "redirect:/";

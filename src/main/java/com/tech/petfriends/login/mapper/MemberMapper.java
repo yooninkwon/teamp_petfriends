@@ -83,7 +83,7 @@ public interface MemberMapper {
 	void deleteWindowPro(String mem_code);
 	
 	// 회원탈퇴
-	void withdraw(String mem_code);
+	void withdraw(String mem_code, String reason);
 	
 	// 탈퇴회원 복구
 	void deleteRestoration(String mem_code);

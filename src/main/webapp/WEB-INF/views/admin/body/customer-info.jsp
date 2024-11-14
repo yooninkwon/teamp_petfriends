@@ -44,10 +44,12 @@
 			</div>
 			<div class="search-group" style="float: right;">
 				<div class="filter-title">회원유형</div>
-				<input type="radio" name="type" value="전체" checked />전체 <input
-					type="radio" name="type" value="일반" />일반회원 <input type="radio"
-					name="type" value="탈퇴" />탈퇴회원 <input type="radio" name="type"
-					value="휴먼" />휴면회원 <input type="radio" name="type" value="관리" />관리회원
+				<input type="radio" name="type" value="전체" checked />전체 
+				<input type="radio" name="type" value="일반" />일반회원 
+				<input type="radio" name="type" value="탈퇴" />탈퇴회원
+				<input type="radio" name="type" value="휴먼" />휴면회원
+				<input type="radio" name="type" value="경고" />경고회원
+				<input type="radio" name="type" value="강제탈퇴" />강제탈퇴
 			</div>
 			<div class="search-group" style="float: left;">
 				<div class="filter-title">가입날짜</div>
@@ -128,9 +130,9 @@
 			<br /> <label for="newMemberType">회원 유형 선택:</label> <select
 				id="newMemberType">
 				<option value="일반">일반</option>
-				<option value="탈퇴">탈퇴</option>
 				<option value="휴면">휴면</option>
-				<option value="관리">관리</option>
+				<option value="경고">경고</option>
+				<option value="강제탈퇴">강제탈퇴</option>
 			</select>
 			<button id="updateMemberTypeBtn">변경</button>
 		</div>
@@ -151,9 +153,10 @@
 		<div class="pointPopup">
 			<h3>적립금 내역</h3>
 			<div id="customer-info">
-				<h4 id="nameLabel">회원 이름 : </h4>
-				<h4 id="codeLabel">회원 코드 : </h4>
-				<h4 id="amountLabel">누적 구매금액 : </h4>
+				<h4 id="nameLabel"></h4>
+				<h4 id="codeLabel"></h4>
+				<h4 id="amountLabel"></h4>
+				<h4 id="pointLabel"></h4>
 			</div>
 			
 			<div id="customer_point">

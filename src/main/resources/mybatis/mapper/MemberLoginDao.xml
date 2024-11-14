@@ -79,7 +79,7 @@
 		WHERE ROWNUM &lt; = 5
 	</select>
 	
-	<!-- 최근 탈퇴회원 35명 조회 -->
+	<!-- 최근 탈퇴회원 5명 조회 -->
 	<select id="withdrawMemberList" resultType="com.tech.petfriends.login.dto.MemberLoginDto">
 		SELECT *
 		FROM (
@@ -170,14 +170,14 @@
 	<!-- 회원 탈퇴 -->
 	<update id="withdraw" parameterType="String">
 		UPDATE MEMBER
-		SET MEM_TYPE = '탈퇴'
+		SET MEM_TYPE = '탈퇴', MEM_WD_MEMO = #{reason}
 		WHERE MEM_CODE = #{mem_code}
 	</update>
 	
 	<!-- 탈퇴회원 복구 -->
 	<update id="deleteRestoration" parameterType="String">
 		UPDATE MEMBER
-		SET MEM_TYPE = '일반'
+		SET MEM_TYPE = '일반', MEM_WD_MEMO = NULL
 		WHERE MEM_CODE = #{mem_code}
 	</update>
 	

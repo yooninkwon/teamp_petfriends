@@ -204,6 +204,7 @@ $(document).ready(function() {
 		        $('#customer-info #nameLabel').text(`회원 이름 : ${customerData.mem_name || 'N/A'}`);
 		        $('#customer-info #codeLabel').text(`회원 코드 : ${memcode}`);
 		        $('#customer-info #amountLabel').text(`누적 구매금액 : ${customerData.mem_pay_amount?.toLocaleString('ko-KR') || '0원'}`);
+		        $('#customer-info #pointLabel').text(`사용 가능 적립금 : ${customerData.mem_point?.toLocaleString('ko-KR') || '0원'}`);
 		    } 
 
 		    // 적립금 테이블 업데이트
