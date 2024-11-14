@@ -23,7 +23,7 @@ var socket;
 
 function openChat(receiver) {
     document.getElementById("chatBox").style.display = "block";
-    socket = new WebSocket("ws://localhost:9002/ws/chat");
+    socket = new WebSocket("ws://25.0.125.242:9002/ws/chat");
     console.log("done")
     socket.onmessage = function(event) {
         var chatMessages = document.getElementById("chatMessages");
