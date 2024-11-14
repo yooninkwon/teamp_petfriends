@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.dto.MemberPointsDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.login.util.PasswordEncryptionService;
 import com.tech.petfriends.member.service.MemberService;
@@ -39,20 +40,16 @@ public class JoinController {
 	@GetMapping("/joinPage")
 	public String JoinPage(Model model) {
 		System.out.println("회원가입 페이지 이동");
-		
 		String kakaoApiKey = apikeyConfig.getKakaoApikey();
 		model.addAttribute("kakaoApi",kakaoApiKey);
-		
 		return "/join/joinPage";
 	}
 	
 	@GetMapping("/addressMap")
 	public String AddrMap(Model model) {
 		System.out.println("주소 지도 화면 이동");
-		
 		String kakaoApiKey = apikeyConfig.getKakaoApikey();
 		model.addAttribute("kakaoApi",kakaoApiKey);
-		
 		return "/join/addressMap";
 	}
 	
@@ -66,11 +63,11 @@ public class JoinController {
         
         String phoneNumber = request.getParameter("phoneNumber");
         
-        int duplicateCount = memberMapper.isPhoneNumberDuplicate(phoneNumber);
-        if (duplicateCount > 0) {
-        	redirectAttributes.addFlashAttribute("error", "이미 가입된 정보입니다.");
-            return "redirect:/login/loginPage";  // 중복일 경우 회원 가입 페이지로 다시 이동
-        }
+//        int duplicateCount = memberMapper.isPhoneNumberDuplicate(phoneNumber);
+//        if (duplicateCount > 0) {
+//        	redirectAttributes.addFlashAttribute("error", "이미 가입된 정보입니다.");
+//            return "redirect:/login/loginPage";
+//        }
         
         // UUID로 mem_code 생성
         String uniqueID = UUID.randomUUID().toString();
@@ -96,7 +93,31 @@ public class JoinController {
         }
         
         member.setMem_gender(request.getParameter("gender"));
-        member.setMem_invite(request.getParameter("inviteCode"));
+        
+        // 가입하는 회원이 기존 회원 닉네임 초대코드로 입력시 적립금 적립
+        String inviteMember = request.getParameter("inviteCode");
+        if (!inviteMember.equals("") || inviteMember != null) {
+			if (memberMapper.isNicknameDuplicate(inviteMember) == 1) {
+				MemberLoginDto inviteUser = memberMapper.nickNameMember(inviteMember);
+				System.out.println(inviteUser);
+				member.setMem_invite(inviteUser.getMem_nick());
+				MemberPointsDto memberpoint = new MemberPointsDto();
+				memberpoint.setMem_code(inviteUser.getMem_code());
+				memberpoint.setO_code("가입 추천 적립금");
+				memberpoint.setPoint_info("적립");
+				memberpoint.setPoint_type('+');
+				memberpoint.setPoints(5000);
+				memberMapper.insertPoints(memberpoint);
+				memberMapper.updatePointsForInvite(memberpoint.getMem_code(), memberpoint.getPoints());
+				memberpoint.setMem_code(uniqueID);
+				memberMapper.insertPoints(memberpoint);
+				memberMapper.updatePointsForInvite(memberpoint.getMem_code(), memberpoint.getPoints());
+			} else {
+				inviteMember = "";
+				member.setMem_invite(inviteMember);
+			}
+		}
+ 
         
         // 현재 시간 설정
         java.sql.Timestamp currentTime = new java.sql.Timestamp(System.currentTimeMillis());
