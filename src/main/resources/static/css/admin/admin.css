@@ -76,6 +76,9 @@ i {
 #sidebar-left ul li.active-sub a {
     color: #ff4081;
 }
+#sidebar-left ul li a:hover {
+    color: #ff4081;
+}
 .submenu {
 	margin-top: 20px;
 	background-color: #ffe9f1;
