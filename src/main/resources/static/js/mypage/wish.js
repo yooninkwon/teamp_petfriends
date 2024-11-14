@@ -30,7 +30,7 @@ $(document).ready(function() {
 
     // 찜목록 탭 데이터 로드 함수
     function wishData() {
-        const itemsPerPage = 8; // 페이지 당 item 수
+        const itemsPerPage = 6; // 페이지 당 item 수
         let currentPage = 1;
         let totalItems = 0;
         let myWishList = []; // 데이터 저장할 배열
@@ -150,7 +150,7 @@ $(document).ready(function() {
 
 	// 자주 구매 탭 데이터 로드 함수
 	function buyoftenData() {
-		const itemsPerPage = 8; // 페이지 당 item 수
+		const itemsPerPage = 6; // 페이지 당 item 수
         let currentPage = 1;
         let totalItems = 0;
         let buyoftenList = []; // 데이터 저장할 배열
@@ -237,7 +237,7 @@ $(document).ready(function() {
                 paginationHtml += '<a href="#" class="page-link" data-page="next-group">다음 &raquo;</a>';
             }
 			
-			$('#buyoftenlist-pagination').html(paginationHtml);
+			$('#buyoften-pagination').html(paginationHtml);
 			
             $('.page-link').on('click', function (event) {
                 event.preventDefault();

@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	
     let itemsPerPage = 10;
     let currentPage = 1;
     let totalItems = 0;
@@ -6,9 +7,22 @@ $(document).ready(function() {
     let totalPages = 0;
     let customerList = [];
     let filteredList = [];
-	let selectedMembers = []; 
+	let selectedMembers = [];
 	
-    loadCustomerData();
+	loadCustomerData();
+	
+	// URL 파라미터에서 orderCode 가져오기
+	const urlParams = new URLSearchParams(window.location.search);
+	const memCode = urlParams.get('memCode');
+	
+	if (memCode) {
+	    $('button[data-tab="customer-list-container"]').trigger('click'); // 회원 조회 탭 열기
+        $('#sk').val('회원코드').change(); // 조회기준 드롭다운 '회원코드'선택
+        $('#titleSearch').val(memCode); // #입력 필드에 memCode 값 입력
+		setTimeout(() => {
+	        applyFilters(); // 약간의 딜레이 후 applyFilters 호출
+	    }, 50)
+	}
 
     // 탭 전환
     document.querySelectorAll('.tab-btn').forEach(function(tabBtn) {
@@ -53,7 +67,7 @@ $(document).ready(function() {
         })
         .catch(error => console.error('Fetch error:', error));
     }
-
+	
     // 검색 버튼 이벤트
     $('#searchBtn').on('click', function() {
         applyFilters();
@@ -67,7 +81,7 @@ $(document).ready(function() {
 	    const selectedRegDate = $('#regdate').val(); // 가입 날짜
 	    const selectedLogDate = $('#logdate').val(); // 접속 날짜
 	    const selectedGender = $('input[name="gender"]:checked').val(); // 성별
-
+		
 	    filteredList = customerList.filter(item => {
 	        // 기본 검색 (이름, 닉네임, 회원코드, 이메일, 전화번호에 대한 검색)
 	        let matchesSearch = true;
@@ -90,6 +104,7 @@ $(document).ready(function() {
 	                    break;
 	            }
 	        }
+			console.log(matchesSearch);
 
 	        // 회원 등급 필터링
 	        let matchesGrade = selectedGrade === "0" || (item.g_no && item.g_no.toString() === selectedGrade);
@@ -108,7 +123,7 @@ $(document).ready(function() {
 
 	        return matchesSearch && matchesGrade && matchesType && matchesRegDate && matchesLogDate && matchesGender;
 	    });
-
+		
 	    totalItems = filteredList.length;
 	    totalPages = Math.ceil(totalItems / itemsPerPage);
 	    displayCustomerList(currentPage);

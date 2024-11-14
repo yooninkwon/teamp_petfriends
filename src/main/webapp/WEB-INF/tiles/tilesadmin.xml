@@ -16,6 +16,9 @@
 	<definition name="admin/order" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/order.jsp" />
 	</definition>
+	<definition name="admin/orderDetail" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/orderDetail.jsp" />
+	</definition>
 	<definition name="admin/coupon" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/coupon.jsp" />
 	</definition>

@@ -606,12 +606,14 @@ public class MyPageController {
 
 		for (String cartCode : cartCodes) {
 			mypageDao.insertOrderCode(cartCode, orderData.getO_code());
+			mypageDao.updateStrockByOrder(cartCode);
 		}
-
+		
     	mypageDao.insertOrder(orderData);
     	mypageDao.insertOrderStatus(orderData.getO_code());
     	mypageDao.updateCouponByOrder(orderData.getMc_code());
     	mypageDao.updateAmountByOrder(orderData);
+    	mypageDao.setOffByStock();
     	
         return "redirect:/mypage/order";
     }
@@ -672,6 +674,20 @@ public class MyPageController {
 		return "mypage/order/delivDetail";
 	}
 	
+	@Transactional
+	@PostMapping("/order/orderConfirmed")
+	@ResponseBody
+	public Map<String, Object> orderConfirmed(@RequestBody Map<String, String> payload) {
+		
+		mypageDao.insertComfirmStatus(payload.get("orderCode"));
+		mypageDao.updateAmountByConfirmed(payload.get("memCode"), payload.get("oSaving"));
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", true);
+		
+		return response;
+	}
+
 	@GetMapping("/order/cancelRequest")
 	public String cancelRequest(Model model, HttpServletRequest request) {
 		

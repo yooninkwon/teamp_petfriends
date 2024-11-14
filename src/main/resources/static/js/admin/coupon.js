@@ -21,9 +21,19 @@ document.querySelectorAll('.tab-btn').forEach(function(tabBtn) {
 });
 
 $(document).ready(function() {
-    
-    // 페이지 로드 시 기본적으로 첫 탭의 데이터를 불러오기
-    loadCouponRegisterData();
+
+	// URL 파라미터에서 orderCode 가져오기
+	const urlParams = new URLSearchParams(window.location.search);
+	const orderCode = urlParams.get('orderCode');
+	
+	if (orderCode) {
+	    $('button[data-tab="couponStatus"]').trigger('click'); // 회원 쿠폰 탭 열기
+        $('#search-order-code').val(orderCode); // #search-order-code 필드에 orderCode 값 입력
+        loadMemberCouponData(orderCode); // 필터링된 데이터를 로드
+	} else {
+	    // 페이지 로드 시 기본적으로 첫 탭의 데이터를 불러오기
+	    loadCouponRegisterData();
+	}
 
 	// 탭 전환 시 쿠폰 등록 데이터 로드
     $('button[data-tab="couponRegister"]').on('click', function () {
@@ -32,9 +42,9 @@ $(document).ready(function() {
 
     // 탭 전환 시 회원 쿠폰 데이터 로드
     $('button[data-tab="couponStatus"]').on('click', function () {
-        loadMemberCouponData();
+        loadMemberCouponData(orderCode);
     });
-
+	
     // 쿠폰 등록 탭 데이터 로드 함수
     function loadCouponRegisterData() {
         const itemsPerPage = 15; // 페이지 당 item 수
@@ -97,13 +107,13 @@ $(document).ready(function() {
                 lists += '<td>' + (coupon.cp_end || '') + '</td>';
 
                 if (coupon.cp_type === 'A') {
-                    lists += '<td>' + coupon.cp_amount + '원</td>';
+                    lists += '<td>' + (coupon.cp_amount).toLocaleString('ko-KR') + '원</td>';
                 } else if (coupon.cp_type === 'R') {
                     lists += '<td>' + coupon.cp_amount + '%</td>';
                 }
 
                 lists += '<td>' + coupon.issueCount || 0 + '</td>';
-                lists += '<td>' + coupon.totalUsage || 0 + '</td>';
+                lists += '<td>' + (coupon.totalUsage).toLocaleString('ko-KR') || 0 + '</td>';
 		        if (coupon.issueCount > 0 || coupon.totalUsage > 0) {
 		            lists += `<td style="color: red;">수정불가</td>`;
 		        } else {
@@ -200,7 +210,7 @@ $(document).ready(function() {
     }
 
 	// 회원 쿠폰 탭 데이터 로드 함수
-	function loadMemberCouponData() {
+	function loadMemberCouponData(orderCode) {
         const itemsPerPage = 12;
         let currentPage = 1;
         let totalItems = 0;
@@ -214,7 +224,7 @@ $(document).ready(function() {
             endDate: '', 
             memberCode: '', 
             couponCode: '',
-            orderCode: ''
+            orderCode: orderCode || '' // URL에서 가져온 orderCode를 필터에 설정
         };
 		
 		
@@ -247,14 +257,27 @@ $(document).ready(function() {
 
             let lists = '';
             $.each(sliceList, function (index, coupon) {
+				
+				const mcIssueFormatted = coupon.mc_issue 
+		            ? new Date(coupon.mc_issue).toISOString().replace('T', ' ').split('.')[0]
+		            : '';
+		            
+		        const mcUseFormatted = coupon.mc_use 
+		            ? new Date(coupon.mc_use).toISOString().replace('T', ' ').split('.')[0]
+		            : '';
+		            
+		        const mcDeadFormatted = coupon.mc_dead 
+		            ? new Date(coupon.mc_dead).toISOString().split('T')[0]
+		            : '';
+				
                 lists += '<tr>';
                 lists += '<td>' + coupon.mc_code + '</td>';
-                lists += '<td>' + coupon.mem_name + '</td>';
+                lists += '<td><a href="/admin/customer_info?memCode=' + coupon.mem_code + '">' + coupon.mem_name + '</a></td>';
                 lists += '<td>' + coupon.cp_name + '</td>';
-                lists += '<td>' + coupon.mc_issue + '</td>';
-                lists += '<td>' + (coupon.mc_use || '') + '</td>';
-                lists += '<td><a href="">' + (coupon.o_code || '') + '</a></td>';
-                lists += '<td>' + (coupon.mc_dead || '') + '</td>';
+                lists += '<td>' + mcIssueFormatted + '</td>';
+                lists += '<td>' + mcUseFormatted + '</td>';
+                lists += '<td><a href="/admin/orderDetail?orderCode=' + coupon.o_code + '">' + (coupon.o_code || '') + '</a></td>';
+                lists += '<td>' + mcDeadFormatted + '</td>';
                 lists += '</tr>';
             });
 
@@ -305,11 +328,11 @@ $(document).ready(function() {
 		        searchOrder: $('#search-order').val(),
 		        startDate: $('#start-date').val(),
 		        endDate: $('#end-date').val(),
-		        memberCode: $('#search-member-code').val(),
-		        couponCode: $('#search-coupon-code').val(),
-		        orderCode: $('#search-order-code').val()
+		        memberCode: $('#search-member-code').val().trim(),
+		        couponCode: $('#search-coupon-code').val().trim(),
+		        orderCode: $('#search-order-code').val().trim()
 		    };
-		    console.log(filterParam);
+		    
 		    fetchData(currentPage, currPageGroup, filterParam);
 		}
 
@@ -325,6 +348,35 @@ $(document).ready(function() {
 		    
 		    applyFilters();
 		});
+		
+		// 날짜값
+		let startDateVal;
+		let endDateVal;
+
+		// 시작일이 변경될 때 - 종료날짜와 비교하여 제한
+		$('#start-date').on('change', function() {
+			checkDateVal($('#end-date'));
+		});
+
+		// 종료일이 변경될 때 - 시작날짜와 비교하여 제한
+		$('#end-date').on('change', function() {
+			checkDateVal($('#end-date'));
+		});
+
+		// 시작일과 종료일 비교
+		function checkDateVal(tag) {
+			// 날짜의 '-'을 공백으로 바꾸고 숫자로 타입 변경
+			let startDateVal = Number($('#start-date').val().replace(/-/gi, ''));
+			let endDateVal = Number($('#end-date').val().replace(/-/gi, ''));
+
+			if (endDateVal != 0 && startDateVal != 0) {
+				// 시작일이 종료일보다 클 때
+				if (startDateVal > endDateVal) {
+					// 해당 값을 공백으로 설정
+					tag.val('');
+				}
+			}
+		}
     }
 });
 

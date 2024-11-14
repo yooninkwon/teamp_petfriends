@@ -119,8 +119,8 @@
 		            <option value="사용">사용</option>
 		            <option value="만료">만료</option>
 		        </select>
-	            <label><input type="date" id="start-date">부터</label>
-	            <label><input type="date" id="end-date">까지</label>
+	            <label><input type="date" id="start-date"> 부터</label>
+	            <label><input type="date" id="end-date"> 까지</label>
 	            <button id="reset-date" class="btn-style">전체보기</button>
 	        </div>
 	    </div>
@@ -147,7 +147,7 @@
 		            <th>발급일시</th>
 		            <th>사용일시</th>
 		            <th>결제코드</th>
-		            <th>만료일시</th>
+		            <th>만료일</th>
 		        </tr>
 		    </thead>
 		    <tbody id="member-coupon-table-body">
