@@ -283,7 +283,7 @@ $(document).ready(function() {
 						position: position, // 마커의 위치
 						image: markerImage
 					});
-			//
+			
 			// 마커 이벤트리스너 부착 - 클릭시 새 페이지로 해당 시설의 카카오맵 상세 페이지 이동			
 			kakao.maps.event.addListener(marker, 'click', function() {
 				// 로드뷰 표시하는 함수 호출
@@ -329,14 +329,7 @@ $(document).ready(function() {
 				roadview.setPanoId(panoId, placePosition); //panoId와 중심좌표를 통해 로드뷰 실행
 			});
 		}
-	
-		//로드뷰 이동 이벤트 핸들러
-		function moveKakaoRoadview(self){
-		    var panoId = roadview.getPanoId(); //현 로드뷰의 panoId값을 가져옵니다.
-		    var viewpoint = roadview.getViewpoint(); //현 로드뷰의 viewpoint(pan,tilt,zoom)값을 가져옵니다.
-		    self.href = 'https://map.kakao.com/?panoid='+panoId+'&pan='+viewpoint.pan+'&tilt='+viewpoint.tilt+'&zoom='+viewpoint.zoom; //Kakao 지도 로드뷰로 보내는 링크
-		}
-		
+			
 		// 지도 위에 표시되고 있는 마커를 모두 제거
 		function removeMarker() {
 			for (var i = 0; i < markers.length; i++) {
