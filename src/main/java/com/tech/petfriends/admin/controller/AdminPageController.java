@@ -76,11 +76,6 @@ public class AdminPageController {
 		return "admin/petteacher";
 	}
 
-	@GetMapping("/home")
-	public String home() {
-		return "admin/home";
-	}
-
 	@GetMapping("/order")
 	public String order() {
 		return "admin/order";
