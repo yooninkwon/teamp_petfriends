@@ -15,9 +15,9 @@
 <h2>펫호텔 예약내역</h2>
 <div class="coupon-container">
 <div id="reserveList" class="on">
-	<div class="form-col">
+	<div class="ph-form-col">
 	    <h3>전체 예약 내역 
-	    <button class="orderAllItem" onclick="location.href='/helppetf/pethotel/pethotel_main'">예약하러 가기</button>
+	    <button class="go-to-reserve" onclick="location.href='/helppetf/pethotel/pethotel_main'">예약하러 가기</button>
    	   	</h3>
 	</div>
 	    <table id="pethotel-table" class="pethotel-table" style="text-align: center;">
