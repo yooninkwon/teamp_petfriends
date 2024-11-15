@@ -15,7 +15,7 @@ public class MemberService {
 	
 	@Autowired
 	private PasswordEncryptionService passwordEncryptionService;
-
+	
     public void joinMember(MemberLoginDto member) {
         memberMapper.insertMember(member);
     }
