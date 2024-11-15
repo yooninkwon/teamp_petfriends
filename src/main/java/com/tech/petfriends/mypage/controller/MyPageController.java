@@ -612,10 +612,8 @@ public class MyPageController {
 			mypageDao.insertOrderCode(cartCode, orderData.getO_code());
 			mypageDao.updateStrockByOrder(cartCode);
 		}
-
-		MemberPointsDto memberPoints = new MemberPointsDto();
 		
-		// 적립금 사용
+		MemberPointsDto memberPoints = new MemberPointsDto();
 		int used_point = orderData.getO_point();
 		if (used_point != 0) {
 			memberPoints.setMem_code(orderData.getMem_code());
@@ -626,12 +624,7 @@ public class MyPageController {
 			memberMapper.insertPoints(memberPoints);
 		}
 		
-		// 주문시 멤버 총 구매금액 증가
-		String mem_code = orderData.getMem_code();
-		int order_amount = orderData.getO_amount();
-		memberMapper.updatePayAmount(mem_code, order_amount);
-		
-    	mypageDao.insertOrder(orderData); // 
+    	mypageDao.insertOrder(orderData);
     	mypageDao.insertOrderStatus(orderData.getO_code());
     	mypageDao.updateCouponByOrder(orderData.getMc_code());
     	mypageDao.updateAmountByOrder(orderData);
@@ -700,19 +693,19 @@ public class MyPageController {
 	@PostMapping("/order/orderConfirmed")
 	@ResponseBody
 	public Map<String, Object> orderConfirmed(@RequestBody Map<String, String> payload, HttpSession session) {
-		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
 
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		
 		MemberPointsDto memberPoints = new MemberPointsDto();
-		// 적립금 적립
 		memberPoints.setMem_code(loginUser.getMem_code());
 		memberPoints.setO_code(payload.get("orderCode"));
 		memberPoints.setPoints(Integer.parseInt(payload.get("oSaving")));
 		memberPoints.setPoint_type('+');
 		memberPoints.setPoint_info("적립");
+		memberMapper.insertPoints(memberPoints);
 		
 		mypageDao.insertComfirmStatus(payload.get("orderCode"));
 		mypageDao.updateAmountByConfirmed(payload.get("memCode"), payload.get("oSaving"));
-		memberMapper.insertPoints(memberPoints);
 
 		
 		Map<String, Object> response = new HashMap<>();
@@ -737,8 +730,25 @@ public class MyPageController {
 	    String o_cancel = request.getParameter("o_cancel");
 	    String o_cancel_detail = request.getParameter("o_cancel_detail");
 	    
-	    mypageDao.updateCancelByOrderCode(o_code, o_cancel, o_cancel_detail);
-	    mypageDao.insertCancelStatus(o_code);
+	    MyOrderDto order = mypageDao.getOrderByOrderCode(o_code);
+	    ArrayList<MyCartDto> items = mypageDao.getCartByOrderCode(o_code);
+	    
+ 		MemberPointsDto memberPoints = new MemberPointsDto();
+ 		memberPoints.setMem_code(order.getMem_code());
+ 		memberPoints.setO_code(order.getO_code());
+ 		memberPoints.setPoints(order.getO_point());
+ 		memberPoints.setPoint_type('+');
+ 		memberPoints.setPoint_info("사용취소");
+ 		memberMapper.insertPoints(memberPoints);
+ 		
+ 		mypageDao.updateCancelByOrderCode(o_code, o_cancel, o_cancel_detail);
+ 		mypageDao.insertCancelStatus(o_code);
+ 		mypageDao.updateCouponByCancel(order.getMc_code());
+    	mypageDao.updateAmountByCancel(order);
+    	for (MyCartDto item : items) {
+			mypageDao.updateStrockByCancel(item.getCart_code());
+		}
+    	mypageDao.setOnByStock();
 
 	    return "redirect:/mypage/order";
 	}

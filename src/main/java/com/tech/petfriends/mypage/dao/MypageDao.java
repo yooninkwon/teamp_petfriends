@@ -79,10 +79,16 @@ public interface MypageDao {
 	ArrayList<OrderStatusDto> getStatusByOrderCode(String o_code);
 	ArrayList<MyCartDto> getCartByOrderCode(String o_code);
 	MyOrderDto getOrderByOrderCode(String o_code);
+	// 주문내역 : 구매확정
 	void insertComfirmStatus(String o_code);
 	void updateAmountByConfirmed(String mem_code, String o_saving);
+	// 주문내역 : 주문취소
 	void updateCancelByOrderCode(String o_code, String o_cancel, String o_cancel_detail);
 	void insertCancelStatus(String o_code);
+	void updateCouponByCancel(String mc_code);
+	void updateAmountByCancel(MyOrderDto order);
+	void updateStrockByCancel(String cart_code);
+	void setOnByStock();
 	
 	// 즐겨찾는 상품
 	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
@@ -94,4 +100,5 @@ public interface MypageDao {
 	PethotelMemDataDto pethotelReserveMypageMemNo(String reserveNo);
 	ArrayList<PethotelFormDataDto> pethotelReserveMypagePets(String reserveNo);
 	void pethotelReserveMyPageCancel(String reserveNo);
+
 }

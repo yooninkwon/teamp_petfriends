@@ -278,13 +278,14 @@
 	<update id="updateAmountByOrder" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
 	    UPDATE MEMBER
 	    SET MEM_POINT = MEM_POINT - #{o_point}
+	    	MEM_PAY_AMOUNT = MEM_PAY_AMOUNT + #{o_amount}
 	    WHERE MEM_CODE = #{mem_code}
 	</update>
 
 	<update id="setOffByStock">
 	    UPDATE PRODUCT P
 		SET P.PRO_ONOFF = '품절'
-		WHERE P.PRO_CODE IN (SELECT PO.PRO_CODE FROM PRODUCT_OPTION PO WHERE PO.PROOPT_STOCK = 0)
+		WHERE P.PRO_CODE IN (SELECT PO.PRO_CODE FROM PRODUCT_OPTION PO WHERE PO.PROOPT_STOCK = 0) AND P.PRO_ONOFF = '판매'
 	</update>
 	
 	<!-- 주문내역 -->
@@ -326,6 +327,7 @@
 		WHERE O_CODE = #{o_code}
 	</select>
 	
+	<!-- 주문내역 : 구매확정 -->
 	<insert id="insertComfirmStatus">
 		INSERT INTO ORDER_STATUS
 		VALUES (#{o_code}, '구매확정', SYSDATE)
@@ -336,7 +338,8 @@
 	    SET MEM_POINT = MEM_POINT + #{o_saving}
 	    WHERE MEM_CODE = #{mem_code}
 	</update>
-
+	
+	<!-- 주문내역 : 주문취소 -->
 	<update id="updateCancelByOrderCode">
     	UPDATE "ORDER"
 	    SET O_CANCEL = #{o_cancel},
@@ -348,6 +351,32 @@
 	    INSERT INTO ORDER_STATUS
 	    VALUES (#{o_code}, '주문취소', SYSDATE)
 	</insert>
+	
+	<update id="updateCouponByCancel">
+    	UPDATE MEMBER_COUPON_BRIDGE
+	    SET MC_USE = NULL
+	    WHERE MC_CODE = #{mc_code}
+	</update>
+
+	<update id="updateAmountByCancel" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
+	    UPDATE MEMBER
+	    SET MEM_POINT = MEM_POINT + #{o_point}
+	    	MEM_PAY_AMOUNT = MEM_PAY_AMOUNT - #{o_amount}
+	    WHERE MEM_CODE = #{mem_code}
+	</update>
+
+	<update id="updateStrockByCancel">
+	    UPDATE PRODUCT_OPTION PO
+		SET PO.PROOPT_STOCK = PO.PROOPT_STOCK
+		     + (SELECT PC.CART_CNT FROM PRODUCT_CART PC WHERE PC.CART_CODE = #{cartCode} AND PC.PROOPT_CODE = PO.PROOPT_CODE)
+		WHERE EXISTS (SELECT 1 FROM PRODUCT_CART PC WHERE PC.CART_CODE = #{cartCode}  AND PC.PROOPT_CODE = PO.PROOPT_CODE)
+	</update>
+	
+	<update id="setOnByStock">
+	    UPDATE PRODUCT P
+		SET P.PRO_ONOFF = '판매'
+		WHERE P.PRO_CODE IN (SELECT PO.PRO_CODE FROM PRODUCT_OPTION PO WHERE PO.PROOPT_STOCK > 0) AND P.PRO_ONOFF = '품절'
+	</update>
 	
 	<!-- 즐겨찾는 상품 -->
 	<select id="getAllWishInfoByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyWishDto">

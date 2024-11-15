@@ -232,7 +232,7 @@ $(document).ready(function() {
                     lists += `
                         <div class="order-actions">
                             ${latestStatus.os_name === '배송완료' ? `
-                                <button onclick="confirmPurchase('${myorder.o_code}', '${myorder.mem_code}', '${myorder.o_saving}')">구매확정</button>
+                                <button class="confirm" onclick="confirmPurchase('${myorder.o_code}', '${myorder.mem_code}', '${myorder.o_saving}')">구매확정</button>
                                 <a href="/mypage/order/delivDetail?orderCode=${myorder.o_code}">배송조회</a>
                                 <button onclick="showCancelPopup('${myorder.o_code}')">반품/환불</button>
 							` : latestStatus.os_name === '구매확정' ? `
