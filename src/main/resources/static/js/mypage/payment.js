@@ -166,7 +166,8 @@ function updateSummary(discountPoint) {
         discountCoupon -= remainingNegative;
     }
 	
-    const finalPoint = (finalPrice / 100) * parseFloat(document.body.dataset.userRate);
+	// 적립금 계산
+    const finalPoint = (finalPrice / 100) * document.body.dataset.userRate;
 	
     document.getElementById('price_deliv').textContent = `+${priceDeliv.toLocaleString()}원`;
     document.getElementById('discount_coupon').textContent = `-${discountCoupon.toLocaleString()}원`;

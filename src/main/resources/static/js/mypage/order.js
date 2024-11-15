@@ -182,6 +182,7 @@ $(document).ready(function() {
             $('#empty-list').hide();
 
             sliceList.forEach(myorder => {
+				
                 let OrderDate = orderStatuses.find(status => status.o_code === myorder.o_code && status.os_name === '결제완료')?.os_regdate;
                 let latestStatus = orderStatuses.filter(status => status.o_code === myorder.o_code)
                     .reduce((latest, current) => current.os_regdate > latest.os_regdate ? current : latest, { os_name: '', os_regdate: '' });
