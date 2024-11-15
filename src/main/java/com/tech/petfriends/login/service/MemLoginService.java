@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.tech.petfriends.login.controller.LoginInterModelRequest;
 import com.tech.petfriends.login.controller.LoginInterModelRequestRedirect;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
