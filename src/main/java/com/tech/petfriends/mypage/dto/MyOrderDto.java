@@ -25,4 +25,10 @@ public class MyOrderDto {
     private Timestamp o_expecdate;
     private String o_cancel;
     private String o_cancel_detail;
+    
+    private String mem_name;
+    private String mem_tell;
+    
+    private Timestamp orderDate;
+    private String currStatus;
 }

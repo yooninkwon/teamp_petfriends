@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	
     let itemsPerPage = 10;
     let currentPage = 1;
     let totalItems = 0;
@@ -6,10 +7,22 @@ $(document).ready(function() {
     let totalPages = 0;
     let customerList = [];
     let filteredList = [];
+  
 	let selectedMembers = []; 
 	let memberPointsData = [];
 	
-    loadCustomerData();
+	// URL 파라미터에서 orderCode 가져오기
+	const urlParams = new URLSearchParams(window.location.search);
+	const memCode = urlParams.get('memCode');
+	
+	if (memCode) {
+	    $('button[data-tab="customer-list-container"]').trigger('click'); // 회원 조회 탭 열기
+        $('#sk').val('회원코드').change(); // 조회기준 드롭다운 '회원코드'선택
+        $('#titleSearch').val(memCode); // #입력 필드에 memCode 값 입력
+		setTimeout(() => {
+	        applyFilters(); // 약간의 딜레이 후 applyFilters 호출
+	    }, 50)
+	}
 
 	$.ajax({
 	    url: '/admin/points_list', // 모든 데이터를 가져오는 엔드포인트
@@ -103,6 +116,7 @@ $(document).ready(function() {
 	                    break;
 	            }
 	        }
+			console.log(matchesSearch);
 
 	        // 회원 등급 필터링
 	        let matchesGrade = selectedGrade === "0" || (item.g_no && item.g_no.toString() === selectedGrade);
@@ -144,7 +158,7 @@ $(document).ready(function() {
 
 	        return matchesSearch && matchesGrade && matchesType && matchesRegDate && matchesLogDate && matchesGender && matchesPayAmount;
 	    });
-
+		
 	    totalItems = filteredList.length;
 	    totalPages = Math.ceil(totalItems / itemsPerPage);
 	    displayCustomerList(currentPage);

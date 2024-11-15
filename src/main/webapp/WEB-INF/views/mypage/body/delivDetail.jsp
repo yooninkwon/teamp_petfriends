@@ -15,14 +15,19 @@
 <h2>배송조회</h2>
 <div class="order-box" style="width: 60%;">
     <div class="deliv-header">
+    
     	<c:forEach var="status" items="${orderStatuses}">
             <c:if test="${empty latestStatus || status.os_regdate > latestStatus.os_regdate}">
                 <c:set var="latestStatus" value="${status}" />
             </c:if>
+            <c:if test="${status.os_name == '배송완료'}">
+                <c:set var="delivCompleteDate" value="${status.os_regdate}" />
+            </c:if>
         </c:forEach>
+        
         <c:choose>
-            <c:when test="${latestStatus.os_name == '배송완료'}">
-                <div style="font-size: 30px;">${fn:substring(latestStatus.os_regdate, 0, 16)} 도착 완료</div><div>고객님이 주문하신 상품이 배송완료 되었습니다.</div>
+            <c:when test="${latestStatus.os_name == '배송완료' || latestStatus.os_name == '구매확정'}">
+                <div style="font-size: 30px;">${fn:substring(delivCompleteDate, 0, 16)} 도착 완료</div><div>고객님이 주문하신 상품이 배송완료 되었습니다.</div>
             </c:when>
             <c:otherwise>
                 <div style="font-size: 30px;">${fn:substring(order.o_expecdate, 0, 16)} 도착 예정</div><div>고객님이 주문하신 상품이 배송중입니다.</div>

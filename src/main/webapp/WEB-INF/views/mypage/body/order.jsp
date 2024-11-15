@@ -45,7 +45,7 @@
     </div>
     
 	<!-- 페이지네이션 -->
-    <div id="orderlist-pagination" class="pagination" style="margin-top: 20px;"></div>
+    <div id="orderlist-pagination" class="pagination"></div>
 </div>
 
 <script src="/static/js/mypage/order.js"></script>

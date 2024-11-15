@@ -3,8 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.tech.petfriends.admin.mapper.CouponDao">
+<mapper namespace="com.tech.petfriends.admin.mapper.CouponOrderDao">
 	
+	<!-- 쿠폰관리 -->
 	<select id="getAllCoupons" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT CP.*, 
 		(SELECT COUNT(*) FROM MEMBER_COUPON_BRIDGE MC WHERE MC.CP_NO = CP.CP_NO) AS issueCount,
@@ -53,10 +54,10 @@
                     MC.MC_ISSUE IS NOT NULL AND (MC.MC_USE IS NULL AND MC.MC_DEAD IS NULL)
                 </when>
                 <when test="status == '사용'">
-                    MC.MC_USE IS NOT NULL
+                    MC.MC_USE IS NOT NULL AND MC.MC_DEAD IS NULL
                 </when>
                 <when test="status == '만료'">
-                    MC.MC_DEAD IS NOT NULL
+                    MC.MC_DEAD IS NOT NULL AND MC.MC_USE IS NULL
                 </when>
                 <when test="status == '발급,사용'">
                     MC.MC_USE IS NOT NULL
@@ -151,4 +152,61 @@
 	    SET MC_DEAD = #{today}
 	    WHERE CP_NO IN (SELECT CP_NO FROM COUPON WHERE CP_DEAD = #{today})
 	</update>
+    
+    <!-- 주문관리 -->
+    <select id="getAllOrders" resultType="com.tech.petfriends.mypage.dto.MyOrderDto">
+    	SELECT *
+    	FROM (
+	        SELECT O.*, M.MEM_NAME, M.MEM_TELL, OS1.OS_REGDATE AS ORDERDATE, OS2.OS_NAME AS CURRSTATUS
+			FROM "ORDER" O
+			JOIN MEMBER M ON O.MEM_CODE = M.MEM_CODE
+			JOIN ORDER_STATUS OS1 ON O.O_CODE = OS1.O_CODE AND OS1.OS_NAME = '결제완료'
+			JOIN ORDER_STATUS OS2 ON O.O_CODE = OS2.O_CODE AND OS2.OS_REGDATE = (SELECT MAX(OS3.OS_REGDATE) FROM ORDER_STATUS OS3 WHERE OS3.O_CODE = OS2.O_CODE)
+    	) ORDERLIST
+        <where>
+	        <!-- 주문 상태 필터 -->
+	        <choose>
+                <when test="status == ''">
+                	CURRSTATUS IS NOT NULL
+                </when>
+                <otherwise>
+                	AND CURRSTATUS IN
+		            <foreach item="stat" index="index" collection="status.split(',')" open="(" separator="," close=")">
+		                #{stat}
+		            </foreach>
+                </otherwise>
+            </choose>
+	        
+	        <!-- 조회 기간 필터 -->
+	        <if test="startDate != null and startDate != ''">
+	            AND TRUNC(ORDERDATE) >= #{startDate}
+	        </if>
+	        <if test="endDate != null and endDate != ''">
+	            AND #{endDate} >= TRUNC(ORDERDATE)
+	        </if>
+	
+	        <!-- 검색 필터 -->
+	        <if test="orderCode != null and orderCode != ''">
+	            AND ORDERLIST.O_CODE LIKE '%' || #{orderCode} || '%'
+	        </if>
+	        <if test="proCode != null and proCode != ''">
+	            AND EXISTS (SELECT 1 FROM PRODUCT_CART PC WHERE PC.O_CODE = ORDERLIST.O_CODE AND PC.PRO_CODE LIKE '%' || #{proCode} || '%')
+	        </if>
+	        <if test="memberCode != null and memberCode != ''">
+	            AND ORDERLIST.MEM_CODE LIKE '%' || #{memberCode} || '%'
+	        </if>
+	    </where>
+	    ORDER BY ORDERDATE DESC
+    </select>
+    
+    <delete id="deleteOrderStatus">
+	    DELETE FROM ORDER_STATUS 
+	    WHERE O_CODE = #{oCode} AND OS_NAME = #{osName}
+	</delete>
+    
+    <insert id="updateOrderStatus">
+		INSERT INTO ORDER_STATUS
+		VALUES(#{oCode}, #{osName}, SYSDATE)
+	</insert>
+    
 </mapper>

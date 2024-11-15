@@ -56,12 +56,41 @@ $(document).ready(function() {
 
         loadOrderData($('.tab-btn.active').data('tab')); // 현재 활성화된 탭으로 자동 조회
     });
+	
+	// 날짜값
+	let startDateVal;
+	let endDateVal;
 
+	// 시작일이 변경될 때 - 종료날짜와 비교하여 제한
+	$('#start-date').on('change', function() {
+		checkDateVal($('#end-date'));
+	});
+
+	// 종료일이 변경될 때 - 시작날짜와 비교하여 제한
+	$('#end-date').on('change', function() {
+		checkDateVal($('#end-date'));
+	});
+
+	// 시작일과 종료일 비교
+	function checkDateVal(tag) {
+		// 날짜의 '-'을 공백으로 바꾸고 숫자로 타입 변경
+		let startDateVal = Number($('#start-date').val().replace(/-/gi, ''));
+		let endDateVal = Number($('#end-date').val().replace(/-/gi, ''));
+
+		if (endDateVal != 0 && startDateVal != 0) {
+			// 시작일이 종료일보다 클 때
+			if (startDateVal > endDateVal) {
+				// 해당 값을 공백으로 설정 - date 타입은 초기화
+				tag.val('');
+			}
+		}
+	}
+	
     // 조회 버튼 클릭 시 날짜 필터 적용
     $('#filterBtn').on('click', function() {
         loadOrderData($('.tab-btn.active').data('tab'));
     });
-
+	
     function loadOrderData(tabType) {
         const itemsPerPage = 4; // 페이지 당 item 수
         let currentPage = 1;
@@ -202,8 +231,11 @@ $(document).ready(function() {
                     lists += `
                         <div class="order-actions">
                             ${latestStatus.os_name === '배송완료' ? `
+                                <button onclick="confirmPurchase('${myorder.o_code}', '${myorder.mem_code}', '${myorder.o_saving}')">구매확정</button>
                                 <a href="/mypage/order/delivDetail?orderCode=${myorder.o_code}">배송조회</a>
                                 <button onclick="showCancelPopup('${myorder.o_code}')">반품/환불</button>
+							` : latestStatus.os_name === '구매확정' ? `
+							    <a href="/mypage/order/delivDetail?orderCode=${myorder.o_code}">배송조회</a>
                             ` : `
                                 <a href="/mypage/order/delivDetail?orderCode=${myorder.o_code}">배송조회</a>
                                 <button onclick="showCancelPopup('${myorder.o_code}')">주문취소</button>
@@ -225,22 +257,26 @@ $(document).ready(function() {
             $('#orderlist-list').html(lists);
         }
     }
+	
+	function setupPagination(totalPages, currentPage, itemsPerPage, myorders, orderStatuses, items, tabType) {
+	    let paginationHtml = '';
+	    if (totalPages >= 1) {
+	        for (let i = 1; i <= totalPages; i++) {
+	            paginationHtml += `<a href="#" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`;
+	        }
+	        $('#orderlist-pagination').html(paginationHtml);
 
-    function setupPagination(totalPages, currentPage, itemsPerPage, myorders, orderStatuses, items, tabType) {
-        let paginationHtml = '';
-        if (totalPages >= 1) {
-            for (let i = 1; i <= totalPages; i++) {
-                paginationHtml += `<a href="#" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`;
-            }
-            $('#orderlist-pagination').html(paginationHtml);
+	        $('.page-link').on('click', function(event) {
+	            event.preventDefault();
+	            currentPage = parseInt($(this).data('page'));
+	            
+	            $('.page-link').removeClass('active');
+	            $(this).addClass('active');
 
-            $('.page-link').on('click', function(event) {
-                event.preventDefault();
-                currentPage = parseInt($(this).data('page'));
-                displayItems(currentPage, itemsPerPage, myorders, orderStatuses, items, tabType);
-            });
-        }
-    }
+	            displayItems(currentPage, itemsPerPage, myorders, orderStatuses, items, tabType);
+	        });
+	    }
+	}
 	
 	// 날짜 형식 변환
 	function formatDate(dateString) {
@@ -254,6 +290,34 @@ $(document).ready(function() {
 	    return `${year}-${month}-${day} ${hours}:${minutes}`;
 	}
 });
+
+// 구매확정 확인 및 서버 요청 함수
+function confirmPurchase(orderCode, memCode, oSaving) {
+    const isConfirmed = confirm('구매확정 처리 후에는 취소 및 환불이 어렵습니다.\n' + '주문을 구매확정 하시겠습니까?');
+    
+    if (isConfirmed) {
+        $.ajax({
+            url: '/mypage/order/orderConfirmed',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ 
+                orderCode: orderCode,
+                memCode: memCode,
+                oSaving: oSaving
+            }),
+            success: function(response) {
+				if (response.success) {
+                    alert(`${oSaving} 포인트 적립완료!`);
+                    location.reload();
+                }
+            },
+            error: function(error) {
+                console.error('Error confirming purchase:', error);
+                alert('구매확정 처리 중 오류가 발생했습니다. 다시 시도해 주세요.');
+            }
+        });
+    }
+}
 
 // 취소 요청 팝업 창 열기
 function showCancelPopup(orderCode) {

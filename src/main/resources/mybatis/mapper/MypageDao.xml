@@ -251,6 +251,13 @@
 		SET O_CODE = #{o_code}
 		WHERE CART_CODE = #{cartCode}
 	</update>
+
+	<update id="updateStrockByOrder">
+	    UPDATE PRODUCT_OPTION PO
+		SET PO.PROOPT_STOCK = PO.PROOPT_STOCK
+		     - (SELECT PC.CART_CNT FROM PRODUCT_CART PC WHERE PC.CART_CODE = #{cartCode} AND PC.PROOPT_CODE = PO.PROOPT_CODE)
+		WHERE EXISTS (SELECT 1 FROM PRODUCT_CART PC WHERE PC.CART_CODE = #{cartCode}  AND PC.PROOPT_CODE = PO.PROOPT_CODE)
+	</update>
 	
 	<insert id="insertOrder" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
 	    INSERT INTO "ORDER"
@@ -270,8 +277,14 @@
 
 	<update id="updateAmountByOrder" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
 	    UPDATE MEMBER
-	    SET MEM_POINT = MEM_POINT - #{o_point} + #{o_saving}
+	    SET MEM_POINT = MEM_POINT - #{o_point}
 	    WHERE MEM_CODE = #{mem_code}
+	</update>
+
+	<update id="setOffByStock">
+	    UPDATE PRODUCT P
+		SET P.PRO_ONOFF = '품절'
+		WHERE P.PRO_CODE IN (SELECT PO.PRO_CODE FROM PRODUCT_OPTION PO WHERE PO.PROOPT_STOCK = 0)
 	</update>
 	
 	<!-- 주문내역 -->
@@ -285,6 +298,7 @@
 		SELECT *
 		FROM ORDER_STATUS
 		WHERE O_CODE = #{o_code}
+		ORDER BY OS_REGDATE ASC
 	</select>
 	
 	<select id="getCartByOrderCode" resultType="com.tech.petfriends.mypage.dto.MyCartDto">
@@ -304,10 +318,24 @@
 	</select>
 	
 	<select id="getOrderByOrderCode" resultType="com.tech.petfriends.mypage.dto.MyOrderDto">
-		SELECT *
-		FROM "ORDER"
+		SELECT O.*, M.MEM_NAME, M.MEM_TELL,
+		    (SELECT OS.OS_REGDATE FROM ORDER_STATUS OS WHERE OS.O_CODE = O.O_CODE AND OS.OS_NAME = '결제완료') AS ORDERDATE,
+		    (SELECT OS.OS_NAME FROM ORDER_STATUS OS WHERE OS.O_CODE = O.O_CODE AND OS.OS_REGDATE = (SELECT MAX(OS1.OS_REGDATE) FROM ORDER_STATUS OS1 WHERE OS1.O_CODE = OS.O_CODE)) AS CURRSTATUS
+		FROM "ORDER" O
+		JOIN MEMBER M ON O.MEM_CODE = M.MEM_CODE
 		WHERE O_CODE = #{o_code}
 	</select>
+	
+	<insert id="insertComfirmStatus">
+		INSERT INTO ORDER_STATUS
+		VALUES (#{o_code}, '구매확정', SYSDATE)
+	</insert>
+
+	<update id="updateAmountByConfirmed">
+	    UPDATE MEMBER
+	    SET MEM_POINT = MEM_POINT + #{o_saving}
+	    WHERE MEM_CODE = #{mem_code}
+	</update>
 
 	<update id="updateCancelByOrderCode">
     	UPDATE "ORDER"

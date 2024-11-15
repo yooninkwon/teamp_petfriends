@@ -67,16 +67,20 @@ public interface MypageDao {
 	
 	// 결제
 	void insertOrderCode(String cartCode, String o_code);
+	void updateStrockByOrder(String cartCode);
 	void insertOrder(MyOrderDto orderData);
 	void insertOrderStatus(String o_code);
 	void updateCouponByOrder(String mc_code);
 	void updateAmountByOrder(MyOrderDto orderData);
+	void setOffByStock();
 	
 	// 주문내역
 	ArrayList<MyOrderDto> getOrderByMemberCode(String mem_code);
 	ArrayList<OrderStatusDto> getStatusByOrderCode(String o_code);
 	ArrayList<MyCartDto> getCartByOrderCode(String o_code);
 	MyOrderDto getOrderByOrderCode(String o_code);
+	void insertComfirmStatus(String o_code);
+	void updateAmountByConfirmed(String mem_code, String o_saving);
 	void updateCancelByOrderCode(String o_code, String o_cancel, String o_cancel_detail);
 	void insertCancelStatus(String o_code);
 	
