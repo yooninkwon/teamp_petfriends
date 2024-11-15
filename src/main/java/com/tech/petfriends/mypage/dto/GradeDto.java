@@ -9,5 +9,5 @@ public class GradeDto {
     private int g_no;
     private String g_name;
     private int g_condition;
-    private int g_rate;
+    private float g_rate;
 }

@@ -612,21 +612,7 @@ public class MyPageController {
 			mypageDao.insertOrderCode(cartCode, orderData.getO_code());
 			mypageDao.updateStrockByOrder(cartCode);
 		}
-		
-		// 등급별 적립율 적용
-		int grade = loginUser.getG_no();
-		double pointRate = 0;
-		switch (grade) {
-		    case 1:
-		    case 2: pointRate = 0.5; break;
-		    case 3: pointRate = 1.0; break;
-		    case 4: pointRate = 1.5; break;
-		    case 5: pointRate = 2.0; break;
-		    case 6: pointRate = 2.5; break;
-		    default: pointRate = 0; break;
-		}
-		double orderAmount = orderData.getO_amount(); // 결제 금액
-		int points = (int) (orderAmount * (pointRate / 100)); // 소수점 이하 절삭	
+
 		MemberPointsDto memberPoints = new MemberPointsDto();
 		
 		// 적립금 사용
@@ -640,20 +626,12 @@ public class MyPageController {
 			memberMapper.insertPoints(memberPoints);
 		}
 		
-		// 적립금 적립
-		memberPoints.setMem_code(loginUser.getMem_code());
-		memberPoints.setO_code(orderData.getO_code());
-		memberPoints.setPoints(points);
-		memberPoints.setPoint_type('+');
-		memberPoints.setPoint_info("적립");
-		memberMapper.insertPoints(memberPoints);
-
 		// 주문시 멤버 총 구매금액 증가
 		String mem_code = orderData.getMem_code();
 		int order_amount = orderData.getO_amount();
 		memberMapper.updatePayAmount(mem_code, order_amount);
 		
-    	mypageDao.insertOrder(orderData);
+    	mypageDao.insertOrder(orderData); // 
     	mypageDao.insertOrderStatus(orderData.getO_code());
     	mypageDao.updateCouponByOrder(orderData.getMc_code());
     	mypageDao.updateAmountByOrder(orderData);
@@ -721,10 +699,21 @@ public class MyPageController {
 	@Transactional
 	@PostMapping("/order/orderConfirmed")
 	@ResponseBody
-	public Map<String, Object> orderConfirmed(@RequestBody Map<String, String> payload) {
+	public Map<String, Object> orderConfirmed(@RequestBody Map<String, String> payload, HttpSession session) {
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+
+		MemberPointsDto memberPoints = new MemberPointsDto();
+		// 적립금 적립
+		memberPoints.setMem_code(loginUser.getMem_code());
+		memberPoints.setO_code(payload.get("orderCode"));
+		memberPoints.setPoints(Integer.parseInt(payload.get("oSaving")));
+		memberPoints.setPoint_type('+');
+		memberPoints.setPoint_info("적립");
 		
 		mypageDao.insertComfirmStatus(payload.get("orderCode"));
 		mypageDao.updateAmountByConfirmed(payload.get("memCode"), payload.get("oSaving"));
+		memberMapper.insertPoints(memberPoints);
+
 		
 		Map<String, Object> response = new HashMap<>();
 		response.put("success", true);

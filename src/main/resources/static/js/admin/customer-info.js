@@ -11,6 +11,8 @@ $(document).ready(function() {
 	let selectedMembers = []; 
 	let memberPointsData = [];
 	
+	loadCustomerData();
+	
 	// URL 파라미터에서 orderCode 가져오기
 	const urlParams = new URLSearchParams(window.location.search);
 	const memCode = urlParams.get('memCode');
