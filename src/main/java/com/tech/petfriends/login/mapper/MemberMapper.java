@@ -14,6 +14,9 @@ import com.tech.petfriends.mypage.dto.GradeDto;
 @Mapper
 public interface MemberMapper {
 	
+	// 회원 가입 포인트 적립
+	void updatePointsForInvite(String mem_code, int points);
+	
 	// 포인트 테이블 가져오기
 	ArrayList<MemberPointsDto> pointsList();
 	
@@ -64,6 +67,9 @@ public interface MemberMapper {
     
     // 닉네임 중복 체크
     int isNicknameDuplicate(String nickname);
+    
+    // 닉네임으로 회원 찾기
+    MemberLoginDto nickNameMember(String nickname);
     
     // 이메일 중복 검사
     int isEmailDuplicate(String email);
