@@ -232,7 +232,7 @@ $(document).ready(function() {
 	$('#pet-birth').attr('max', today);
 
 	// 아이 선택하기 모달창의 x버튼(닫기)를 클릭시
-	$('.modal-close-btn').on('click', function() {
+	$(document).on('click','.modal-close-btn', function() {
 		closeModal();
 	});
 
@@ -492,10 +492,18 @@ $(document).ready(function() {
 			});
 		}
 	});
-
+	
+	// 펫캠보기 버튼 클릭시
+	$('#left').on('click', function(event){
+		event.preventDefault();
+		$('#pet-cam-div').removeClass().addClass('on');
+		$('#pet-cam-view').html('<div id="pet-cam-span"><span class="title">펫캠 열람</span><span class="modal-close-btn span-close"><i class="fa-solid fa-xmark"></i></span></div><iframe src=\'http://172.16.4.10:5500/\' width=\'430\' height=\'330\' frameborder=\'0\'></iframe>');
+	});
+	
 	function closeModal() {
 		// 모달의 클래스 'on'을 제거하여 보이지 않도록 변경
 		$('#select-pet-modal').removeClass().addClass('off');
+		$('#pet-cam-div').removeClass().addClass('off');
 	}
 
 	// 등록한 펫 div의 X(삭제) 버튼 클릭시 이벤트 추가
@@ -517,7 +525,7 @@ $(document).ready(function() {
 		}
 		
 	});
-
+	
 	function pageScroll(y) {
 		// 함수 호출시 파라미터의 값(Y좌표)으로 스크롤
 		window.scrollTo({
