@@ -97,20 +97,7 @@ public class JoinController {
         java.sql.Timestamp currentTime = new java.sql.Timestamp(System.currentTimeMillis());
         member.setMem_regdate(currentTime);
         member.setMem_logdate(currentTime);
-
-        memberService.joinMember(member);
-        
-        // 주소 테이블 인서트
-        String uniqueID2 = UUID.randomUUID().toString();
-        address.setAddr_code(uniqueID2);
-        // 멤버 코드는 동일하게 맞추기 위해 기존 uuid 사용
-        address.setMem_code(uniqueID);   
-        address.setAddr_postal(request.getParameter("postcode"));
-        address.setAddr_line1(request.getParameter("address"));
-        address.setAddr_line2(request.getParameter("detailAddress"));
-        address.setAddr_default('Y');   
-        memberService.joinAddress(address);            
-        
+ 
         // 가입하는 회원이 기존 회원 닉네임 초대코드로 입력시 적립금 적립
         String inviteMember = request.getParameter("inviteCode");
         if (inviteMember != null && !inviteMember.equals("")) {
@@ -118,7 +105,7 @@ public class JoinController {
                 MemberLoginDto inviteUser = memberMapper.nickNameMember(inviteMember);
                 if (inviteUser != null) {
                     member.setMem_invite(inviteUser.getMem_nick());
-
+                    System.out.println("초대한 유저 : " + inviteUser.getMem_nick());
                     // 초대 회원 포인트 적립 처리
                     MemberPointsDto invitePoints = new MemberPointsDto();
                     invitePoints.setMem_code(inviteUser.getMem_code());
@@ -136,12 +123,25 @@ public class JoinController {
                     newMemberPoints.setPoint_info("적립");
                     newMemberPoints.setPoint_type('+');
                     newMemberPoints.setPoints(5000);
+                    
+                    memberService.joinMember(member);
                     memberMapper.insertPoints(newMemberPoints);
                     memberMapper.updatePointsForInvite(newMemberPoints.getMem_code(), newMemberPoints.getPoints());
                 }
             } else {
                 member.setMem_invite("");
             }
+
+            // 주소 테이블 인서트
+            String uniqueID2 = UUID.randomUUID().toString();
+            address.setAddr_code(uniqueID2);
+            // 멤버 코드는 동일하게 맞추기 위해 기존 uuid 사용
+            address.setMem_code(uniqueID);   
+            address.setAddr_postal(request.getParameter("postcode"));
+            address.setAddr_line1(request.getParameter("address"));
+            address.setAddr_line2(request.getParameter("detailAddress"));
+            address.setAddr_default('Y');   
+            memberService.joinAddress(address);          
         }
         
         // 회원가입 후 로그인 처리 (세션에 로그인 정보 저장)
