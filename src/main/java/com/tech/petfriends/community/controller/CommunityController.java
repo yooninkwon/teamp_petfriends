@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -188,17 +189,27 @@ public class CommunityController {
 
 	@PostMapping("/replyDelete")
 	public String replyDelete(HttpServletRequest request, Model model) {
-		System.out.println("replyDelete");
+	
 		model.addAttribute("request", request);
-
+		
+		String mem_nick = request.getParameter("mem_nick");	
+		String mem_code = request.getParameter("mem_code");	
 		String board_no = request.getParameter("board_no");
 		String comment_no = request.getParameter("comment_no");
-//	String user_id = request.getParameter("user_id");
-//	String comment_content = request.getParameter("comment_content");
 		String parent_comment_no = request.getParameter("parent_comment_no");
 		String comment_level = request.getParameter("comment_level");
 		String comment_order_no = request.getParameter("comment_order_no");
-
+		
+		System.out.println("mem_nick:"+ mem_nick);
+		
+		//만약 로그인 닉네임이 구트아카데미 라면 관리자 삭제로 진행 그게 아니라면 댓글삭제
+		if(mem_nick.equals("구트아카데미")) {
+			iDao.managerReplyUpdate(mem_nick, mem_code, comment_no);
+			model.addAttribute("msg", "관리자 댓글 삭제 성공");
+			model.addAttribute("url", "/community/contentView?board_no=" + board_no);
+			return"/community/alert";
+			
+		} else {
 		// 댓글 삭제 시도
 		int rn = iDao.replyDelete(comment_no, parent_comment_no, comment_level, comment_order_no);
 		if (rn == 0) {
@@ -215,6 +226,7 @@ public class CommunityController {
 			model.addAttribute("msg", "댓글이 삭제됐습니다.");
 			model.addAttribute("url", "/community/contentView?board_no=" + board_no);
 			return "/community/alert";
+		}
 		}
 	}
 

@@ -53,6 +53,7 @@
 			</c:if>
 		</div>
 	</div>
+	
 	</article>
 	</c:forEach>
 	

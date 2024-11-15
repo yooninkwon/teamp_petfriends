@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+
 html, body {
 	height: 100%; /* 전체 높이를 100%로 설정 */
 	margin: 0; /* 기본 여백 제거 */
@@ -12,6 +13,7 @@ main {
 	gap: 10px; /* 열 사이의 간격 */
 	padding: 20px;
 }
+
 
 body {
 	margin: 0; /* 기본 마진 제거 */
@@ -34,6 +36,7 @@ a:hover {
 .container {
 	width: 80%; /* 전체 화면의 50%를 사용 */
 	margin: 0 auto; /* 가운데 정렬 */
+	
 }
 
 /* 핫이슈 */
@@ -409,26 +412,16 @@ a:hover {
 .sidebar {
 	position: absolute; /* 절대 위치 설정 */
 	top: 182px; /* 헤더의 높이에 따라 조정 */
-	right: 180px; /* 오른쪽 정렬 */
+	right: 240px; /* 오른쪽 정렬 */
 	width: 280px; /* 화면 비율에 따라 사이드바 너비를 설정 */
 	background-color: #fff; /* 배경색 */
 	padding: 20px; /* 내부 여백 */
 	border-radius: 5px; /* 모서리 둥글게 */
 	border: 2px solid #ffe5ee;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+	
 }
 
-.sidebar-header {
-	display: flex;
-	justify-content: flex-start; /* 제목을 왼쪽 정렬 */
-	align-items: center; /* 중앙 정렬 */
-	width: 100%; /* 사이드바의 너비를 100%로 설정 */
-}
-
-.sidebar-header h2 {
-	font-size: 20px; /* 제목 크기 */
-	padding: 10px; /* 기본 여백 제거 */
-}
 
 .login-button {
 	background-color: #ff4081 !important; /* 버튼 배경색 */
