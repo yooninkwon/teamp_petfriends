@@ -33,6 +33,9 @@ public class LoginController {
    
     LoginInterModelRequest loginInterMR;
     
+    LoginInterModelRequestRedirect loginInterMRR;
+
+    
     String previousUrl = "";
     
     @GetMapping("/loginPage")
@@ -50,8 +53,8 @@ public class LoginController {
     @PostMapping("/loginService")
     public String loginService(HttpServletRequest request, HttpServletResponse response,
                            Model model, HttpSession session, RedirectAttributes rs) {
-    	loginInterMR = new MemLoginService(memberMapper, response, rs, session);
-    	loginInterMR.execute(model, request);
+    	loginInterMRR = new MemLoginService(memberMapper, response, session);
+    	loginInterMRR.execute(model, request, rs);
     	return (String) model.getAttribute("modelAdd");
     }
 

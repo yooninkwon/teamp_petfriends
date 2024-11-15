@@ -13,29 +13,28 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tech.petfriends.login.controller.LoginInterModelRequest;
+import com.tech.petfriends.login.controller.LoginInterModelRequestRedirect;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.login.util.PasswordEncryptionService;
 import com.tech.petfriends.mypage.dto.GradeDto;
 
 @Service
-public class MemLoginService implements LoginInterModelRequest {
+public class MemLoginService implements LoginInterModelRequestRedirect {
 
 	private MemberMapper memberMapper; 
 	private HttpServletResponse response; 
-	private RedirectAttributes rs;
 	private HttpSession session;
 	
-	public MemLoginService(MemberMapper memberMapper, HttpServletResponse response, RedirectAttributes rs, HttpSession session) {
+	public MemLoginService(MemberMapper memberMapper, HttpServletResponse response, HttpSession session) {
 		this.memberMapper = memberMapper;
 		this.response = response;
-		this.rs = rs;
 		this.session = session;
 	}
 	
 	
 	@Override
-	public void execute(Model model, HttpServletRequest request) {
+	public void execute(Model model, HttpServletRequest request, RedirectAttributes rs) {
 		String modelAdd = "";
 		
 		String email = request.getParameter("email");
