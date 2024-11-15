@@ -41,14 +41,14 @@
 	        
 	        <!-- 어드민 페이지 아이콘 -->
 	        <c:if test="${sessionScope.loginUser.mem_name eq '관리자'}">
-	    		<a href="<c:url value='/admin/home' />">
+	    		<a href="<c:url value='/admin/sales' />">
 	        	<img src="<c:url value='/static/Images/MainImg/admin_icon.png'/>" id="admin_icon" alt="관리자 아이콘">
 	   			</a>
 			</c:if>
 			
 			<!-- 관리자아이콘 보이기 추가 : 민석 -->
 	        <c:if test="${sessionScope.loginUser.mem_nick eq 'dpoowa'}">
-	    		<a href="<c:url value='/admin/home' />">
+	    		<a href="<c:url value='/admin/sales' />">
 	        	<img src="<c:url value='/static/Images/MainImg/admin_icon.png'/>" id="admin_icon" alt="관리자 아이콘">
 	   			</a>
 			</c:if>

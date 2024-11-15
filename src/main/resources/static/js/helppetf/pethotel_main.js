@@ -126,19 +126,7 @@ $(document).ready(function() {
 	function goToMain(event) {
 		event.preventDefault();
 		pageScroll(0);
-		
-		// 메인페이지 제외 모두 보이지 않게 설정
-		$('#information').removeClass().addClass('on');
-		$('#introduction').removeClass().addClass('off');
-		$('#pethotel_reserve').removeClass().addClass('off');
-		$('#pethotel_reserve_done').removeClass().addClass('off');
-		$('#popup-form').removeClass().addClass('off');
-		
-		// form의 내용들을 제거
-		$('.registered-pet-circle').remove();
-		$('#start-date').val('');
-		$('#end-date').val('');
-		$('#pet-form')[0].reset();
+		window.location.href = window.location.href;
 	}
 
 	// #right, right-2는 "예약하러 가기"버튼이다. 버튼이 눌린 경우
@@ -282,7 +270,6 @@ $(document).ready(function() {
 			formDataObj[petHiddenVal].hphp_pet_weight = petWeight;
 			formDataObj[petHiddenVal].hphp_pet_neut = petNeutered;
 			formDataObj[petHiddenVal].hphp_comment = petMessage;
-
 			// 등록한 순서 +1 해서 폼 넘버의 id값 변경
 			$('#pet-form-no').val(Number(petHiddenVal) + 1)
 
@@ -292,7 +279,7 @@ $(document).ready(function() {
 			newPet.html(`
 	            <span class="pet-name">${petName}</span>
 	            <button class="delete-button" style="padding: 1px 1px 1px 1px;">X</button>
-				<input type="hidden" class="objIndexNo" value="${petHiddenVal}" />
+				<input type="hidden" class="petHiddenVal" value="${petHiddenVal}" />
 			`
 			);
 
@@ -496,6 +483,12 @@ $(document).ready(function() {
 
 				// input에 값 배치 후 모달 닫기
 				closeModal();
+				pageScroll(550);
+				
+				// 0.2초 뒤 전달사항 textarea 포커스
+				setTimeout(function(){
+					$('#pet-message').focus();					
+				}, 200);
 			});
 		}
 	});
@@ -508,10 +501,21 @@ $(document).ready(function() {
 	// 등록한 펫 div의 X(삭제) 버튼 클릭시 이벤트 추가
 	// 삭제버튼이 클릭되면 해당하는 newPet의 div 가져옴
 	$(document).on('click', '.delete-button', function() {
+		// 클릭된 X 버튼 div의 부모 div 삭제
 		let parentDiv = $(this).parent();
 		parentDiv.remove();
-		//		const petHiddenVal  = parentDiv.find('.objIndexNo').val();
-		//		console.log(petHiddenVal);
+		
+		// 부모 div에서 input hidden으로 저장된 petHiddenVal 저장
+		let petHiddenVal  = parentDiv.find('.petHiddenVal').val();
+		
+		// 반복문 : 오브젝트의 각 인덱스마다 펫 번호와 동일한지 검사하여 일치할 경우 삭제
+		// 오브젝트의 hphp_reserve_pet_no은 각각의 petHiddenVal을 저장한 것이다.
+		for (let i = 0; i < formDataObj.length; i++){
+			if(formDataObj[i].hphp_reserve_pet_no === petHiddenVal) {
+				formDataObj.splice(i, 1);				
+			}
+		}
+		
 	});
 
 	function pageScroll(y) {

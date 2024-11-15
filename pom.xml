@@ -136,6 +136,25 @@
 			<artifactId>sdk</artifactId>
 			<version>4.2.7</version>
 		</dependency>
+		 		
+		 			 		
+	  <!-- Spring Boot Web Starter: 웹소켓 기능을 포함하기 위해 Spring Web 의존성이 필요합니다 -->
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-web</artifactId>
+	    </dependency>
+	
+	    <!-- Spring WebSocket: 웹소켓을 통한 실시간 통신을 위한 의존성 -->
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-websocket</artifactId>
+	    </dependency>
+		 		
+		 <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>		 		
+		 		
 		 			 
 	</dependencies>
 

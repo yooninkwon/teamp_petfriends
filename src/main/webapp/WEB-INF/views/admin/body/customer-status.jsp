@@ -53,16 +53,18 @@
 			<h1>최근 탈퇴 회원</h1>
 			<table class="recent">
 				<tr>
-					<th style="width: 25%;">탈퇴날짜</th>
-					<th style="width: 35%;">회원코드</th>
-					<th style="width: 15%;">이름</th>
-					<th style="width: 25%;">이메일</th>
+					<th style="width: 20%;">탈퇴날짜</th>
+					<th style="width: 25%;">회원코드</th>
+					<th style="width: 10%;">이름</th>
+					<th style="width: 25%;">탈퇴사유</th>
+					<th style="width: 20%;">이메일</th>
 				</tr>
 				<c:forEach var="member" items="${withdrawMemberList }">
 					<tr>
 						<td>${member.mem_logdate }</td>
 						<td>${member.mem_code }</td>
 						<td>${member.mem_name }</td>
+						<td>${member.mem_wd_memo }</td>
 						<td>${member.mem_email }</td>
 					</tr>
 				</c:forEach>

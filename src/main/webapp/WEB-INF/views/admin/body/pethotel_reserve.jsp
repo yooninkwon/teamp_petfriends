@@ -113,7 +113,7 @@
 		 <span class="close-btn"><i class="fa-solid fa-xmark"></i></span>
 		 	<div class="input-group">
 	            <label for="refusal_reason">거절 사유</label>
-	            <textarea name="refusal_reason" id="refusal_reason" cols="30" rows="10"></textarea>
+	            <textarea name="refusal_reason" id="refusal_reason" cols="30" rows="10" placeholder="거절 사유를 적어주세요."></textarea>
 	            <button id="reserveSubmit_refusal" class="btn-style">예약 상태 변경</button>
 	        </div>
 		 </div>

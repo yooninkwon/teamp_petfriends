@@ -48,6 +48,7 @@ import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.dto.MemberPointsDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.mypage.dao.MypageDao;
 import com.tech.petfriends.mypage.dto.MyPetDto;
@@ -137,14 +138,14 @@ public class AdminRestController {
 		adminExecuteMR.execute(model, request);
 	}
 
-	@GetMapping("/pethotel_intro_data")
+	@GetMapping("/pethotel_admin_intro_data")
 	public PethotelIntroDto pethotelIntroData(Model model) {
 		adminExecuteM = new AdminPethotelIntroData(adminDao);
 		adminExecuteM.execute(model);
 		return (PethotelIntroDto) model.getAttribute("dto");
 	}
 
-	@GetMapping("/pethotel_info_data")
+	@GetMapping("/pethotel_admin_info_data")
 	public PethotelInfoDto pethotelInfoData(Model model) {
 		adminExecuteM = new AdminPethotelInfoData(adminDao);
 		adminExecuteM.execute(model);
@@ -341,6 +342,12 @@ public class AdminRestController {
 	public ArrayList<MemberLoginDto> customerList() {
 		ArrayList<MemberLoginDto> memberlist = memberMapper.memberList();	
 		return memberlist;
+	}
+	
+	@GetMapping("/points_list")
+	public ArrayList<MemberPointsDto> pointsList() {
+		ArrayList<MemberPointsDto> memberPoint = memberMapper.pointsList();
+		return memberPoint;
 	}
 	
 	@GetMapping("/pet_list")

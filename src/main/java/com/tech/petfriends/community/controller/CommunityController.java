@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tech.petfriends.community.dto.CCategoryDto;
+import com.tech.petfriends.community.dto.CChatDto;
 import com.tech.petfriends.community.dto.CCommunityFriendDto;
 import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.dto.CReportDto;
@@ -43,6 +44,7 @@ import com.tech.petfriends.community.service.CServiceInterface;
 import com.tech.petfriends.community.service.CUpdateLikeService;
 import com.tech.petfriends.community.service.CWriteService;
 import com.tech.petfriends.community.service.CWriteViewService;
+import com.tech.petfriends.login.dto.MemberLoginDto;
 
 @Controller
 @RequestMapping("/community")
@@ -51,7 +53,8 @@ public class CommunityController {
 	@Autowired
 	private IDao iDao;
 
-	@Autowired
+	
+	 @Autowired
 	private CServiceInterface serviceInterface;
 
 	// 커뮤니티 페이지로 이동
@@ -301,11 +304,14 @@ public class CommunityController {
 		System.out.println("communityReport");
 		
 		model.addAttribute("board_no", reportDto.getBoard_no());
+		model.addAttribute("mem_code", reportDto.getMem_code());
 	    model.addAttribute("reporter_id", reportDto.getReporter_id());
 	    model.addAttribute("reason", reportDto.getReason());
 	    model.addAttribute("comment_no", reportDto.getComment_no());
 	    model.addAttribute("report_type", reportDto.getReport_type());
 	   
+	
+	    System.out.println("reportDto.getMem_code() " + reportDto.getMem_code());
 	    System.out.println("reportDto.getBoard_no() " + reportDto.getBoard_no());
 	    System.out.println("reportDto.reporter_id() " + reportDto.getReporter_id());
 	    System.out.println("reportDto.reason() " + reportDto.getReason());
@@ -335,8 +341,58 @@ public class CommunityController {
 	    return "redirect:/community/myfeed/" + mem_code;
 	}
 	
+	@GetMapping("/myActivity")
+	@ResponseBody
+	public ArrayList<CDto> activityList (Model model, HttpSession session) {
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser"); 
+		String user_id = loginUser.getMem_nick();
+		System.out.println("user_id: "+ user_id);
+           
+	    ArrayList<CDto> activityList = iDao.myActivityList(user_id);
+	    System.out.println("Returned activityList: " + activityList);
+	
+	    return activityList;
+     
+	}
+	
+	@GetMapping("/userActivity")
+	@ResponseBody
+	public ArrayList<CDto> userActivityList (Model model, HttpSession session) {
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser"); 
+		String user_id = loginUser.getMem_nick();
+		System.out.println("user_id: "+ user_id);
+           
+	    ArrayList<CDto> activityList = iDao.userActivityList(user_id);
+	    System.out.println("Returned activityList: " + activityList);
+	
+	    return activityList;
+	}
 	
 	
+    @GetMapping("/getChatHistory")
+    @ResponseBody
+    public List<CChatDto> getChatHistory(@RequestParam("roomId") String roomId) {
+      System.out.println("roomId:"+roomId);
+    	// 서비스에서 roomId로 메시지 리스트 조회
+    	List<CChatDto> getChatHistory = iDao.getChatHistory(roomId);
+    	
+    	
+    	return getChatHistory;
+    }
 	
-	
+    @GetMapping("/getChatRooms")
+    @ResponseBody
+    public List<CChatDto> getChatRooms(HttpSession session) {
+    	String sender = ((MemberLoginDto) session.getAttribute("loginUser")).getMem_nick();
+    	System.out.println("sender:"+ sender);
+    
+              
+        List<CChatDto> getChatRooms = iDao.getChatRooms(sender);
+        return getChatRooms;
+    }
+    
+    
+    
+    
+
 }

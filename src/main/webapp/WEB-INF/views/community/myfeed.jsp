@@ -11,138 +11,179 @@
 <link rel="stylesheet" href="/static/css/community/community_myfeed.css">
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+<script src="/static/js/community/community_myfeed.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
+
 <script>
-	function checkAddFriend(loginUser) {
-	    var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}"; // 로그인 여부 확인
 
-	    if (isLoggedIn === "false") { // 로그인되지 않은 경우
-	        alert('로그인이 필요합니다');
-	        return false;  // 링크 이동 막기
-	    } else {
-	        alert('친구가 추가됐습니다');
-	        return true;  // 친구 추가 실행
-	    }
-	}
-	
-	function checkDelFriend(loginUser) {
-	    var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}"; // 로그인 여부 확인
+	var isLoggedIn = "${sessionScope.loginUser != null ? 'true' : 'false'}";
+	var sender = "${sessionScope.loginUser.mem_nick}";
+	var receiver = "${myFeedName.mem_nick}";
+	var currentRoomId = null;
+	var socket;
+	// 페이지 로드 시 채팅방 목록을 불러오기
+	   document.addEventListener('DOMContentLoaded', function() {
+	       fetchChatRooms(sender);  // 로그인 여부와 상관없이 채팅방 목록을 불러옴
+	       document.getElementById("chatContainer").style.display = "none"; // 채팅 창 숨기기
+	   });
 
-	    if (isLoggedIn === "false") { // 로그인되지 않은 경우
-	        alert('로그인이 필요합니다');
-	        return false;  // 링크 이동 막기
-	    } else {
-	        alert('친구가 삭제됐습니다');
-	        return true;  // 친구 추가 실행
-	    }
-	}
-	function fetchNeighborList(mem_code, mem_nick) {
-	    $.ajax({
-	        url: '/community/neighborList/' + mem_code,
-	        method: 'GET',
-	        data: { mem_nick: mem_nick }, // mem_nick 전달
-	        success: function(data) {
-	            console.log("data:", data);
-	            let html = '<h4>' + mem_nick + '의 이웃 목록</h4><ul>';
-
-	            if (data.length === 0) {
-	                html += '<li>이웃이 없습니다.</li>'; // 이웃 목록이 없을 경우 메시지 출력
-	            } else {
-	                // 이웃 목록 데이터 순회
-	                data.forEach(neighbor => {
-	                    // 이웃의 이름과 프로필 이미지 출력
-	                    html += `
-	                        <div class="neighbor-item">
-	                            <div class="neighbor-pet-img-container">
-	                                <a href="/community/myfeed/\${neighbor.friend_mem_code}" target="_blank">
-	                                    <img src="/static/Images/pet/\${neighbor.pet_img || 'noPetImg.jpg'}" alt="${neighbor.friend_mem_nick}" class="neighbor-pet-img">
-	                                </a>
-	                            </div>
-	                            <div class="neighbor-name">
-	                                <a href="/community/myfeed/\${neighbor.friend_mem_code}" target="_blank">
-	                                    \${neighbor.friend_mem_nick}
-	                                </a>
-	                            </div>
-	                        </div>
-	                    `;
-	                });
-	            }
-
-	            html += '</ul>';
-	            $('#neighborListContainer').html(html); // 모달에 이웃 목록 삽입
-
-	            // 이웃 모달 열기
-	            openNeighborListModal();
-	        },
-	        error: function(error) {
-	            console.log('이웃 목록을 가져오는 중 오류 발생:', error);
-	        }
-	    });
-	}
-
-	function fetchMyNeighborList(mem_code) {
-	    $.ajax({
-	        url: '/community/myNeighborList/' + mem_code,
-	        method: 'GET',
+	   // 메시지 버튼 클릭 시 채팅창 열기
+	   function openMessageBox() {
 	      
-	        success: function(data) {
-	            console.log("data:", data);
-	            let html = '<h4>내 이웃 목록</h4><ul>';
+	        if (isLoggedIn === "false") { // 'true' 또는 'false' 문자열로 비교
+	            alert("로그인이 필요합니다.");
+	            return;
+		  }
+		   
+		   
+		   document.getElementById("chatContainer").style.display = "flex"; // 채팅창 표시
+	       var roomId = generateRoomId(sender, receiver);
+	       openChat(roomId, receiver); // 새로운 채팅방 열기
+	   }
 
-	            if (data.length === 0) {
-	                html += '<li>이웃이 없습니다.</li>'; // 이웃 목록이 없을 경우 메시지 출력
-	            } else {
-	                // 이웃 목록 데이터 순회
-	                data.forEach(Myneighbor => {
-	                    // 이웃의 이름과 프로필 이미지 출력
-	                    html += `
-	                        <div class="neighbor-item">
-	                            <div class="neighbor-pet-img-container">
-	                                <a href="/community/myfeed/\${Myneighbor.friend_mem_code}" target="_blank">
-	                                    <img src="/static/Images/pet/\${Myneighbor.pet_img || 'noPetImg.jpg'}" alt="${Myneighbor.friend_mem_nick}" class="neighbor-pet-img">
-	                                </a>
-	                            </div>
-	                            <div class="neighbor-name">
-	                                <a href="/community/myfeed/\${Myneighbor.friend_mem_code}" target="_blank">
-	                                    \${Myneighbor.friend_mem_nick}
-	                                </a>
-	                            </div>
-	                        </div>
-	                    `;
-	                });
-	            }
+	   // 채팅방 ID를 생성하는 함수
+	   function generateRoomId(sender, receiver) {
+	       return sender < receiver ? sender + '_' + receiver : receiver + '_' + sender;
+	   }
 
-	            html += '</ul>';
-	            $('#MyneighborListContainer').html(html); // 모달에 이웃 목록 삽입
+	// 채팅 창을 여는 함수
+	   function openChat(roomId, receiver) {
+	       document.getElementById("chatBox").style.display = "block"; // 채팅창 본문 표시
+	       if (socket) {
+	           socket.close(); // 기존 소켓 연결을 닫음
+	       }
+	       currentRoomId = roomId;  // 현재 채팅방 ID 저장
+	       socket = new WebSocket("ws://localhost:9002/ws/chat/" + roomId); // WebSocket 연결
 
-	            // 내 이웃 모달 열기
-	            openMyNeighborListModal();
-	        },
-	        error: function(error) {
-	            console.log('이웃 목록을 가져오는 중 오류 발생:', error);
+	    // 메시지를 WebSocket으로 받은 후
+	       socket.onmessage = function(event) {
+	           var chatMessages = document.getElementById("chatMessages");
+	           var messageData = JSON.parse(event.data);
+	           var newMessage = document.createElement("div");
+
+	           // 메시지가 보낸 사람인지 받는 사람인지 확인하여 클래스 추가
+	           if (messageData.sender === sender) {
+	               newMessage.classList.add('message', 'sender'); // 내 메시지
+	           } else {
+	               newMessage.classList.add('message', 'receiver'); // 상대방 메시지
+	           }
+
+	           newMessage.innerText = messageData.sender + " : " + messageData.message_content;
+	           chatMessages.appendChild(newMessage);
+
+	           // 새로운 메시지가 추가된 후 스크롤을 맨 아래로
+	           chatMessages.scrollTop = chatMessages.scrollHeight;
+	       };
+
+	       loadChatHistory(roomId);  // 채팅 히스토리 불러오기
+
+	       // 채팅방 목록을 다시 로드하여 활성화된 채팅방을 표시
+	       fetchChatRooms(sender);
+	   }
+
+	   // 메시지를 전송하는 함수
+	   function sendMessage(event) {
+	       if (event.key === "Enter" && socket && currentRoomId) {
+	           var message = document.getElementById("chatInput").value;
+	           socket.send(JSON.stringify({
+	               sender: sender,
+	               receiver: receiver,
+	               message_content: message,
+	               roomId: currentRoomId
+	           }));
+	           document.getElementById("chatInput").value = "";
+	       }
+	   }
+
+	    // 전송 버튼 클릭 시 메시지 전송
+	    function sendMessageButton() {
+	        var message = document.getElementById("chatInput").value;
+	        if (socket && currentRoomId && message) {
+	            socket.send(JSON.stringify({
+	                sender: sender,
+	                receiver: receiver,
+	                message_content: message,
+	                roomId: currentRoomId
+	            }));
+	            document.getElementById("chatInput").value = ""; // 입력창 초기화
 	        }
-	    });
-	}
+	    }
+	   
+	   
+	   // 채팅 창을 닫는 함수
+	   function closeChat() {
+	       document.getElementById("chatContainer").style.display = "none";  // 채팅 창 숨기기
+	       document.getElementById("chatBox").style.display = "none";  // 채팅창 본문 숨기기
+	       if (socket) {
+	           socket.close();
+	       }
+	   }
 
-	function openNeighborListModal() {
-	    document.getElementById("neighborListModal").style.display = "block"; // 이웃 목록 모달 열기
-	}
+	   // 채팅 히스토리를 불러오는 함수
+	   function loadChatHistory(roomId) {
+    $.ajax({
+        url: '/community/getChatHistory',
+        type: 'GET',
+        data: { roomId: roomId },
+        success: function(messages) {
+            var chatMessages = document.getElementById("chatMessages");
+            chatMessages.innerHTML = ""; // 기존 메시지 초기화
 
-	function closeNeighborListModal() {
-	    document.getElementById("neighborListModal").style.display = "none"; // 이웃 목록 모달 닫기
-	}
+            messages.forEach(function(message) {
+                var newMessage = document.createElement("div");
 
-	function openMyNeighborListModal() {
-	    document.getElementById("myNeighborListModal").style.display = "block"; // 내 이웃 목록 모달 열기
-	}
+                // 메시지가 보낸 사람인지 받는 사람인지 확인하여 클래스 추가
+                if (message.sender === sender) {
+                    newMessage.classList.add('message', 'sender'); // 내 메시지
+                } else {
+                    newMessage.classList.add('message', 'receiver'); // 상대방 메시지
+                }
 
-	function closeMyNeighborListModal() {
-	    document.getElementById("myNeighborListModal").style.display = "none"; // 내 이웃 목록 모달 닫기
-	}
-	
-	
-	
+                newMessage.innerText = message.sender + " : " + message.message_content;
+                chatMessages.appendChild(newMessage);
+            });
+        
+            // 히스토리가 로드된 후 스크롤을 맨 아래로
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    });
+}
+
+	   // 채팅방 목록을 불러오는 함수
+	function fetchChatRooms(sender) {
+    fetch(`/community/getChatRooms?sender=${sender}&receiver=\${receiver}`)
+        .then(response => response.json())
+        .then(data => {
+            var chatRoomsList = document.getElementById("chatRoomsList");
+            chatRoomsList.innerHTML = '';  // 기존 채팅방 목록 초기화
+
+            console.log("sender", sender);
+            console.log("receiver", receiver);
+            
+            data.forEach(chatRoom => {
+                var roomLink = document.createElement("a");
+                roomLink.innerText = chatRoom.room_id;
+
+                // 현재 채팅방이 열려있는 채팅방과 일치하면 active 클래스를 추가
+                if (chatRoom.room_id === currentRoomId) {
+                    roomLink.classList.add('active');  // active 클래스를 추가하여 표시
+                }
+
+                roomLink.onclick = function() {
+                    openChat(chatRoom.room_id, chatRoom.receiver);  // 클릭 시 채팅방 열기
+                    document.getElementById("chatContainer").style.display = "flex"; // 채팅창 표시
+                };
+
+                var roomItem = document.createElement("div");
+                roomItem.appendChild(roomLink);
+                chatRoomsList.appendChild(roomItem);
+            });
+        })
+        .catch(error => console.error('Error fetching chat rooms:', error));
+}
+
 </script>
 
 <body>
@@ -212,17 +253,68 @@
 				<!-- 친구가 아닐 때 -->
 			</c:if>
 
-			<a href="#">메세지</a>
+			<a href="javascript:void(0);"
+				onclick="openMessageBox(); return false;">메시지</a>
 
 			<!-- 이웃 목록 버튼 -->
-			<a href="#"
+			<a href="javascript:void(0);"
 				onclick="fetchNeighborList('${mem_code}', '${myFeedName.mem_nick}'); return false;">이웃
 				목록</a>
-
-
-
 		</div>
 	</div>
+
+
+
+
+
+	<!-- 채팅창 전체 컨테이너 (기본적으로 숨겨짐) -->
+	<div id="chatContainer" class="chat-container"
+		style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; width: 60%; height: 70%; border: 1px solid #ccc; border-radius: 10px; background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); z-index: 9999;">
+
+		<!-- 왼쪽: 채팅방 목록 -->
+		<div id="chatRooms" class="chat-rooms"
+			style="flex: 1; padding: 10px; border-right: 1px solid #ccc; overflow-y: auto; height: 100%; box-sizing: border-box;">
+			<h3 class="chat-title" style="text-align: center;">채팅방 목록</h3>
+
+			<!-- 스크롤 추가된 채팅방 목록 표시 영역 -->
+			<div id="chatRoomsList"
+				style="max-height: calc(100% - 40px); overflow-y: auto;"></div>
+		</div>
+
+		<!-- 오른쪽: 채팅창 -->
+		<div id="chatBox" class="chat-box"
+			style="flex: 2; display: flex; flex-direction: column; padding: 10px; height: 100%; box-sizing: border-box; position: relative;">
+			<h3 class="chat-title" style="text-align: center;">채팅창</h3>
+
+			<!-- 채팅 메시지 영역에 스크롤 추가 -->
+			<div id="chatMessages" class="chat-messages"
+				style="flex: 1; overflow-y: auto; margin-bottom: 0; max-height: calc(100% - 90px);"></div>
+
+			<!-- 채팅 입력창과 전송 버튼을 동일 선상에 배치 -->
+			<div
+				style="display: flex; align-items: center; position: absolute; bottom: 5px; width: calc(100% - 20px); left: 10px;">
+				<!-- 메시지 입력창 -->
+				<input type="text" id="chatInput" class="chat-input"
+					placeholder="메시지 입력..." onkeypress="sendMessage(event)"
+					style="padding: 10px; width: 85%; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+
+				<!-- 전송 버튼 -->
+				<button onclick="sendMessageButton()" class="send-btn"
+					style="padding: 10px 15px; margin-left: 10px; border: none; background-color: #ff4081; color: white; font-size: 14px; border-radius: 5px; cursor: pointer;">
+					전송</button>
+			</div>
+
+			<!-- 오른쪽 상단에 닫기 버튼 (X 표시) -->
+			<button onclick="closeChat()" class="chat-close-btn"
+				style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 18px; background-color: transparent; border: none; color: #f44336; cursor: pointer; font-weight: bold;">&times;</button>
+
+		</div>
+
+	</div>
+
+
+
+
 
 
 	<!-- 컨테이너 시작 -->
@@ -260,8 +352,8 @@
 		<!-- 사이드바 -->
 		<div class="sidebar">
 			<div class="ad-banner">
-				<a href=""> <img src="/static/Images/communityorign_img/ad1.jpg"
-					alt="광고 배너" />
+				<a href="http://localhost:9002/notice/eventView?id=49"> <img
+					src="/static/Images/thumbnail/페스룸포토리뷰썸네일.gif" alt="광고 배너" />
 				</a>
 			</div>
 
@@ -299,8 +391,10 @@
 						href="/community/myfeed/${sessionScope.loginUser.mem_code}">내
 							피드</a></li>
 					<li><a href="/community/writeView">글쓰기</a></li>
-					<li><a href="#">내 소식</a></li>
-					<li><a href="#">내 활동</a></li>
+					<li><a href="javascript:void(0);"
+						onclick="fetchUserActivity()">내 소식</a></li>
+					<li><a href="javascript:void(0);" onclick="fetchMyActivity()">내
+							활동</a></li>
 					<a href="#"
 						onclick="fetchMyNeighborList('${mem_code}'); return false;">내
 						이웃 목록</a>
@@ -311,18 +405,13 @@
 			</ul>
 			<div class="sidebar-notice">
 				<h3>소식상자</h3>
-				<p>새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다 새로운 소식이 없습니다새로운 소식이
-					없습니다새로운 소식이 없습니다. 새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다 새로운 소식이
-					없습니다새로운 소식이 없습니다새로운 소식이 없습니다 새로운 소식이 없습니다새로운 소식이 없습니다새로운 소식이 없습니다</p>
+				<p class="notice-text">내 활동을 눌러보세요!</p>
 			</div>
-			<div class="sidebar-from">
-				<h4>From. 블로그씨</h4>
-				<p>블로그씨는 최근 다녀온 몽골여행 기록으로 브이로그를 만들었어요.</p>
-				<p>나의 특별한 여행지에서의 영상도 보여드릴게요!</p>
-			</div>
+
+
 			<div class="ad-banner">
-				<a href=""> <img src="/static/Images/communityorign_img/ad1.jpg"
-					alt="광고 배너" />
+				<a href="http://localhost:9002/notice/eventView?id=50"> <img
+					src="/static/Images/thumbnail/페스룸카카오친추썸네일.gif" alt="광고 배너" />
 				</a>
 			</div>
 		</div>

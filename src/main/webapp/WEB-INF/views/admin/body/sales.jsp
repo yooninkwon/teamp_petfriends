@@ -69,19 +69,18 @@
 		</div>
 		<div class="radioGroup" id="filterDay">
 			<div class="filterTitle" >기간설정</div>
-			<label class="radioBtn"><input type="radio" name="type-day" value="7일" >7일</label>
-	        <label class="radioBtn"><input type="radio" name="type-day" value="1개월">1개월</label>
-	        <label class="radioBtn"><input type="radio" name="type-day" value="3개월">3개월</label>
-	        <label class="radioBtn"><input type="radio" name="type-day" value="6개월">6개월</label>
+			<label class="radioBtn"><input type="radio" name="type-day" value="7" >7일</label>
+	        <label class="radioBtn"><input type="radio" name="type-day" value="30">1개월</label>
+	        <label class="radioBtn"><input type="radio" name="type-day" value="90">3개월</label>
 	        <label class="radioBtn"><input type="radio" name="type-day" value="직접선택일">직접선택</label>
 	        <label class="radioBtn"><input type="date" id="start-day" disabled="disabled">부터</label>
             <label class="radioBtn"><input type="date" id="end-day" disabled="disabled">까지</label>
 		</div>
 		<div class="radioGroup" id="filterMonth">
 			<div class="filterTitle" >기간설정</div>
-			<label class="radioBtn"><input type="radio" name="type-day" value="1개월" >1개월</label>
-	        <label class="radioBtn"><input type="radio" name="type-day" value="3개월">3개월</label>
-	        <label class="radioBtn"><input type="radio" name="type-day" value="6개월">6개월</label>
+			<label class="radioBtn"><input type="radio" name="type-day" value="1" >1개월</label>
+	        <label class="radioBtn"><input type="radio" name="type-day" value="3">3개월</label>
+	        <label class="radioBtn"><input type="radio" name="type-day" value="6">6개월</label>
 	        <label class="radioBtn"><input type="radio" name="type-day" value="직접선택월">직접선택</label>
 	        <label class="radioBtn"><input type="month" id="start-month">부터</label>
             <label class="radioBtn"><input type="month" id="end-month">까지</label>
@@ -91,15 +90,15 @@
 	
 	<div class="salesGraphResultBox">
 		<div class="totalResultGraph">
-			<canvas id="totalChart"></canvas>
-		</div>
-		<div class="totalResultText">
+			<canvas id="totalChart" style=" "></canvas>
+	</div>
+	<div class="totalResultText">
 		<table class="product-list">
 			    <thead class="thead">
 			        <tr>
 			            <th>일자</th>
 			            <th>주문수</th>
-			            <th>상품수</th>
+			            <th>환불수</th>
 			            <th>쿠폰(차감금액)</th>
 			            <th>포인트(차감금액)</th>
 			            <th>결제합계</th>
@@ -111,9 +110,9 @@
 			        <!-- 전체 매출 데이터 출력 -->
 			    </tbody>
 			</table>
-		</div>
-	
 	</div>
+	<div class="noWay"></div>
+</div>
 
 
 

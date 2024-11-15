@@ -338,9 +338,10 @@ pop up
 }
 
 #pethotel_reserve_done .back-link-reserve {
+	background-color: #ff6b81;
     margin-left: 43%;
     margin-bottom: 3%;
-
+	color: white;	
 }
 
 #pethotel_reserve .register-button {
@@ -520,10 +521,12 @@ pop up
 	background-color: #ff6b81;
 	color: white;
 	border: none;
-	padding: 10px;
+	padding: 15px;
 	border-radius: 4px;
 	cursor: pointer;
-	margin-top: 10px;
+    margin-top: 15px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 #pethotel_reserve #select-pet-button {
@@ -696,11 +699,10 @@ pop up
 }
 
 #pethotel_reserve_done table .hphp-comment {
-    width: 535px;
+    max-width: 500px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    display: block;
 }
 
 #pethotel_reserve_done table tr:nth-child(even) {

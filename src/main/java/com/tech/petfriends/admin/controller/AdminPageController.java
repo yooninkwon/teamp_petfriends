@@ -26,6 +26,7 @@ import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.admin.dto.MemberCouponDto;
 import com.tech.petfriends.admin.dto.OrderStatusDto;
 import com.tech.petfriends.admin.dto.ProductListDto;
+import com.tech.petfriends.admin.dto.SalesDetailDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
 import com.tech.petfriends.admin.mapper.AdminSalesDao;
@@ -81,11 +82,6 @@ public class AdminPageController {
 	@GetMapping("/petteacher")
 	public String petteacherAdminPage(Model model) {
 		return "admin/petteacher";
-	}
-
-	@GetMapping("/home")
-	public String home() {
-		return "admin/home";
 	}
 
 	@GetMapping("/order")
@@ -500,16 +496,19 @@ public class AdminPageController {
 	
 	@PostMapping("/salesDetail")
 	@ResponseBody
-	public void salesDetail(@RequestBody Map<String, Object> data, Model model) {
+	public List<SalesDetailDto> salesDetail(@RequestBody Map<String, Object> data, Model model) {
 		
 		model.addAllAttributes(data);
 		adminExcuteM = new AdminSalesDetailService(adminSalesDao);
 		adminExcuteM.execute(model);
 		
+		return (List<SalesDetailDto>) model.getAttribute("list");
 	}
 
 	@GetMapping("/customer")
-	public String customer() {
+	public String customer(Model model) {
+		ArrayList<MemberLoginDto> newMemberList = memberDao.newMemberList();
+		model.addAttribute("newMemberList",newMemberList);
 		return "admin/customer";
 	}
 

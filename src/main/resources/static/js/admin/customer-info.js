@@ -7,9 +7,9 @@ $(document).ready(function() {
     let totalPages = 0;
     let customerList = [];
     let filteredList = [];
-	let selectedMembers = [];
-	
-	loadCustomerData();
+  
+	let selectedMembers = []; 
+	let memberPointsData = [];
 	
 	// URL 파라미터에서 orderCode 가져오기
 	const urlParams = new URLSearchParams(window.location.search);
@@ -24,30 +24,19 @@ $(document).ready(function() {
 	    }, 50)
 	}
 
-    // 탭 전환
-    document.querySelectorAll('.tab-btn').forEach(function(tabBtn) {
-        tabBtn.addEventListener('click', function() {
-            document.querySelectorAll('.tab-btn').forEach(function(btn) {
-                btn.classList.remove('active');
-            });
-            this.classList.add('active');
-
-            document.querySelectorAll('.tab-content').forEach(function(content) {
-                content.style.display = 'none';
-            });
-
-            const tabId = this.getAttribute('data-tab');
-            document.getElementById(tabId).style.display = 'block';
-
-            if (tabId === 'customer-list-container') {
-                loadCustomerData();
-            }
-            if (tabId === 'customer-point-container') {
-                
-            }
-        });
-    });
-
+	$.ajax({
+	    url: '/admin/points_list', // 모든 데이터를 가져오는 엔드포인트
+	    method: 'GET',
+	    dataType: 'json',
+	    success: function(response) {
+	        memberPointsData = response; // 전체 데이터를 저장
+	    },
+	    error: function() {
+	        alert('적립금 데이터를 불러오는 중 오류가 발생했습니다.');
+	    }
+	});
+	
+	
     // 회원정보 불러오기
     function loadCustomerData() {
         fetch('/admin/customer_list', {
@@ -68,11 +57,33 @@ $(document).ready(function() {
         .catch(error => console.error('Fetch error:', error));
     }
 	
+	// 정렬 기능
+   $('#sort-order').on('change', function () {
+       const selectedOrder = $(this).val();
+       sortAndDisplayList(selectedOrder);
+   });
+
+   function sortAndDisplayList(order) {
+       switch (order) {
+           case '가입날짜':
+               filteredList.sort((a, b) => new Date(b.mem_regdate) - new Date(a.mem_regdate)); // 최신순
+               break;
+           case '접속날짜':
+               filteredList.sort((a, b) => new Date(b.mem_logdate) - new Date(a.mem_logdate)); // 최신순
+               break;
+           case '구매금액':
+               filteredList.sort((a, b) => b.mem_pay_amount - a.mem_pay_amount); // 내림차순 (기본적으로 큰 금액부터)
+               break;
+       }
+       displayCustomerList(currentPage);
+   }
+
     // 검색 버튼 이벤트
     $('#searchBtn').on('click', function() {
         applyFilters();
     });
 
+	// 검색 필터
 	function applyFilters() {
 	    const searchKey = $('#sk').val(); // 선택된 검색 키
 	    const searchValue = $('#titleSearch').val().toLowerCase().trim(); // 입력된 검색 값
@@ -81,7 +92,8 @@ $(document).ready(function() {
 	    const selectedRegDate = $('#regdate').val(); // 가입 날짜
 	    const selectedLogDate = $('#logdate').val(); // 접속 날짜
 	    const selectedGender = $('input[name="gender"]:checked').val(); // 성별
-		
+	    const selectedPayAmount = $('#payAmount').val(); // 구매금액 필터
+
 	    filteredList = customerList.filter(item => {
 	        // 기본 검색 (이름, 닉네임, 회원코드, 이메일, 전화번호에 대한 검색)
 	        let matchesSearch = true;
@@ -121,7 +133,30 @@ $(document).ready(function() {
 	        // 성별 필터링
 	        let matchesGender = !selectedGender || (item.mem_gender && item.mem_gender === selectedGender);
 
-	        return matchesSearch && matchesGrade && matchesType && matchesRegDate && matchesLogDate && matchesGender;
+	        // 구매금액 필터링
+	        let matchesPayAmount = true;
+	        if (selectedPayAmount) {
+	            const payAmount = item.mem_pay_amount || 0; // 구매금액이 null인 경우 기본값 0
+	            switch (selectedPayAmount) {
+	                case "~10만원":
+	                    matchesPayAmount = payAmount <= 100000;
+	                    break;
+	                case "~100만원":
+	                    matchesPayAmount = payAmount > 100000 && payAmount <= 1000000; // 100만 원
+	                    break;
+	                case "~500만원":
+	                    matchesPayAmount = payAmount > 1000000 && payAmount <= 5000000; // 500만 원
+	                    break;
+	                case "~1000만원":
+	                    matchesPayAmount = payAmount > 5000000 && payAmount <= 10000000; // 1000만 원
+	                    break;
+	                case "1000만원~":
+	                    matchesPayAmount = payAmount > 10000000; // 1000만 원 초과
+	                    break;
+	            }
+	        }
+
+	        return matchesSearch && matchesGrade && matchesType && matchesRegDate && matchesLogDate && matchesGender && matchesPayAmount;
 	    });
 		
 	    totalItems = filteredList.length;
@@ -130,52 +165,121 @@ $(document).ready(function() {
 	    setupPagination(currentPage, currPageGroup);
 	}
 
-    // 회원정보 보여주기
-    function displayCustomerList(currentPage) {
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const sliceList = filteredList.slice(start, end); // 현재 페이지에 맞는 데이터만 표시
+	// 회원정보 보여주기
+	function displayCustomerList(currentPage) {
+	    const start = (currentPage - 1) * itemsPerPage;
+	    const end = start + itemsPerPage;
+	    const sliceList = filteredList.slice(start, end); // 현재 페이지에 맞는 데이터만 표시
 
-        let member = '<tbody>';
+	    let member = '<tbody>';
 
-        sliceList.forEach(item => {
-            // 날짜 포맷 변경
-            const memRegDate = formatDate(item.mem_regdate);
-            const memLogDate = formatDate(item.mem_logdate);
-			const memGrade = formatGrade(item.g_no);
-			
-			// 객체를 JSON 문자열로 변환하여 value에 저장
-		    const memberData = JSON.stringify(item);
-			
-            member += `
-                <tr>
-                    <td><input type="checkbox" name="checkboxCustomer" class="customer-checkbox" value='${memberData}' /></td>
-                    <td>${memRegDate}</td>
-                    <td>${memLogDate}</td>
-                    <td>${item.mem_code}</td>
-                    <td>${item.mem_name}</td>
-                    <td>${item.mem_nick}</td>
-                    <td>${memGrade}</td>
-                    <td>${item.mem_tell}</td>
-                    <td>${item.mem_email}</td>
-                    <td>${item.mem_gender}</td>
-                    <td>${item.mem_type}</td>
-                </tr>
-            `;
-        });
+	    sliceList.forEach(item => {
+	        // 날짜 포맷 변경
+	        const memRegDate = formatDate(item.mem_regdate);
+	        const memLogDate = formatDate(item.mem_logdate);
+	        const memGrade = formatGrade(item.g_no);
 
-        member += '</tbody>';
+	        // 구매 금액 포맷 변경 (3자리마다 쉼표 추가 + "원" 붙이기)
+	        const formattedPayAmount = item.mem_pay_amount.toLocaleString('ko-KR') + '원';
 
-        $('#customer-list-container .customer-list tbody').remove();
-        $('#customer-list-container .customer-list').append(member);
+	        // 객체를 JSON 문자열로 변환하여 value에 저장
+	        const memberData = JSON.stringify(item);
 
-        // 모두 선택 기능
-        $('.selectAll').on('click', function() {
-            const checkboxes = document.querySelectorAll('.customer-checkbox');
-            const isChecked = $(this).prop('checked');
-            checkboxes.forEach(checkbox => checkbox.checked = isChecked);
-        });
-    }
+	        member += `
+	            <tr>
+	                <td><input type="checkbox" name="checkboxCustomer" class="customer-checkbox" value='${memberData}' /></td>
+	                <td>${memRegDate}</td>
+	                <td>${memLogDate}</td>
+	                <td>${item.mem_code}</td>
+	                <td>${item.mem_name}</td>
+	                <td>${item.mem_nick}</td>
+	                <td>${memGrade}</td>
+	                <td>${formattedPayAmount} <button class="btn" style="float: right; " data-memcode="${item.mem_code}">적립내역</button> </td>
+	                <td>${item.mem_tell}</td>
+	                <td>${item.mem_email}</td>
+	                <td>${item.mem_gender}</td>
+	                <td>${item.mem_type}</td>
+	            </tr>
+	        `;
+	    });
+		
+		$(document).on('click', '.btn', function () {
+		    const memcode = $(this).data('memcode');
+			console.log(memcode);
+		    // 고객 정보 필터링
+		    const customerData = customerList.find(customer => customer.mem_code === memcode);
+
+		    // 적립금 정보 필터링
+		    const filteredPoints = memberPointsData.filter(point => point.mem_code === memcode);
+
+		    // 고객 정보가 있는 경우에만 업데이트
+		    if (customerData) {
+		        // 고객 정보 표시
+		        $('#customer-info #nameLabel').text(`회원 이름 : ${customerData.mem_name || 'N/A'}`);
+		        $('#customer-info #codeLabel').text(`회원 코드 : ${memcode}`);
+		        $('#customer-info #amountLabel').text(`누적 구매금액 : ${customerData.mem_pay_amount?.toLocaleString('ko-KR') || '0원'}`);
+		        $('#customer-info #pointLabel').text(`사용 가능 적립금 : ${customerData.mem_point?.toLocaleString('ko-KR') || '0원'}`);
+		    } 
+
+		    // 적립금 테이블 업데이트
+		    const pointTable = $('#point_table');
+		    pointTable.find('tr:gt(0)').remove(); // 헤더를 제외한 기존 행 삭제
+
+		    if (filteredPoints.length > 0) {
+		        // 적립금 내역이 있는 경우
+		        filteredPoints.forEach(point => {
+		            const row = `
+		                <tr>
+		                    <td>${point.point_date}</td>
+		                    <td>${point.mem_code}</td>
+		                    <td>${point.o_code}</td>
+		                    <td>${point.point_type}</td>
+		                    <td>${point.points.toLocaleString('ko-KR')}원</td>
+		                    <td>${point.point_info}</td>
+		                </tr>
+		            `;
+		            pointTable.append(row);
+		        });
+		    } else {
+		        // 적립금 내역이 없는 경우
+		        const noDataRow = `
+		            <tr>
+		                <td colspan="6">해당 회원의 적립금 내역이 없습니다.</td>
+		            </tr>
+		        `;
+		        pointTable.append(noDataRow);
+		    }
+
+		    // 팝업 보이기
+		    $('#pointsList').css('display', 'flex');
+		});
+		
+		// 팝업 외부를 클릭했을 때 닫기
+		window.addEventListener('click', function(event) {
+		    const popup = document.getElementById('pointsList');
+		    if (popup && event.target === popup) {
+		        closePointsList();
+		    }
+		});
+
+		// 팝업 닫기 함수
+		function closePointsList() {
+		    document.getElementById('pointsList').style.display = 'none';
+		}
+		
+
+	    member += '</tbody>';
+
+	    $('#customer-list-container .customer-list tbody').remove();
+	    $('#customer-list-container .customer-list').append(member);
+
+	    // 모두 선택 기능
+	    $('.selectAll').on('click', function () {
+	        const checkboxes = document.querySelectorAll('.customer-checkbox');
+	        const isChecked = $(this).prop('checked');
+	        checkboxes.forEach(checkbox => checkbox.checked = isChecked);
+	    });
+	}
 
     // 페이징 처리
     function setupPagination(currentPage, currPageGroup) {

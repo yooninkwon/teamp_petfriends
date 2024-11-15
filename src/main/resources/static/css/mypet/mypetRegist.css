@@ -320,6 +320,38 @@
 	height: 200px;
 }
 
+.selectAllerge1{
+	margin: 0 auto;
+	width: 50%;
+	height: 200px;
+}
+
+.selectAllerge1 input[type="button"] {
+    background-color: white;
+    border: 1px solid gray;
+	border-radius: 8px;
+    width: 150px;
+    height: 40px;
+    font-size: 25px;
+    font: bold;
+    color: gray;
+}
+
+#allerge-input{
+	display: none;
+}
+
+#allerge-input input[type="text"] {
+	width: 48%;
+	height: 30px;
+	border: 1px solid gray;
+	border-radius: 8px;
+	font: bold;
+	font-size: 25px;
+	text-align: center;
+	margin-top: 10px;
+}
+
 .selectInfo input[type="button"] {
     background-color: white;
     border: 1px solid gray;
@@ -357,7 +389,7 @@
 
 #allerge {
 	width: 100%;
-	
+	margin: 0 auto;
 }
 
 #allerge input[type="button"] {
