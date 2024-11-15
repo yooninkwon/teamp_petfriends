@@ -83,7 +83,7 @@ $(document).ready(function() {
 				lists += '<tr>';
 				lists += '<td>' + plist.hpt_seq + '</td>';
 				lists += '<td>' + plist.hpt_category + '</td>';
-				lists += '<td><a href="/helppetf/petteacher/petteacher_detail?hpt_seq=' + plist.hpt_seq + '">' + plist.hpt_title + '</a></td>';
+				lists += '<td>' + plist.hpt_title + '</td>';
 				lists += '<td>' + plist.hpt_channal + '</td>';
 				lists += '<td>' + plist.hpt_pettype + '</td>';
 				lists += '<td>' + plist.hpt_exp + '</td>';
