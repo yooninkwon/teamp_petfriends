@@ -10,7 +10,7 @@
 <title>myfeed.jsp</title>
 <link rel="stylesheet" href="/static/css/community/community_myfeed.css">
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
-<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+
 <script src="/static/js/community/community_myfeed.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -187,7 +187,8 @@
 </script>
 
 <body>
-
+<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+	
 	<!-- 이웃 목록 모달 -->
 	<div id="neighborListModal" class="modal">
 		<div class="modal-content">
