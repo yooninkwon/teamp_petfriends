@@ -2,13 +2,16 @@ package com.tech.petfriends.admin.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.dto.ProductDetailImgDto;
 import com.tech.petfriends.admin.dto.ProductDetailOptDto;
 import com.tech.petfriends.admin.dto.ProductDetailProDto;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteModel;
 
+@Service
 public class AdminProductDetailService implements AdminExecuteModel {
 
 	private AdminProductDao adminProductDao;

@@ -3,6 +3,8 @@ package com.tech.petfriends.helppetf.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -11,21 +13,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
+import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteModel;
 
 @Service
-public class PethotelMainService implements HelppetfExecuteModel {
+public class PethotelMainService implements HelppetfExecuteModel<String> {
 	
-	HelpPetfDao helpDao;
+	private final HelpPetfDao helpDao;
 	
 	public PethotelMainService(HelpPetfDao helpDao) {
 		this.helpDao = helpDao; 
 	}
 	
 	@Override
-	public void execute(Model model) {
-		
-		String json = null;
-		
+	public ResponseEntity<String> execute(Model model) {
+				
 		PethotelInfoDto infoDto = helpDao.pethotelInfo();
 		model.addAttribute("infoDto", infoDto);
 
@@ -36,16 +37,10 @@ public class PethotelMainService implements HelppetfExecuteModel {
 		map.put("infoDto", infoDto);
 		map.put("introDto", introDto);
 		try {
-			json = new ObjectMapper().writeValueAsString(map);
+			return ResponseEntity.ok(new ObjectMapper().writeValueAsString(map));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 중 오류 발생");
 		}
-		
-		if(json != null) {
-			model.addAttribute("json", json);
-		} else {
-			model.addAttribute("json", "Error: Database load failed");
-		}
-		
 	}
 }

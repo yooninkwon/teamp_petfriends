@@ -1,16 +1,15 @@
 package com.tech.petfriends.admin.service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.tech.petfriends.admin.dto.ACommunityDto;
 import com.tech.petfriends.admin.mapper.AdminCommunityDao;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteModel;
 
-
+@Service
 public class AdminCommunityReportService implements AdminExecuteModel {
 
 	private AdminCommunityDao admincommunityDao;

@@ -1,24 +1,28 @@
-package com.tech.petfriends.admin.service;
+package com.tech.petfriends.admin.service.helppetf;
 
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteModelRequestAndReturn;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 
-public class AdminPethotelDataService implements AdminExecuteModelRequest {
+@Service
+public class AdminPethotelDataService implements AdminExecuteModelRequestAndReturn<ArrayList<PethotelMemDataDto>> {
 
-	private AdminPageDao adminDao;
+	private final AdminPageDao adminDao;
 
 	public AdminPethotelDataService(AdminPageDao adminDao) {
 		this.adminDao = adminDao;
 	}
 
 	@Override
-	public void execute(Model model, HttpServletRequest request) {
+	public ResponseEntity<ArrayList<PethotelMemDataDto>> execute(Model model, HttpServletRequest request) {
 
 		String reserveType = request.getParameter("reserveType");
 		String startDate = request.getParameter("startDate");
@@ -27,12 +31,9 @@ public class AdminPethotelDataService implements AdminExecuteModelRequest {
 		String reserveCode = request.getParameter("reserveCode");
 
 		// 각각 데이터 전달해 DB 호출하여 데이터 불러옴
-		ArrayList<PethotelMemDataDto> memSelectDto = adminDao.adminPethotelReserveData(reserveType, startDate, endDate,
-				memberCode, reserveCode);
+		return ResponseEntity.ok(adminDao.adminPethotelReserveData(reserveType, startDate,
+				endDate,memberCode, reserveCode));
 		
-		// model에 등록
-		model.addAttribute("memSelectDto", memSelectDto);
-
 	}
 
 }

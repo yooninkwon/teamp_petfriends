@@ -17,18 +17,19 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.tech.petfriends.configuration.ApikeyConfig;
+import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteMono;
 import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
 
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
 @Service
-public class AdoptionGetJson implements HelppetfExecuteModelRequest{
+public class AdoptionGetJson implements HelppetfExecuteMono<HelpPetfAdoptionItemsVo>{
 	
 	// WebClient는 비동기적으로 HTTP 요청을 보내기 위해 사용되는 스프링 WebFlux의 클라이언트이다.
 	private final WebClient webClient;
 
-	ApikeyConfig apikeyConfig;
+	private final ApikeyConfig apikeyConfig;
 
 	public AdoptionGetJson(ApikeyConfig apikeyConfig, WebClient webClient) {
 		this.apikeyConfig = apikeyConfig;
@@ -36,12 +37,13 @@ public class AdoptionGetJson implements HelppetfExecuteModelRequest{
 	}
 	
 	@Override
-	public void execute(Model model, HttpServletRequest request) {
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> execute(Model model, HttpServletRequest request) {
 		
 		try {
-			model.addAttribute("jsonData", fetchAdoptionData(model, request));
+			return fetchAdoptionData(model, request);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return Mono.error(new RuntimeException("Json 데이터를 불러오는 것에 실패하였습니다.", e));
 		}
 		
 	}

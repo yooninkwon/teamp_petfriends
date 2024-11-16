@@ -1,4 +1,4 @@
-package com.tech.petfriends.admin.service;
+package com.tech.petfriends.admin.service.interfaces;
 
 import org.springframework.ui.Model;
 

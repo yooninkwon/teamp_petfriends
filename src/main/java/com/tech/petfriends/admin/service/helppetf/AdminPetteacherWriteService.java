@@ -1,25 +1,30 @@
-package com.tech.petfriends.admin.service;
+package com.tech.petfriends.admin.service.helppetf;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteModelAndReturn;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 
 @Service
-public class AdminPetteacherWriteService implements AdminExecuteModel {
+public class AdminPetteacherWriteService implements AdminExecuteModelAndReturn<String> {
 
-	private AdminPageDao adminDao;
+	private final AdminPageDao adminDao;
 	
 	private PetteacherDto dto;
 
-	public AdminPetteacherWriteService(AdminPageDao adminDao, PetteacherDto dto) {
-		this.adminDao = adminDao;
+	public void setDto(PetteacherDto dto) {
 		this.dto = dto;
 	}
 
+	public AdminPetteacherWriteService(AdminPageDao adminDao) {
+		this.adminDao = adminDao;
+	}
+
 	@Override
-	public void execute(Model model) {
+	public ResponseEntity<String> execute(Model model) {
 		
 		String hpt_title = dto.getHpt_title();
 		String hpt_exp = dto.getHpt_exp();
@@ -32,6 +37,8 @@ public class AdminPetteacherWriteService implements AdminExecuteModel {
 		// 데이터 첨부하여 DB호출, insert
 		adminDao.adminPetteacherWrite(hpt_channal, hpt_title, hpt_exp, hpt_content, 
 				hpt_yt_videoid, hpt_pettype, hpt_category);
+		
+		return ResponseEntity.ok("데이터베이스 통신 성공");
 	}
 
 }

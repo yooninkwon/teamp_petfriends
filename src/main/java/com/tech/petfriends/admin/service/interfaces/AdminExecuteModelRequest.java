@@ -1,4 +1,4 @@
-package com.tech.petfriends.admin.service;
+package com.tech.petfriends.admin.service.interfaces;
 
 import javax.servlet.http.HttpServletRequest;
 

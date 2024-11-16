@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteModel;
 
+@Service
 public class AdminProductAddService implements AdminExecuteModel {
 
 	private AdminProductDao adminProductDao;

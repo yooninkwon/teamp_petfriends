@@ -1,6 +1,5 @@
 package com.tech.petfriends.admin.mapper;
 
-import java.sql.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
