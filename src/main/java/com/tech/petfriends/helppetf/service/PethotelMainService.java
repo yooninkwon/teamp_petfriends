@@ -6,17 +6,16 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
-import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteModel;
+import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecute;
 
 @Service
-public class PethotelMainService implements HelppetfExecuteModel<String> {
+public class PethotelMainService implements HelppetfExecute<String> {
 	
 	private final HelpPetfDao helpDao;
 	
@@ -25,17 +24,15 @@ public class PethotelMainService implements HelppetfExecuteModel<String> {
 	}
 	
 	@Override
-	public ResponseEntity<String> execute(Model model) {
+	public ResponseEntity<String> execute() {
 				
 		PethotelInfoDto infoDto = helpDao.pethotelInfo();
-		model.addAttribute("infoDto", infoDto);
-
 		PethotelIntroDto introDto = helpDao.pethotelIntro();
-		model.addAttribute("introDto", introDto);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("infoDto", infoDto);
 		map.put("introDto", introDto);
+		
 		try {
 			return ResponseEntity.ok(new ObjectMapper().writeValueAsString(map));
 		} catch (JsonProcessingException e) {

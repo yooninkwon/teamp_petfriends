@@ -7,15 +7,14 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
-import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteModelSession;
+import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteSession;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 
 @Service
-public class PethotelSelectPetService implements HelppetfExecuteModelSession<ArrayList<MyPetDto>> {
+public class PethotelSelectPetService implements HelppetfExecuteSession<ArrayList<MyPetDto>> {
 	
 	private final HelpPetfDao helpDao;
 	
@@ -25,7 +24,7 @@ public class PethotelSelectPetService implements HelppetfExecuteModelSession<Arr
 	
 	@Override
 	@Transactional
-	public ResponseEntity<ArrayList<MyPetDto>> execute(Model model, HttpSession session) {	
+	public ResponseEntity<ArrayList<MyPetDto>> execute(HttpSession session) {	
 		
 		// 세션에서 로그인 정보를 추출
 		MemberLoginDto loginDto = (MemberLoginDto) session.getAttribute("loginUser");

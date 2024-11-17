@@ -8,10 +8,10 @@ import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.dto.ProductListDto;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
-import com.tech.petfriends.admin.service.interfaces.AdminExecuteModel;
+import com.tech.petfriends.admin.service.interfaces.AdminExecute;
 
 @Service
-public class AdminProductListService implements AdminExecuteModel {
+public class AdminProductListService implements AdminExecute {
 
 	private AdminProductDao adminProductDao;
 

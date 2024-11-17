@@ -4,8 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 
-public interface HelppetfExecuteModelRequestSession<T> {
-	public ResponseEntity<T> execute(Model model, HttpServletRequest request, HttpSession session);
+public interface HelppetfExecuteRequestSession<T> {
+	public ResponseEntity<T> execute(HttpServletRequest request, HttpSession session);
 }

@@ -8,16 +8,15 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
-import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteModelSession;
+import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteSession;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 
 @Service
-public class FindAddrMapService implements HelppetfExecuteModelSession<String> {
+public class FindAddrMapService implements HelppetfExecuteSession<String> {
 	
 	private final HelpPetfDao helpDao;
 	
@@ -26,7 +25,7 @@ public class FindAddrMapService implements HelppetfExecuteModelSession<String> {
 	}
 
 	@Override
-	public ResponseEntity<String> execute(Model model, HttpSession session) {
+	public ResponseEntity<String> execute(HttpSession session) {
 		String userAddr = "";
 		String mem_nick = null;
 		String mem_code = "";

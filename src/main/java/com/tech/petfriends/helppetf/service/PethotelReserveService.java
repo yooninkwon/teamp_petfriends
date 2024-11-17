@@ -11,18 +11,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
-import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteModelRequestSession;
+import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteRequestSession;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 
 @Service
-public class PethotelReserveService implements HelppetfExecuteModelRequestSession<String> {
+public class PethotelReserveService implements HelppetfExecuteRequestSession<String> {
 
 	private final HelpPetfDao helpDao;
 
@@ -38,7 +37,7 @@ public class PethotelReserveService implements HelppetfExecuteModelRequestSessio
 
 	@Override
 	@Transactional
-	public ResponseEntity<String> execute(Model model, HttpServletRequest request, HttpSession session) {
+	public ResponseEntity<String> execute(HttpServletRequest request, HttpSession session) {
 
 		// request의 예약 시작, 종료일 저장
 		String hph_start_date = request.getParameter("start-date");

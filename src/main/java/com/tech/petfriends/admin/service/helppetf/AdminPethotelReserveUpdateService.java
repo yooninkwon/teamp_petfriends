@@ -4,13 +4,12 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
-import com.tech.petfriends.admin.service.interfaces.AdminExecuteModelAndReturn;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteAndReturn;
 
 @Service
-public class AdminPethotelReserveUpdateService implements AdminExecuteModelAndReturn<String> {
+public class AdminPethotelReserveUpdateService implements AdminExecuteAndReturn<String> {
 	
 	private final AdminPageDao adminDao;
 	
@@ -25,7 +24,7 @@ public class AdminPethotelReserveUpdateService implements AdminExecuteModelAndRe
 	}
 	
 	@Override
-	public ResponseEntity<String> execute(Model model) {
+	public ResponseEntity<String> execute() {
 		
 		// 전달받은 statusMap에서 데이터 추출
 		String hph_reserve_no = (String) statusMap.get("hph_reserve_no");

@@ -4,14 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
-import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteModelRequest;
+import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteRequest;
 
 @Service
-public class PetteacherDetailService implements HelppetfExecuteModelRequest<PetteacherDto> {
+public class PetteacherDetailService implements HelppetfExecuteRequest<PetteacherDto> {
 	
 	private final HelpPetfDao helpDao;
 	
@@ -20,7 +19,7 @@ public class PetteacherDetailService implements HelppetfExecuteModelRequest<Pett
 	}
 
 	@Override
-	public ResponseEntity<PetteacherDto> execute(Model model, HttpServletRequest request) {
+	public ResponseEntity<PetteacherDto> execute(HttpServletRequest request) {
 		
 		// 파라미터의 값을 저장
 		String hpt_seq = request.getParameter("hpt_seq");

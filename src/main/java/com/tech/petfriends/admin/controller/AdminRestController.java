@@ -24,8 +24,8 @@ import com.tech.petfriends.admin.dto.ACommunityDto;
 import com.tech.petfriends.admin.mapper.AdminCommunityDao;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.service.AdminCommunityReportService;
-import com.tech.petfriends.admin.service.interfaces.AdminExecuteModel;
-import com.tech.petfriends.admin.service.interfaces.AdminExecuteModelRequest;
+import com.tech.petfriends.admin.service.interfaces.AdminExecute;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteRequest;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.dto.MemberPointsDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
@@ -45,9 +45,9 @@ public class AdminRestController {
 	final MypageDao mypageDao;
 	final AdminCommunityDao communtiyDao;
 	
-	AdminExecuteModel adminExecuteM;
+	AdminExecute adminExecuteM;
 	
-	AdminExecuteModelRequest adminExecuteMR;
+	AdminExecuteRequest adminExecuteMR;
 	
 		
 	public AdminRestController(AdminPageDao adminDao,      

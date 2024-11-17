@@ -2,14 +2,13 @@ package com.tech.petfriends.admin.service.helppetf;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
-import com.tech.petfriends.admin.service.interfaces.AdminExecuteModelAndReturn;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteAndReturn;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 
 @Service
-public class AdminPethotelIntroEditService implements AdminExecuteModelAndReturn<String> {
+public class AdminPethotelIntroEditService implements AdminExecuteAndReturn<String> {
 	
 	private final AdminPageDao adminDao;
 	
@@ -24,7 +23,7 @@ public class AdminPethotelIntroEditService implements AdminExecuteModelAndReturn
 	}
 	
 	@Override
-	public ResponseEntity<String> execute(Model model) {
+	public ResponseEntity<String> execute() {
 
 		String intro_line1 = introDto.getIntro_line1();
 		String intro_line2 = introDto.getIntro_line2();

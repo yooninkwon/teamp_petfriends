@@ -4,14 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
-import com.tech.petfriends.admin.service.interfaces.AdminExecuteModelRequestAndReturn;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteRequestAndReturn;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 
 @Service
-public class AdminPetteacherEditService implements AdminExecuteModelRequestAndReturn<String> {
+public class AdminPetteacherEditService implements AdminExecuteRequestAndReturn<String> {
 
 	private final AdminPageDao adminDao;
 
@@ -26,7 +25,7 @@ public class AdminPetteacherEditService implements AdminExecuteModelRequestAndRe
 	}
 
 	@Override
-	public ResponseEntity<String> execute(Model model, HttpServletRequest request) {
+	public ResponseEntity<String> execute(HttpServletRequest request) {
 		
 		String hpt_seq = request.getParameter("hpt_seq");
 

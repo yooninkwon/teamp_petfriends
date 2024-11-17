@@ -4,9 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 
-import reactor.core.publisher.Mono;
 
-
-public interface HelppetfExecuteMono<T> {
-	public Mono<ResponseEntity<T>> execute(HttpServletRequest request);
+public interface HelppetfExecuteRequest<T> {
+	public ResponseEntity<T> execute(HttpServletRequest request);
 }

@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.service.helppetf.AdminPethotelDataService;
 import com.tech.petfriends.admin.service.helppetf.AdminPethotelInfoData;
@@ -44,60 +43,57 @@ public class AdminHelppetfServiceGroup {
 	final AdminPethotelIntroEditService adminPethotelIntroEditService;
 	final AdminPethotelInfoEditService adminPethotelInfoEditService;
 
-	public ResponseEntity<String> executeAdminPethotelReserveUpdate(Model model, Map<String, String> statusMap) {
+	public ResponseEntity<String> executeAdminPethotelReserveUpdate(Map<String, String> statusMap) {
 		adminPethotelReserveUpdateService.setStatusMap(statusMap);
-		return adminPethotelReserveUpdateService.execute(model);
+		return adminPethotelReserveUpdateService.execute();
 	}
 
-	public ResponseEntity<String> executeAdminPethotelReserveDetailService(Model model, HttpServletRequest request) {
-		return adminPethotelReserveDetailService.execute(model, request);
+	public ResponseEntity<String> executeAdminPethotelReserveDetailService(HttpServletRequest request) {
+		return adminPethotelReserveDetailService.execute(request);
 	}
 
-	public ResponseEntity<ArrayList<PethotelMemDataDto>> executeAdminPethotelDataService(Model model,
-			HttpServletRequest request) {
-		return adminPethotelDataService.execute(model, request);
+	public ResponseEntity<ArrayList<PethotelMemDataDto>> executeAdminPethotelDataService(HttpServletRequest request) {
+		return adminPethotelDataService.execute(request);
 	}
 
-	public ResponseEntity<ArrayList<PetteacherDto>> executeAdminPetteacherDataService(Model model,
-			HttpServletRequest request) {
-		return adminPetteacherDataService.execute(model, request);
+	public ResponseEntity<ArrayList<PetteacherDto>> executeAdminPetteacherDataService(HttpServletRequest request) {
+		return adminPetteacherDataService.execute(request);
 	}
 
-	public ResponseEntity<PetteacherDto> executeAdminPetteacherDetailService(Model model, HttpServletRequest request) {
-		return adminPetteacherDetailService.execute(model, request);
+	public ResponseEntity<PetteacherDto> executeAdminPetteacherDetailService(HttpServletRequest request) {
+		return adminPetteacherDetailService.execute(request);
 	}
 
-	public ResponseEntity<String> executeAdminPetteacherDeleteService(Model model, HttpServletRequest request) {
-		return adminPetteacherDeleteService.execute(model, request);
+	public ResponseEntity<String> executeAdminPetteacherDeleteService(HttpServletRequest request) {
+		return adminPetteacherDeleteService.execute(request);
 	}
 
-	public ResponseEntity<String> executeAdminPetteacherWriteService(Model model, PetteacherDto dto) {
+	public ResponseEntity<String> executeAdminPetteacherWriteService(PetteacherDto dto) {
 		adminPetteacherWriteService.setDto(dto);
-		return adminPetteacherWriteService.execute(model);
+		return adminPetteacherWriteService.execute();
 	}
 
-	public ResponseEntity<String> executeAdminPetteacherEditService(Model model, HttpServletRequest request,
-			PetteacherDto dto) {
+	public ResponseEntity<String> executeAdminPetteacherEditService(HttpServletRequest request, PetteacherDto dto) {
 		adminPetteacherEditService.setDto(dto);
-		return adminPetteacherEditService.execute(model, request);
+		return adminPetteacherEditService.execute(request);
 	}
 
-	public ResponseEntity<PethotelIntroDto> executeAdminPethotelIntroData(Model model) {
-		return adminPethotelIntroData.execute(model);
+	public ResponseEntity<PethotelIntroDto> executeAdminPethotelIntroData() {
+		return adminPethotelIntroData.execute();
 	}
 
-	public ResponseEntity<PethotelInfoDto> executeAdminPethotelInfoData(Model model) {
-		return adminPethotelInfoData.execute(model);
+	public ResponseEntity<PethotelInfoDto> executeAdminPethotelInfoData() {
+		return adminPethotelInfoData.execute();
 	}
 
-	public ResponseEntity<String> executeAdminPethotelIntroEditService(Model model, PethotelIntroDto dto) {
+	public ResponseEntity<String> executeAdminPethotelIntroEditService(PethotelIntroDto dto) {
 		adminPethotelIntroEditService.setIntroDto(dto);
-		return adminPethotelIntroEditService.execute(model);
+		return adminPethotelIntroEditService.execute();
 	}
 
-	public ResponseEntity<String> executeAdminPethotelInfoEditService(Model model, PethotelInfoDto dto) {
+	public ResponseEntity<String> executeAdminPethotelInfoEditService(PethotelInfoDto dto) {
 		adminPethotelInfoEditService.setInfoDto(dto);
-		return adminPethotelInfoEditService.execute(model);
+		return adminPethotelInfoEditService.execute();
 	}
 
 }

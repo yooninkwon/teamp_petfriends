@@ -9,7 +9,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -37,10 +36,10 @@ public class AdoptionGetJson implements HelppetfExecuteMono<HelpPetfAdoptionItem
 	}
 	
 	@Override
-	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> execute(Model model, HttpServletRequest request) {
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> execute(HttpServletRequest request) {
 		
 		try {
-			return fetchAdoptionData(model, request);
+			return fetchAdoptionData(request);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Mono.error(new RuntimeException("Json 데이터를 불러오는 것에 실패하였습니다.", e));
@@ -58,7 +57,7 @@ public class AdoptionGetJson implements HelppetfExecuteMono<HelpPetfAdoptionItem
      * 	빈 리스트를 가진 HelpPetfAdoptionItemsVo를 생성하고, 내부 서버 오류 상태를 반환
      */
 	@Cacheable("adoptionData") // 캐싱 가능 어노테이션
-	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionData(Model model, HttpServletRequest request) throws Exception {
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionData(HttpServletRequest request) throws Exception {
 
 		// api 요청주소 End point
 		String baseUrl = "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";

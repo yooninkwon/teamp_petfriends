@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminCommunityDao;
-import com.tech.petfriends.admin.service.interfaces.AdminExecuteModel;
+import com.tech.petfriends.admin.service.interfaces.AdminExecute;
 
 @Service
-public class AdminCommunityReportService implements AdminExecuteModel {
+public class AdminCommunityReportService implements AdminExecute {
 
 	private AdminCommunityDao admincommunityDao;
 

@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
@@ -35,34 +34,34 @@ public class HelppetfServiceGroup {
 	final PetteacherDetailService petteacherDetailService;
 	final FindAddrMapService findAddrMapService;
 	
-	public ResponseEntity<ArrayList<MyPetDto>> executePethotelSelectPetService(Model model, HttpSession session) {
-		return pethotelSelectPetService.execute(model, session);
+	public ResponseEntity<ArrayList<MyPetDto>> executePethotelSelectPetService(HttpSession session) {
+		return pethotelSelectPetService.execute(session);
 	}
 	
-	public ResponseEntity<String> executePethotelReserveDataService(Model model, HttpServletRequest request, 
+	public ResponseEntity<String> executePethotelReserveDataService(HttpServletRequest request, 
 			HttpSession session, ArrayList<PethotelFormDataDto> formList) {
 		pethotelReserveDataService.setFormList(formList);
-		return pethotelReserveDataService.execute(model, request, session);
+		return pethotelReserveDataService.execute(request, session);
 	}
 	
-	public ResponseEntity<String> executePethotelMainService(Model model) {
-		return pethotelMainService.execute(model);
+	public ResponseEntity<String> executePethotelMainService() {
+		return pethotelMainService.execute();
 	}
 
-	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> executeAdoptionGetJson(Model model, HttpServletRequest request) {
-		return adoptionGetJson.execute(model, request);
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> executeAdoptionGetJson(HttpServletRequest request) {
+		return adoptionGetJson.execute(request);
 	}
 
-	public ResponseEntity<ArrayList<PetteacherDto>> executePetteacherMainService(Model model, HttpServletRequest request) {
-		return petteacherMainService.execute(model, request);
+	public ResponseEntity<ArrayList<PetteacherDto>> executePetteacherMainService(HttpServletRequest request) {
+		return petteacherMainService.execute(request);
 	}
 	
-	public ResponseEntity<PetteacherDto> executePetteacherDetailService(Model model, HttpServletRequest request) {
-		return petteacherDetailService.execute(model, request);
+	public ResponseEntity<PetteacherDto> executePetteacherDetailService(HttpServletRequest request) {
+		return petteacherDetailService.execute(request);
 	}
 	
-	public ResponseEntity<String> executeFindAddrMapService(Model model, HttpSession session) {
-		return findAddrMapService.execute(model, session);
+	public ResponseEntity<String> executeFindAddrMapService(HttpSession session) {
+		return findAddrMapService.execute(session);
 	}
 	
 }

@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,63 +32,63 @@ public class AdminHelppetfRestController {
 	}
 	
 	@PutMapping("/pethotel_reserve_update")
-	public ResponseEntity<String> pethotelReserveUpdate(@RequestBody Map<String, String> statusMap, Model model) {
-		return helppetfServiceGroup.executeAdminPethotelReserveUpdate(model, statusMap);
+	public ResponseEntity<String> pethotelReserveUpdate(@RequestBody Map<String, String> statusMap) {
+		return helppetfServiceGroup.executeAdminPethotelReserveUpdate(statusMap);
 	}
 
 	@GetMapping("/pethotel_admin_reserve_detail")
-	public ResponseEntity<String> pethotelReserveDetail(HttpServletRequest request, Model model) {
-		return helppetfServiceGroup.executeAdminPethotelReserveDetailService(model, request);
+	public ResponseEntity<String> pethotelReserveDetail(HttpServletRequest request) {
+		return helppetfServiceGroup.executeAdminPethotelReserveDetailService(request);
 	}
 
 	@GetMapping("/pethotel_admin_reserve")
-	public ResponseEntity<ArrayList<PethotelMemDataDto>> pethotelReserveData(HttpServletRequest request, Model model) {
-		return helppetfServiceGroup.executeAdminPethotelDataService(model, request);
+	public ResponseEntity<ArrayList<PethotelMemDataDto>> pethotelReserveData(HttpServletRequest request) {
+		return helppetfServiceGroup.executeAdminPethotelDataService(request);
 	}
 	
 	@GetMapping("/petteacher_admin_data")
-	public ResponseEntity<ArrayList<PetteacherDto>> getPetteacherData(HttpServletRequest request, Model model) {
-		return helppetfServiceGroup.executeAdminPetteacherDataService(model, request);
+	public ResponseEntity<ArrayList<PetteacherDto>> getPetteacherData(HttpServletRequest request) {
+		return helppetfServiceGroup.executeAdminPetteacherDataService(request);
 	}
 
 	@GetMapping("/petteacher_admin_data_forEdit")
-	public ResponseEntity<PetteacherDto> petteacherDataForEdit(HttpServletRequest request, Model model) {
-		return helppetfServiceGroup.executeAdminPetteacherDetailService(model, request);
+	public ResponseEntity<PetteacherDto> petteacherDataForEdit(HttpServletRequest request) {
+		return helppetfServiceGroup.executeAdminPetteacherDetailService(request);
 	}
 
 	@DeleteMapping("/petteacher_admin_data_forDelete")
-	public ResponseEntity<String> petteacherDataForDelete(HttpServletRequest request, Model model) {
-		return helppetfServiceGroup.executeAdminPetteacherDeleteService(model, request);
+	public ResponseEntity<String> petteacherDataForDelete(HttpServletRequest request) {
+		return helppetfServiceGroup.executeAdminPetteacherDeleteService(request);
 	}
 
 	@PostMapping("/petteacher_admin_data_forWrite")
-	public ResponseEntity<String> petteacherDataForWrite(@RequestBody PetteacherDto dto, Model model) {
-		return helppetfServiceGroup.executeAdminPetteacherWriteService(model, dto);
+	public ResponseEntity<String> petteacherDataForWrite(@RequestBody PetteacherDto dto) {
+		return helppetfServiceGroup.executeAdminPetteacherWriteService(dto);
 	}
 
 	@PutMapping("/petteacher_admin_data_forEdit")
-	public ResponseEntity<String> petteacherDataForEdit(@RequestBody PetteacherDto dto, HttpServletRequest request, Model model) {		
-		return helppetfServiceGroup.executeAdminPetteacherEditService(model, request, dto);
+	public ResponseEntity<String> petteacherDataForEdit(@RequestBody PetteacherDto dto, HttpServletRequest request) {		
+		return helppetfServiceGroup.executeAdminPetteacherEditService(request, dto);
 	}
 
 	@GetMapping("/pethotel_admin_intro_data")
-	public ResponseEntity<PethotelIntroDto> pethotelIntroData(Model model) {
-		return helppetfServiceGroup.executeAdminPethotelIntroData(model);
+	public ResponseEntity<PethotelIntroDto> pethotelIntroData() {
+		return helppetfServiceGroup.executeAdminPethotelIntroData();
 	}
 
 	@GetMapping("/pethotel_admin_info_data")
-	public ResponseEntity<PethotelInfoDto> pethotelInfoData(Model model) {
-		return helppetfServiceGroup.executeAdminPethotelInfoData(model);
+	public ResponseEntity<PethotelInfoDto> pethotelInfoData() {
+		return helppetfServiceGroup.executeAdminPethotelInfoData();
 	}
 
 	@PutMapping("/pethotel_admin_intro_dataForEdit")
-	public ResponseEntity<String> pethotelIntroForEdit(@RequestBody PethotelIntroDto dto, HttpServletRequest request, Model model) {
-		return helppetfServiceGroup.executeAdminPethotelIntroEditService(model, dto);
+	public ResponseEntity<String> pethotelIntroForEdit(@RequestBody PethotelIntroDto dto, HttpServletRequest request) {
+		return helppetfServiceGroup.executeAdminPethotelIntroEditService(dto);
 	}
 
 	@PutMapping("/pethotel_admin_info_dataForEdit")
-	public ResponseEntity<String> pethotelInfoForEdit(@RequestBody PethotelInfoDto dto, HttpServletRequest request, Model model) {
-		return helppetfServiceGroup.executeAdminPethotelInfoEditService(model, dto);
+	public ResponseEntity<String> pethotelInfoForEdit(@RequestBody PethotelInfoDto dto, HttpServletRequest request) {
+		return helppetfServiceGroup.executeAdminPethotelInfoEditService(dto);
 	}
 
 }

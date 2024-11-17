@@ -40,7 +40,7 @@ import com.tech.petfriends.admin.service.AdminProductListService;
 import com.tech.petfriends.admin.service.AdminProductModifyService;
 import com.tech.petfriends.admin.service.AdminSalesDetailService;
 import com.tech.petfriends.admin.service.AdminSalesService;
-import com.tech.petfriends.admin.service.interfaces.AdminExecuteModel;
+import com.tech.petfriends.admin.service.interfaces.AdminExecute;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.mypage.dao.MypageDao;
@@ -75,12 +75,12 @@ public class AdminPageController {
 	@Autowired
 	MemberMapper memberDao;
 
-	AdminExecuteModel adminExcuteM;
+	AdminExecute adminExcuteM;
 	
 
 	// 어드민 페이지 내부에서의 펫티쳐페이지로 이동
 	@GetMapping("/petteacher")
-	public String petteacherAdminPage(Model model) {
+	public String petteacherAdminPage() {
 		return "admin/petteacher";
 	}
 

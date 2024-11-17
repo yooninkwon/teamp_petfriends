@@ -5,11 +5,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.tech.petfriends.admin.service.interfaces.AdminExecuteModel;
+import com.tech.petfriends.admin.service.interfaces.AdminExecute;
 import com.tech.petfriends.notice.dao.NoticeDao;
 
 @Service
-public class AdminNoticeEditService implements AdminExecuteModel {
+public class AdminNoticeEditService implements AdminExecute {
 	
     private NoticeDao noticeDao;
 

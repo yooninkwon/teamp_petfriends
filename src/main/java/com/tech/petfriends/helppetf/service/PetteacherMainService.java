@@ -6,14 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
-import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteModelRequest;
+import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteRequest;
 
 @Service
-public class PetteacherMainService implements HelppetfExecuteModelRequest<ArrayList<PetteacherDto>> {
+public class PetteacherMainService implements HelppetfExecuteRequest<ArrayList<PetteacherDto>> {
 	
 	private final HelpPetfDao helpPetfDao;
 	
@@ -22,7 +21,7 @@ public class PetteacherMainService implements HelppetfExecuteModelRequest<ArrayL
 	}
 
 	@Override
-	public ResponseEntity<ArrayList<PetteacherDto>> execute(Model model, HttpServletRequest request) {
+	public ResponseEntity<ArrayList<PetteacherDto>> execute(HttpServletRequest request) {
 		
 		String petType = request.getParameter("petType");
 		String category = request.getParameter("category");

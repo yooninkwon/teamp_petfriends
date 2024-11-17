@@ -6,14 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
-import com.tech.petfriends.admin.service.interfaces.AdminExecuteModelRequestAndReturn;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteRequestAndReturn;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 
 @Service
-public class AdminPethotelDataService implements AdminExecuteModelRequestAndReturn<ArrayList<PethotelMemDataDto>> {
+public class AdminPethotelDataService implements AdminExecuteRequestAndReturn<ArrayList<PethotelMemDataDto>> {
 
 	private final AdminPageDao adminDao;
 
@@ -22,7 +21,7 @@ public class AdminPethotelDataService implements AdminExecuteModelRequestAndRetu
 	}
 
 	@Override
-	public ResponseEntity<ArrayList<PethotelMemDataDto>> execute(Model model, HttpServletRequest request) {
+	public ResponseEntity<ArrayList<PethotelMemDataDto>> execute(HttpServletRequest request) {
 
 		String reserveType = request.getParameter("reserveType");
 		String startDate = request.getParameter("startDate");

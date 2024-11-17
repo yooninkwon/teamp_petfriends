@@ -9,10 +9,10 @@ import com.tech.petfriends.admin.dto.ProductDetailImgDto;
 import com.tech.petfriends.admin.dto.ProductDetailOptDto;
 import com.tech.petfriends.admin.dto.ProductDetailProDto;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
-import com.tech.petfriends.admin.service.interfaces.AdminExecuteModel;
+import com.tech.petfriends.admin.service.interfaces.AdminExecute;
 
 @Service
-public class AdminProductDetailService implements AdminExecuteModel {
+public class AdminProductDetailService implements AdminExecute {
 
 	private AdminProductDao adminProductDao;
 

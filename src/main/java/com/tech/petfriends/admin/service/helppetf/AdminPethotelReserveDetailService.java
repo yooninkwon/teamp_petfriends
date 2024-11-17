@@ -9,17 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
-import com.tech.petfriends.admin.service.interfaces.AdminExecuteModelRequestAndReturn;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteRequestAndReturn;
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 
 @Service
-public class AdminPethotelReserveDetailService implements AdminExecuteModelRequestAndReturn<String>{
+public class AdminPethotelReserveDetailService implements AdminExecuteRequestAndReturn<String>{
 	
 	private final AdminPageDao adminDao;
 
@@ -28,7 +27,7 @@ public class AdminPethotelReserveDetailService implements AdminExecuteModelReque
 	}
 	
 	@Override
-	public ResponseEntity<String> execute(Model model, HttpServletRequest request) {
+	public ResponseEntity<String> execute(HttpServletRequest request) {
 		// 전달받은 예약번호 저장
 		String hph_reserve_no = request.getParameter("hph_reserve_no");
 				

@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,39 +32,39 @@ public class HelpPetfRestController {
 	}
 	
 	@GetMapping("/pethotel/pethotel_select_pet")
-	public ResponseEntity<ArrayList<MyPetDto>> pethotelSelectPet(Model model, HttpSession session) {
-		return serviceGroup.executePethotelSelectPetService(model, session);
+	public ResponseEntity<ArrayList<MyPetDto>> pethotelSelectPet(HttpSession session) {
+		return serviceGroup.executePethotelSelectPetService(session);
 	}
 
 	@PostMapping("/pethotel/pethotel_reserve_data")
-	public ResponseEntity<String> pethotelReserveData(@RequestBody ArrayList<PethotelFormDataDto> formList, HttpServletRequest request,
-			Model model, HttpSession session) {
-		return serviceGroup.executePethotelReserveDataService(model, request, session, formList);
+	public ResponseEntity<String> pethotelReserveData(@RequestBody ArrayList<PethotelFormDataDto> formList, 
+					HttpServletRequest request, HttpSession session) {
+		return serviceGroup.executePethotelReserveDataService(request, session, formList);
 	}
 	
 	@GetMapping("/pethotel/pethotel_post_data")
-	public ResponseEntity<String> pethotelPostData(Model model) {
-		return serviceGroup.executePethotelMainService(model);
+	public ResponseEntity<String> pethotelPostData() {
+		return serviceGroup.executePethotelMainService();
 	}
 	
 	@GetMapping("/adoption/getJson")
-	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson(HttpServletRequest request, Model model)
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> adoptionGetJson(HttpServletRequest request)
 			throws Exception {
-		return serviceGroup.executeAdoptionGetJson(model, request);
+		return serviceGroup.executeAdoptionGetJson(request);
 	}
 
 	@GetMapping("/petteacher/petteacher_data")
-	public ResponseEntity<ArrayList<PetteacherDto>> petteacherData(HttpServletRequest request, Model model) {
-		return serviceGroup.executePetteacherMainService(model, request);
+	public ResponseEntity<ArrayList<PetteacherDto>> petteacherData(HttpServletRequest request) {
+		return serviceGroup.executePetteacherMainService(request);
 	}
 	
 	@GetMapping("/petteacher/petteacher_detail_data")
-	public ResponseEntity<PetteacherDto> petteacherDetailData(HttpServletRequest request, Model model) {
-		return serviceGroup.executePetteacherDetailService(model, request);
+	public ResponseEntity<PetteacherDto> petteacherDetailData(HttpServletRequest request) {
+		return serviceGroup.executePetteacherDetailService(request);
 	}
 	
 	@GetMapping("/find/adress_data") // 주변 반려동물 시설 찾기 페이지
-	public ResponseEntity<String> pet_facilities(Model model, HttpSession session) throws JsonProcessingException {
-		return serviceGroup.executeFindAddrMapService(model, session);
+	public ResponseEntity<String> pet_facilities(HttpSession session) throws JsonProcessingException {
+		return serviceGroup.executeFindAddrMapService(session);
 	}
 }
