@@ -12,6 +12,8 @@ document.querySelectorAll('.tab-btn').forEach(function(tabBtn) {
     });
 });
 
+let selectedFiles = []; // 선택한 파일을 저장할 배열
+
 function writeReview(cartCode) {
 	// 후기 작성 탭으로 전환
     $('.tab-btn').removeClass('active');
@@ -57,6 +59,15 @@ function writeReview(cartCode) {
 		                </div>
                     `)
                     .join('');
+					
+					for (let i = 0; i < images.length; i++) {
+						addServerFileToFilesArray(`/static/Images/ProductImg/ReviewImg/${images[i]}`, images[i]);
+					}
+					
+					
+					console.log(selectedFiles);
+					
+					
                 $('#image-preview').html(imgContainer);
 
                 // 삭제 버튼 이벤트 추가
@@ -77,6 +88,23 @@ function writeReview(cartCode) {
     });
 }
 
+async function addServerFileToFilesArray(url, filename) {
+    try {
+        const response = await fetch(url); // 파일 다운로드
+        if (!response.ok) throw new Error('파일 다운로드 실패');
+
+        const blob = await response.blob(); // Blob 생성
+        const file = new File([blob], filename, { type: blob.type }); // File 객체 생성
+
+        selectedFiles.push(file); // 배열에 추가
+        console.log(`파일 추가 완료: ${file.name}`);
+    } catch (error) {
+        console.error('파일 추가 중 오류:', error);
+    }
+
+}
+
+
 $(document).on('click', '#rating-stars .star', function () {
     const rating = $(this).data('value');
     $('#review-rating').val(rating); // Hidden input에 별점 값 저장
@@ -88,43 +116,46 @@ $(document).on('click', '#rating-stars .star', function () {
 });
 
 
-let selectedFiles = []; // 선택한 파일을 저장할 배열
+
 $('#review-images').on('change', function () {
     const files = Array.from(this.files); // 새로 선택한 파일들
 
     // 선택한 파일 배열에 추가 (중복 제거)
-    files.forEach(file => {
-        if (!selectedFiles.some(f => f.name === file.name)) { // 파일 이름으로 중복 체크
-            selectedFiles.push(file);
-        }
-    });
+	files.forEach(file => {
+	    if (!selectedFiles.some(f => f.name === file.name)) { // 파일 이름으로 중복 체크
+	        selectedFiles.push(file);
+	    }
+	});
 	
 	// 현재 미리보기된 이미지 수 체크
 	const currentPreviewCount = $('#image-preview #preview-container').length;
-    if (currentPreviewCount + files.length > 5) {
+	const totalImages = currentPreviewCount + files.length;
+	
+    if (totalImages > 5) {
         alert('이미지는 최대 5장까지만 업로드할 수 있습니다.');
         return;
     }
 
-    files.forEach((file, index) => {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const imgContainer = `
-                <div id="preview-container" style="position: relative; display: inline-block;">
-                    <img src="${e.target.result}" alt="미리보기" class="product-image"/>
-                    <button class="remove-btn">×</button>
-                </div>
-            `;
-            $('#image-preview').append(imgContainer);
-
-            // 개별 삭제 버튼 이벤트 추가
-            $(`#image-preview .remove-btn`).on('click', function () {
-				selectedFiles.splice(index, 1);
-                $(this).parent('#preview-container').remove();
-            });
-        };
-        reader.readAsDataURL(file);
-    });
+	// 새로 추가된 파일 미리보기
+	files.forEach(file => {
+	    const reader = new FileReader();
+	    reader.onload = function (e) {
+	        const imgContainer = `
+	            <div id="preview-container" style="position: relative; display: inline-block;">
+	                <img src="${e.target.result}" alt="미리보기" class="product-image"/>
+	                <button class="remove-btn" data-file-name="${file.name}">×</button>
+	            </div>
+	        `;
+	        $('#image-preview').append(imgContainer);
+	    };
+	    reader.readAsDataURL(file);
+	});
+	
+	$('#image-preview').on('click', '.remove-btn', function () {
+	    const fileName = $(this).data('file-name');
+	    selectedFiles = selectedFiles.filter(f => f.name !== fileName); // 배열에서 삭제
+	    $(this).parent('#preview-container').remove(); // 미리보기 제거
+	});
 	
     // 입력 초기화 (같은 파일 다시 선택 가능하게 하기 위함)
     $(this).val('');

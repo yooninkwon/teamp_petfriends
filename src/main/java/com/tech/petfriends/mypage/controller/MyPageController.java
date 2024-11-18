@@ -818,15 +818,19 @@ public class MyPageController {
 	    reviewDto.setReview_text(reviewText);
 	    
 	    String[] uploadedImages = saveUploadedFiles(reviewImages); // 파일 저장 메서드 호출
+
 	    reviewDto.setReview_img1(uploadedImages[0]);
 	    reviewDto.setReview_img2(uploadedImages[1]);
 	    reviewDto.setReview_img3(uploadedImages[2]);
 	    reviewDto.setReview_img4(uploadedImages[3]);
 	    reviewDto.setReview_img5(uploadedImages[4]);
 	    
+	    
 	    if (reviewCode != null && !reviewCode.isEmpty()) {
 	        // 기존 리뷰 수정
-	    	deleteExistingImages(reviewDto);
+	    	System.out.println("기존 리뷰 수정");
+	    	MyReviewDto existingReview = mypageDao.existingReview(reviewCode);
+	    	deleteExistingImages(existingReview);
 	        reviewDto.setReview_code(reviewCode);
 	        mypageDao.updateReview(reviewDto);
 	    } else {
@@ -834,6 +838,8 @@ public class MyPageController {
 	        reviewDto.setReview_code(UUID.randomUUID().toString());
 	        mypageDao.insertReview(reviewDto);
 	    }
+	    
+	    
 
 	    return "redirect:/mypage/review";
 	}
@@ -859,6 +865,10 @@ public class MyPageController {
 	                    count++;
 	                }
 	                
+	                System.out.println(file.getSize()+" : "+file.getResource());
+	                
+	                System.out.println(saveFile.toString());
+
 	                file.transferTo(saveFile);
 	                uploadedImages[i] = fileName;
 	            }
@@ -962,14 +972,14 @@ public class MyPageController {
 	}
 	
 	// 이미지 수정 시 기존 이미지 삭제
-	private void deleteExistingImages(MyReviewDto reviewDto) {
+	private void deleteExistingImages(MyReviewDto existingReviewDto) {
 	    String imagesDir = new File("src/main/resources/static/Images/ProductImg/ReviewImg").getAbsolutePath();
 	    String[] images = {
-	        reviewDto.getReview_img1(),
-	        reviewDto.getReview_img2(),
-	        reviewDto.getReview_img3(),
-	        reviewDto.getReview_img4(),
-	        reviewDto.getReview_img5()
+	        existingReviewDto.getReview_img1(),
+	        existingReviewDto.getReview_img2(),
+	        existingReviewDto.getReview_img3(),
+	        existingReviewDto.getReview_img4(),
+	        existingReviewDto.getReview_img5()
 	    };
 
 	    for (String image : images) {

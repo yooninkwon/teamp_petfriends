@@ -114,4 +114,6 @@ public interface MypageDao {
 	ArrayList<PethotelFormDataDto> pethotelReserveMypagePets(String reserveNo);
 	void pethotelReserveMyPageCancel(String reserveNo);
 
+	MyReviewDto existingReview(String review_code);
+
 }
