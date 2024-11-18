@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +12,47 @@
 </title>
 </head>
 <body>
-<h2>현재 심쿵포인트</h2>
+<h2 style="margin-bottom: 0">현재 심쿵포인트</h2>
+<h2 class="point"><fmt:formatNumber value="${loginUser.mem_point }"  type="number" groupingUsed="true" />원</h2>
+<div class="ex-point">적립 예정 포인트 <span style="color: black; font-size: 17px;"><fmt:formatNumber value="${ex_saving }"  type="number" groupingUsed="true" />원</span></div>
+
+<div class="info-container">
+	<h3>사용내역</h3>
+	<hr />
+	<c:forEach items="${pointLogs }" var="pointLog">
+	    <div class="point-list">
+	        <div style="display: flex; align-items: center;">
+	        	<c:choose>
+                    <c:when test="${pointLog.point_info eq '적립'}">
+			            <div class="point-info plus">${pointLog.point_info }</div>
+                    </c:when>
+                    <c:otherwise>
+			            <div class="point-info">${pointLog.point_info }</div>
+                    </c:otherwise>
+                </c:choose>
+	            <div style="margin-left: 20px;">
+	                <div class="point-date">${pointLog.point_date }</div>
+	                <c:choose>
+	                    <c:when test="${pointLog.point_info eq '사용'}">
+	                        <div class="point-title">주문시 사용</div>
+	                        <div class="point-code">주문번호 ${pointLog.o_code }</div>
+	                    </c:when>
+	                    <c:when test="${pointLog.point_info eq '적립' and pointLog.o_code.length() > 20}">
+	                        <div class="point-title">구매확정</div>
+	                        <div class="point-code">주문번호 ${pointLog.o_code }</div>
+	                    </c:when>
+	                    <c:otherwise>
+	                        <div class="point-title">${pointLog.o_code }</div>
+	                    </c:otherwise>
+	                </c:choose>
+	            </div>
+	        </div>
+	        <div class="point-amount">
+	            <div>${pointLog.point_type }</div>
+	            <div><fmt:formatNumber value="${pointLog.points }" type="number" groupingUsed="true" />원</div>
+	        </div>
+	    </div>
+	</c:forEach>
+</div>
 </body>
 </html>
