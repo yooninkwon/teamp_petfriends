@@ -83,23 +83,14 @@ function openUsableCoupon() {
     window.open('/mypage/payment/usableCoupon', 'usableCoupon', `width=${popupWidth},height=${popupHeight},left=${popupX},top=${popupY},resizable=no`);
 }
 
-// 현재 포인트 값 저장을 위한 전역 변수
-let currentPointValue = 0;
-// 초기 포인트 값 설정을 위한 전역 변수
-let initialUsablePoints = 0;
-
-document.addEventListener('DOMContentLoaded', function () {
-	initialUsablePoints = parseInt(document.getElementById('usable_point').textContent.replace(/[^0-9]/g, ''));
-    updateSummary(0);
-});
-
-function couponUse(couponName, couponType, couponAmount) {
+function couponUse(couponName, couponType, couponAmount, memCpCode) {
 	// 부모 창의 'usableCoupon' 입력창에 쿠폰 이름 설정
     window.opener.document.getElementById("usableCoupon").value = couponName;
 
-    // 부모 창의 숨겨진 필드에 쿠폰 금액과 타입 전달 (동적 합계 계산을 위해)
+    // 부모 창의 숨겨진 필드에 쿠폰 금액과 타입 전달 (동적 합계 계산 등을 위해)
     window.opener.document.getElementById("couponAmount").value = couponAmount;
     window.opener.document.getElementById("couponType").value = couponType;
+    window.opener.document.getElementById("memCpCode").value = memCpCode;
 	
 	// 현재 포인트 값을 제거하며 합계 갱신
 	window.opener.document.querySelector('.point-option input').value = 0;
@@ -111,6 +102,8 @@ function couponUse(couponName, couponType, couponAmount) {
 }
 
 function pointUse() {
+	updateSummary(0);
+	
     currentPointValue = parseInt(document.querySelector('.point-option input').value) || 0;
 	const finalPrice = parseInt(document.getElementById('final_price').textContent.replace(/[^0-9]/g, ''));
 
@@ -132,7 +125,9 @@ function pointUse() {
 
 // 전액사용 클릭
 function pointUseAll() {
-    const finalPrice = parseInt(document.getElementById('final_price').textContent.replace(/[^0-9]/g, ''));
+	updateSummary(0);
+	
+	const finalPrice = parseInt(document.getElementById('final_price').textContent.replace(/[^0-9]/g, ''));
 
 	if (finalPrice >= initialUsablePoints) {
         currentPointValue = initialUsablePoints;
@@ -171,11 +166,88 @@ function updateSummary(discountPoint) {
         discountCoupon -= remainingNegative;
     }
 	
-    const finalPoint = (finalPrice / 100) * parseFloat(document.body.dataset.userRate);
+	// 적립금 계산
+    const finalPoint = (finalPrice / 100) * document.body.dataset.userRate;
 	
     document.getElementById('price_deliv').textContent = `+${priceDeliv.toLocaleString()}원`;
     document.getElementById('discount_coupon').textContent = `-${discountCoupon.toLocaleString()}원`;
     document.getElementById('discount_point').textContent = `-${discountPoint.toLocaleString()}원`;
     document.getElementById('final_price').textContent = `${finalPrice.toLocaleString()}원`;
     document.getElementById('final_point').textContent = `${finalPoint.toFixed(0).toLocaleString()}원 적립`;
+}
+
+//결제하기 클릭
+function requestPay(buyerEmail, buyerName) {
+    // 데이터 추출
+    const cartCodes = Array.from(document.querySelectorAll('.cart-code')).map(input => input.value);
+    const addr = document.getElementById("addr").textContent;
+    const resiver = document.getElementById("resiver-name").value;
+    const resiverTell = document.getElementById("resiver-tell").value;
+	
+	// entryMethod 분리
+    const entryMethod = document.getElementById("delivEnterMethod").value;
+    const [entry, entryDetail] = entryMethod.split(' / ');
+	
+    const memo = document.getElementById("delivMemo").value;
+	const memCpCode = document.getElementById("memCpCode").value;
+	const coupon = parseInt(document.getElementById("discount_coupon").textContent.replace(/[^0-9]/g, '')) || 0;
+	const point = parseInt(document.getElementById("discount_point").textContent.replace(/[^0-9]/g, '')) || 0;
+	const amount = parseInt(document.getElementById("final_price").textContent.replace(/[^0-9]/g, ''));
+	const saving = parseInt(document.getElementById("final_point").textContent.replace(/[^0-9]/g, ''));
+	
+	// 데이터 검사
+    if (!resiver) {alert("수령인 이름을 입력해 주세요."); document.getElementById("resiver-name").focus(); return;}
+    if (!/^\d{11}$/.test(resiverTell)) {alert("수령인 연락처를 정확히 입력해 주세요."); document.getElementById("resiver-tell").focus(); return;}
+    if (!entryMethod) {alert("배송지 출입방법을 선택해 주세요."); document.getElementById("delivEnterMethod").focus(); return;}
+    if (!memo) {alert("배송 메모를 선택해 주세요."); document.getElementById("delivMemo").focus(); return;}
+
+    // 전달할 데이터 구성
+    const orderData = {
+        o_addr: addr,
+        o_resiver: resiver,
+        o_resiver_tell: resiverTell,
+        o_entry: entry,
+        o_entry_detail: entryDetail,
+        o_memo: memo,
+        mc_code: memCpCode,
+        o_coupon: coupon,
+        o_point: point,
+		o_payment : '',
+        o_amount: amount,
+        o_saving: saving
+    };
+	
+	// 결제창 호출
+    IMP.init('imp73322260');  // 가맹점 식별코드 입력
+    IMP.request_pay({
+        pg: "html5_inicis",
+		name: "결제",
+        amount: amount, // 결제 금액
+		buyer_email: buyerEmail,
+        buyer_name: buyerName
+    }, function (rsp) {
+        if (rsp.success) {
+			
+	        orderData.o_payment = rsp.pay_method;
+			
+			$.ajax({
+		        url: 'payment/submit',
+		        type: 'POST',
+		        contentType: 'application/json',
+		        data: JSON.stringify({
+				        orderData: orderData,
+				        cartCodes: cartCodes
+				    }),
+		        success: function (response) {
+		            alert('결제가 완료되었습니다.');
+		            location.href = '/mypage/order';
+		        },
+		        error: function (error) {
+		            alert('결제 실패: ' + error);
+		        }
+		    });
+        } else {
+            alert('결제 실패: ' + rsp.error_msg);
+        }
+    });
 }

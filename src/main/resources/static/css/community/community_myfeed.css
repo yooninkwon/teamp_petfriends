@@ -1,272 +1,382 @@
 @charset "UTF-8";
 
-
 html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+	margin: 0;
+	padding: 0;
+	height: 100%;
 }
+
+a {
+    text-decoration: none; /* 모든 링크의 밑줄 제거 */
+   	color:#333
+}
+a:hover  {
+    color: #333; /* 마우스를 올렸을 때 색상 변경 */
+}
+
 
 .container {
-    display: flex;
-    width: 80%; /* 전체 너비를 80%로 조정 */ 
-    padding: 20px;
-    box-sizing: border-box; /* 패딩 포함 너비 계산 */
-    justify-content: space-between;
-    margin: 0 auto; /* 중앙 정렬을 위해 자동 마진 추가 */
+	display: flex;
+	width: 80%; /* 전체 너비를 80%로 조정 */
+	padding: 20px;
+	box-sizing: border-box; /* 패딩 포함 너비 계산 */
+	justify-content: space-between;
+	margin: 0 auto; /* 중앙 정렬을 위해 자동 마진 추가 */
 }
+
 
 /* 메인 영역 설정 */
 .my_feed {
-    flex: 3; /* 메인 영역이 남은 너비를 차지 */
-    padding: 20px;
-    background-color: #fff;
+	flex: 3; /* 메인 영역이 남은 너비를 차지 */
+	padding: 20px;
+	background-color: #fff;
 }
 
 /* 이미지 나열을 위한 스타일 추가 */
 .feed-images {
-    display: flex;
-    flex-wrap: wrap; /* 여러 줄로 나열되도록 설정 */
-    gap: 10px; /* 피드 아이템 사이의 간격 */
+	display: flex;
+	flex-wrap: wrap; /* 여러 줄로 나열되도록 설정 */
+	gap: 10px; /* 피드 아이템 사이의 간격 */
 }
 
 .feed-image img {
-    width: 80%; /* 이미지 너비를 80%로 줄임 */
-    max-width: 1500px; /* 이미지의 최대 너비를 600px로 제한 */
-    height: 600px; /* 비율을 유지하면서 높이를 자동으로 조정 */
-    margin: 0 auto; /* 이미지를 가운데 정렬 */
-    display: block; /* 블록 요소로 변경해 가운데 정렬 적용 */
+	width: 80%; /* 이미지 너비를 80%로 줄임 */
+	max-width: 1500px; /* 이미지의 최대 너비를 600px로 제한 */
+	height: 600px; /* 비율을 유지하면서 높이를 자동으로 조정 */
+	margin: 0 auto; /* 이미지를 가운데 정렬 */
+	display: block; /* 블록 요소로 변경해 가운데 정렬 적용 */
 }
 
 .feed-item {
-    max-width: 200px; /* 이미지의 최대 너비를 설정 */
-    text-align: center; /* 텍스트 중앙 정렬 */
+	max-width: 200px; /* 이미지의 최대 너비를 설정 */
+	text-align: center; /* 텍스트 중앙 정렬 */
 }
 
 .feed-item img {
-    width: 100%; /* 이미지를 div의 너비에 맞게 조정 */
-    height: auto; /* 비율에 맞춰 높이 자동 조정 */
+	width: 100%; /* 이미지를 div의 너비에 맞게 조정 */
+	height: auto; /* 비율에 맞춰 높이 자동 조정 */
 }
 
 .feed-info {
-    margin-top: 5px; /* 이미지와 제목/날짜 사이의 간격 */
+	margin-top: 5px; /* 이미지와 제목/날짜 사이의 간격 */
 	overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; /* 한 줄로 유지 */
+	text-overflow: ellipsis;
+	white-space: nowrap; /* 한 줄로 유지 */
 }
 
 .post-title {
-    font-family: 'Arial', sans-serif; /* 원하는 폰트 스타일로 변경 */
-    font-weight: bold; /* 제목을 굵게 표시 */
-    display: block; /* 블록 요소로 변경 */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; /* 한 줄로 유지 */
+	font-family: 'Arial', sans-serif; /* 원하는 폰트 스타일로 변경 */
+	font-weight: bold; /* 제목을 굵게 표시 */
+	display: block; /* 블록 요소로 변경 */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap; /* 한 줄로 유지 */
 	color: #333; /* 기본 글씨 색상 */
-    text-decoration: none; /* 링크의 기본 밑줄 제거 */
+	text-decoration: none; /* 링크의 기본 밑줄 제거 */
 }
-
-
 
 .post-title:hover {
-        color: #ff4081; /* 호버 시 글씨 색상 변경 */
-        text-decoration: underline; /* 호버 시 밑줄 추가 */
-    }
-
-
-.post-time {
-    font-family: 'Arial', sans-serif; /* 원하는 폰트 스타일로 변경 */
-    font-size: 0.9em; /* 날짜 폰트 크기를 줄임 */
-    color: gray; /* 날짜 색상 변경 */
+	color: #ff4081; /* 호버 시 글씨 색상 변경 */
+	text-decoration: underline; /* 호버 시 밑줄 추가 */
 }
 
+.post-time {
+	font-family: 'Arial', sans-serif; /* 원하는 폰트 스타일로 변경 */
+	font-size: 0.9em; /* 날짜 폰트 크기를 줄임 */
+	color: gray; /* 날짜 색상 변경 */
+}
 
 #content {
-    text-align: center;
+	text-align: center;
 }
 
 /* 상단 프로필 영역 스타일 */
 .profile-section {
-    position: absolute; /* 절대 위치 지정 */
-    top: 350px; /* 위쪽 여백 */
-    left: 50%; /* 중앙 정렬 */
-    transform: translateX(-50%); /* 정확한 중앙 정렬을 위한 변환 */
-    display: flex;
-    flex-direction: column; /* 세로 방향 정렬 */
-    align-items: center; /* 중앙 정렬 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    z-index: 10; /* 다른 요소보다 위에 표시 */
+	position: absolute; /* 절대 위치 지정 */
+	top: 350px; /* 위쪽 여백 */
+	left: 50%; /* 중앙 정렬 */
+	transform: translateX(-50%); /* 정확한 중앙 정렬을 위한 변환 */
+	display: flex;
+	flex-direction: column; /* 세로 방향 정렬 */
+	align-items: center; /* 중앙 정렬 */
+	text-align: center; /* 텍스트 중앙 정렬 */
+	/* z-index: 10; 다른 요소보다 위에 표시 */
 	background-color: rgba(0, 0, 0, 0.7); /* 검정색 배경에 70% 투명도 */
 	padding: 15px; /* 내부 여백 추가 */
-    border-radius: 8px; /* 모서리 둥글게 */
+	border-radius: 8px; /* 모서리 둥글게 */
 	width: 800px; /* 프로필 영역 너비 설정 (필요에 따라 조정) */
-    height: auto; /* 높이는 내용에 따라 자동 조정 */
+	height: auto; /* 높이는 내용에 따라 자동 조정 */
 }
 
 /* 이벤트 이미지 스타일 */
 .event-image {
-    position: relative; /* 위치를 상대적으로 설정 */
-    text-align: center; /* 이미지 중앙 정렬 */
+	position: relative; /* 위치를 상대적으로 설정 */
+	text-align: center; /* 이미지 중앙 정렬 */
 }
 
 /* 이벤트 이미지 내부의 이미지 스타일 */
 .event-image img {
-    width: 100%; /* 전체 너비에 맞게 조정 */
-    height: auto; /* 비율에 맞게 높이 자동 조정 */
+	width: 100%; /* 전체 너비에 맞게 조정 */
+	height: auto; /* 비율에 맞게 높이 자동 조정 */
 }
-
-
 
 /* 프로필 이미지 스타일 */
 .main-profile-image {
-    width: 100px; /* 프로필 이미지 너비 */
-    height: 100px; /* 프로필 이미지 높이 */
-    border-radius: 50%; /* 둥근 형태 */
-    border: 2px solid #ff4081; /* 테두리 색상 */
+	width: 100px; /* 프로필 이미지 너비 */
+	height: 100px; /* 프로필 이미지 높이 */
+	border-radius: 50%; /* 둥근 형태 */
+	border: 2px solid #ff4081; /* 테두리 색상 */
 }
-
 
 /* 프로필 정보 스타일 */
-.profile-info h2 {
-    margin: 10px 0; /* 제목의 여백 */
-    font-size: 1.5em; /* 제목 크기 */
-    color: #fff; /* 제목 색상 (배경에 맞춰 조정) */
+.profile-info {
+	display: flex; /* 수평 정렬을 위해 Flexbox 사용 */
+	align-items: center; /* 수직 중앙 정렬 */
+	justify-content: flex-start; /* 왼쪽 정렬 */
+	gap: 10px; /* 이미지와 이름 사이의 간격 */
 }
 
+.profile-info h2 {
+	margin: 10px 0; /* 제목의 여백 */
+	font-size: 1.5em; /* 제목 크기 */
+	color: #fff; /* 제목 색상 (배경에 맞춰 조정) */
+}
 
 /* 프로필 메뉴 스타일 */
 .profile-menu a {
-    margin: 5px; /* 링크 사이의 여백 */
-    color: #fff; /* 링크 색상 (배경에 맞춰 조정) */
-    text-decoration: none; /* 링크의 기본 밑줄 제거 */
-    font-weight: bold; /* 링크 굵게 */
+	margin: 5px; /* 링크 사이의 여백 */
+	color: #fff; /* 링크 색상 (배경에 맞춰 조정) */
+	text-decoration: none; /* 링크의 기본 밑줄 제거 */
+	font-weight: bold; /* 링크 굵게 */
 }
 
 .profile-menu a:hover {
-    text-decoration: underline; /* 호버 시 밑줄 추가 */
+	text-decoration: underline; /* 호버 시 밑줄 추가 */
 }
 
-
-
-
 /* 사이드바 */
-
 .sidebar {
-	flex: 0.7;
+	flex: 0.85;
 	position: relative; /* 사이드바를 메인 영역 옆에 정렬 */
-    top: 20px; /* 헤더의 높이에 따라 조정 */
-    background-color: #fff; /* 배경색 */
-    padding: 20px; /* 내부 여백 */
-    border: 1px solid #ccc; /* 테두리 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    border: 5px solid #ffe5ee;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+	top: 20px; /* 헤더의 높이에 따라 조정 */
+	background-color: #fff; /* 배경색 */
+	padding: 20px; /* 내부 여백 */
+	border: 1px solid #ffe5ee; /* 테두리 */
+	border-radius: 5px; /* 모서리 둥글게 */
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }
 
 .sidebar-header {
-    display: flex;
-    justify-content: flex-start; /* 제목을 왼쪽 정렬 */
-    align-items: center; /* 중앙 정렬 */
-    width: 100%; /* 사이드바의 너비를 100%로 설정 */
+	display: flex;
+	justify-content: flex-start; /* 제목을 왼쪽 정렬 */
+	align-items: center; /* 중앙 정렬 */
+	width: 100%; /* 사이드바의 너비를 100%로 설정 */
 }
 
 .sidebar-header h2 {
-    font-size: 20px; /* 제목 크기 */
-   	 padding: 10px;/* 기본 여백 제거 */
+	font-size: 20px; /* 제목 크기 */
+	padding: 10px; /* 기본 여백 제거 */
 }
 
 .login-button {
-    background-color: #ff4081 !important; /* 버튼 배경색 */
-    color: white !important; /* 텍스트 색상 */
-    padding: 10px 15px !important; /* 내부 여백 */
-    border-color: none !important; /* 테두리 제거 */
-    border-radius: 5px !important; /* 모서리 둥글게 */
-    cursor: pointer !important; /* 마우스 포인터 변경 */
-    display: flex !important;
-    align-items: center !important; /* 수직 중앙 정렬 */
-    justify-content: center !important; /* 수평 중앙 정렬 */
-    width: 240px !important;
-    height: 50px !important;
-    margin: auto !important;
-    text-align: center !important; /* 텍스트 가운데 정렬 */
+	background-color: #ff4081 !important; /* 버튼 배경색 */
+	color: white !important; /* 텍스트 색상 */
+	padding: 10px 15px !important; /* 내부 여백 */
+	border-color: none !important; /* 테두리 제거 */
+	border-radius: 5px !important; /* 모서리 둥글게 */
+	cursor: pointer !important; /* 마우스 포인터 변경 */
+	display: flex !important;
+	align-items: center !important; /* 수직 중앙 정렬 */
+	justify-content: center !important; /* 수평 중앙 정렬 */
+	width: 240px !important;
+	height: 50px !important;
+	margin: auto !important;
+	text-align: center !important; /* 텍스트 가운데 정렬 */
 	font-size: 20px !important;
 	font-weight: bold !important;
 }
 
 .logout-button {
-    background-color: #ff4081 !important; /* 버튼 색상 */
-    color: white !important; /* 텍스트 색상 */
-    padding: 10px 15px !important; /* 내부 여백 */
-    border: none !important;/* 테두리 제거 */
-    border-radius: 5px !important; /* 모서리 둥글게 */
-    cursor: pointer !important; /* 마우스 포인터 변경 */
-    display: flex !important;
-    align-items: center !important;
-    margin-left: auto !important;
+	background-color: #ff4081 !important; /* 버튼 색상 */
+	color: white !important; /* 텍스트 색상 */
+	padding: 10px 15px !important; /* 내부 여백 */
+	border: none !important; /* 테두리 제거 */
+	border-radius: 5px !important; /* 모서리 둥글게 */
+	cursor: pointer !important; /* 마우스 포인터 변경 */
+	display: flex !important;
+	align-items: center !important;
+	margin-left: auto !important;
 	float: right !important;
 }
 
 .sidebar-menu {
-    list-style-type: none; /* 리스트 스타일 제거 */
-    padding: 0; /* 패딩 제거 */
-    margin: 20px 0; /* 위아래 여백 추가 */
+	list-style-type: none; /* 리스트 스타일 제거 */
+	padding: 0; /* 패딩 제거 */
+	margin: 20px 0; /* 위아래 여백 추가 */
 }
 
 .sidebar-menu li {
-    margin: 10px 0; /* 각 항목 사이 여백 추가 */
+	margin: 10px 0; /* 각 항목 사이 여백 추가 */
 }
 
 .sidebar-menu a {
-    text-decoration: none; /* 링크 밑줄 제거 */
-    color: #333; /* 링크 색상 */
+	text-decoration: none; /* 링크 밑줄 제거 */
+	color: #333; /* 링크 색상 */
 }
 
 .sidebar-notice {
-    background-color: #f9f9f9; /* 배경색 설정 */
-    padding: 10px; /* 내부 여백 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    margin: 20px 0; /* 위아래 여백 추가 */
-    max-height: 200px; /* 최대 높이 설정 (원하는 높이로 조정 가능) */
-    overflow-y: auto; /* 세로 스크롤바 추가 */
+	background-color: #f9f9f9; /* 배경색 설정 */
+	padding: 10px; /* 내부 여백 */
+	border-radius: 5px; /* 모서리 둥글게 */
+	margin: 20px 0; /* 위아래 여백 추가 */
+	max-height: 250px; /* 최대 높이 설정 (원하는 높이로 조정 가능) */
+	overflow-y: auto; /* 세로 스크롤바 추가 */
 }
 
 .sidebar-notice h3 {
-    margin: 0; /* 기본 여백 제거 */
+	margin: 0; /* 기본 여백 제거 */
 }
 
 .sidebar-from {
-    margin: 20px 0; /* 위아래 여백 추가 */
+	margin: 20px 0; /* 위아래 여백 추가 */
 }
 
 .sidebar-from h4 {
-    margin: 0; /* 기본 여백 제거 */
+	margin: 0; /* 기본 여백 제거 */
 }
 
 .ad-banner {
-    text-align: center; /* 중앙 정렬 */
-    margin-top: 0px; /* 위쪽 여백 추가 */
+	text-align: center; /* 중앙 정렬 */
+	margin-top: 0px; /* 위쪽 여백 추가 */
 }
 
 .ad-banner img {
-    width: 100%; /* 광고 배너 너비 */
-    height: auto; /* 비율에 맞춰 자동 높이 조절 */
+	width: 100%; /* 광고 배너 너비 */
+	height: auto; /* 비율에 맞춰 자동 높이 조절 */
 	margin-bottom: 10px;
 }
 
 .profile-container {
-    display: flex; /* 수평으로 정렬 */
-    align-items: center; /* 수직 중앙 정렬 */
-    margin-bottom: 20px; /* 아래 여백 추가 */
+	display: flex; /* 수평으로 정렬 */
+	align-items: center; /* 수직 중앙 정렬 */
+	margin-bottom: 20px; /* 아래 여백 추가 */
 }
 
 .profile-image {
-    width: 50px; /* 프로필 이미지 너비 */
-    height: 50px; /* 프로필 이미지 높이 */
-    border-radius: 50%; /* 원형으로 만들기 */
-    margin-right: 10px; /* 이미지와 텍스트 사이 간격 */
+	width: 50px; /* 프로필 이미지 너비 */
+	height: 50px; /* 프로필 이미지 높이 */
+	border-radius: 50%; /* 원형으로 만들기 */
+	margin-right: 10px; /* 이미지와 텍스트 사이 간격 */
 }
 
 .profile-text {
-    font-size: 18px; /* 텍스트 크기 조정 */
-    color: #333; /* 텍스트 색상 */
+	font-size: 18px; /* 텍스트 크기 조정 */
+	color: #333; /* 텍스트 색상 */
+}
+
+/* 모달 창 스타일 */
+.modal {
+	display: none; /* 기본적으로 숨겨둠 */
+	position: fixed; /* 화면에 고정 */
+	top: 50%; /* 화면 중앙 위치 */
+	left: 50%;
+	transform: translate(-50%, -50%); /* 중앙 정렬 */
+	background-color: white; /* 흰색 배경 추가 */
+	padding: 20px;
+	z-index: 9999;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+	max-width: 500px; /* 모달 최대 너비 */
+	width: 100%; /* 전체 너비 사용 */
+	border-radius: 8px; /* 둥근 모서리 */
+}
+
+.modal-content {
+	padding: 10px;
+}
+
+.modal-close {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+/* 모달 배경 클릭 시 닫기 */
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+	z-index: 9998;
+}
+
+#neighborListContainer ul {
+	list-style-type: none; /* 작은 점을 없애는 CSS */
+	padding-left: 0; /* 기본적인 왼쪽 여백을 없애기 위해 추가 */
+}
+
+.neighbor-list {
+	display: flex;
+	flex-direction: column; /* 이웃 항목을 세로로 정렬 */
+}
+
+.neighbor-item {
+	display: flex; /* 수평 정렬 */
+	align-items: center;
+	margin-bottom: 10px; /* 항목 간 간격 */
+}
+
+.neighbor-pet-img-container {
+	margin-right: 10px; /* 이미지와 이름 간 간격 */
+}
+
+.neighbor-pet-img {
+	width: 40px; /* 이미지 크기 설정 */
+	height: 40px; /* 이미지 크기 설정 */
+	object-fit: cover; /* 비율 유지 */
+	border-radius: 50%; /* 원형 이미지 */
+}
+
+.neighbor-name {
+	font-size: 16px; /* 이름 폰트 크기 */
+}
+
+
+/* 현재 채팅방에 활성화된 표시 */
+#chatRoomsList .active {
+    font-weight: bold;
+    color: #ff4081;  /* 활성화된 채팅방을 강조하는 색상 */
+}
+
+/* '내 소식을 눌러보세요!' 텍스트 색상 변경 */
+.notice-text {
+	color: #828282; /* 원하는 색상 코드로 변경 */
+	margin-top: 10px;
+}
+
+/* 채팅 메시지 스타일 */
+#chatMessages {
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    max-width: 60%;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 10px;
+    word-wrap: break-word;
+}
+
+.message.sender {
+    align-self: flex-end; /* 내 메시지는 오른쪽 */
+    background-color: #ffe5ee; /* 내 메시지 배경색 */
+}
+
+.message.receiver {
+    align-self: flex-start; /* 상대방 메시지는 왼쪽 */
+    background-color: #f1f1f1; /* 상대방 메시지 배경색 */
 }

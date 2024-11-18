@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>입양 센터</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey }&libraries=services"></script>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet" href="/static/css/helppetf/adoption_main.css" />
 </head>
@@ -60,13 +60,7 @@
 						<option value="422400">고양이</option>
 						<option value="429900">기타</option>
 					</select>
-	
-					<!-- 품종 선택 -->
-					<select id="kind" name="kind">
-						<option value="any" selected>품종</option>
-						<option value="any">동물종류를 먼저 골라주세요</option>
-					</select>
-	
+		
 					<!-- 검색 버튼 -->
 					<button type="button" id="filterSubmit">검색</button>
 					<button type="button" id="filterReset">선택 초기화</button>
@@ -98,6 +92,7 @@
 		<table id="selectedAnimalTable">
 			<!-- 클릭한 동물의 상세 정보 테이블 -->
 		</table>
+		
 		<!-- 목록으로 돌아가는 버튼 -->
 		<button type="button" id="goMain">목록으로</button>
 	</div>

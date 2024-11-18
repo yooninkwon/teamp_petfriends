@@ -3,12 +3,15 @@ package com.tech.petfriends.admin.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.dto.ProductListDto;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
+import com.tech.petfriends.admin.service.interfaces.AdminExecute;
 
-public class AdminProductListService implements AdminServiceInterface {
+@Service
+public class AdminProductListService implements AdminExecute {
 
 	private AdminProductDao adminProductDao;
 

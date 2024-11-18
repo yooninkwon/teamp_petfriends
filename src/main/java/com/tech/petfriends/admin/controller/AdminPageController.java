@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,21 +24,28 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.tech.petfriends.admin.dto.CouponDto;
 import com.tech.petfriends.admin.dto.MemberCouponDto;
+import com.tech.petfriends.admin.dto.OrderStatusDto;
 import com.tech.petfriends.admin.dto.ProductListDto;
+import com.tech.petfriends.admin.dto.SalesDetailDto;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.mapper.AdminProductDao;
-import com.tech.petfriends.admin.mapper.CouponDao;
+import com.tech.petfriends.admin.mapper.AdminSalesDao;
+import com.tech.petfriends.admin.mapper.CouponOrderDao;
 import com.tech.petfriends.admin.service.AdminEventEditService;
 import com.tech.petfriends.admin.service.AdminNoticeEditService;
 import com.tech.petfriends.admin.service.AdminNoticeWriteService;
-import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
 import com.tech.petfriends.admin.service.AdminProductAddService;
 import com.tech.petfriends.admin.service.AdminProductDetailService;
 import com.tech.petfriends.admin.service.AdminProductListService;
 import com.tech.petfriends.admin.service.AdminProductModifyService;
-import com.tech.petfriends.admin.service.AdminServiceInterface;
+import com.tech.petfriends.admin.service.AdminSalesDetailService;
+import com.tech.petfriends.admin.service.AdminSalesService;
+import com.tech.petfriends.admin.service.interfaces.AdminExecute;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
+import com.tech.petfriends.mypage.dao.MypageDao;
+import com.tech.petfriends.mypage.dto.MyCartDto;
+import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.notice.dao.NoticeDao;
 import com.tech.petfriends.notice.dto.EventDto;
 import com.tech.petfriends.notice.dto.NoticeDto;
@@ -53,41 +61,121 @@ public class AdminPageController {
 	NoticeDao noticeDao;
 	
 	@Autowired
-	CouponDao couponDao;
+	CouponOrderDao couponOrderDao;
+	
+	@Autowired
+	MypageDao mypageDao;
 	
 	@Autowired
 	AdminProductDao adminProductDao;
 	
 	@Autowired
+	AdminSalesDao adminSalesDao;
+  
+	@Autowired
 	MemberMapper memberDao;
 
-	AdminServiceInterface adminServInter;
+	AdminExecute adminExcuteM;
+	
 
 	// 어드민 페이지 내부에서의 펫티쳐페이지로 이동
 	@GetMapping("/petteacher")
-	public String petteacherAdminPage(Model model) {
+	public String petteacherAdminPage() {
 		return "admin/petteacher";
-	}
-
-	// 어드민-펫티쳐 상세페이지
-	@GetMapping("/petteacher_admin_detail")
-	public String petteacherAdminDetail(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		adminServInter = new AdminPetteacherDetailService(adminDao);
-		adminServInter.execute(model);
-		return "admin/petteacher_detail";
-	}
-
-	@GetMapping("/home")
-	public String home() {
-		return "admin/home";
 	}
 
 	@GetMapping("/order")
 	public String order() {
 		return "admin/order";
 	}
+	
+	@GetMapping("/order/data")
+	@ResponseBody
+	public List<MyOrderDto> getOrderData(HttpServletRequest request) {
+		
+		String status = request.getParameter("status");
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		String orderCode = request.getParameter("orderCode");
+		String proCode = request.getParameter("proCode");
+		String memberCode = request.getParameter("memberCode");
+		
+		List<MyOrderDto> orders = couponOrderDao.getAllOrders(status, startDate, endDate, orderCode, proCode, memberCode);
+		
+		return orders;
+	}
+	
+	@Transactional
+	@PostMapping("/order/delivprogress")
+	@ResponseBody
+	public Map<String, Object> updateDeliveryProgress(@RequestBody Map<String, Object> payload) {
+	    String osName = (String) payload.get("osName");
+	    List<String> oCodes = (List<String>) payload.get("oCodes");
+	    
+	    int processedCount = 0;
+	    String errorMessage = null;
+	    // 배송 순서에 따른 유효성 검사값 설정
+	    Map<String, Integer> statusOrder = Map.of(
+	        "결제완료", 1,
+	        "배송준비중", 2,
+	        "배송중", 3,
+	        "배송완료", 4,
+	        "구매확정", 5
+	    );
+	    
+	    for (String oCode : oCodes) {
+	        List<OrderStatusDto> currentStatuses = mypageDao.getStatusByOrderCode(oCode);
+	        String latestStatus = currentStatuses.get(currentStatuses.size() - 1).getOs_name();
 
+	        // 1. 구매확정 상태 확인
+	        if ("구매확정".equals(latestStatus)) {
+	        	errorMessage = "결제코드 : " + oCode + "\n구매확정된 주문은 더 이상 처리할 수 없습니다.";
+	        	break;
+	        }
+	        
+	        int newStatusOrder = statusOrder.get(osName);
+	        int latestStatusOrder = statusOrder.get(latestStatus);
+	        
+	        if (newStatusOrder == latestStatusOrder) {
+	            // 2. 동일한 상태인 경우 기존 상태 삭제 후 추가
+	            couponOrderDao.deleteOrderStatus(oCode, osName);
+	            processedCount += couponOrderDao.updateOrderStatus(oCode, osName);
+	        } else if (newStatusOrder < latestStatusOrder) {
+	            // 3. 새 상태가 현재 상태보다 작은 상태인 경우, 더 높은 상태들까지 삭제
+	            for (OrderStatusDto status : currentStatuses) {
+	                if (statusOrder.get(status.getOs_name()) >= newStatusOrder) {
+	                    couponOrderDao.deleteOrderStatus(oCode, status.getOs_name());
+	                }
+	            }
+	            processedCount += couponOrderDao.updateOrderStatus(oCode, osName);
+	        } else {
+	            // 새 상태가 더 높은 상태인 경우 바로 추가
+	            processedCount += couponOrderDao.updateOrderStatus(oCode, osName);
+	        }
+	    }
+
+	    // 반환할 결과 데이터 구성
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("processedCount", processedCount);
+	    response.put("errorMessage", errorMessage);
+
+	    return response;
+	}
+
+	@GetMapping("/orderDetail")
+	public String orderDetail(Model model, HttpServletRequest request) {
+		
+		MyOrderDto order = mypageDao.getOrderByOrderCode(request.getParameter("orderCode"));
+		ArrayList<OrderStatusDto> orderStatuses = mypageDao.getStatusByOrderCode(request.getParameter("orderCode"));
+		ArrayList<MyCartDto> items = mypageDao.getCartByOrderCode(request.getParameter("orderCode"));
+		
+		model.addAttribute("order", order);
+		model.addAttribute("orderStatuses", orderStatuses);
+		model.addAttribute("items", items);
+		
+		return "admin/orderDetail";
+	}
+	
 	@GetMapping("/coupon")
 	public String couponPage() {
 		return "admin/coupon";
@@ -99,10 +187,11 @@ public class AdminPageController {
 
 		String status = request.getParameter("status");
 		String kind = request.getParameter("kind");
+		String grade = request.getParameter("grade");
 		String type = request.getParameter("type");
 		String sort = request.getParameter("sort");
 
-		List<CouponDto> coupons = couponDao.getAllCoupons(status, kind, type, sort);
+		List<CouponDto> coupons = couponOrderDao.getAllCoupons(status, kind, grade, type, sort);
 
 		return coupons;
 	}
@@ -119,15 +208,14 @@ public class AdminPageController {
 		String couponCode = request.getParameter("couponCode");
 		String orderCode = request.getParameter("orderCode");
 
-		List<MemberCouponDto> coupons = couponDao.getMemberCoupons(status, searchOrder, startDate, endDate, memberCode,
-				couponCode, orderCode);
+		List<MemberCouponDto> coupons = couponOrderDao.getMemberCoupons(status, searchOrder, startDate, endDate, memberCode, couponCode, orderCode);
 		return coupons;
 	}
 
 	@PostMapping("/coupon/register")
 	public String registerCoupon(@RequestBody CouponDto couponDto) {
 
-		couponDao.registerCoupon(couponDto);
+		couponOrderDao.registerCoupon(couponDto);
 
 		return "redirect:/admin/coupon";
 	}
@@ -138,7 +226,7 @@ public class AdminPageController {
 
 		String cp_no = request.getParameter("cpNo");
 
-		CouponDto coupon = couponDao.getCouponById(cp_no);
+		CouponDto coupon = couponOrderDao.getCouponById(cp_no);
 
 		return coupon;
 	}
@@ -150,7 +238,7 @@ public class AdminPageController {
 		String cp_no = request.getParameter("cpNo");
 		couponDto.setCp_no(Integer.parseInt(cp_no));
 		
-		couponDao.updateCoupon(couponDto);
+		couponOrderDao.updateCoupon(couponDto);
 		
 	    return "redirect:/admin/coupon";
 	}
@@ -161,7 +249,7 @@ public class AdminPageController {
 
 		String cp_no = request.getParameter("cpNo");
 		
-		couponDao.deleteCoupon(cp_no);
+		couponOrderDao.deleteCoupon(cp_no);
 	    
 	    return "redirect:/admin/coupon";
 	}
@@ -177,8 +265,8 @@ public class AdminPageController {
 	public List<ProductListDto> productList(@RequestBody Map<String, Object> data,Model model) {
 		model.addAllAttributes(data);
 		
-		adminServInter = new AdminProductListService(adminProductDao);
-		adminServInter.execute(model);
+		adminExcuteM = new AdminProductListService(adminProductDao);
+		adminExcuteM.execute(model);
 		
 		@SuppressWarnings("unchecked")
 		List<ProductListDto> productList = (List<ProductListDto>) model.getAttribute("productList");
@@ -202,8 +290,8 @@ public class AdminPageController {
 	    model.addAttribute("desImages", desImages);
 	    model.addAttribute("options", options);
 		
-		adminServInter = new AdminProductAddService(adminProductDao);
-		adminServInter.execute(model);
+		adminExcuteM = new AdminProductAddService(adminProductDao);
+		adminExcuteM.execute(model);
 		
 	}
 	
@@ -214,8 +302,8 @@ public class AdminPageController {
 		String proCode = request.getParameter("proCode");
 		model.addAttribute("proCode",proCode);
 		
-		adminServInter = new AdminProductDetailService(adminProductDao);
-		adminServInter.execute(model);
+		adminExcuteM = new AdminProductDetailService(adminProductDao);
+		adminExcuteM.execute(model);
 		
 		Map<String, Object> data = new HashMap<>();
 		data.put("pro", model.getAttribute("pro"));
@@ -247,8 +335,8 @@ public class AdminPageController {
 		    model.addAttribute("mainImagesPath", mainImagesPath);
 		    model.addAttribute("desImagesPath", desImagesPath);
 			
-			adminServInter = new AdminProductModifyService(adminProductDao);
-			adminServInter.execute(model);
+			adminExcuteM = new AdminProductModifyService(adminProductDao);
+			adminExcuteM.execute(model);
 			
 		}
 	
@@ -275,6 +363,11 @@ public class AdminPageController {
 	@GetMapping("/customer_info")
 	public String customer_info() {
 		return "admin/customer_info";
+	}
+	
+	@GetMapping("/pet_info")
+	public String pet_info() {
+		return "admin/pet_info";
 	}
 
 	@GetMapping("/community")
@@ -393,12 +486,29 @@ public class AdminPageController {
 	
 
 	@GetMapping("/sales")
-	public String sales() {
+	public String sales(Model model) {
+		
+		adminExcuteM = new AdminSalesService(adminSalesDao);
+		adminExcuteM.execute(model);
+		
 		return "admin/sales";
+	}
+	
+	@PostMapping("/salesDetail")
+	@ResponseBody
+	public List<SalesDetailDto> salesDetail(@RequestBody Map<String, Object> data, Model model) {
+		
+		model.addAllAttributes(data);
+		adminExcuteM = new AdminSalesDetailService(adminSalesDao);
+		adminExcuteM.execute(model);
+		
+		return (List<SalesDetailDto>) model.getAttribute("list");
 	}
 
 	@GetMapping("/customer")
-	public String customer() {
+	public String customer(Model model) {
+		ArrayList<MemberLoginDto> newMemberList = memberDao.newMemberList();
+		model.addAttribute("newMemberList",newMemberList);
 		return "admin/customer";
 	}
 

@@ -94,7 +94,7 @@
 			        </tr>
 			    </thead>
 			    <tbody id="product-table-body">
-			        <!-- 전체 쿠폰 데이터 출력 -->
+			        <!-- 전체 상품 데이터 출력 -->
 			    </tbody>
 			</table>
 			

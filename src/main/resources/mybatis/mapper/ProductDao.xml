@@ -283,6 +283,8 @@
 			PRO_CODE = #{pro_code}
 		AND 
 			PROOPT_CODE	= #{opt_code} 
+		AND
+			O_CODE IS NULL
 	</select>
 	
 	<!-- 제품상세페이지 _ 리뷰리스트 불러오기 -->

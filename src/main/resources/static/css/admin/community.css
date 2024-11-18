@@ -48,7 +48,7 @@ input[type="button"], .report-btn {
     padding: 7px 15px;
     font-size: 14px;
     cursor: pointer;
-    background-color: #4CAF50;
+    background-color: #ff4081;
     color: white;
     border: none;
     border-radius: 5px;
@@ -292,4 +292,90 @@ label, .report-label {
 
 .tab-content.active {
     display: block;
+}
+
+
+/* 팝업 창 배경 */
+.popup {
+    display: none;  /* 기본적으로 숨겨짐 */
+    position: fixed;  /* 화면에 고정 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);  /* 반투명 검정 배경 */
+    z-index: 9999;  /* 다른 요소들보다 위에 표시 */
+    justify-content: center;  /* 수직 중앙 정렬 */
+    align-items: center;  /* 수평 중앙 정렬 */
+}
+
+/* 팝업 콘텐츠 */
+.popup-content {
+    background-color: white;
+    border-radius: 10px;  /* 둥근 모서리 */
+    padding: 20px;
+    width: 400px;
+    max-width: 90%;  /* 화면 크기에 따라 최대 너비 조정 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* 그림자 효과 */
+    text-align: left;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  /* 화면 중앙에 위치시킴 */
+}
+
+/* 팝업 제목 */
+.popup h2 {
+    margin: 0 0 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* 팝업 내용 */
+.popup p {
+    font-size: 16px;
+    color: #555;
+    margin: 10px 0;
+}
+
+/* 팝업의 텍스트 강조 부분 */
+.popup p strong {
+    font-weight: bold;
+    color: #000;
+}
+
+/* 닫기 버튼 */
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+
+/* 닫기 버튼 호버 */
+.popup-close:hover {
+    color: #e74c3c;  /* 빨간색으로 변경 */
+}
+
+/* 게시글로 이동 버튼 */
+.go-to-post-btn {
+    position: absolute;
+    bottom: 20px;  /* 하단에 위치 */
+    right: 20px;   /* 오른쪽에 위치 */
+    padding: 10px 20px;
+    background-color: #ff4081;  /* 파란색 배경 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 버튼 호버 */
+.go-to-post-btn:hover {
+    background-color: #e0e0e0;  /* 호버 시 색상 변경 */
 }

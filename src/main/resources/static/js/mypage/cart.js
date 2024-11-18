@@ -33,8 +33,8 @@ function updateSelectAllStatus() {
 // 합계 계산 기능
 function updateCartTotal() {
     let totalProductPrice = 0;
-    let totalDiscount = 0;
     let totalDeliveryFee = 3000; // 기본 배송비
+    let totalDiscount = 0;
     let finalProductPrice = 0;
     let totalPoints = 0;
     let userRate = parseFloat(document.body.getAttribute('data-user-rate')) / 100;
@@ -52,11 +52,12 @@ function updateCartTotal() {
     });
 	totalDiscount = totalProductPrice - finalProductPrice;
     totalPoints = Math.floor(finalProductPrice * userRate);
+	finalProductPrice += totalDeliveryFee;
 
     // 계산된 값으로 DOM 업데이트
     document.querySelector('#totalProductPrice').innerText = `${totalProductPrice.toLocaleString()}원`;
-    document.querySelector('#totalDiscount').innerText = `-${totalDiscount.toLocaleString()}원`;
     document.querySelector('#totalDeliveryFee').innerText = `+${totalDeliveryFee.toLocaleString()}원`;
+    document.querySelector('#totalDiscount').innerText = `-${totalDiscount.toLocaleString()}원`;
     document.querySelector('#finalProductPrice').innerText = `=${finalProductPrice.toLocaleString()}원`;
     document.querySelector('#totalPoints').innerText = `${totalPoints.toLocaleString()}원`;
 }
@@ -127,7 +128,11 @@ function updateQuantity(event) {
         alert(`재고 이상 담을 수 없습니다.(남은 수량: ${maxStock})`);
         location.reload();
 		return;
-    }
+    } else if (currentQuantity < 1) {
+		alert(`최소 수량 1개 입니다.`);
+        location.reload();
+		return; 
+	}
 	
     // 서버에 업데이트 요청을 보냄
     fetch(`/mypage/updateQuantity`, {

@@ -5,11 +5,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -17,24 +16,37 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.tech.petfriends.configuration.ApikeyConfig;
+import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteMono;
 import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
 
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
 @Service
-public class AdoptionGetJson {
-
+public class AdoptionGetJson implements HelppetfExecuteMono<HelpPetfAdoptionItemsVo>{
+	
 	// WebClient는 비동기적으로 HTTP 요청을 보내기 위해 사용되는 스프링 WebFlux의 클라이언트이다.
 	private final WebClient webClient;
 
-	@Autowired // api key 주입
-	ApikeyConfig apikeyConfig;
+	private final ApikeyConfig apikeyConfig;
 
-	public AdoptionGetJson(final WebClient webClient) {
+	public AdoptionGetJson(ApikeyConfig apikeyConfig, WebClient webClient) {
+		this.apikeyConfig = apikeyConfig;
 		this.webClient = webClient;
 	}
-
+	
+	@Override
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> execute(HttpServletRequest request) {
+		
+		try {
+			return fetchAdoptionData(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Mono.error(new RuntimeException("Json 데이터를 불러오는 것에 실패하였습니다.", e));
+		}
+		
+	}
+	
     /**
      * 비동기적으로 JSON 데이터를 API로부터 받아온 후 HelpPetfAdoptionItemsVo 타입으로 변환하여 반환한다.
      * Mono는 단일 데이터 또는 빈 데이터를 발행하는 비동기 스트림을 의미하며, 비동기 HTTP 요청의 응답을 관리하는 데 사용한다.
@@ -44,7 +56,8 @@ public class AdoptionGetJson {
      * @throws Exception 예외 발생 시
      * 	빈 리스트를 가진 HelpPetfAdoptionItemsVo를 생성하고, 내부 서버 오류 상태를 반환
      */
-	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionData(Model model, HttpServletRequest request) throws Exception {
+	@Cacheable("adoptionData") // 캐싱 가능 어노테이션
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionData(HttpServletRequest request) throws Exception {
 
 		// api 요청주소 End point
 		String baseUrl = "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
@@ -57,25 +70,24 @@ public class AdoptionGetJson {
 		String upr_cd = setValueOfParam(request, "upr_cd");
 		String org_cd = setValueOfParam(request, "org_cd");
 		String upKind = setValueOfParam(request, "upKind");
-		String kind = setValueOfParam(request, "kind");
 
 		String numOfRows = "&numOfRows=" + "80";
 		String _type = "&_type=" + "json";
 		String extraParam = pageNo + numOfRows + _type;
-		String addParameters = apikey + upr_cd + org_cd + upKind + kind + extraParam;
+		String addParameters = apikey + upr_cd + org_cd + upKind + extraParam;
 
 		/**
 		 * 작동 : .get() : http get 요청 보냄 .retrieve() : 서버로부터 응답 받아옴 .onStatus() : 4xx, 5xx
 		 * 오류일 시 예외 발생 .bodyToMono(String.class) : 응답 본문을 String으로 받음
 		 * 
 		 * 파싱 -> .map(json -> ... )} : parsingJsonObject() 메서드 호출
-		 */
+		 */		
 		return webClient.get().uri(baseUrl + addParameters)
 				.retrieve()
 				.onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Client Error")))
 				.onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new Exception("Server Error")))
 				.bodyToMono(String.class) // JSON 데이터를 문자열로 받음
-				.retryWhen(Retry.backoff(3, Duration.ofSeconds(2)))
+				.retryWhen(Retry.backoff(3, Duration.ofSeconds(5)))
 				.map(json -> {
 					HelpPetfAdoptionItemsVo adoptionItems;
 					try { // try: json 파싱
@@ -142,5 +154,7 @@ public class AdoptionGetJson {
 		}
 
 	}
+
+
 
 }

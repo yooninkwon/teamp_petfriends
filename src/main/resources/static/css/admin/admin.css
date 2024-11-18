@@ -67,11 +67,17 @@ i {
 }
 #sidebar-left ul li:hover {
     color: black;
-    background-color: #ffc9dc;
+    background-color: rgb(255, 181, 207);
 }
 #sidebar-left ul li.active {
-    color: black;
+    color: #000;
     background-color: #ffc9dc;
+}
+#sidebar-left ul li.active-sub a {
+    color: #ff4081;
+}
+#sidebar-left ul li a:hover {
+    color: #ff4081;
 }
 .submenu {
 	margin-top: 20px;

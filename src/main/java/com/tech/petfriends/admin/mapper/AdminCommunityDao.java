@@ -1,6 +1,5 @@
 package com.tech.petfriends.admin.mapper;
 
-import java.sql.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -20,6 +19,15 @@ public interface AdminCommunityDao {
                  String searchEndDate);
 
 	
-  
+  int reportTotalItems(String searchKeyword, String searchFilterType, 
+          String searchCategory, String searchStartDate, 
+          String searchEndDate);
+
+  void reportStatusUpdate(int reportid);
+
  
+  
+  
+  
+  
 }

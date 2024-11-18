@@ -104,36 +104,38 @@
 			 MEMBER MEM 
 		<where>
 			HPHM.MEM_CODE = MEM.MEM_CODE
+		</where>
 			<!-- 예약상태 필터 -->
 			<choose>
-				<when test="reserveType == '전체'">AND HPH_STATUS IS NOT NULL</when>
-				<when test="reserveType == '신청중'">AND HPH_STATUS = '신청중'</when>
-				<when test="reserveType == '승인'">AND HPH_STATUS = '승인'</when>
-				<when test="reserveType == '거절'">AND HPH_STATUS = '거절'</when>
+				<when test="reserveType == '전체'">AND HPHM.HPH_STATUS IS NOT NULL</when>
+				<when test="reserveType == '신청중'">AND HPHM.HPH_STATUS = '신청중'</when>
+				<when test="reserveType == '승인'">AND HPHM.HPH_STATUS = '승인'</when>
+				<when test="reserveType == '거절'">AND HPHM.HPH_STATUS = '거절'</when>
+				<when test="reserveType == '취소됨'">AND HPHM.HPH_STATUS = '취소됨'</when>
 			</choose>
 			
 			<!-- 기간 필터 -->
  			<if test="(startDate != null and startDate != '') or (endDate != null and endDate != '')">
 	            <choose>
 	            	<when test="(startDate != null and startDate != '') and (endDate == null or endDate == '')">
-	            		AND HPH_START_DATE &gt;= TO_DATE(#{startDate}, 'YYYY/MM/DD')
+	            		AND HPHM.HPH_START_DATE &gt;= TO_DATE(#{startDate}, 'YYYY/MM/DD')
 	            	</when>
 	            	<when test="(endDate != null and endDate != '') and (startDate == null or startDate == '')">
-	            		AND HPH_END_DATE &lt;= TO_DATE(#{endDate}, 'YYYY/MM/DD')
+	            		AND HPHM.HPH_END_DATE &lt;= TO_DATE(#{endDate}, 'YYYY/MM/DD')
 	            	</when>
 	            	<when test="(startDate != null and endDate != null) or (startDate != '' and endDate != '')">
-	            		AND HPH_START_DATE &gt;= TO_DATE(#{startDate}, 'YYYY/MM/DD')
-	            		AND HPH_END_DATE &lt;= TO_DATE(#{endDate}, 'YYYY/MM/DD')
+	            		AND HPHM.HPH_START_DATE &gt;= TO_DATE(#{startDate}, 'YYYY/MM/DD')
+	            		AND HPHM.HPH_END_DATE &lt;= TO_DATE(#{endDate}, 'YYYY/MM/DD')
 	            	</when>
 	            </choose>
         	</if>
         	
         	<!-- 멤버 코드 -->
-			<if test="memberCode != '' and memberCode != null"> AND MEM_CODE = #{memberCode} </if>
+			<if test="memberCode != '' and memberCode != null"> AND HPHM.MEM_CODE = #{memberCode} </if>
 
         	<!-- 예약 코드 -->
-			<if test="reserveCode != '' and memberCode != null"> AND HPH_RESERVE_NO = #{reserveCode} </if>
-		</where>
+			<if test="reserveCode != '' and memberCode != null"> AND HPHM.HPH_RESERVE_NO = #{reserveCode} </if>
+		
 		ORDER BY HPH_RGE_DATE DESC
 	</select>
 	<select id="adminPethotelReservePets" resultType="com.tech.petfriends.helppetf.dto.PethotelFormDataDto">

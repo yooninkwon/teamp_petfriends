@@ -1,9 +1,15 @@
 package com.tech.petfriends.join.controller;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
+import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,6 +59,40 @@ public class SmsController {
         HashMap<String, String> response = new HashMap<>();
         response.put("authCode", authCode);
         return response;
+    }
+    
+    @PostMapping("/send-sms-admin")
+    public ResponseEntity<String> sendSmsAdmin(@RequestBody Map<String, Object> request) {
+        List<String> phoneNumbers = (List<String>) request.get("phoneNumbers");
+        String messageText = (String) request.get("message");
+
+        if (phoneNumbers == null || phoneNumbers.isEmpty() || messageText == null || messageText.isEmpty()) {
+            return ResponseEntity.badRequest().body("잘못된 요청입니다.");
+        }
+        
+        String coolApi = apikeyConfig.getCoolApikey();
+        String coolSecret = apikeyConfig.getCoolSecretkey();
+        this.messageService = NurigoApp.INSTANCE.initialize(coolApi, coolSecret, "https://api.coolsms.co.kr"); 
+
+        for (String phoneNumber : phoneNumbers) {
+            try {
+                // 메시지 객체 생성
+                Message message = new Message();
+                message.setFrom("01058403660"); // 실제 발신번호 설정
+                message.setTo(phoneNumber);
+                message.setText("[펫프렌즈] " + messageText);
+
+                // SMS 전송
+                messageService.send(message);
+                System.out.println("전송 성공: " + phoneNumber);
+            } catch (Exception e) {
+                System.out.println("전송 실패: " + phoneNumber + " - " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                     .body("문자 전송 중 오류가 발생했습니다: " + e.getMessage());
+            }
+        }
+
+        return ResponseEntity.ok("{\"message\": \"문자 전송이 성공적으로 완료되었습니다.\"}");
     }
 
     // 인증번호 생성 함수

@@ -28,14 +28,14 @@
 
 .filter-section-1 {
     display: flex;
+    align-items: center;
 }
 .filter-section-2 {
     display: block;
 }
 .filter-title{
 	width: 150px;
-	height: 100%;
-    padding: 5px 30px;
+    padding: 7px 30px;
     background-color: #dddddd;
     font-size: 14px;
     font-weight: bold;
@@ -57,6 +57,7 @@ label {
 	width: 100%;
     border: 2px solid white;
     background-color: #efefef;
+    align-items: center;
 }
 .checkbox-group, .date-group, .search-group {
     display: flex;
@@ -74,12 +75,12 @@ label {
 #sort-order{
 	height: 30px;
 }
-#search-order{
+.search-order{
 	height: 25px;
     margin-left: 10px;
 }
 input[type="text"] {
-    width: 150px;
+    width: 250px;
     height: 25px;
     padding: 2px;
     border: 1px solid #ddd;

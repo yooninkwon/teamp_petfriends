@@ -1,5 +1,6 @@
 package com.tech.petfriends.community.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tech.petfriends.community.dto.CCategoryDto;
+import com.tech.petfriends.community.dto.CChatDto;
+import com.tech.petfriends.community.dto.CCommunityFriendDto;
 import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.dto.CReportDto;
 import com.tech.petfriends.community.mapper.IDao;
@@ -29,14 +33,18 @@ import com.tech.petfriends.community.service.CCommentService;
 import com.tech.petfriends.community.service.CContentViewService;
 import com.tech.petfriends.community.service.CDeleteService;
 import com.tech.petfriends.community.service.CDownloadService;
+import com.tech.petfriends.community.service.CFriendService;
 import com.tech.petfriends.community.service.CModifyService;
 import com.tech.petfriends.community.service.CMyFeedService;
+import com.tech.petfriends.community.service.CMyNeighborListService;
+import com.tech.petfriends.community.service.CNeighborListService;
 import com.tech.petfriends.community.service.CPostListService;
 import com.tech.petfriends.community.service.CReportService;
 import com.tech.petfriends.community.service.CServiceInterface;
 import com.tech.petfriends.community.service.CUpdateLikeService;
 import com.tech.petfriends.community.service.CWriteService;
 import com.tech.petfriends.community.service.CWriteViewService;
+import com.tech.petfriends.login.dto.MemberLoginDto;
 
 @Controller
 @RequestMapping("/community")
@@ -45,7 +53,8 @@ public class CommunityController {
 	@Autowired
 	private IDao iDao;
 
-	@Autowired
+	
+	 @Autowired
 	private CServiceInterface serviceInterface;
 
 	// 커뮤니티 페이지로 이동
@@ -224,7 +233,7 @@ public class CommunityController {
 		return ResponseEntity.ok(response); // JSON 형식으로 응답 반환
 	}
 
-	@RequestMapping("/myfeed/{mem_code}")
+	@GetMapping("/myfeed/{mem_code}")
 	public String myfeed(@PathVariable String mem_code, HttpSession session, HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		model.addAttribute("mem_code", mem_code);
@@ -233,10 +242,61 @@ public class CommunityController {
 
 		serviceInterface = new CMyFeedService(iDao);
 		serviceInterface.execute(model);
-
+		
+		
 		return "/community/myfeed";
 	}
 
+	
+	@GetMapping("/neighborList/{mem_code}")
+	@ResponseBody
+	public ArrayList<CCommunityFriendDto> neighborList(@PathVariable String mem_code, HttpSession session, HttpServletRequest request, Model model) {
+	    System.out.println("neighborList()");
+
+	    model.addAttribute("session", session);
+	    model.addAttribute("request", request);
+	    serviceInterface = new CNeighborListService(iDao);
+	    serviceInterface.execute(model);
+	    
+	    ArrayList<CCommunityFriendDto> neighborList = (ArrayList<CCommunityFriendDto>) model.getAttribute("neighborList");
+	    System.out.println("neighborList" + neighborList.size());
+	    return neighborList;  
+	}
+	
+	
+	@GetMapping("/myNeighborList/{mem_code}")
+	@ResponseBody
+	public ArrayList<CCommunityFriendDto> myNeighborList(@PathVariable String mem_code, HttpSession session, HttpServletRequest request, Model model) {
+	    System.out.println("MyNeighborList()");
+
+	    model.addAttribute("session", session);
+	    model.addAttribute("request", request);
+	    serviceInterface = new CMyNeighborListService(iDao);
+	    serviceInterface.execute(model);
+	    
+	    ArrayList<CCommunityFriendDto> myNeighborList = (ArrayList<CCommunityFriendDto>) model.getAttribute("MyNeighborList");
+	   
+	    return myNeighborList;  
+	}
+	
+	
+	
+	@GetMapping("/MainNeighborList")
+	@ResponseBody
+	public ArrayList<CCommunityFriendDto> MainNeighborList(HttpSession session, HttpServletRequest request, Model model) {
+	    System.out.println("MyNeighborList()");
+
+	    model.addAttribute("session", session);
+	    model.addAttribute("request", request);
+	    serviceInterface = new CMyNeighborListService(iDao);
+	    serviceInterface.execute(model);
+	    
+	    ArrayList<CCommunityFriendDto> MainNeighborList = (ArrayList<CCommunityFriendDto>) model.getAttribute("MyNeighborList");
+	   
+	    return MainNeighborList;  
+	}
+	
+	
 	@PostMapping("/report")
 	public  ResponseEntity<Map<String, String>> communityReport(@RequestBody CReportDto reportDto, Model model) {
 		
@@ -244,11 +304,14 @@ public class CommunityController {
 		System.out.println("communityReport");
 		
 		model.addAttribute("board_no", reportDto.getBoard_no());
+		model.addAttribute("mem_code", reportDto.getMem_code());
 	    model.addAttribute("reporter_id", reportDto.getReporter_id());
 	    model.addAttribute("reason", reportDto.getReason());
 	    model.addAttribute("comment_no", reportDto.getComment_no());
 	    model.addAttribute("report_type", reportDto.getReport_type());
 	   
+	
+	    System.out.println("reportDto.getMem_code() " + reportDto.getMem_code());
 	    System.out.println("reportDto.getBoard_no() " + reportDto.getBoard_no());
 	    System.out.println("reportDto.reporter_id() " + reportDto.getReporter_id());
 	    System.out.println("reportDto.reason() " + reportDto.getReason());
@@ -261,8 +324,75 @@ public class CommunityController {
 	    Map<String, String> response = new HashMap<>();
 	    response.put("message", "신고가 제출되었습니다.");
 	    return ResponseEntity.ok(response);
+	    
+	}
 
 	
+	@GetMapping("/addFriend/{mem_code}")
+	public String addFriend(@PathVariable String mem_code, HttpSession session, HttpServletRequest request, Model model) {
+	    System.out.println("addFriend()");
+	    model.addAttribute("session", session);
+	    model.addAttribute("request", request);
+	    serviceInterface = new CFriendService(iDao);
+	    serviceInterface.execute(model);
+	    System.out.println("mem_code: " + mem_code);
+	    
+	    System.out.println("isFriendBool: " + model.getAttribute("isFriendBool")); // 디버깅용
+	    return "redirect:/community/myfeed/" + mem_code;
 	}
+	
+	@GetMapping("/myActivity")
+	@ResponseBody
+	public ArrayList<CDto> activityList (Model model, HttpSession session) {
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser"); 
+		String user_id = loginUser.getMem_nick();
+		System.out.println("user_id: "+ user_id);
+           
+	    ArrayList<CDto> activityList = iDao.myActivityList(user_id);
+	    System.out.println("Returned activityList: " + activityList);
+	
+	    return activityList;
+     
+	}
+	
+	@GetMapping("/userActivity")
+	@ResponseBody
+	public ArrayList<CDto> userActivityList (Model model, HttpSession session) {
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser"); 
+		String user_id = loginUser.getMem_nick();
+		System.out.println("user_id: "+ user_id);
+           
+	    ArrayList<CDto> activityList = iDao.userActivityList(user_id);
+	    System.out.println("Returned activityList: " + activityList);
+	
+	    return activityList;
+	}
+	
+	
+    @GetMapping("/getChatHistory")
+    @ResponseBody
+    public List<CChatDto> getChatHistory(@RequestParam("roomId") String roomId) {
+      System.out.println("roomId:"+roomId);
+    	// 서비스에서 roomId로 메시지 리스트 조회
+    	List<CChatDto> getChatHistory = iDao.getChatHistory(roomId);
+    	
+    	
+    	return getChatHistory;
+    }
+	
+    @GetMapping("/getChatRooms")
+    @ResponseBody
+    public List<CChatDto> getChatRooms(HttpSession session) {
+    	String sender = ((MemberLoginDto) session.getAttribute("loginUser")).getMem_nick();
+    	System.out.println("sender:"+ sender);
+    
+              
+        List<CChatDto> getChatRooms = iDao.getChatRooms(sender);
+        return getChatRooms;
+    }
+    
+    
+    
+    
 
 }

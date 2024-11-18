@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>주문 및 결제</title>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script src="https://kit.fontawesome.com/6c32a5aaaa.js" crossorigin="anonymous"></script>
 <jsp:include page="/WEB-INF/views/include_jsp/include_css_js.jsp" />
 <link rel="stylesheet" href="/static/css/mypage/mypage2.css">
@@ -15,11 +16,10 @@
 <body data-user-rate="${userGrade.g_rate}">
 <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
-<div class="payment-container">
-    <header class="payment-header">
-        <h2>주문/결제</h2>
-    </header>
+<h2>주문/결제</h2>
 
+<div class="payment-container">
+	
     <!-- 주문자 정보 -->
     <section class="order-info" style="padding: 0 20px;">
         <h3 style="margin-top: 20px">주문자 정보</h3>
@@ -32,7 +32,7 @@
         <div class="delivery-address">
             <c:forEach var="address" items="${address}">
                 <c:if test="${address.addr_default.toString() == 'Y'}">
-                    <div>${address.addr_line1} ${address.addr_line2}</div>
+                    <div id="addr">${address.addr_line1} ${address.addr_line2}</div>
                 </c:if>
             </c:forEach>
         </div>
@@ -69,6 +69,7 @@
                 </div>
             </div>
         	<c:set var="priceSum" value="${priceSum + (item.proopt_finalprice * item.cart_cnt)}" />
+        	<input type="hidden" class="cart-code" value="${item.cart_code}">
         </c:forEach>
     </section>
 
@@ -81,37 +82,37 @@
         </div>
         <input type="hidden" id="couponAmount" value="0">
 		<input type="hidden" id="couponType" value="">
+		<input type="hidden" id="memCpCode" value="">
 		
-        <div class="point-option">심쿵 포인트<input type="number" placeholder="0원" onchange="pointUse()"><button onclick="pointUseAll()">전액 사용</button></div>
+        <div class="point-option">심쿵 포인트<input type="number" placeholder="0원" id="used-point" onchange="pointUse()"><button onclick="pointUseAll()">전액 사용</button></div>
         <div class="user-point">보유 포인트 <span id="usable_point" style="color: #ff4081;"><fmt:formatNumber value="${loginUser.mem_point}" type="number" groupingUsed="true"/>원</span></div>
     </section>
 
     <!-- 결제금액 -->
-    <section class="payment-summary">
+    <section class="payment-summary" style="border: none;">
         <h3>결제금액</h3>
         <div class="summary-item">총 상품 금액 <span id="price_sum"><fmt:formatNumber value="${priceSum}" type="number" groupingUsed="true"/>원</span></div>
-        <div class="summary-item">배송비 <span id="price_deliv">0원</span></div>
-        <div class="summary-item">주문 쿠폰 <span id="discount_coupon">0원</span></div>
-        <div class="summary-item">사용 포인트 <span id="discount_point">0원</span></div>
+        <div class="summary-item">배송비 <span id="price_deliv"></span></div>
+        <div class="summary-item">주문 쿠폰 <span id="discount_coupon"></span></div>
+        <div class="summary-item">사용 포인트 <span id="discount_point"></span></div>
         <hr />
-        <div class="total-amount">총 결제 금액 <span id="final_price">0원</span></div>
-        <div class="total-point">구매 시 <span id="final_point" style="color: #ff4081;">0원 적립</span></div>
+        <div class="total-amount">총 결제 금액 <span id="final_price"></span></div>
+        <div class="total-point">구매 시 <span id="final_point" style="color: #ff4081;"></span></div>
     </section>
 
-    <!-- 결제수단 -->
-    <section style="border: none;">
-        <h3>결제수단</h3>
-        <div class="payment-method">
-	        <button class="selected"><i class="fa-regular fa-credit-card"></i><br />신용/체크카드</button>
-	        <button><i class="fa-solid fa-money-check"></i><br />실시간 계좌이체</button>
-        </div>
-    </section>
-
-    <button class="payment-button" onclick="requestPay()">결제하기</button>
+    <button class="payment-button" onclick="requestPay('${loginUser.mem_email}','${loginUser.mem_name}')">결제하기</button>
 </div>
 
 <script>
+// 초기 포인트 값 설정을 위한 전역 변수
+let initialUsablePoints = 0;
+// 현재 포인트 값 저장을 위한 전역 변수
+let currentPointValue = 0;
+
 document.addEventListener("DOMContentLoaded", function() {
+	initialUsablePoints = parseInt(document.getElementById('usable_point').textContent.replace(/[^0-9]/g, ''));
+    updateSummary(0);
+	
     document.getElementById("defaultAddress").addEventListener("change", function() {
         if (this.checked) {
         	document.getElementById("resiver-name").value = "${loginUser.mem_name}";

@@ -25,6 +25,7 @@
 	        <li><a href="<c:url value='/mypage/order' />" id="order-menu">주문내역</a></li>
 	        <li><a href="<c:url value='/mypage/review' />" id="review-menu">구매후기</a></li>
 	        <li><a href="<c:url value='/mypage/wish' />" id="wish-menu">즐겨찾는 상품</a></li>
+	        <li><a href="<c:url value='/mypage/pethotel' />" id="pethotel">펫호텔 예약</a></li>
 	    </ul>
 	</aside>
 	
@@ -58,6 +59,8 @@
 		        document.getElementById("review-menu").classList.add("active");
 		    } else if (currentPage.includes("/mypage/wish")) {
 		        document.getElementById("wish-menu").classList.add("active");
+		    } else if (currentPage.includes("/mypage/pethotel")) {
+		        document.getElementById("pethotel").classList.add("active");
 		    }
 		});
 	</script>

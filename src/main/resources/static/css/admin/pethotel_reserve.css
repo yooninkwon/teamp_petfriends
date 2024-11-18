@@ -44,6 +44,7 @@ label {
 	border: 2px solid white;
 	background-color: #efefef;
 }
+
 .radio-div {
 	display: flex;
 	width: 100%;
@@ -121,11 +122,12 @@ input[type="text"] {
 	background-color: #545454;
 	color: white;
 }
+
 #reserveDetailButtons {
 	display: flex;
-    padding-left: 5px;
-    padding-right: 0px;
-    justify-content: space-between;
+	padding-left: 5px;
+	padding-right: 0px;
+	justify-content: space-between;
 }
 
 #goBack {
@@ -137,49 +139,66 @@ input[type="text"] {
 }
 
 #goBack, #reserveSubmit {
-	
 	padding: 10px;
 }
 
-
 /* 모달창 */
 .modal {
-    position: fixed; 
-    z-index: 9999; 
-    left: 0; 
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0, 0, 0, 0.4); /* 반투명 검정 배경 */
+	position: fixed;
+	z-index: 9999;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4); /* 반투명 검정 배경 */
 }
+
 .modal-content {
-    position: relative;
-    margin: 10% auto; /* 중앙 정렬 */
-    margin-top: 15%;
-    padding: 40px;
-    width: 600px;
-    background-color: #f4f4f4;
-    text-align: left;
+	position: relative;
+	margin: 10% auto; /* 중앙 정렬 */
+	margin-top: 15%;
+	padding: 40px;
+	width: 600px;
+	background-color: #f4f4f4;
+	text-align: left;
 }
+
 .close-btn {
-    position: absolute;
-    right: 20px;
-    top: 15px;
-    cursor: pointer;
+	position: absolute;
+	right: 20px;
+	top: 15px;
+	cursor: pointer;
 }
+
 .input-group {
 	display: flex;
-    margin: 5px;
-    height: 30px;
+	margin: 5px;
+	height: 30px;
 }
+
 .input-group label {
 	width: 120px;
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .input-group textarea {
-    width: 200px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    font-size: 15px;
+	width: 260px;
+	height: 50px;
+	padding: 5px;
+	border: 1px solid #ccc;
+	font-size: 15px;
+}
+
+.detail-comment-th {
+	text-align: center;
+}
+
+.detail-comment {
+	margin-bottom: 3px;
+	word-break: break-all;
+}
+
+.space {
+    padding: 10px 0;
+    border:none;
 }

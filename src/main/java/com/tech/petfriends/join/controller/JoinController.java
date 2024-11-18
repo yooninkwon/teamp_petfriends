@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.dto.MemberPointsDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.login.util.PasswordEncryptionService;
 import com.tech.petfriends.member.service.MemberService;
@@ -39,20 +40,16 @@ public class JoinController {
 	@GetMapping("/joinPage")
 	public String JoinPage(Model model) {
 		System.out.println("회원가입 페이지 이동");
-		
 		String kakaoApiKey = apikeyConfig.getKakaoApikey();
 		model.addAttribute("kakaoApi",kakaoApiKey);
-		
 		return "/join/joinPage";
 	}
 	
 	@GetMapping("/addressMap")
 	public String AddrMap(Model model) {
 		System.out.println("주소 지도 화면 이동");
-		
 		String kakaoApiKey = apikeyConfig.getKakaoApikey();
 		model.addAttribute("kakaoApi",kakaoApiKey);
-		
 		return "/join/addressMap";
 	}
 	
@@ -66,11 +63,11 @@ public class JoinController {
         
         String phoneNumber = request.getParameter("phoneNumber");
         
-        int duplicateCount = memberMapper.isPhoneNumberDuplicate(phoneNumber);
-        if (duplicateCount > 0) {
-        	redirectAttributes.addFlashAttribute("error", "이미 가입된 정보입니다.");
-            return "redirect:/login/loginPage";  // 중복일 경우 회원 가입 페이지로 다시 이동
-        }
+//        int duplicateCount = memberMapper.isPhoneNumberDuplicate(phoneNumber);
+//        if (duplicateCount > 0) {
+//        	redirectAttributes.addFlashAttribute("error", "이미 가입된 정보입니다.");
+//            return "redirect:/login/loginPage";
+//        }
         
         // UUID로 mem_code 생성
         String uniqueID = UUID.randomUUID().toString();
@@ -96,8 +93,6 @@ public class JoinController {
         }
         
         member.setMem_gender(request.getParameter("gender"));
-        member.setMem_invite(request.getParameter("inviteCode"));
-        
         // 현재 시간 설정
         java.sql.Timestamp currentTime = new java.sql.Timestamp(System.currentTimeMillis());
         member.setMem_regdate(currentTime);
@@ -109,16 +104,45 @@ public class JoinController {
         String uniqueID2 = UUID.randomUUID().toString();
         address.setAddr_code(uniqueID2);
         // 멤버 코드는 동일하게 맞추기 위해 기존 uuid 사용
-        address.setMem_code(uniqueID);
-        
+        address.setMem_code(uniqueID);   
         address.setAddr_postal(request.getParameter("postcode"));
         address.setAddr_line1(request.getParameter("address"));
         address.setAddr_line2(request.getParameter("detailAddress"));
-        address.setAddr_default('Y');
+        address.setAddr_default('Y');   
+        memberService.joinAddress(address);            
         
-        memberService.joinAddress(address);       
-        
-        System.out.println("회원 가입 서비스 이동");
+        // 가입하는 회원이 기존 회원 닉네임 초대코드로 입력시 적립금 적립
+        String inviteMember = request.getParameter("inviteCode");
+        if (inviteMember != null && !inviteMember.equals("")) {
+            if (memberMapper.isNicknameDuplicate(inviteMember) == 1) {
+                MemberLoginDto inviteUser = memberMapper.nickNameMember(inviteMember);
+                if (inviteUser != null) {
+                    member.setMem_invite(inviteUser.getMem_nick());
+
+                    // 초대 회원 포인트 적립 처리
+                    MemberPointsDto invitePoints = new MemberPointsDto();
+                    invitePoints.setMem_code(inviteUser.getMem_code());
+                    invitePoints.setO_code("가입 추천 적립금");
+                    invitePoints.setPoint_info("적립");
+                    invitePoints.setPoint_type('+');
+                    invitePoints.setPoints(5000);
+                    memberMapper.insertPoints(invitePoints);
+                    memberMapper.updatePointsForInvite(inviteUser.getMem_code(), invitePoints.getPoints());
+
+                    // 신규 가입 회원 포인트 적립 처리
+                    MemberPointsDto newMemberPoints = new MemberPointsDto();
+                    newMemberPoints.setMem_code(uniqueID);
+                    newMemberPoints.setO_code("가입 적립금");
+                    newMemberPoints.setPoint_info("적립");
+                    newMemberPoints.setPoint_type('+');
+                    newMemberPoints.setPoints(5000);
+                    memberMapper.insertPoints(newMemberPoints);
+                    memberMapper.updatePointsForInvite(newMemberPoints.getMem_code(), newMemberPoints.getPoints());
+                }
+            } else {
+                member.setMem_invite("");
+            }
+        }
         
         // 회원가입 후 로그인 처리 (세션에 로그인 정보 저장)
         session.setAttribute("loginUser", member);

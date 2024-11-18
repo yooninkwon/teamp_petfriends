@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tech.petfriends.admin.mapper.AdminSalesDao">
+	
+	<select id="todaySales" 
+		resultType="com.tech.petfriends.admin.dto.SalesDto">
+		SELECT 
+		    OS.OS_NAME,
+		    COUNT(DISTINCT OS.O_CODE) AS count,  
+		    SUM(CASE
+		            WHEN OS.OS_NAME = '결제완료' THEN O.O_AMOUNT
+		            WHEN OS.OS_NAME = '주문취소' THEN O.O_AMOUNT
+		            ELSE 0
+		        END) AS amount  
+		FROM 
+		    ORDER_STATUS OS
+		INNER JOIN 
+		    "ORDER" O ON OS.O_CODE = O.O_CODE 
+		WHERE 
+		    OS.OS_NAME IN ('결제완료', '주문취소')
+		    AND TRUNC(OS.OS_REGDATE) = TRUNC(SYSDATE) 
+		GROUP BY 
+		    OS.OS_NAME
+		ORDER BY 
+		    OS.OS_NAME
+	</select>
+
+	<select id="salesDetail" resultType="com.tech.petfriends.admin.dto.SalesDetailDto">
+	    SELECT
+	        <choose>
+	            <when test="type == '일별'">
+	                TO_CHAR(TRUNC(OS.OS_REGDATE), 'YYYY-MM-DD') AS ORDER_DATE
+	            </when>
+	            <when test="type == '월별'">
+	                TO_CHAR(TRUNC(OS.OS_REGDATE, 'MM'), 'YYYY-MM') AS ORDER_DATE
+	            </when>
+	        </choose>,
+	        COUNT(CASE WHEN OS.OS_NAME = '결제완료' THEN 1 END) AS COMPLETED_COUNT,
+	        COUNT(CASE WHEN OS.OS_NAME = '주문취소' THEN 1 END) AS CANCELLED_COUNT,
+	        SUM(CASE WHEN OS.OS_NAME = '결제완료' THEN O.O_COUPON ELSE 0 END) AS TOTAL_COUPON,
+	        SUM(CASE WHEN OS.OS_NAME = '결제완료' THEN O.O_POINT ELSE 0 END) AS TOTAL_POINT,
+	        SUM(CASE WHEN OS.OS_NAME = '결제완료' THEN O.O_AMOUNT ELSE 0 END) AS TOTAL_AMOUNT,
+	        SUM(CASE WHEN OS.OS_NAME = '주문취소' THEN O.O_AMOUNT ELSE 0 END) AS CANCEL_AMOUNT,
+	        SUM(CASE WHEN OS.OS_NAME = '결제완료' THEN O.O_AMOUNT ELSE 0 END) - 
+	        SUM(CASE WHEN OS.OS_NAME = '주문취소' THEN O.O_AMOUNT ELSE 0 END) AS NET_AMOUNT
+	    FROM
+	        ORDER_STATUS OS
+	    INNER JOIN
+	        "ORDER" O ON OS.O_CODE = O.O_CODE
+	    <where>
+	    	<if test="type == '일별' and detail != '직접선택일'">
+	    		OS.OS_REGDATE >= TRUNC(SYSDATE) - #{detail} 
+	    	</if>
+	    	<if test="type == '월별' and detail != '직접선택월'">
+	    		OS.OS_REGDATE >= ADD_MONTHS(TRUNC(SYSDATE), -#{detail})
+	    	</if>
+	    	<if test="detail == '직접선택일'">
+		        OS.OS_REGDATE BETWEEN #{startDay} AND #{endDay}
+		    </if>
+	    	<if test="detail == '직접선택월'">
+		        OS.OS_REGDATE BETWEEN TO_DATE(#{startDay}, 'YYYY-MM') AND TO_DATE(#{endDay}, 'YYYY-MM')
+		    </if>
+	    </where>		
+	    GROUP BY
+	        <choose>
+	            <when test="type == '일별'">
+	                TRUNC(OS.OS_REGDATE)
+	            </when>
+	            <when test="type == '월별'">
+	                TRUNC(OS.OS_REGDATE, 'MM')
+	            </when>
+	        </choose>
+	    ORDER BY
+	        <choose>
+	            <when test="type == '일별'">
+	                TRUNC(OS.OS_REGDATE)
+	            </when>
+	            <when test="type == '월별'">
+	                TRUNC(OS.OS_REGDATE, 'MM')
+	            </when>
+	        </choose> DESC
+	</select>
+</mapper>

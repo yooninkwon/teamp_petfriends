@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tech.petfriends.admin.mapper.CouponOrderDao">
+	
+	<!-- 쿠폰관리 -->
+	<select id="getAllCoupons" resultType="com.tech.petfriends.admin.dto.CouponDto">
+		SELECT CP.*, 
+		(SELECT COUNT(*) FROM MEMBER_COUPON_BRIDGE MC WHERE MC.CP_NO = CP.CP_NO) AS issueCount,
+		(SELECT SUM(O.O_COUPON) FROM MEMBER_COUPON_BRIDGE MC LEFT JOIN "ORDER" O ON MC.MC_CODE = O.MC_CODE WHERE MC.CP_NO = CP.CP_NO) AS totalUsage
+		FROM COUPON CP
+		<where>
+			<choose>
+				<when test="status == '전체'">CP_NO > 0</when>
+				<when test="status == '발급중'">SYSDATE BETWEEN CP_START AND CP_END</when>
+				<when test="status == '예정'">CP_START > SYSDATE</when>
+				<when test="status == '종료'">SYSDATE > CP_END</when>
+			</choose>
+			<choose>
+				<when test="kind == '전체'">AND CP_KIND IN ('P', 'G')</when>
+				<otherwise>AND CP_KIND = #{kind}</otherwise>
+			</choose>
+			<choose>
+				<when test="grade == ''"></when>
+				<otherwise>AND G_NO = #{grade}</otherwise>
+			</choose>
+			<choose>
+				<when test="type == '전체'">AND CP_TYPE IN ('A', 'R')</when>
+				<otherwise>AND CP_TYPE = #{type}</otherwise>
+			</choose>
+		</where>
+		<choose>
+			<when test="sort == '최신순'">ORDER BY CP_NO DESC</when>
+			<when test="sort == '발급순'">ORDER BY issueCount DESC</when>
+			<when test="sort == '사용액순'">ORDER BY totalUsage ASC</when>
+		</choose>
+	</select>
+	
+	<select id="getMemberCoupons" resultType="com.tech.petfriends.admin.dto.MemberCouponDto">
+        SELECT MC.*, M.MEM_NAME, C.CP_NAME, O.O_CODE
+        FROM MEMBER_COUPON_BRIDGE MC
+        JOIN MEMBER M ON MC.MEM_CODE = M.MEM_CODE
+        JOIN COUPON C ON MC.CP_NO = C.CP_NO
+        LEFT JOIN "ORDER" O ON MC.MC_CODE = O.MC_CODE
+        <where>
+        	<!-- 쿠폰 상태 필터 -->
+            <choose>
+                <when test="status == ''">
+                	MC.MC_ISSUE IS NULL
+                </when>
+                <when test="status == '발급'">
+                    MC.MC_ISSUE IS NOT NULL AND (MC.MC_USE IS NULL AND MC.MC_DEAD IS NULL)
+                </when>
+                <when test="status == '사용'">
+                    MC.MC_USE IS NOT NULL AND MC.MC_DEAD IS NULL
+                </when>
+                <when test="status == '만료'">
+                    MC.MC_DEAD IS NOT NULL AND MC.MC_USE IS NULL
+                </when>
+                <when test="status == '발급,사용'">
+                    MC.MC_USE IS NOT NULL
+                </when>
+                <when test="status == '발급,만료'">
+                    MC.MC_DEAD IS NOT NULL
+                </when>
+                <when test="status == '사용,만료'">
+                    MC.MC_USE IS NOT NULL OR MC.MC_DEAD IS NOT NULL
+                </when>
+                <when test="status == '발급,사용,만료'">
+                    MC.MC_ISSUE IS NOT NULL
+                </when>
+            </choose>
+        	
+        	<!-- 조회 기간 필터 -->
+            <choose>
+            	<when test="searchOrder == '발급'">
+		            <if test="startDate != null and startDate != ''">
+			            AND TRUNC(MC.MC_ISSUE) >= #{startDate}
+			        </if>
+			        <if test="endDate != null and endDate != ''">
+			            AND #{endDate} >= TRUNC(MC.MC_ISSUE) 
+			        </if>
+            	</when>
+            	<when test="searchOrder == '사용'">
+		            <if test="startDate != null and startDate != ''">
+			            AND TRUNC(MC.MC_USE) >= #{startDate}
+			        </if>
+			        <if test="endDate != null and endDate != ''">
+			            AND #{endDate} >= TRUNC(MC.MC_USE)
+			        </if>
+            	</when>
+            	<when test="searchOrder == '만료'">
+		            <if test="startDate != null and startDate != ''">
+			            AND TRUNC(MC.MC_DEAD) >= #{startDate}
+			        </if>
+			        <if test="endDate != null and endDate != ''">
+			            AND #{endDate} >= TRUNC(MC.MC_DEAD)
+			        </if>
+            	</when>
+            </choose>
+            
+            <!-- 검색 필터 -->
+            <if test="memberCode != null and memberCode != ''">
+			    AND MC.MEM_CODE LIKE '%' || #{memberCode} || '%'
+			</if>
+			<if test="couponCode != null and couponCode != ''">
+			    AND MC.CP_NO LIKE '%' || #{couponCode} || '%'
+			</if>
+			<if test="orderCode != null and orderCode != ''">
+			    AND O.O_CODE LIKE '%' || #{orderCode} || '%'
+			</if>
+        </where>
+        ORDER BY MC.MC_ISSUE DESC
+    </select>
+	
+	<insert id="registerCoupon" parameterType="com.tech.petfriends.admin.dto.CouponDto">
+	    INSERT INTO COUPON
+	    VALUES (COUPON_SEQ.NEXTVAL, #{cp_name}, #{cp_keyword}, #{cp_kind}, #{g_no}, #{cp_start}, #{cp_end}, #{cp_dead}, #{cp_type}, #{cp_amount})
+	</insert>
+	
+	<select id="getCouponById" resultType="com.tech.petfriends.admin.dto.CouponDto">
+		SELECT *
+		FROM COUPON
+		WHERE CP_NO = #{cp_no}
+	</select>
+	
+	<update id="updateCoupon" parameterType="com.tech.petfriends.admin.dto.CouponDto">
+	    UPDATE COUPON
+	    SET
+	        CP_NAME = #{cp_name},
+	        CP_KEYWORD = #{cp_keyword},
+	        CP_KIND = #{cp_kind},       <!-- 일반쿠폰/등급쿠폰 구분 -->
+	        G_NO = #{g_no},             <!-- 등급쿠폰일 경우 등급번호 -->
+	        CP_START = #{cp_start},
+	        CP_END = #{cp_end},
+	        CP_DEAD = #{cp_dead},
+	        CP_TYPE = #{cp_type},       <!-- 할인액 or 할인율 -->
+	        CP_AMOUNT = #{cp_amount}
+	    WHERE CP_NO = #{cp_no}
+	</update>
+	
+	<delete id="deleteCoupon">
+		DELETE
+		FROM COUPON
+		WHERE CP_NO = #{cp_no}
+	</delete>
+	
+	<update id="updateMemberCouponDead">
+	    UPDATE MEMBER_COUPON_BRIDGE
+	    SET MC_DEAD = #{today}
+	    WHERE CP_NO IN (SELECT CP_NO FROM COUPON WHERE CP_DEAD = #{today})
+	</update>
+    
+    <!-- 주문관리 -->
+    <select id="getAllOrders" resultType="com.tech.petfriends.mypage.dto.MyOrderDto">
+    	SELECT *
+    	FROM (
+	        SELECT O.*, M.MEM_NAME, M.MEM_TELL, OS1.OS_REGDATE AS ORDERDATE, OS2.OS_NAME AS CURRSTATUS
+			FROM "ORDER" O
+			JOIN MEMBER M ON O.MEM_CODE = M.MEM_CODE
+			JOIN ORDER_STATUS OS1 ON O.O_CODE = OS1.O_CODE AND OS1.OS_NAME = '결제완료'
+			JOIN ORDER_STATUS OS2 ON O.O_CODE = OS2.O_CODE AND OS2.OS_REGDATE = (SELECT MAX(OS3.OS_REGDATE) FROM ORDER_STATUS OS3 WHERE OS3.O_CODE = OS2.O_CODE)
+    	) ORDERLIST
+        <where>
+	        <!-- 주문 상태 필터 -->
+	        <choose>
+                <when test="status == ''">
+                	CURRSTATUS IS NOT NULL
+                </when>
+                <otherwise>
+                	AND CURRSTATUS IN
+		            <foreach item="stat" index="index" collection="status.split(',')" open="(" separator="," close=")">
+		                #{stat}
+		            </foreach>
+                </otherwise>
+            </choose>
+	        
+	        <!-- 조회 기간 필터 -->
+	        <if test="startDate != null and startDate != ''">
+	            AND TRUNC(ORDERDATE) >= #{startDate}
+	        </if>
+	        <if test="endDate != null and endDate != ''">
+	            AND #{endDate} >= TRUNC(ORDERDATE)
+	        </if>
+	
+	        <!-- 검색 필터 -->
+	        <if test="orderCode != null and orderCode != ''">
+	            AND ORDERLIST.O_CODE LIKE '%' || #{orderCode} || '%'
+	        </if>
+	        <if test="proCode != null and proCode != ''">
+	            AND EXISTS (SELECT 1 FROM PRODUCT_CART PC WHERE PC.O_CODE = ORDERLIST.O_CODE AND PC.PRO_CODE LIKE '%' || #{proCode} || '%')
+	        </if>
+	        <if test="memberCode != null and memberCode != ''">
+	            AND ORDERLIST.MEM_CODE LIKE '%' || #{memberCode} || '%'
+	        </if>
+	    </where>
+	    ORDER BY ORDERDATE DESC
+    </select>
+    
+    <delete id="deleteOrderStatus">
+	    DELETE FROM ORDER_STATUS 
+	    WHERE O_CODE = #{oCode} AND OS_NAME = #{osName}
+	</delete>
+    
+    <insert id="updateOrderStatus">
+		INSERT INTO ORDER_STATUS
+		VALUES(#{oCode}, #{osName}, SYSDATE)
+	</insert>
+    
+</mapper>

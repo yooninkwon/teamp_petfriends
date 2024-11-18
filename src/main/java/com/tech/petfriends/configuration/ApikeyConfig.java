@@ -39,5 +39,4 @@ public class ApikeyConfig {
 
 		return coolSecretKey;
 	}
-
 }
