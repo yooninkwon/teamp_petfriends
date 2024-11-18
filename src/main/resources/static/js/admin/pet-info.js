@@ -161,8 +161,15 @@ $(document).ready(function () {
 
         let pet = '<tbody>';
 
+		let pet_care = ''
+		let pet_allergy = ''
+		
         sliceList.forEach(item => {
 			const memberInfo = memberMap[item.mem_code] || { name: '알 수 없음', nick: '알 수 없음', phone: '알 수 없음' };
+			
+			if(item.pet_care == null) {pet_care = 'x'} else {pet_care = item.pet_care}
+			if(item.pet_allergy == null) {pet_allergy = 'x'} else {pet_allergy = item.pet_allergy}		
+				
             pet += `
                 <tr>
                     <td><input type="checkbox" name="checkboxPet" class="pet-checkbox" value='${item.pet_code}' /></td>
@@ -178,8 +185,8 @@ $(document).ready(function () {
                     <td>${item.pet_gender}</td>
                     <td>${item.pet_neut}</td>
                     <td>${item.pet_form}</td>
-                    <td>${item.pet_care}</td>
-                    <td>${item.pet_allergy}</td>
+                    <td>${pet_care}</td>
+                    <td>${pet_allergy}</td>
                     <td>${item.pet_main}</td>
                 </tr>
             `;

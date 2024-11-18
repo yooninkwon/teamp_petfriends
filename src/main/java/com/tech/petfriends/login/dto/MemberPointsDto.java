@@ -15,4 +15,5 @@ public class MemberPointsDto {
 	private char point_type;
 	private Date point_date;
 	private String point_info;
+	private String point_memo;
 }

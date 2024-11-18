@@ -163,10 +163,10 @@
 				<table id="point_table">
 					<tr>
 						<th>날짜</th>
-						<th>회원 코드</th>
 						<th>주문 코드</th>
 						<th>증감</th>
 						<th>금액</th>
+						<th>타입</th>
 						<th>사유</th>
 					</tr>
 				</table>
