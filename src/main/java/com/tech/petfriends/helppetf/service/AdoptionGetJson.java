@@ -26,13 +26,15 @@ import reactor.util.retry.Retry;
 public class AdoptionGetJson implements HelppetfExecuteMono<HelpPetfAdoptionItemsVo>{
 	
 	// WebClient는 비동기적으로 HTTP 요청을 보내기 위해 사용되는 스프링 WebFlux의 클라이언트이다.
-	private final WebClient webClient;
-
 	private final ApikeyConfig apikeyConfig;
-
-	public AdoptionGetJson(ApikeyConfig apikeyConfig, WebClient webClient) {
+	private final WebClient webClient;
+	private final ObjectMapper mapper;
+	
+	public AdoptionGetJson(ApikeyConfig apikeyConfig, WebClient webClient, ObjectMapper mapper) {
 		this.apikeyConfig = apikeyConfig;
 		this.webClient = webClient;
+		
+		this.mapper = mapper;
 	}
 	
 	@Override
@@ -58,31 +60,14 @@ public class AdoptionGetJson implements HelppetfExecuteMono<HelpPetfAdoptionItem
      */
 	@Cacheable("adoptionData") // 캐싱 가능 어노테이션
 	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionData(HttpServletRequest request) throws Exception {
-
-		// api 요청주소 End point
-		String baseUrl = "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
-
-		// api serviceKey
-		String apikey = "?serviceKey=" + apikeyConfig.getOpenDataApikey();
-		String pageNo = "&pageNo=" + request.getParameter("pageNo");
-
-		// parameter 값
-		String upr_cd = setValueOfParam(request, "upr_cd");
-		String org_cd = setValueOfParam(request, "org_cd");
-		String upKind = setValueOfParam(request, "upKind");
-
-		String numOfRows = "&numOfRows=" + "80";
-		String _type = "&_type=" + "json";
-		String extraParam = pageNo + numOfRows + _type;
-		String addParameters = apikey + upr_cd + org_cd + upKind + extraParam;
-
 		/**
 		 * 작동 : .get() : http get 요청 보냄 .retrieve() : 서버로부터 응답 받아옴 .onStatus() : 4xx, 5xx
 		 * 오류일 시 예외 발생 .bodyToMono(String.class) : 응답 본문을 String으로 받음
 		 * 
 		 * 파싱 -> .map(json -> ... )} : parsingJsonObject() 메서드 호출
 		 */		
-		return webClient.get().uri(baseUrl + addParameters)
+		System.out.println("fetchAdoptionData");
+		return webClient.get().uri(buildUrl(request))
 				.retrieve()
 				.onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Client Error")))
 				.onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new Exception("Server Error")))
@@ -100,6 +85,28 @@ public class AdoptionGetJson implements HelppetfExecuteMono<HelpPetfAdoptionItem
 					}
 				}).onErrorReturn(
 						new ResponseEntity<>(new HelpPetfAdoptionItemsVo(List.of()), HttpStatus.INTERNAL_SERVER_ERROR));
+	}
+	
+	// 요청 URL 생성 메서드
+	private String buildUrl(HttpServletRequest request) {
+		// api 요청주소 End point
+		String baseUrl = "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
+
+		// api serviceKey
+		String apikey = "?serviceKey=" + apikeyConfig.getOpenDataApikey();
+		String pageNo = "&pageNo=" + request.getParameter("pageNo");
+
+		// parameter 값
+		String upr_cd = setValueOfParam(request, "upr_cd");
+		String org_cd = setValueOfParam(request, "org_cd");
+		String upKind = setValueOfParam(request, "upKind");
+
+		String numOfRows = "&numOfRows=" + "80";
+		String _type = "&_type=" + "json";
+		String extraParam = pageNo + numOfRows + _type;
+		String addParameters = apikey + upr_cd + org_cd + upKind + extraParam;
+		
+		return baseUrl + addParameters;
 	}
 
     /**
@@ -137,10 +144,10 @@ public class AdoptionGetJson implements HelppetfExecuteMono<HelpPetfAdoptionItem
 	<T> T parsingJsonObject(String json, Class<T> valueType) throws Exception {
 		// 예시) HelpPetfAdoptionItemsVo에 json value의 Object 형식을 매핑해 return
 		try {
-			// ObjectMapper: ObjectMapper는 Jackson 라이브러리의 클래스이다. JSON 데이터를 Java 객체로 변환하거나 그
-			// 반대로 변환하는 데 사용함. 여기서 사용된 mapper.readValue(json, valueType)는 JSON 문자열을 지정된 클래스
+			// ObjectMapper mapper: ObjectMapper는 Jackson 라이브러리의 클래스이다. 자동으로 Bean으로 등록된다.
+			// JSON 데이터를 Java 객체로 변환하거나 그 반대로 변환하는 데 사용함. 
+			// 여기서 사용된 mapper.readValue(json, valueType)는 JSON 문자열을 지정된 클래스
 			// 타입으로 변환하는 역할을 함.
-			ObjectMapper mapper = new ObjectMapper();
 			T result = mapper.readValue(json, valueType);
 			return result;
 		} catch (ValueInstantiationException e) {
