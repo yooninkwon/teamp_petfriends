@@ -1,7 +1,6 @@
 package com.tech.petfriends.admin.mapper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,7 +20,7 @@ public interface AdminPageDao {
 
 	void adminPetteacherDelete(String hpt_seq);
 	
-	List<PetteacherDto> getPetteacherList(String type, String category, String sort);
+	ArrayList<PetteacherDto> getPetteacherList(String type, String category, String sort);
 
 	ArrayList<PetteacherDto> adminPetteacherDetail(String petType, String category);
 

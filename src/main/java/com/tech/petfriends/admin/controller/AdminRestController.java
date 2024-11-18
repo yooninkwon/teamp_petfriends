@@ -8,45 +8,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tech.petfriends.admin.dto.ACommunityDto;
 import com.tech.petfriends.admin.mapper.AdminCommunityDao;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
 import com.tech.petfriends.admin.service.AdminCommunityReportService;
-import com.tech.petfriends.admin.service.AdminExecuteModel;
-import com.tech.petfriends.admin.service.AdminExecuteModelRequest;
-import com.tech.petfriends.admin.service.AdminPethotelDataService;
-import com.tech.petfriends.admin.service.AdminPethotelInfoData;
-import com.tech.petfriends.admin.service.AdminPethotelInfoEditService;
-import com.tech.petfriends.admin.service.AdminPethotelIntroData;
-import com.tech.petfriends.admin.service.AdminPethotelIntroEditService;
-import com.tech.petfriends.admin.service.AdminPethotelReserveDetailService;
-import com.tech.petfriends.admin.service.AdminPethotelReserveUpdateService;
-import com.tech.petfriends.admin.service.AdminPetteacherDataService;
-import com.tech.petfriends.admin.service.AdminPetteacherDeleteService;
-import com.tech.petfriends.admin.service.AdminPetteacherDetailService;
-import com.tech.petfriends.admin.service.AdminPetteacherEditService;
-import com.tech.petfriends.admin.service.AdminPetteacherWriteService;
-import com.tech.petfriends.helppetf.dto.PethotelInfoDto;
-import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
-import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
-import com.tech.petfriends.helppetf.dto.PetteacherDto;
+import com.tech.petfriends.admin.service.interfaces.AdminExecute;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteRequest;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.dto.MemberPointsDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
@@ -60,110 +39,30 @@ import com.tech.petfriends.notice.dto.NoticeDto;
 @RequestMapping("/admin")
 public class AdminRestController {
 
-	@Autowired
-	AdminPageDao adminDao;
-
-	@Autowired
-	NoticeDao noticeDao;
+	final AdminPageDao adminDao;
+	final NoticeDao noticeDao;
+	final MemberMapper memberMapper;
+	final MypageDao mypageDao;
+	final AdminCommunityDao communtiyDao;
 	
-	@Autowired
-	MemberMapper memberMapper;
+	AdminExecute adminExecuteM;
 	
-	@Autowired
-	MypageDao mypageDao;
-
-	@Autowired
-	AdminCommunityDao communtiyDao;
+	AdminExecuteRequest adminExecuteMR;
+	
 		
-	AdminExecuteModel adminExecuteM;
-
-	AdminExecuteModelRequest adminExecuteMR;
-
-	@PutMapping("/pethotel_reserve_update")
-	public void pethotelReserveUpdate(@RequestBody Map<String, String> statusMap, HttpServletRequest request,
-			Model model) {
-		adminExecuteM = new AdminPethotelReserveUpdateService(adminDao, statusMap);
-		adminExecuteM.execute(model);
-	}
-
-	@GetMapping("/pethotel_admin_reserve_detail")
-	public String pethotelReserveDetail(HttpServletRequest request, Model model) throws JsonProcessingException {
-		adminExecuteMR = new AdminPethotelReserveDetailService(adminDao);
-		adminExecuteMR.execute(model, request);
-		
-		return (String) model.getAttribute("jsonData");
-	}
-
-	@SuppressWarnings("unchecked")
-	@GetMapping("/pethotel_admin_reserve")
-	public ArrayList<PethotelMemDataDto> pethotelReserveData(HttpServletRequest request, Model model) {
-		adminExecuteMR = new AdminPethotelDataService(adminDao);
-		adminExecuteMR.execute(model, request);
-		
-		return (ArrayList<PethotelMemDataDto>) model.getAttribute("memSelectDto");
+	public AdminRestController(AdminPageDao adminDao,      
+					NoticeDao noticeDao,
+					MemberMapper memberMapper,
+					MypageDao mypageDao,     
+					AdminCommunityDao communtiyDao
+					) {
+		this.adminDao = adminDao;
+		this.noticeDao = noticeDao;
+		this.memberMapper = memberMapper;
+		this.mypageDao = mypageDao;
+		this.communtiyDao = communtiyDao;
 	}
 	
-	@SuppressWarnings("unchecked")
-	@GetMapping("/petteacher_admin_data")
-	public List<PetteacherDto> getPetteacherData(HttpServletRequest request, Model model) {
-		adminExecuteMR = new AdminPetteacherDataService(adminDao);
-		adminExecuteMR.execute(model, request);
-		
-		return (List<PetteacherDto>) model.getAttribute("petteacherList");
-	}
-
-	@GetMapping("/petteacher_admin_data_forEdit")
-	public PetteacherDto petteacherDataForEdit(HttpServletRequest request, Model model) {
-		adminExecuteMR = new AdminPetteacherDetailService(adminDao);
-		adminExecuteMR.execute(model, request);
-
-		return (PetteacherDto) model.getAttribute("dto");
-	}
-
-	@DeleteMapping("/petteacher_admin_data_forDelete")
-	public void petteacherDataForDelete(HttpServletRequest request, Model model) {
-		adminExecuteMR = new AdminPetteacherDeleteService(adminDao);
-		adminExecuteMR.execute(model, request);
-	}
-
-	@PostMapping("/petteacher_admin_data_forWrite")
-	public void petteacherDataForWrite(@RequestBody PetteacherDto dto, Model model) {
-		adminExecuteM = new AdminPetteacherWriteService(adminDao, dto);
-		adminExecuteM.execute(model);
-	}
-
-	@PutMapping("/petteacher_admin_data_forEdit")
-	public void petteacherDataForEdit(@RequestBody PetteacherDto dto, HttpServletRequest request, Model model) {
-		adminExecuteMR = new AdminPetteacherEditService(adminDao, dto);
-		adminExecuteMR.execute(model, request);
-	}
-
-	@GetMapping("/pethotel_admin_intro_data")
-	public PethotelIntroDto pethotelIntroData(Model model) {
-		adminExecuteM = new AdminPethotelIntroData(adminDao);
-		adminExecuteM.execute(model);
-		return (PethotelIntroDto) model.getAttribute("dto");
-	}
-
-	@GetMapping("/pethotel_admin_info_data")
-	public PethotelInfoDto pethotelInfoData(Model model) {
-		adminExecuteM = new AdminPethotelInfoData(adminDao);
-		adminExecuteM.execute(model);
-		return (PethotelInfoDto) model.getAttribute("dto");
-	}
-
-	@PutMapping("/pethotel_admin_intro_dataForEdit")
-	public void pethotelIntroForEdit(@RequestBody PethotelIntroDto dto, HttpServletRequest request, Model model) {
-		adminExecuteM = new AdminPethotelIntroEditService(adminDao, dto);
-		adminExecuteM.execute(model);
-	}
-
-	@PutMapping("/pethotel_admin_info_dataForEdit")
-	public void pethotelInfoForEdit(@RequestBody PethotelInfoDto dto, HttpServletRequest request, Model model) {
-		adminExecuteM = new AdminPethotelInfoEditService(adminDao, dto);
-		adminExecuteM.execute(model);
-	}
-
 	@GetMapping("/notice_notice_list")
 	public ArrayList<NoticeDto> noticeNoticeList() {
 		ArrayList<NoticeDto> noticeList = noticeDao.noticeAdminList();

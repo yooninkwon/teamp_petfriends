@@ -9,7 +9,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -17,18 +16,19 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.tech.petfriends.configuration.ApikeyConfig;
+import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteMono;
 import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
 
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
 @Service
-public class AdoptionGetJson implements HelppetfExecuteModelRequest{
+public class AdoptionGetJson implements HelppetfExecuteMono<HelpPetfAdoptionItemsVo>{
 	
 	// WebClient는 비동기적으로 HTTP 요청을 보내기 위해 사용되는 스프링 WebFlux의 클라이언트이다.
 	private final WebClient webClient;
 
-	ApikeyConfig apikeyConfig;
+	private final ApikeyConfig apikeyConfig;
 
 	public AdoptionGetJson(ApikeyConfig apikeyConfig, WebClient webClient) {
 		this.apikeyConfig = apikeyConfig;
@@ -36,12 +36,13 @@ public class AdoptionGetJson implements HelppetfExecuteModelRequest{
 	}
 	
 	@Override
-	public void execute(Model model, HttpServletRequest request) {
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> execute(HttpServletRequest request) {
 		
 		try {
-			model.addAttribute("jsonData", fetchAdoptionData(model, request));
+			return fetchAdoptionData(request);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return Mono.error(new RuntimeException("Json 데이터를 불러오는 것에 실패하였습니다.", e));
 		}
 		
 	}
@@ -56,7 +57,7 @@ public class AdoptionGetJson implements HelppetfExecuteModelRequest{
      * 	빈 리스트를 가진 HelpPetfAdoptionItemsVo를 생성하고, 내부 서버 오류 상태를 반환
      */
 	@Cacheable("adoptionData") // 캐싱 가능 어노테이션
-	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionData(Model model, HttpServletRequest request) throws Exception {
+	public Mono<ResponseEntity<HelpPetfAdoptionItemsVo>> fetchAdoptionData(HttpServletRequest request) throws Exception {
 
 		// api 요청주소 End point
 		String baseUrl = "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";

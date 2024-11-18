@@ -1,25 +1,29 @@
-package com.tech.petfriends.admin.service;
+package com.tech.petfriends.admin.service.helppetf;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteAndReturn;
 import com.tech.petfriends.helppetf.dto.PethotelIntroDto;
 
 @Service
-public class AdminPethotelIntroEditService implements AdminExecuteModel {
+public class AdminPethotelIntroEditService implements AdminExecuteAndReturn<String> {
 	
-	private AdminPageDao adminDao;
+	private final AdminPageDao adminDao;
 	
 	private PethotelIntroDto introDto;
 	
-	public AdminPethotelIntroEditService(AdminPageDao adminDao, PethotelIntroDto introDto) {
-		this.adminDao = adminDao;
+	public void setIntroDto(PethotelIntroDto introDto) {
 		this.introDto = introDto;
+	}
+
+	public AdminPethotelIntroEditService(AdminPageDao adminDao) {
+		this.adminDao = adminDao;
 	}
 	
 	@Override
-	public void execute(Model model) {
+	public ResponseEntity<String> execute() {
 
 		String intro_line1 = introDto.getIntro_line1();
 		String intro_line2 = introDto.getIntro_line2();
@@ -34,6 +38,8 @@ public class AdminPethotelIntroEditService implements AdminExecuteModel {
 		// 파라미터에 첨부하여 DB요청
 		adminDao.adminPethotelIntroEdit(intro_line1, intro_line2, intro_line3, intro_line4, intro_line5,
 				intro_line6, intro_line7, intro_line8, intro_line9);
+		
+		return ResponseEntity.ok("데이터베이스 통신 성공");
 	}
 
 }

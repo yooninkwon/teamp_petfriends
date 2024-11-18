@@ -5,25 +5,27 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
+import com.tech.petfriends.helppetf.service.interfaces.HelppetfExecuteSession;
 import com.tech.petfriends.login.dto.MemberLoginDto;
 
 @Service
-public class FindAddrMapService implements HelppetfExecuteModelSession {
+public class FindAddrMapService implements HelppetfExecuteSession<String> {
 	
-	private HelpPetfDao helpDao;
+	private final HelpPetfDao helpDao;
 	
 	public FindAddrMapService(HelpPetfDao helpDao) {
 		this.helpDao = helpDao;
 	}
 
 	@Override
-	public void execute(Model model, HttpSession session) {
+	public ResponseEntity<String> execute(HttpSession session) {
 		String userAddr = "";
 		String mem_nick = null;
 		String mem_code = "";
@@ -50,9 +52,9 @@ public class FindAddrMapService implements HelppetfExecuteModelSession {
 		
 		// Map을 json형식으로 변환
 		try {
-			model.addAttribute("jsonData", new ObjectMapper().writeValueAsString(map));
+			return ResponseEntity.ok(new ObjectMapper().writeValueAsString(map));
 		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("데이터 처리 중 오류 발생");
 		}
 	}
 	

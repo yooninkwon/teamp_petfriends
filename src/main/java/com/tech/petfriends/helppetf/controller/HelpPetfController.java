@@ -2,29 +2,24 @@ package com.tech.petfriends.helppetf.controller;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tech.petfriends.configuration.ApikeyConfig;
-import com.tech.petfriends.helppetf.mapper.HelpPetfDao;
-import com.tech.petfriends.helppetf.service.HelppetfExecuteModel;
 
 
 @Controller
 @RequestMapping("/helppetf")
 public class HelpPetfController {
 	
-	@Autowired
-	ApikeyConfig apikeyConfig;
+	final ApikeyConfig apikeyConfig;
 	
-	@Autowired
-	HelpPetfDao helpDao;
+	public HelpPetfController(ApikeyConfig apikeyConfig) {
+		this.apikeyConfig = apikeyConfig;
+	}
 	
-	HelppetfExecuteModel helpServiceInterface;
-
 	@GetMapping("/pethotel/pethotel_main") // 펫호텔 메인
 	public String pethotelMain(Model model) {
 		model.addAttribute("main_navbar_id", "helppetf");

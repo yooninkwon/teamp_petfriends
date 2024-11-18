@@ -1,27 +1,31 @@
-package com.tech.petfriends.admin.service;
+package com.tech.petfriends.admin.service.helppetf;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.tech.petfriends.admin.mapper.AdminPageDao;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteRequestAndReturn;
 import com.tech.petfriends.helppetf.dto.PetteacherDto;
 
 @Service
-public class AdminPetteacherEditService implements AdminExecuteModelRequest {
+public class AdminPetteacherEditService implements AdminExecuteRequestAndReturn<String> {
 
-	private AdminPageDao adminDao;
+	private final AdminPageDao adminDao;
 
 	private PetteacherDto dto;
 
-	public AdminPetteacherEditService(AdminPageDao adminDao, PetteacherDto dto) {
-		this.adminDao = adminDao;
+	public void setDto(PetteacherDto dto) {
 		this.dto = dto;
 	}
 
+	public AdminPetteacherEditService(AdminPageDao adminDao) {
+		this.adminDao = adminDao;
+	}
+
 	@Override
-	public void execute(Model model, HttpServletRequest request) {
+	public ResponseEntity<String> execute(HttpServletRequest request) {
 		
 		String hpt_seq = request.getParameter("hpt_seq");
 
@@ -36,6 +40,8 @@ public class AdminPetteacherEditService implements AdminExecuteModelRequest {
 		// 파라미터로 전달하여 DB 호출, update
 		adminDao.adminPetteacherEdit(hpt_seq, hpt_channal, hpt_title, hpt_exp, hpt_content, 
 				hpt_yt_videoid, hpt_pettype, hpt_category);
+		return ResponseEntity.ok("데이터베이스 통신 성공");
+	
 	}
 
 }

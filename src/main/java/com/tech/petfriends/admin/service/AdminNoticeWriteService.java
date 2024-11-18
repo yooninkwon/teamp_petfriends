@@ -11,10 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tech.petfriends.admin.service.interfaces.AdminExecute;
 import com.tech.petfriends.notice.dao.NoticeDao;
 
 @Service
-public class AdminNoticeWriteService implements AdminExecuteModel {
+public class AdminNoticeWriteService implements AdminExecute {
 	
     private final NoticeDao noticeDao;
 

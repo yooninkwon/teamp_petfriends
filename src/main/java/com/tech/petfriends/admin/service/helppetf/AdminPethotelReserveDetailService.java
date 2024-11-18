@@ -1,4 +1,4 @@
-package com.tech.petfriends.admin.service;
+package com.tech.petfriends.admin.service.helppetf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,24 +6,28 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.petfriends.admin.mapper.AdminPageDao;
+import com.tech.petfriends.admin.service.interfaces.AdminExecuteRequestAndReturn;
 import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 
-public class AdminPethotelReserveDetailService implements AdminExecuteModelRequest{
+@Service
+public class AdminPethotelReserveDetailService implements AdminExecuteRequestAndReturn<String>{
 	
-	private AdminPageDao adminDao;
+	private final AdminPageDao adminDao;
 
 	public AdminPethotelReserveDetailService(AdminPageDao adminDao) {
 		this.adminDao = adminDao;
 	}
 	
 	@Override
-	public void execute(Model model, HttpServletRequest request) {
+	public ResponseEntity<String> execute(HttpServletRequest request) {
 		// 전달받은 예약번호 저장
 		String hph_reserve_no = request.getParameter("hph_reserve_no");
 				
@@ -41,9 +45,10 @@ public class AdminPethotelReserveDetailService implements AdminExecuteModelReque
 		
 		// Map을 json(String) 형식으로 변환하여 모델에 전달
 		try {
-			model.addAttribute("jsonData", new ObjectMapper().writeValueAsString(map));
+			return ResponseEntity.ok(new ObjectMapper().writeValueAsString(map));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
+			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("펫정보 불러오기 실패");
 		}
 	}
 
