@@ -62,6 +62,10 @@ public class CommunityController {
 	@GetMapping("/main")
 	public String communityMain(HttpSession session, HttpServletRequest request, Model model) {
 		System.out.println("community_main() ctr");
+		
+	    int page = Integer.parseInt(request.getParameter("page") != null ? request.getParameter("page") : "1");
+	    model.addAttribute("page", page);
+		
 		model.addAttribute("session", session);
 		model.addAttribute("request", request);
 
@@ -71,6 +75,11 @@ public class CommunityController {
 		return "/community/main";
 	}
 
+	
+	
+	
+	
+	
 	@GetMapping("/writeView")
 	public String writeView(HttpSession session, HttpServletRequest request, Model model) {
 		model.addAttribute("session", session);
@@ -395,10 +404,14 @@ public class CommunityController {
     @GetMapping("/getChatRooms")
     @ResponseBody
     public List<CChatDto> getChatRooms(HttpSession session) {
-    	String sender = ((MemberLoginDto) session.getAttribute("loginUser")).getMem_nick();
-    	System.out.println("sender:"+ sender);
-    
-              
+        MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            throw new RuntimeException("로그인 정보가 없습니다."); // 혹은 적절한 응답 반환
+        }
+
+        String sender = loginUser.getMem_nick();
+        System.out.println("sender:" + sender);
+
         List<CChatDto> getChatRooms = iDao.getChatRooms(sender);
         return getChatRooms;
     }

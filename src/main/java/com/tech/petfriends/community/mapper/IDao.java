@@ -113,5 +113,7 @@ public interface IDao {
 
 	
 	
+	public int getTotalPostCount(); // 전체 게시글 개수
+	
 }
 

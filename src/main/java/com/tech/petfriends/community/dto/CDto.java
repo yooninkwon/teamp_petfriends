@@ -58,7 +58,8 @@ public class CDto {
 	private String related_user_mem_code ;
 
 
-	
+    private int offset;
+    private int limit;
 	
 }
 

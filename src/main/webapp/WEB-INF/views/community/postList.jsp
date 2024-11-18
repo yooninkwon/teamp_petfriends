@@ -9,6 +9,47 @@
 <title>postList</title>
 <link rel="stylesheet" href="/static/css/community/community_main.css">
 </head>
+
+<script>
+
+$(document).ready(function() {
+    // 페이지 번호 클릭 시
+    $(".pagination-link").click(function(e) {
+        e.preventDefault();
+        var page = $(this).data("page");
+
+        $.ajax({
+            url: "/community/main?page=" + page,
+            method: "GET",
+            success: function(response) {
+                $("#postContainer").html($(response).find("#postContainer").html());
+                updatePagination(response);
+            }
+        });
+    });
+
+    // 페이지네이션 업데이트
+    function updatePagination(response) {
+        var totalPages = $(response).find("#totalPages").val();
+        var currentPage = $(response).find("#currentPage").val();
+        var paginationHtml = '';
+
+        for (var i = 1; i <= totalPages; i++) {
+            paginationHtml += '<a href="#" class="pagination-link" data-page="' + i + '">' + i + '</a>';
+        }
+
+        $(".pagination").html(paginationHtml);
+    }
+});
+
+
+
+
+
+</script>
+
+
+
 <body>
 	<div id="postContainer">
 
@@ -57,5 +98,11 @@
 	</article>
 	</c:forEach>
 	
+	<div class="pagination">
+    <c:forEach var="i" begin="1" end="${totalPages}">
+        <a href="#" class="pagination-link" data-page="${i}">${i}</a>
+    </c:forEach>
+
+</div>
 </body>
 </html>

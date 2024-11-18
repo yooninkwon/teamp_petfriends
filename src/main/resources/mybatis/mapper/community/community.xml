@@ -16,6 +16,10 @@
 		ORDER BY CD.BOARD_NO DESC
 	</select>
 
+    <!-- 전체 게시글 개수 조회 -->
+    <select id="getTotalPostCount" resultType="int">
+        SELECT COUNT(*) FROM COMMUNITY_BOARD
+    </select>
 
 	<select id="getPetIMG"
 		resultType="com.tech.petfriends.community.dto.CDto">
@@ -507,6 +511,13 @@
 		WHERE ROOM_ID LIKE '%' || #{sender} || '%'
 		GROUP BY ROOM_ID
 	</select>
+
+
+
+
+
+
+
 
 
 </mapper>

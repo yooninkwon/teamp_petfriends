@@ -333,7 +333,7 @@
 						<a
 							href="<c:url value='/community/contentView/?board_no=${myFeedList.board_no}'/>">
 							<!-- 이미지 클릭 시 이동할 링크 추가 --> <img
-							src="/static/images/community_img/${myFeedList.chrepfile}" alt="">
+							src="/static/images/community_img/${myFeedList.chrepfile}" alt="" style="width: 200px; height: 200px;">
 						</a>
 						<div class="feed-info">
 							<!-- 제목과 날짜를 감싸는 div 추가 -->
