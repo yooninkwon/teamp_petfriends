@@ -31,21 +31,16 @@ public class MyPetController {
 	MypageDao mypageDao;
 	
 	@GetMapping("/myPetRegistPage1")
-	public String myPetRegistPage1() {
-		System.out.println("펫등록 페이지1");
-		
+	public String myPetRegistPage1() {	
 		return "mypet/myPetRegistPage1";
 	}
 	
 	@PostMapping("/myPetRegistPage2")
 	public String myPetRegistPage2(HttpServletRequest request, Model model) {	
-		System.out.println("펫등록 페이지2");
 		String petType = request.getParameter("petType");
 		String petName = request.getParameter("petName");
-		
 		model.addAttribute("petType",petType);
 		model.addAttribute("petName",petName);
-		
 		return "mypet/myPetRegistPage2";
 	}
 	
@@ -54,24 +49,19 @@ public class MyPetController {
 	        HttpServletRequest request,
 	        @RequestParam("petImg") MultipartFile petImgFile,
 	        Model model) {
-
-	    System.out.println("펫등록 페이지3");
 	    // 요청에서 파라미터 가져오기
 	    String fileName = null;
 	    String petType = request.getParameter("petType");
 	    String petName = request.getParameter("petName");
 	    String petDetailType = request.getParameter("detailType");
 	    String petBirth = request.getParameter("petBirth");
-
 	    try {
 	        if (petImgFile != null && !petImgFile.isEmpty()) {
 	        	// 절대경로
 		        String imagesDir = new File("src/main/resources/static/Images/pet/").getAbsolutePath();
-
 		        // 파일 이름 가져오기
 		        fileName = petImgFile.getOriginalFilename();
-		        File saveFile = new File(imagesDir, fileName);
-		        
+		        File saveFile = new File(imagesDir, fileName);      
 		        // 파일 이름 중복 체크
 	            int count = 1;
 	            String nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
@@ -81,31 +71,26 @@ public class MyPetController {
 	                saveFile = new File(imagesDir, fileName);
 	                count++;
 	            } 
-
 		        // 파일 저장
 		        petImgFile.transferTo(saveFile);
 			} else {
             	fileName = "noPetImg.jpg";
             }
-
 	        // 모델에 데이터 추가
 	        model.addAttribute("petType", petType);
 	        model.addAttribute("petName", petName);
 	        model.addAttribute("petImg", fileName);
 	        model.addAttribute("petDetailType", petDetailType);
 	        model.addAttribute("petBirth", petBirth);
-
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	        return "파일 업로드 실패";
 	    }
-
 	    return "mypet/myPetRegistPage3";
 	}
 	
 	@PostMapping("/myPetRegistPage4")
 	public String myPetRegistPage4(HttpServletRequest request, Model model) {	
-		System.out.println("펫등록 페이지4");
 		String petType = request.getParameter("petType");
 		String petName = request.getParameter("petName");
 		String petImg = request.getParameter("petImg");
@@ -117,8 +102,7 @@ public class MyPetController {
 		if (request.getParameter("weight")=="") {
 			petWeight = "0";
 		}
-		String petBodyType = request.getParameter("petBodyType");
-		
+		String petBodyType = request.getParameter("petBodyType");	
 		model.addAttribute("petType",petType);
 		model.addAttribute("petName",petName);
 		model.addAttribute("petImg",petImg);
@@ -127,15 +111,12 @@ public class MyPetController {
 		model.addAttribute("petGender",petGender);
 		model.addAttribute("petNeut",petNeut);
 		model.addAttribute("petWeight",petWeight);
-		model.addAttribute("petBodyType",petBodyType);
-		
+		model.addAttribute("petBodyType",petBodyType);	
 		return "mypet/myPetRegistPage4";
 	}
 	
 	@PostMapping("/myPetRegistPage5")
-	public String myPetRegistPage5(HttpServletRequest request, Model model, HttpSession session) {	
-		System.out.println("펫등록 완료 페이지");
-		
+	public String myPetRegistPage5(HttpServletRequest request, Model model, HttpSession session) {		
 		String petType = request.getParameter("petType");
 		if (petType == "dog" || petType.equals("dog")) {
 			petType = "D";
@@ -152,18 +133,14 @@ public class MyPetController {
 		String petBodyType = request.getParameter("petBodyType");
 		String petInterInfo = request.getParameter("petInterInfo");
 		String petAllergy = request.getParameter("petInterAllerge");
-		
 		if (petInterInfo == null || petInterInfo.equals("")) {
 			petInterInfo = "X";
 		}
 		if (petAllergy == null || petAllergy.equals("")) {
 			petAllergy = "X";
 		}
-		
-		
 		MemberLoginDto member = new MemberLoginDto();
 		member = (MemberLoginDto) session.getAttribute("loginUser");
-		
 		MyPetDto pet = new MyPetDto();
 		String uniqueID = UUID.randomUUID().toString();
 		pet.setPet_code(uniqueID);
@@ -172,10 +149,8 @@ public class MyPetController {
 		pet.setPet_name(petName);
 		pet.setPet_img(petImg);
 		pet.setPet_breed(petDetailType);
-
 		Date sqlDate = Date.valueOf(petBirth);
-		pet.setPet_birth(sqlDate);
-		
+		pet.setPet_birth(sqlDate);	
 		if (petGender == "남아") {
 			pet.setPet_gender("M");
 		} else {
@@ -186,23 +161,17 @@ public class MyPetController {
 			pet.setPet_neut("Y");
 		} else {
 			pet.setPet_neut("N");
-		}
-		
+		}	
 		pet.setPet_form(petBodyType);
 		pet.setPet_care(petInterInfo);
-		pet.setPet_allergy(petAllergy);
-		
+		pet.setPet_allergy(petAllergy);	
 		ArrayList<MyPetDto> pets = mypageDao.getPetsByMemberCode(member.getMem_code());
-		System.out.println(pets);
 		if (pets == null || pets.isEmpty()) {
 			pet.setPet_main("Y");
 		} else {
 			pet.setPet_main("N");
 		}
-		
 		mypageDao.insertMyPet(pet);
-		
-		System.out.println("데이터 저장 완료");
 		model.addAttribute("petType",petType);
 		model.addAttribute("petName",petName);
 		model.addAttribute("petImg",petImg);
@@ -214,7 +183,6 @@ public class MyPetController {
 		model.addAttribute("petBodyType",petBodyType);
 		model.addAttribute("petInterInfo",petInterInfo);
 		model.addAttribute("petAllergy",petAllergy);
-		
 		return "mypet/myPetRegistPage5";
 	}
 	

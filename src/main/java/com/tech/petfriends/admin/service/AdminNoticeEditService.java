@@ -19,14 +19,10 @@ public class AdminNoticeEditService implements AdminExecuteModel {
     @Override
     public void execute(Model model) {
         HttpServletRequest request = (HttpServletRequest) model.getAttribute("request");
-
-
         Long noticeId = Long.parseLong(request.getParameter("noticeId")); // noticeId를 요청에서 받아옵니다      
         String show = request.getParameter("notice_show");
         String title = request.getParameter("notice_title");
         String content = request.getParameter("notice_content");
-
-
         noticeDao.noticeUpdate(show, title, content, noticeId);
     }
 }

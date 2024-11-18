@@ -13,7 +13,7 @@ import com.tech.petfriends.login.mapper.MemberMapper;
 @RestController
 public class TellRestController {
 	@Autowired
-    private MemberMapper memberMapper; // DB 조회를 위한 Mapper
+    private MemberMapper memberMapper;
 
     @GetMapping("/check-tell")
     public Map<String, Boolean> checkTell(@RequestParam String tell) {

@@ -23,6 +23,9 @@ public interface MemberMapper {
 	// 포인트 테이블 인서트
 	void insertPoints(MemberPointsDto memberPoints);
 	
+	// 회원가입 적립금
+	void invitePoints(MemberPointsDto memberPoints);
+	
 	// 주문 결제시 총 구매금액 업데이트
 	void updatePayAmount(String mem_code, int order_amount);
 	

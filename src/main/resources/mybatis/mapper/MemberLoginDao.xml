@@ -16,6 +16,12 @@
 		VALUES(POINT_SEQ.NEXTVAL,#{mem_code},#{o_code},#{points},#{point_type},SYSDATE,#{point_info})
 	</insert>
 	
+	<!-- 가입 추천 적립금 인서트 -->
+	<insert id="invitePoints" parameterType="com.tech.petfriends.login.dto.MemberPointsDto">
+		INSERT INTO MEMBER_POINT (point_no, mem_code, point_memo, points, point_type, point_date, point_info) 
+		VALUES(POINT_SEQ.NEXTVAL,#{mem_code},#{point_memo},#{points},#{point_type},SYSDATE,#{point_info})
+	</insert>
+	
 	<!-- 회원가입 초대코드 적립 업데이트 -->
 	<update id="updatePointsForInvite">
 		UPDATE MEMBER

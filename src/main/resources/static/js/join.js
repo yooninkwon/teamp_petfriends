@@ -144,7 +144,6 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault(); // 폼 제출 방지
 
         const phoneNumber = document.getElementById("phoneNumberDisabled").value;
-        console.log("입력된 휴대폰 번호:", phoneNumber);  // 디버깅용 로그
 
         if (phoneNumber.length !== 11) {
             document.getElementById("phoneNumberError").style.display = "block";
@@ -166,7 +165,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             authCode = data.authCode; // 인증번호 저장
-			console.log(authCode);
             alert("인증번호가 발송되었습니다.");
             document.getElementById("phoneNumberDisabled").disabled = true; // 번호 입력 수정 불가능하게 설정
             document.getElementById("codelabel").hidden = false; // 숨기기 취소

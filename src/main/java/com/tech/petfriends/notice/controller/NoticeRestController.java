@@ -19,7 +19,6 @@ public class NoticeRestController {
 	
 	@GetMapping("/notice_list")
 	public ArrayList<NoticeDto> NoticeList() {
-		System.out.println("공지사항 불러오기");
 		ArrayList<NoticeDto> noticeList = noticeDao.noticeList();
 		return noticeList;
 	}
