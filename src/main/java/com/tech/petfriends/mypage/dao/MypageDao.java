@@ -11,9 +11,11 @@ import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.dto.MemberPointsDto;
 import com.tech.petfriends.mypage.dto.MyCartDto;
 import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
+import com.tech.petfriends.mypage.dto.MyReviewDto;
 import com.tech.petfriends.mypage.dto.MyWishDto;
 
 @Mapper
@@ -40,6 +42,10 @@ public interface MypageDao {
 	MyPetDto getInfoByPetCode(String petCode);
 	void modifyPetByPetCode(MyPetDto myPetDto);
 	void deletePetByPetCode(String petCode);
+	
+	// 포인트
+	ArrayList<MemberPointsDto> getAllPointLogByMemCode(String mem_code);
+	Integer getExsavingAmountByMemCode(String mem_code);
 	
 	// 쿠폰
 	ArrayList<CouponDto> getAllCoupon();
@@ -90,12 +96,19 @@ public interface MypageDao {
 	void updateStrockByCancel(String cart_code);
 	void setOnByStock();
 	
+	// 구매후기
+	List<MyCartDto> getConfirmedItemByMemberCode(String mem_code);
+	List<MyReviewDto> getReviewByMemberCode(String mem_code);
+	MyReviewDto getReviewInfoByCartCode(String cartCode);
+	void updateReview(MyReviewDto reviewDto);
+	void insertReview(MyReviewDto reviewDto);
+	
 	// 즐겨찾는 상품
 	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
 	List<MyWishDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
 	void deleteWishByProCode(String mem_code, String pro_code);
 
-  // 펫호텔 예약내역
+    // 펫호텔 예약내역
 	ArrayList<PethotelMemDataDto> pethotelReserveMypageMem(String mem_code);
 	PethotelMemDataDto pethotelReserveMypageMemNo(String reserveNo);
 	ArrayList<PethotelFormDataDto> pethotelReserveMypagePets(String reserveNo);
