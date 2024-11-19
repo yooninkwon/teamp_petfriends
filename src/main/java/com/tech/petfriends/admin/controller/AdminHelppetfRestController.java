@@ -26,8 +26,7 @@ public class AdminHelppetfRestController {
 	
 	final AdminHelppetfServiceGroup helppetfServiceGroup;
 	
-	public AdminHelppetfRestController(
-			AdminHelppetfServiceGroup helppetfServiceGroup) {
+	public AdminHelppetfRestController(AdminHelppetfServiceGroup helppetfServiceGroup) {
 		this.helppetfServiceGroup = helppetfServiceGroup;
 	}
 	

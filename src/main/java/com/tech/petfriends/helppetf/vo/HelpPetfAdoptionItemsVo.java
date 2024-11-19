@@ -7,18 +7,18 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.tech.petfriends.helppetf.deserializer.AdoptionDeserializer;
 import com.tech.petfriends.helppetf.dto.AdoptionItemDto;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
-/*
+@Getter
+@JsonDeserialize(using = AdoptionDeserializer.class)
+/**
  * 보호 동물 조회 API 응답 데이터를 담는 VO이다. JSON 데이터를 HelpPetfAdoptionItemsVo 
  * 객체로 매핑할 때 AdoptionDeserializer를 통해 "item" 필드만을 매핑하도록 설정된다.
  */
-@JsonDeserialize(using = AdoptionDeserializer.class)
 public class HelpPetfAdoptionItemsVo {
 	
 	@JsonProperty("item") 
-	private List<AdoptionItemDto> adoptionItemDto;
+	private final List<AdoptionItemDto> adoptionItemDto;
 	
 	// 생성자의 매개변수 items는 AdoptionDeserializer에서 리턴해줄 때 전달받은 객체이다.
 	// Json을 트리 노드로 변환하여 "item" 필드만 저장한 객체를 

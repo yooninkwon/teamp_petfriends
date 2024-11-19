@@ -13,7 +13,7 @@
 	<!-- 적립금 테이블 인서트 -->
 	<insert id="insertPoints" parameterType="com.tech.petfriends.login.dto.MemberPointsDto">
 		INSERT INTO MEMBER_POINT 
-		VALUES(POINT_SEQ.NEXTVAL,#{mem_code},#{o_code},#{points},#{point_type},SYSDATE,#{point_info})
+		VALUES(POINT_SEQ.NEXTVAL,#{mem_code},#{o_code},#{points},#{point_type},SYSDATE,#{point_info}, #{point_memo})
 	</insert>
 	
 	<!-- 가입 추천 적립금 인서트 -->
@@ -44,6 +44,13 @@
 	    <foreach item="id" collection="ids" open="(" separator="," close=")">
 	        #{id}
 	    </foreach>
+	</update>
+	
+	<!-- 휴면계정 복구 -->
+	<update id="updateDormant">
+		UPDATE MEMBER
+		SET MEM_TYPE = #{mem_type}
+		WHERE MEM_CODE = #{mem_code}
 	</update>
 
 	<!-- 회원 리스트 가입일 정렬 -->
@@ -201,5 +208,10 @@
 		SET MEM_TYPE = '일반', MEM_WD_MEMO = NULL
 		WHERE MEM_CODE = #{mem_code}
 	</update>
+	
+	<insert id="setMyFeed">
+	    INSERT INTO COMMUNITY_MYFEED (MEM_CODE, CREATE_FEED)
+	    VALUES (#{mem_code}, SYSDATE)
+	</insert>
 	
 </mapper>

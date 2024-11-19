@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -799,8 +800,8 @@ public class MyPageController {
 	@Transactional
 	@PostMapping("/review/writeReview")
 	public String writeReview(HttpServletRequest request, HttpSession session,
-	                          @RequestParam("reviewImages") MultipartFile[] reviewImages) {
-		
+							@RequestParam MultipartFile[] reviewImages,
+							@RequestParam String[] deleteFiles) { 
 	    String memCode = ((MemberLoginDto) session.getAttribute("loginUser")).getMem_code();
 	    String cartCode = request.getParameter("cart_code");
 	    String proCode = request.getParameter("pro_code");
@@ -816,6 +817,7 @@ public class MyPageController {
 	    reviewDto.setReview_text(reviewText);
 	    
 	    String[] uploadedImages = saveUploadedFiles(reviewImages); // 파일 저장 메서드 호출
+
 	    reviewDto.setReview_img1(uploadedImages[0]);
 	    reviewDto.setReview_img2(uploadedImages[1]);
 	    reviewDto.setReview_img3(uploadedImages[2]);
@@ -824,18 +826,42 @@ public class MyPageController {
 	    
 	    if (reviewCode != null && !reviewCode.isEmpty()) {
 	        // 기존 리뷰 수정
-	    	deleteExistingImages(reviewDto);
-	        reviewDto.setReview_code(reviewCode);
+	    	System.out.println("기존 리뷰 수정");
+	    	reviewDto.setReview_code(reviewCode);
+
+		    deleteImage(deleteFiles); // DB, 파일 디렉토리에서 삭제한 이미지 제거
+		    
+	    	MyReviewDto existingReview = mypageDao.existingReview(reviewCode);
+	    	
+	    	deleteExistingImages(existingReview);
+	    	
 	        mypageDao.updateReview(reviewDto);
 	    } else {
 	        // 신규 등록
 	        reviewDto.setReview_code(UUID.randomUUID().toString());
 	        mypageDao.insertReview(reviewDto);
 	    }
+	    
+	    
 
 	    return "redirect:/mypage/review";
 	}
 	
+	private void deleteImage(String[] deleteFiles) {
+	    String imagesDir = new File("src/main/resources/static/Images/ProductImg/ReviewImg").getAbsolutePath();
+
+	    for (String image : deleteFiles) {
+	        if (image != null) {
+	            File file = new File(imagesDir, image);
+	            if (file.exists()) {
+	                file.delete(); // 파일 삭제
+	            }
+	        }
+	    }
+
+	    mypageDao.deleteImageUpdate();
+	}
+
 	private String[] saveUploadedFiles(MultipartFile[] files) {
 	    String[] uploadedImages = new String[5];
 	    String imagesDir = new File("src/main/resources/static/Images/ProductImg/ReviewImg").getAbsolutePath();
@@ -1007,14 +1033,14 @@ public class MyPageController {
 	}
 	
 	// 이미지 수정 시 기존 이미지 삭제
-	private void deleteExistingImages(MyReviewDto reviewDto) {
-	    String imagesDir = new File("src/main/resources/static/Images/ProductImg/ReviewImg").getAbsolutePath();
+	private void deleteExistingImages(MyReviewDto existingReviewDto) {
+		String imagesDir = new File("src/main/resources/static/Images/ProductImg/ReviewImg").getAbsolutePath();
 	    String[] images = {
-	        reviewDto.getReview_img1(),
-	        reviewDto.getReview_img2(),
-	        reviewDto.getReview_img3(),
-	        reviewDto.getReview_img4(),
-	        reviewDto.getReview_img5()
+	        existingReviewDto.getReview_img1(),
+	        existingReviewDto.getReview_img2(),
+	        existingReviewDto.getReview_img3(),
+	        existingReviewDto.getReview_img4(),
+	        existingReviewDto.getReview_img5()
 	    };
 
 	    for (String image : images) {

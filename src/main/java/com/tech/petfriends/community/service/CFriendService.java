@@ -47,7 +47,7 @@ public class CFriendService implements CServiceInterface {
 	        iDao.addFriend(mem_nick, friend_mem_nick);
 	        iDao.friendActivity(mem_nick, friend_mem_nick);
 	    } else if (isFriendBool == 1) {
-	        iDao.deleteFriend(mem_nick);
+	        iDao.deleteFriend(mem_nick, friend_mem_nick);
 	    }
 	
 		

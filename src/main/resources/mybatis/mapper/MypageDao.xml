@@ -292,7 +292,7 @@
 
 	<update id="updateAmountByOrder" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
 	    UPDATE MEMBER
-	    SET MEM_POINT = MEM_POINT - #{o_point}
+	    SET MEM_POINT = MEM_POINT - #{o_point},
 	    	MEM_PAY_AMOUNT = MEM_PAY_AMOUNT + #{o_amount}
 	    WHERE MEM_CODE = #{mem_code}
 	</update>
@@ -445,6 +445,23 @@
 	        REVIEW_IMG4 = <choose><when test="review_img4 != null">#{review_img4}</when><otherwise>NULL</otherwise></choose>,
 	        REVIEW_IMG5 = <choose><when test="review_img5 != null">#{review_img5}</when><otherwise>NULL</otherwise></choose>,
 	        REVIEW_DATE = SYSDATE
+	    WHERE REVIEW_CODE = #{review_code}
+	</update>
+	<select id="existingReview" resultType="com.tech.petfriends.mypage.dto.MyReviewDto">
+	    SELECT * FROM 
+	    PRODUCT_REVIEW
+	    WHERE REVIEW_CODE = #{review_code}
+	</select>
+	
+	<update id="deleteImageUpdate">
+	    UPDATE PRODUCT_REVIEW
+	    <set>
+            REVIEW_IMG1 = NULL,
+            REVIEW_IMG2 = NULL,
+            REVIEW_IMG3 = NULL,
+            REVIEW_IMG4 = NULL,
+            REVIEW_IMG5 = NULL
+	    </set>
 	    WHERE REVIEW_CODE = #{review_code}
 	</update>
 	

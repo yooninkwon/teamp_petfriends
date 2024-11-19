@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
 
-import com.tech.petfriends.community.dto.CCommunityFriendDto;
 import com.tech.petfriends.community.dto.CDto;
 import com.tech.petfriends.community.mapper.IDao;
 import com.tech.petfriends.login.dto.MemberLoginDto;
@@ -57,9 +56,8 @@ public class CMyFeedService implements CServiceInterface {
 		
 		String friend_mem_nick = myFeedName.getMem_nick();
 		System.out.println("friend_mem_nick:" + friend_mem_nick);
+			    												
 		
-	    
-	
 		  if (loginUser != null) {
 			String mem_nick = loginUser.getMem_nick();
 			Integer count = iDao.isFriend(mem_nick, friend_mem_nick); // Integer로 받아옴

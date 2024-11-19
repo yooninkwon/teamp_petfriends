@@ -32,6 +32,9 @@ public interface MemberMapper {
 	// 회원 유형 변경
 	void updateCustomerType(@Param("ids") List<Long> ids, @Param("newType") String newType);
 	
+	// 휴면계정 복구
+	void updateDormant(String mem_code, String mem_type);
+	
 	// 회원 리스트
 	ArrayList<MemberLoginDto> memberList();
 	
@@ -97,4 +100,6 @@ public interface MemberMapper {
 	// 탈퇴회원 복구
 	void deleteRestoration(String mem_code);
 
+	// 커뮤니티 피드 생성
+	void setMyFeed (String mem_code);
 }

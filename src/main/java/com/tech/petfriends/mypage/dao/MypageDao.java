@@ -2,6 +2,7 @@ package com.tech.petfriends.mypage.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -103,7 +104,9 @@ public interface MypageDao {
 	MyReviewDto getReviewInfoByCartCode(String cartCode);
 	void updateReview(MyReviewDto reviewDto);
 	void insertReview(MyReviewDto reviewDto);
-	
+  MyReviewDto existingReview(String review_code);
+	void deleteImageUpdate();
+  
 	// 즐겨찾는 상품
 	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
 	List<MyWishDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);

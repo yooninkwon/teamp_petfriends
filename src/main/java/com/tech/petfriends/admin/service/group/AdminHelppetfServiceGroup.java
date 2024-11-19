@@ -30,18 +30,18 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AdminHelppetfServiceGroup {
-	final AdminPethotelReserveUpdateService adminPethotelReserveUpdateService;
-	final AdminPethotelReserveDetailService adminPethotelReserveDetailService;
-	final AdminPethotelDataService adminPethotelDataService;
-	final AdminPetteacherDataService adminPetteacherDataService;
-	final AdminPetteacherDetailService adminPetteacherDetailService;
-	final AdminPetteacherDeleteService adminPetteacherDeleteService;
-	final AdminPetteacherWriteService adminPetteacherWriteService;
-	final AdminPetteacherEditService adminPetteacherEditService;
-	final AdminPethotelIntroData adminPethotelIntroData;
-	final AdminPethotelInfoData adminPethotelInfoData;
-	final AdminPethotelIntroEditService adminPethotelIntroEditService;
-	final AdminPethotelInfoEditService adminPethotelInfoEditService;
+	private final AdminPethotelReserveUpdateService adminPethotelReserveUpdateService;
+	private final AdminPethotelReserveDetailService adminPethotelReserveDetailService;
+	private final AdminPethotelDataService adminPethotelDataService;
+	private final AdminPetteacherDataService adminPetteacherDataService;
+	private final AdminPetteacherDetailService adminPetteacherDetailService;
+	private final AdminPetteacherDeleteService adminPetteacherDeleteService;
+	private final AdminPetteacherWriteService adminPetteacherWriteService;
+	private final AdminPetteacherEditService adminPetteacherEditService;
+	private final AdminPethotelIntroData adminPethotelIntroData;
+	private final AdminPethotelInfoData adminPethotelInfoData;
+	private final AdminPethotelIntroEditService adminPethotelIntroEditService;
+	private final AdminPethotelInfoEditService adminPethotelInfoEditService;
 
 	public ResponseEntity<String> executeAdminPethotelReserveUpdate(Map<String, String> statusMap) {
 		adminPethotelReserveUpdateService.setStatusMap(statusMap);

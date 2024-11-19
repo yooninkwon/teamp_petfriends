@@ -208,15 +208,45 @@
 
 
 
-	<!-- 이벤트 이미지 -->
-	<div class="feed-image">
-		<img
-			src="<c:url value='/static/Images/communityorign_img/myfeed.jpg'/>"
-			alt="Event 1">
-	</div>
+
+<!-- 마이피드 이미지 -->
+<div class="feed-image">
+    <c:choose>
+        <c:when test="${empty getMyfeedVisit.myfeed_img}">
+            <img src="<c:url value='/static/Images/communityorign_img/myfeed.jpg'/>" alt="Event 1" class="feed-main-image">
+        </c:when>
+        <c:otherwise>
+            <img src="<c:url value='/static/Images/communityorign_img/${getMyfeedVisit.myfeed_img}'/>" alt="Event 1" class="feed-main-image">
+        </c:otherwise>
+    </c:choose>
+</div>
+
+
+
 
 	<!-- 상단 프로필 영역 -->
 	<div class="profile-section">
+		
+		   <div class="visit-stats">
+        <span>전체: ${getMyfeedVisit.total_visits}</span>
+        <span>오늘: ${getMyfeedVisit.daily_visits}</span>
+   		
+	   		<!-- 수정 버튼을 표시할지 여부 결정 -->
+
+<!-- 이미지 수정 폼 -->
+<c:if test="${getMyfeedVisit.mem_code == sessionScope.loginUser.mem_code}">
+    <form action="/community/upload/${getMyfeedVisit.mem_code}" method="post" enctype="multipart/form-data" class="upload-form">
+        <label for="feedImage" class="custom-file-button">파일 선택</label>
+        <input type="file" id="feedImage" name="feedImage" class="file-input">
+        <button type="submit" class="upload-button">업로드</button>
+    </form>
+</c:if>
+   		
+   		
+   		
+   		 </div>
+		
+		
 		<div class="profile-info">
 			<c:choose>
 				<c:when test="${empty getpetimg.pet_img}">
@@ -228,8 +258,10 @@
 						class="main-profile-image">
 				</c:otherwise>
 			</c:choose>
-			<h2>${myFeedName.mem_nick}</h2>
+			<h2>${myFeedName.mem_nick}</h2>	
 		</div>
+		
+		
 		<div class="profile-menu">
 
 			<c:if
@@ -333,7 +365,7 @@
 						<a
 							href="<c:url value='/community/contentView/?board_no=${myFeedList.board_no}'/>">
 							<!-- 이미지 클릭 시 이동할 링크 추가 --> <img
-							src="/static/images/community_img/${myFeedList.chrepfile}" alt="">
+							src="/static/images/community_img/${myFeedList.chrepfile}" alt="" style="width: 200px; height: 200px;">
 						</a>
 						<div class="feed-info">
 							<!-- 제목과 날짜를 감싸는 div 추가 -->

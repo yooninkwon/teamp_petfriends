@@ -41,7 +41,6 @@ public class CDto {
 	private String pet_img;
 	private String pet_main;
 
-
 	private int feed_no;
 	private String mem_nick;
 
@@ -57,9 +56,15 @@ public class CDto {
 	private Date created_at;
 	private String related_user_mem_code ;
 
-
+    private int offset;
+    private int limit;
 	
-	
+    //myfeed 테이블
+    
+    private int  total_visits;
+    private int daily_visits;
+    private Date create_feed;
+    private String myfeed_img;
 }
 
 
