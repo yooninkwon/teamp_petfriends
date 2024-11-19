@@ -106,87 +106,87 @@
     </div>
 </div>
 
-  <script>
-    // 탭 전환 기능
-    document.querySelectorAll('.tab-btn').forEach(function(tabBtn) {
-      tabBtn.addEventListener('click', function() {
-        document.querySelectorAll('.tab-btn').forEach(function(btn) {
-          btn.classList.remove('active');
-        });
-        this.classList.add('active');
-        
-        document.querySelectorAll('.tab-content').forEach(function(content) {
-          content.classList.remove('active');
-        });
-        document.getElementById(this.dataset.tab).classList.add('active');
-      });
-    });
+<script>
+   // 탭 전환 기능
+   document.querySelectorAll('.tab-btn').forEach(function(tabBtn) {
+     tabBtn.addEventListener('click', function() {
+       document.querySelectorAll('.tab-btn').forEach(function(btn) {
+         btn.classList.remove('active');
+       });
+       this.classList.add('active');
+       
+       document.querySelectorAll('.tab-content').forEach(function(content) {
+         content.classList.remove('active');
+       });
+       document.getElementById(this.dataset.tab).classList.add('active');
+     });
+   });
 
- 	// 쿠폰 검색 AJAX
-    $('#coupon-search-btn').click(function () {
-        var keyword = $('#coupon-keyword').val();
-        $.ajax({
-            type: "POST",
-            url: "/mypage/coupon/searchCoupon",
-            data: { keyword: keyword },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    alert(response.message);
-                    // 로컬 저장소에 active 탭 상태를 'usable'로 저장
-                    localStorage.setItem('activeTab', 'usable');
-                    // 페이지 새로고침
-                    location.reload();
-                } else {
-                    // 실패 시 서버로부터 받은 message를 에러 메시지 영역에 출력
-                    $('#error-message').text(response.message).show();
-                }
-            },
-            error: function() {
-                $('#error-message').text(response.message).show();
-            }
-        });
-    });
- 	
-    // 쿠폰 받기 AJAX
-    document.querySelectorAll('#receive-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var couponNo = this.dataset.couponNo;
-        $.ajax({
-          type: "POST",
-          url: "/mypage/coupon/receive",
-          data: { couponNo: couponNo },
-          success: function() {
-            alert('쿠폰을 받았습니다.');
-            localStorage.setItem('activeTab', 'usable');
-            location.reload();
-          },
-          error: function() {
-              alert('쿠폰 받기에 실패했습니다.');
-          }
-        });
-      });
-    });
-    
-	// 페이지 로드 시 로컬 저장소에 저장된 탭 정보에 따라 active 탭 설정
-    $(document).ready(function() {
-        var activeTab = localStorage.getItem('activeTab');
-        if (activeTab === 'usable') {
-            // 'usable' 탭 활성화
-            $('.tab-btn').removeClass('active');
-            $('[data-tab="usable"]').addClass('active');
+	// 쿠폰 검색 AJAX
+   $('#coupon-search-btn').click(function () {
+       var keyword = $('#coupon-keyword').val();
+       $.ajax({
+           type: "POST",
+           url: "/mypage/coupon/searchCoupon",
+           data: { keyword: keyword },
+           dataType: 'json',
+           success: function(response) {
+               if (response.success) {
+                   alert(response.message);
+                   // 로컬 저장소에 active 탭 상태를 'usable'로 저장
+                   localStorage.setItem('activeTab', 'usable');
+                   // 페이지 새로고침
+                   location.reload();
+               } else {
+                   // 실패 시 서버로부터 받은 message를 에러 메시지 영역에 출력
+                   $('#error-message').text(response.message).show();
+               }
+           },
+           error: function() {
+               $('#error-message').text(response.message).show();
+           }
+       });
+   });
+	
+   // 쿠폰 받기 AJAX
+   document.querySelectorAll('#receive-btn').forEach(function(btn) {
+     btn.addEventListener('click', function() {
+       var couponNo = this.dataset.couponNo;
+       $.ajax({
+         type: "POST",
+         url: "/mypage/coupon/receive",
+         data: { couponNo: couponNo },
+         success: function() {
+           alert('쿠폰을 받았습니다.');
+           localStorage.setItem('activeTab', 'usable');
+           location.reload();
+         },
+         error: function() {
+             alert('쿠폰 받기에 실패했습니다.');
+         }
+       });
+     });
+   });
+   
+// 페이지 로드 시 로컬 저장소에 저장된 탭 정보에 따라 active 탭 설정
+   $(document).ready(function() {
+       var activeTab = localStorage.getItem('activeTab');
+       if (activeTab === 'usable') {
+           // 'usable' 탭 활성화
+           $('.tab-btn').removeClass('active');
+           $('[data-tab="usable"]').addClass('active');
 
-            $('.tab-content').removeClass('active');
-            $('#usable').addClass('active');
-        } else {
-            // 기본으로 'downloadable' 탭 활성화
-            $('.tab-btn').removeClass('active');
-            $('[data-tab="downloadable"]').addClass('active');
+           $('.tab-content').removeClass('active');
+           $('#usable').addClass('active');
+       } else {
+           // 기본으로 'downloadable' 탭 활성화
+           $('.tab-btn').removeClass('active');
+           $('[data-tab="downloadable"]').addClass('active');
 
-            $('.tab-content').removeClass('active');
-            $('#downloadable').addClass('active');
-        }
-    });
-  </script>
+           $('.tab-content').removeClass('active');
+           $('#downloadable').addClass('active');
+       }
+   });
+ </script>
 </body>
 </html>

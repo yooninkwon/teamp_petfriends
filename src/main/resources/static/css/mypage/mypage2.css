@@ -258,3 +258,161 @@ h2 {
     cursor: pointer;
     background-color: #1b6262;
 }
+
+/* 고객센터 */
+.go-faq {
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+	background-color: #ff4081;
+	text-decoration: none;
+	padding: 10px 25px;
+	border-radius: 5px;
+}
+.container {
+	width: 60%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+.tab-section {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+.tab-btn {
+	width: 50%;
+	padding: 10px;
+	text-align: center;
+	background-color: white;
+	font-size: 18px;
+	color: #ddd;
+	border: none;
+	border-bottom: 1px solid #ddd;
+	cursor: pointer;
+}
+.tab-btn.active {
+	color: black;
+	font-weight: bold;
+	border-bottom: 2px solid #ff4081;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+.cs-form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-bottom: 100px;
+}
+.cs_caregory {
+	align-content: center;
+	margin: 15px 0;
+	padding: 15px 0 0 0;
+	border-top: 1px solid #cdcdcd;
+    font-size: 14px;
+}
+.cs_title {
+	display: inline-block;
+	width: 80px;
+	padding-left: 10px;
+	border-right: 1px solid #cdcdcd;
+	margin-right: 10px;
+}
+.cs_contect {
+	height: 400px;
+	margin-bottom: 15px;
+	padding: 10px;
+}
+.cs-list {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+.cs-list th {
+    font-weight: normal;
+    border-bottom: 1px solid #cdcdcd;
+	align-content: center;
+    font-size: 14px;
+	padding: 10px;
+}
+.cs-detail {
+	width: 100%;
+    border-collapse: collapse;
+}
+.cs-detail th {
+    font-weight: normal;
+    border-top: 1px solid #cdcdcd;
+	align-content: center;
+    font-size: 14px;
+	padding: 10px;
+	text-align: left;
+}
+.submit-btn {
+	width: 100px;
+	background-color: #ff4081;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    align-self: flex-end;
+}
+.cs-detail-title {
+	width: 150px;
+	border-right: 1px solid #cdcdcd;
+}
+#detailContent {
+	height: 200px;
+}
+.cs-btn-group {
+	display: flex;
+	justify-content: space-between;
+}
+.cs-btn-group button {
+	width: 100px;
+	background-color: white;
+    color: #ff4081;
+    padding: 5px 15px;
+    border: 1px solid #ff4081;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    align-self: flex-end;
+}
+.cs-answer {
+	width: auto;
+	background-color: #ddd;
+    font-size: 14px;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+/* 페이지네이션 */
+.pagination {
+    width: 100%;
+	text-align: center;
+	margin: 30px 0 50px 0;
+}
+.pagination a {
+	padding: 5px 10px;
+	margin: 0 5px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	text-decoration: none;
+	color: #333;
+	transition: background-color 0.3s ease;
+}
+.pagination a:hover {
+	background-color: #545454;
+	color: white;
+}
+.pagination a.active {
+	background-color: #545454;
+	color: white;
+}

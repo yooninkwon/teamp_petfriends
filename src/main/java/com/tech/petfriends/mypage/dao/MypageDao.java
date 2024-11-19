@@ -16,6 +16,7 @@ import com.tech.petfriends.mypage.dto.MyCartDto;
 import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 import com.tech.petfriends.mypage.dto.MyReviewDto;
+import com.tech.petfriends.mypage.dto.MyServiceHistoryDto;
 import com.tech.petfriends.mypage.dto.MyWishDto;
 
 @Mapper
@@ -114,4 +115,10 @@ public interface MypageDao {
 	ArrayList<PethotelFormDataDto> pethotelReserveMypagePets(String reserveNo);
 	void pethotelReserveMyPageCancel(String reserveNo);
 
+	// 고객센터
+	List<MyServiceHistoryDto> getMyServiceHistory(String mem_code);
+	void writeCS(String mem_code, String cs_caregory, String cs_contect);
+	void modifyCS(String cs_no, String cs_caregory, String cs_contect);
+	MyServiceHistoryDto getMyServiceByNo(String cs_no);
+	void deleteCS(String cs_no);
 }

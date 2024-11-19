@@ -46,6 +46,7 @@ import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.mypage.dao.MypageDao;
 import com.tech.petfriends.mypage.dto.MyCartDto;
 import com.tech.petfriends.mypage.dto.MyOrderDto;
+import com.tech.petfriends.mypage.dto.MyServiceHistoryDto;
 import com.tech.petfriends.notice.dao.NoticeDao;
 import com.tech.petfriends.notice.dto.EventDto;
 import com.tech.petfriends.notice.dto.NoticeDto;
@@ -455,6 +456,40 @@ public class AdminPageController {
 		AdminEventEditService adminEventEditService = new AdminEventEditService(noticeDao);
 		adminEventEditService.execute(model);
 	    return "redirect:/admin/notice";
+	}
+
+	@GetMapping("/cscenter")
+	public String cscenter() {	
+		return "admin/cscenter";
+	}
+	
+	@GetMapping("/cscenter/data")
+	@ResponseBody
+	public List<MyServiceHistoryDto> getCsData(HttpServletRequest request) {
+		
+		String status = request.getParameter("status");
+		String category = request.getParameter("category");
+		
+		List<MyServiceHistoryDto> csDatas = couponOrderDao.getAllCs(status, category);
+		
+		return csDatas;
+	}
+	
+	@GetMapping("/cscenter/detail")
+	@ResponseBody
+	public MyServiceHistoryDto getCsDetail(HttpServletRequest request) {
+        return couponOrderDao.getCsDetailByNo(request.getParameter("cs_no"));
+	}
+	
+	@GetMapping("/cscenter/submitAnswer")
+	public String writeAnswer(HttpServletRequest request) {
+		
+		String cs_no = request.getParameter("cs_no");
+		String cs_answer = request.getParameter("cs_answer");
+		
+		couponOrderDao.writeAnswer(cs_no, cs_answer);
+		
+		return "redirect:/admin/cscenter";
 	}
 
 	@GetMapping("/sales")
