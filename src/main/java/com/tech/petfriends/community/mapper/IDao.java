@@ -111,9 +111,15 @@ public interface IDao {
 
 	public List<CChatDto> getChatRooms(String sender);
 
-	
-	
 	public int getTotalPostCount(); // 전체 게시글 개수
+
+	public void totalVisits(String mem_code);
+	
+	public void dailyVisits(String mem_code);
+
+	public CDto getMyfeedVisit (String mem_code);
+	
+
 	
 }
 

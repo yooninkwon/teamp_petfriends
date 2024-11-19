@@ -217,6 +217,13 @@
 
 	<!-- 상단 프로필 영역 -->
 	<div class="profile-section">
+		
+		   <div class="visit-stats">
+        <span>전체: ${getMyfeedVisit.total_visits}</span>
+        <span>일일: ${getMyfeedVisit.daily_visits}</span>
+   		 </div>
+		
+		
 		<div class="profile-info">
 			<c:choose>
 				<c:when test="${empty getpetimg.pet_img}">
@@ -229,6 +236,9 @@
 				</c:otherwise>
 			</c:choose>
 			<h2>${myFeedName.mem_nick}</h2>
+		 
+		
+		
 		</div>
 		<div class="profile-menu">
 

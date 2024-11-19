@@ -73,7 +73,6 @@ public class CommunityController {
 	}
 
 		
-	
 	@GetMapping("/writeView")
 	public String writeView(HttpSession session, HttpServletRequest request, Model model) {
 		model.addAttribute("session", session);
@@ -250,12 +249,18 @@ public class CommunityController {
 
 	@GetMapping("/myfeed/{mem_code}")
 	public String myfeed(@PathVariable String mem_code, HttpSession session, HttpServletRequest request, Model model) {
+		CDto getMyfeedVisit = (CDto) iDao.getMyfeedVisit(mem_code);
+		
+		model.addAttribute("getMyfeedVisit", getMyfeedVisit);
 		model.addAttribute("request", request);
 		model.addAttribute("mem_code", mem_code);
 		model.addAttribute("session", session);
 		System.out.println(mem_code);
-
-		serviceInterface = new CMyFeedService(iDao);
+		iDao.totalVisits(mem_code);
+		iDao.dailyVisits(mem_code);
+	    
+		
+	    serviceInterface = new CMyFeedService(iDao);
 		serviceInterface.execute(model);
 		
 		
@@ -351,6 +356,8 @@ public class CommunityController {
 	    serviceInterface = new CFriendService(iDao);
 	    serviceInterface.execute(model);
 	    System.out.println("mem_code: " + mem_code);
+	  
+	   
 	    
 	    System.out.println("isFriendBool: " + model.getAttribute("isFriendBool")); // 디버깅용
 	    return "redirect:/community/myfeed/" + mem_code;

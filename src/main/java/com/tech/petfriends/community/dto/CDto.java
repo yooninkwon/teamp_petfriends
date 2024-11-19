@@ -57,10 +57,15 @@ public class CDto {
 	private Date created_at;
 	private String related_user_mem_code ;
 
-
     private int offset;
     private int limit;
 	
+    //myfeed 테이블
+    
+    private int  total_visits;
+    private int daily_visits;
+    private Date create_feed;
+    
 }
 
 
