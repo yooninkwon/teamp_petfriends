@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -47,6 +49,7 @@ import com.tech.petfriends.mypage.dto.MyCartDto;
 import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 import com.tech.petfriends.mypage.dto.MyReviewDto;
+import com.tech.petfriends.mypage.dto.MyServiceHistoryDto;
 import com.tech.petfriends.mypage.dto.MyWishDto;
 
 @Controller
@@ -487,11 +490,6 @@ public class MyPageController {
 		session.setAttribute("loginUser", loginUser); // 세션 갱신
 
 		return "redirect:/mypage/setting";
-	}
-
-	@GetMapping("/withdrawal")
-	public String withdrawal() {
-		return "/mypage/withdrawal";
 	}
 
 	// 장바구니
@@ -941,7 +939,54 @@ public class MyPageController {
 	public String cscenter() {
 		return "/mypage/cscenter";
 	}
+	
+	@GetMapping("/cscenter/data")
+	@ResponseBody
+	public List<MyServiceHistoryDto> csData(HttpSession session) {
 
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+
+		List<MyServiceHistoryDto> myHistory = mypageDao.getMyServiceHistory(loginUser.getMem_code());
+
+		return myHistory;
+	}
+	
+	@GetMapping("/cscenter/csDetail")
+	@ResponseBody
+	public MyServiceHistoryDto csDetail(HttpServletRequest request) {
+	    return mypageDao.getMyServiceByNo(request.getParameter("csNo"));
+	}
+	
+	@PostMapping("/cscenter/writeCS")
+	@ResponseBody
+	public ResponseEntity<String> writeCS(@RequestParam Map<String, String> formData) {
+	    try {
+	        String cs_no = formData.get("cs_no");
+	        String mem_code = formData.get("mem_code");
+	        String cs_caregory = formData.get("cs_caregory");
+	        String cs_contect = formData.get("cs_contect");
+
+	        System.out.println("cs_no: " + cs_no);
+
+	        if (cs_no != null && !cs_no.trim().isEmpty()) {
+	            mypageDao.modifyCS(cs_no, cs_caregory, cs_contect);
+	        } else {
+	            mypageDao.writeCS(mem_code, cs_caregory, cs_contect);
+	        }
+	        return ResponseEntity.ok("success");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error");
+	    }
+	}
+
+	@PostMapping("/cscenter/deleteCS")
+	@ResponseBody
+	public String deleteCS(HttpServletRequest request) {
+	    mypageDao.deleteCS(request.getParameter("csNo"));
+	    return "success";
+	}
+	
 	@GetMapping("/pethotel")
 	public String myPethotel() {
 		return "mypage/pethotel";

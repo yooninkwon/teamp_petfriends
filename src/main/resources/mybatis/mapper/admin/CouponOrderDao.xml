@@ -147,11 +147,67 @@
 		WHERE CP_NO = #{cp_no}
 	</delete>
 	
+	<!-- 스케쥴러 -->
 	<update id="updateMemberCouponDead">
 	    UPDATE MEMBER_COUPON_BRIDGE
 	    SET MC_DEAD = #{today}
 	    WHERE CP_NO IN (SELECT CP_NO FROM COUPON WHERE CP_DEAD = #{today})
 	</update>
+	
+	<select id="getThreeMonthsPayment" resultType="map">
+	    SELECT
+	        M.MEM_CODE,
+	        M.G_NO,
+	        NVL(SUM(O.O_AMOUNT), 0) AS TOTAL_PAYMENT
+	    FROM
+	        MEMBER M
+	    LEFT JOIN "ORDER" O ON M.MEM_CODE = O.MEM_CODE
+	    LEFT JOIN ORDER_STATUS OS ON O.O_CODE = OS.O_CODE
+	    WHERE
+	        OS.OS_NAME = '구매확정'
+	        AND OS.OS_REGDATE BETWEEN #{threeMonthsAgo} AND #{today}
+	        AND O.O_CANCEL IS NULL
+	    GROUP BY M.MEM_CODE, M.G_NO
+	</select>
+	
+	<select id="getAllGradeConditions" resultType="com.tech.petfriends.mypage.dto.GradeDto">
+	    SELECT
+	        G_NO,
+	        G_NAME,
+	        G_CONDITION
+	    FROM GRADE
+	    ORDER BY G_NO ASC
+	</select>
+	
+	<update id="updateMemberGrade">
+	    UPDATE MEMBER
+	    SET G_NO = #{g_no}
+	    WHERE MEM_CODE = #{mem_code}
+	</update>
+	
+	<select id="getAllMemberGrades" resultType="map">
+	    SELECT
+	        MEM_CODE,
+	        G_NO
+	    FROM MEMBER
+	</select>
+	
+	<select id="getCouponsForGrades" resultType="map">
+	    SELECT
+	        CP_NO,
+	        G_NO
+	    FROM COUPON
+	    WHERE CP_KIND = 'G'
+	</select>
+	
+	<insert id="insertMemberCoupon">
+	    INSERT INTO MEMBER_COUPON_BRIDGE (
+	        MC_CODE, MEM_CODE, CP_NO, MC_ISSUE
+	    )
+	    VALUES (
+	        #{mcCode}, #{memCode}, #{cpNo}, SYSDATE
+	    )
+	</insert>
     
     <!-- 주문관리 -->
     <select id="getAllOrders" resultType="com.tech.petfriends.mypage.dto.MyOrderDto">
@@ -209,4 +265,60 @@
 		VALUES(#{oCode}, #{osName}, SYSDATE)
 	</insert>
     
+    <!-- 고객센터 -->
+	<select id="getAllCs" resultType="com.tech.petfriends.mypage.dto.MyServiceHistoryDto">
+		SELECT CS.*,M.MEM_NAME
+		FROM SERVICECENTER CS
+		JOIN MEMBER M ON M.MEM_CODE = CS.MEM_CODE
+		<where>
+			<!-- 처리 상태 필터 -->
+            <choose>
+                <when test="status == ''">
+                	CS.CS_REGDATE IS NULL
+                </when>
+                <when test="status == '처리중'">
+                    CS.CS_ANSWER IS NULL AND CS.CS_DELETE IS NULL
+                </when>
+                <when test="status == '처리완료'">
+                    CS.CS_ANSWER IS NOT NULL AND CS.CS_DELETE IS NULL
+                </when>
+                <when test="status == '삭제'">
+                    CS.CS_DELETE IS NOT NULL
+                </when>
+                <when test="status == '처리중,처리완료'">
+                    CS.CS_DELETE IS NULL
+                </when>
+                <when test="status == '처리중,삭제'">
+                    CS.CS_ANSWER IS NULL AND CS.CS_DELETE IS NOT NULL
+                </when>
+                <when test="status == '처리완료,삭제'">
+                    CS.CS_ANSWER IS NOT NULL AND CS.CS_DELETE IS NOT NULL
+                </when>
+                <when test="status == '처리중,처리완료,삭제'">
+                    CS.CS_REGDATE IS NOT NULL
+                </when>
+            </choose>
+        	
+        	<!-- 카테고리 필터 -->
+	        <if test="category != null and category != ''">
+	            AND CS.CS_CAREGORY IN 
+	            <foreach collection="category.split(',')" item="cat" open="(" separator="," close=")">
+	                #{cat}
+	            </foreach>
+	        </if>
+		</where>
+		ORDER BY CS.CS_REGDATE DESC
+	</select>
+	
+	<select id="getCsDetailByNo" resultType="com.tech.petfriends.mypage.dto.MyServiceHistoryDto">
+		SELECT *
+		FROM SERVICECENTER
+		WHERE CS_NO = #{cs_no}
+	</select>
+	
+	<update id="writeAnswer">
+		UPDATE SERVICECENTER
+	    SET CS_ANSWER = #{cs_answer}
+	    WHERE CS_NO = #{cs_no}
+	</update>
 </mapper>

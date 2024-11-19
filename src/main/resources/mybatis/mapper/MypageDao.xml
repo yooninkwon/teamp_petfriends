@@ -543,5 +543,38 @@
 		SET HPH_STATUS = '취소됨' 
 		WHERE HPH_RESERVE_NO = #{reserveNo}
 	</update>
-
+	
+	<!-- 고객센터 -->
+	<select id="getMyServiceHistory" resultType="com.tech.petfriends.mypage.dto.MyServiceHistoryDto">
+		SELECT CS.*,M.MEM_NAME
+		FROM SERVICECENTER CS
+		JOIN MEMBER M ON M.MEM_CODE = CS.MEM_CODE
+		WHERE CS.MEM_CODE = #{mem_code} AND CS.CS_DELETE IS NULL
+		ORDER BY CS_REGDATE DESC
+	</select>
+	
+	<insert id="writeCS">
+		INSERT INTO SERVICECENTER
+		VALUES (SERVICECENTER_SEQ.NEXTVAL,#{mem_code},#{cs_caregory},#{cs_contect},SYSDATE,NULL,NULL)
+	</insert>
+	
+	<update id="modifyCS">
+	    UPDATE SERVICECENTER
+	    SET CS_CAREGORY = #{cs_caregory},
+	        CS_CONTECT = #{cs_contect}
+	    WHERE CS_NO = #{cs_no}
+	</update>
+	
+	<select id="getMyServiceByNo" resultType="com.tech.petfriends.mypage.dto.MyServiceHistoryDto">
+		SELECT CS.*,M.MEM_NAME
+		FROM SERVICECENTER CS
+		JOIN MEMBER M ON M.MEM_CODE = CS.MEM_CODE
+		WHERE CS.CS_NO = #{cs_no}
+	</select>
+	
+	<update id="deleteCS">
+	    UPDATE SERVICECENTER
+	    SET CS_DELETE = 'delete'
+	    WHERE CS_NO = #{cs_no}
+	</update>
 </mapper>

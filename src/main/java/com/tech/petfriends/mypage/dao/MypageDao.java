@@ -17,6 +17,7 @@ import com.tech.petfriends.mypage.dto.MyCartDto;
 import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
 import com.tech.petfriends.mypage.dto.MyReviewDto;
+import com.tech.petfriends.mypage.dto.MyServiceHistoryDto;
 import com.tech.petfriends.mypage.dto.MyWishDto;
 
 @Mapper
@@ -103,7 +104,9 @@ public interface MypageDao {
 	MyReviewDto getReviewInfoByCartCode(String cartCode);
 	void updateReview(MyReviewDto reviewDto);
 	void insertReview(MyReviewDto reviewDto);
-	
+  MyReviewDto existingReview(String review_code);
+	void deleteImageUpdate();
+  
 	// 즐겨찾는 상품
 	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
 	List<MyWishDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
@@ -115,10 +118,10 @@ public interface MypageDao {
 	ArrayList<PethotelFormDataDto> pethotelReserveMypagePets(String reserveNo);
 	void pethotelReserveMyPageCancel(String reserveNo);
 
-	MyReviewDto existingReview(String review_code);
-
-	void deleteImageUpdate();
-	
-	
-
+	// 고객센터
+	List<MyServiceHistoryDto> getMyServiceHistory(String mem_code);
+	void writeCS(String mem_code, String cs_caregory, String cs_contect);
+	void modifyCS(String cs_no, String cs_caregory, String cs_contect);
+	MyServiceHistoryDto getMyServiceByNo(String cs_no);
+	void deleteCS(String cs_no);
 }
