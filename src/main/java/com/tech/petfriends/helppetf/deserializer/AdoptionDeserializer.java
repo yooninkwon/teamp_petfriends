@@ -17,10 +17,10 @@ import com.tech.petfriends.helppetf.vo.HelpPetfAdoptionItemsVo;
 // 데이터를 가공해 Java Object에 mapping하여 값을 반환
 public class AdoptionDeserializer extends JsonDeserializer<HelpPetfAdoptionItemsVo> {
 	
-	private final ObjectMapper objectMapper;
+	private final ObjectMapper mapper;
 	// Jackson 라이브러리의 ObjectMapper를 주입
 	public AdoptionDeserializer() {
-		this.objectMapper = new ObjectMapper();
+		this.mapper = new ObjectMapper();
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class AdoptionDeserializer extends JsonDeserializer<HelpPetfAdoptionItems
 		// itemNode를 DTO타입 List로 변환
 		// List 값을 받으려면 objectMapper.treetoValue()를 활용하여 배열로 받아 .toList() 해주어야 한다.
 		List<AdoptionItemDto> items = Arrays.stream(
-				objectMapper.treeToValue(itemNode, AdoptionItemDto[].class)
+				mapper.treeToValue(itemNode, AdoptionItemDto[].class)
 				).collect(Collectors.toList());
 
 		return new HelpPetfAdoptionItemsVo(items);
