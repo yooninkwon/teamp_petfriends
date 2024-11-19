@@ -13,7 +13,7 @@
 	<!-- 적립금 테이블 인서트 -->
 	<insert id="insertPoints" parameterType="com.tech.petfriends.login.dto.MemberPointsDto">
 		INSERT INTO MEMBER_POINT 
-		VALUES(POINT_SEQ.NEXTVAL,#{mem_code},#{o_code},#{points},#{point_type},SYSDATE,#{point_info})
+		VALUES(POINT_SEQ.NEXTVAL,#{mem_code},#{o_code},#{points},#{point_type},SYSDATE,#{point_info}, #{point_memo})
 	</insert>
 	
 	<!-- 가입 추천 적립금 인서트 -->
