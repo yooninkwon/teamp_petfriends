@@ -35,7 +35,7 @@
 
 			<!-- 핫토픽 섹션 -->
 			<section class="hot-topics">
-				<h3>오늘의 핫이슈!</h3>
+				<h3>펫프렌즈 핫이슈!</h3>
 				<hr>
 				<ul>
 					<c:forEach var="hottopic" items="${getHotTopicList}"
