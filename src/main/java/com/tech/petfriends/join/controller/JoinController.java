@@ -3,7 +3,6 @@ package com.tech.petfriends.join.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,15 +13,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tech.petfriends.configuration.ApikeyConfig;
 import com.tech.petfriends.join.service.JoinService;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/join")
 public class JoinController {
 	
-	@Autowired
-	private JoinService joinService;
 	
-	@Autowired
-	ApikeyConfig apikeyConfig;
+	private final JoinService joinService;
+	private final ApikeyConfig apikeyConfig;
 	
 	// 회원가입 페이지
 	@GetMapping("/joinPage")
