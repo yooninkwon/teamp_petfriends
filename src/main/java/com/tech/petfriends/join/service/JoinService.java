@@ -30,11 +30,11 @@ public class JoinService {
         MemberLoginDto member = new MemberLoginDto();
         MemberAddressDto address = new MemberAddressDto();    
         String phoneNumber = request.getParameter("phoneNumber");
-        int duplicateCount = memberMapper.isPhoneNumberDuplicate(phoneNumber);
-        if (duplicateCount > 0) {
-            redirectAttributes.addFlashAttribute("error", "이미 가입된 정보입니다.");
-            return "redirect:/login/loginPage";
-        }
+//        int duplicateCount = memberMapper.isPhoneNumberDuplicate(phoneNumber);
+//        if (duplicateCount > 0) {
+//            redirectAttributes.addFlashAttribute("error", "이미 가입된 정보입니다.");
+//            return "redirect:/login/loginPage";
+//        }
         // UUID로 mem_code 생성
         String uniqueID = UUID.randomUUID().toString();
         member.setMem_code(uniqueID);
@@ -70,6 +70,9 @@ public class JoinService {
         address.setAddr_line2(request.getParameter("detailAddress"));
         address.setAddr_default('Y');
         memberMapper.insertJoinAddress(address);
+       
+        memberMapper.setMyFeed(uniqueID);
+        
         // 회원가입 후 로그인 처리
         session.setAttribute("loginUser", member);
         redirectAttributes.addFlashAttribute("fromJoin", member.getMem_nick() + "님 회원가입이 완료 되었습니다.");      

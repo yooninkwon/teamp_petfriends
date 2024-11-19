@@ -534,10 +534,7 @@
 	</select>
 
 
-	<insert id="setMyFeed">
-	 INSERT INTO COMMUNITY_MYFEED (MEM_CODE, CREATE_FEED)
-	 VLAUES (#{mem_code}, SYSDATE)	
-	</insert>
+
 
 
 

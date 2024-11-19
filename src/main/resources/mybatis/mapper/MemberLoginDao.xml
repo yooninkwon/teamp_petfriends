@@ -202,4 +202,9 @@
 		WHERE MEM_CODE = #{mem_code}
 	</update>
 	
+	<insert id="setMyFeed">
+	    INSERT INTO COMMUNITY_MYFEED (MEM_CODE, CREATE_FEED)
+	    VALUES (#{mem_code}, SYSDATE)
+	</insert>
+	
 </mapper>

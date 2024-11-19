@@ -208,19 +208,39 @@
 
 
 
-	<!-- 이벤트 이미지 -->
-	<div class="feed-image">
-		<img
-			src="<c:url value='/static/Images/communityorign_img/myfeed.jpg'/>"
-			alt="Event 1">
-	</div>
+
+<!-- 마이피드 이미지 -->
+<div class="feed-image">
+    <c:choose>
+      
+        <c:when test="${empty getMyfeedVisit.img}">
+            <img src="<c:url value='/static/Images/communityorign_img/myfeed.jpg'/>" alt="Event 1">
+        </c:when>
+        <c:otherwise>
+        
+            <img src="<c:url value='/static/Images/communityorign_img/${getMyfeedVisit.img}'/>" alt="Event 1">
+        </c:otherwise>
+    </c:choose>
+</div>
+
+    <!-- 수정 버튼을 표시할지 여부 결정 -->
+    <c:if test="${myFeedImage.memCode == sessionScope.loginUser.memCode}">
+        <!-- 이미지 수정 폼 -->
+        <form action="<c:url value='/community/updateFeedImage'/>" method="post" enctype="multipart/form-data">
+            <label for="feedImage">새로운 이미지 업로드:</label>
+            <input type="file" id="feedImage" name="feedImage" accept="image/*">
+            <button type="submit">이미지 수정</button>
+        </form>
+    </c:if>
+
+
 
 	<!-- 상단 프로필 영역 -->
 	<div class="profile-section">
 		
 		   <div class="visit-stats">
         <span>전체: ${getMyfeedVisit.total_visits}</span>
-        <span>일일: ${getMyfeedVisit.daily_visits}</span>
+        <span>오늘: ${getMyfeedVisit.daily_visits}</span>
    		 </div>
 		
 		
