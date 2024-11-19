@@ -33,7 +33,6 @@ public class AdoptionGetJson implements HelppetfExecuteMono<HelpPetfAdoptionItem
 	public AdoptionGetJson(ApikeyConfig apikeyConfig, WebClient webClient, ObjectMapper mapper) {
 		this.apikeyConfig = apikeyConfig;
 		this.webClient = webClient;
-		
 		this.mapper = mapper;
 	}
 	
@@ -66,7 +65,6 @@ public class AdoptionGetJson implements HelppetfExecuteMono<HelpPetfAdoptionItem
 		 * 
 		 * 파싱 -> .map(json -> ... )} : parsingJsonObject() 메서드 호출
 		 */		
-		System.out.println("fetchAdoptionData");
 		return webClient.get().uri(buildUrl(request))
 				.retrieve()
 				.onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Client Error")))
