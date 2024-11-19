@@ -404,4 +404,75 @@ a:hover  {
     background-color: #f1f1f1; /* 상대방 메시지 배경색 */
 }
 
+.upload-form {
+    margin-left: auto; /* 오른쪽 끝으로 이동 */
+    align-items: center;
+}
 
+/* 피드 이미지 스타일 */
+.feed-image {
+    position: relative;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.feed-main-image {
+    width: 100%; /* 이미지 크기 조정 */
+    max-width: 300px; /* 최대 크기 설정 */
+    border-radius: 15px; /* 둥근 모서리 */
+    opacity: 0.7; /* 투명도 설정 */
+    transition: opacity 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+}
+
+.profile-image:hover {
+    opacity: 1; /* 호버 시 투명도 제거 */
+}
+
+
+
+
+.upload-button {
+    background-color: #ff4081; /* 버튼 배경색 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px; /* 내부 여백 */
+    border: none; /* 테두리 제거 */
+    border-radius: 5px; /* 둥근 모서리 */
+    cursor: pointer; /* 마우스 포인터 변경 */
+    font-size: 16px; /* 글자 크기 */
+    transition: background-color 0.3s ease; /* 배경색 변경 트랜지션 */
+}
+
+.upload-button:hover {
+    background-color: #ffe5ee; /* 호버 시 배경색 */
+}
+
+.upload-button:active {
+    background-color: #ffe5ee; /* 클릭 시 배경색 */
+}
+
+/* 숨긴 파일 입력 필드 */
+.file-input {
+    display: none; /* 기본 파일 선택 버튼 숨김 */
+}
+
+/* 커스텀 파일 선택 버튼 */
+.custom-file-button {
+    background-color: #ff4081; /* 버튼 배경색 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px; /* 내부 여백 */
+    border: none; /* 테두리 제거 */
+    border-radius: 5px; /* 둥근 모서리 */
+    cursor: pointer; /* 마우스 포인터 변경 */
+    font-size: 16px; /* 글자 크기 */
+    transition: background-color 0.3s ease; /* 배경색 변경 트랜지션 */
+    display: inline-block; /* 인라인 블록으로 버튼처럼 표시 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.custom-file-button:hover {
+    background-color: #ffe5ee; /* 호버 시 배경색 */
+}
+
+.custom-file-button:active {
+    background-color: #ffe5ee; /* 클릭 시 배경색 */
+}

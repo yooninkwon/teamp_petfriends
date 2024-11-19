@@ -118,6 +118,8 @@ public interface IDao {
 	public void dailyVisits(String mem_code);
 
 	public CDto getMyfeedVisit (String mem_code);
+
+	public void myFeedImgWrite(String mem_code, String myfeed_img);
 	
 
 	

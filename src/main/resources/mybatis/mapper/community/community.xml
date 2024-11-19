@@ -530,11 +530,15 @@
 		resultType="com.tech.petfriends.community.dto.CDto">
 		SELECT *
 		FROM COMMUNITY_MYFEED
-		where MEM_CODE = #{mem_code}
+		WHERE MEM_CODE = #{mem_code}
 	</select>
 
 
-
+	<update id="myFeedImgWrite">
+	    UPDATE COMMUNITY_MYFEED
+	    SET MYFEED_IMG = #{myfeed_img}
+	    WHERE MEM_CODE = #{mem_code}
+	</update>
 
 
 
