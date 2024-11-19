@@ -513,15 +513,32 @@
 	</select>
 
 
-
-	<update id="totalVisits" >
-		UPDATE COMMUNITY_BOARD
-		SET BOARD_VIEWS = BOARD_VIEWS + 1
-		WHERE BOARD_NO = #{board_no}
-	
+	<update id="totalVisits" parameterType="String" >
+		UPDATE COMMUNITY_MYFEED
+		SET TOTAL_VISITS = TOTAL_VISITS + 1
+		WHERE MEM_CODE = #{mem_code}
 	</update>
 
+	
+	<update id="dailyVisits" parameterType="String" >
+		UPDATE COMMUNITY_MYFEED
+		SET DAILY_VISITS = DAILY_VISITS + 1
+		WHERE MEM_CODE = #{mem_code}
+	</update>
+	
+	<select id="getMyfeedVisit"
+		resultType="com.tech.petfriends.community.dto.CDto">
+		SELECT *
+		FROM COMMUNITY_MYFEED
+		WHERE MEM_CODE = #{mem_code}
+	</select>
 
+
+	<update id="myFeedImgWrite">
+	    UPDATE COMMUNITY_MYFEED
+	    SET MYFEED_IMG = #{myfeed_img}
+	    WHERE MEM_CODE = #{mem_code}
+	</update>
 
 
 

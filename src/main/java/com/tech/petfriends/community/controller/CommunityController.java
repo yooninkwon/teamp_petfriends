@@ -1,5 +1,6 @@
 package com.tech.petfriends.community.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tech.petfriends.community.dto.CCategoryDto;
@@ -73,7 +75,6 @@ public class CommunityController {
 	}
 
 		
-	
 	@GetMapping("/writeView")
 	public String writeView(HttpSession session, HttpServletRequest request, Model model) {
 		model.addAttribute("session", session);
@@ -250,18 +251,56 @@ public class CommunityController {
 
 	@GetMapping("/myfeed/{mem_code}")
 	public String myfeed(@PathVariable String mem_code, HttpSession session, HttpServletRequest request, Model model) {
+		CDto getMyfeedVisit = (CDto) iDao.getMyfeedVisit(mem_code);
+		
+		model.addAttribute("getMyfeedVisit", getMyfeedVisit);
 		model.addAttribute("request", request);
 		model.addAttribute("mem_code", mem_code);
 		model.addAttribute("session", session);
 		System.out.println(mem_code);
-
-		serviceInterface = new CMyFeedService(iDao);
-		serviceInterface.execute(model);
+		iDao.totalVisits(mem_code);
+		iDao.dailyVisits(mem_code);
+	    
 		
+	    serviceInterface = new CMyFeedService(iDao);
+		serviceInterface.execute(model);
+			
 		
 		return "/community/myfeed";
 	}
 
+	
+	@PostMapping("/upload/{mem_code}")
+	public String uploadFeedImage(@PathVariable String mem_code, MultipartHttpServletRequest multipartRequest, Model model) {
+	    // 파일 처리
+		System.out.println("mem_code:");
+		MultipartFile feedImage = multipartRequest.getFile("feedImage");
+	    if (feedImage != null && !feedImage.isEmpty()) {
+	        // 파일 이름 생성 (고유 파일 이름 사용 가능)
+	        String originalFileName = feedImage.getOriginalFilename();
+	        String newFileName = System.currentTimeMillis() + "_" + originalFileName;
+
+	        String workPath = System.getProperty("user.dir");
+	        String root = workPath + "\\src\\main\\resources\\static\\images\\communityorign_img";
+
+	        File file = new File(root, newFileName);
+	        try {
+	            feedImage.transferTo(file); // 파일 저장
+	            // 이미지 파일 경로 저장
+	            iDao.myFeedImgWrite(mem_code, newFileName); // 파일 이름을 DB에 저장
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    model.addAttribute("msg", "이미지 수정이 완료됐습니다.");
+		model.addAttribute("url", "/community/myfeed/" + mem_code);
+	    
+	    
+	    return "/community/alert";  // 업로드 후 피드 페이지로 리다이렉트
+	}
+	
+	
+	
 	
 	@GetMapping("/neighborList/{mem_code}")
 	@ResponseBody
@@ -351,6 +390,8 @@ public class CommunityController {
 	    serviceInterface = new CFriendService(iDao);
 	    serviceInterface.execute(model);
 	    System.out.println("mem_code: " + mem_code);
+	  
+	   
 	    
 	    System.out.println("isFriendBool: " + model.getAttribute("isFriendBool")); // 디버깅용
 	    return "redirect:/community/myfeed/" + mem_code;

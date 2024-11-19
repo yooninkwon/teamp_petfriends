@@ -100,4 +100,6 @@ public interface MemberMapper {
 	// 탈퇴회원 복구
 	void deleteRestoration(String mem_code);
 
+	// 커뮤니티 피드 생성
+	void setMyFeed (String mem_code);
 }
