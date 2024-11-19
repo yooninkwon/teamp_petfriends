@@ -43,8 +43,8 @@ public class CPostListService implements CServiceInterface{
 	    int page = Integer.parseInt(request.getParameter("page") != null ? request.getParameter("page") : "1");
 	    int limit = 5;  // 페이지당 게시글 수
 	    int offset = (page - 1) * limit;
-
-
+	    System.out.println("page: "+ page);
+	    
 		// 검색어 처리
         String query = request.getParameter("query");
 		if (query != null && !query.isEmpty()) {
@@ -52,6 +52,8 @@ public class CPostListService implements CServiceInterface{
 			ArrayList<CDto> postList = iDao.searchPosts(query);
 	        model.addAttribute("postList", postList); // 검색된 게시글 리스트
 	  
+	
+		
 		} else {
 	        // 검색어가 없으면 모든 게시글 목록 조회
 	    	

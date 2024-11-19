@@ -63,9 +63,6 @@ public class CommunityController {
 	public String communityMain(HttpSession session, HttpServletRequest request, Model model) {
 		System.out.println("community_main() ctr");
 		
-	    int page = Integer.parseInt(request.getParameter("page") != null ? request.getParameter("page") : "1");
-	    model.addAttribute("page", page);
-		
 		model.addAttribute("session", session);
 		model.addAttribute("request", request);
 
@@ -75,10 +72,7 @@ public class CommunityController {
 		return "/community/main";
 	}
 
-	
-	
-	
-	
+		
 	
 	@GetMapping("/writeView")
 	public String writeView(HttpSession session, HttpServletRequest request, Model model) {

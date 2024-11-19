@@ -514,7 +514,12 @@
 
 
 
-
+	<update id="totalVisits" >
+		UPDATE COMMUNITY_BOARD
+		SET BOARD_VIEWS = BOARD_VIEWS + 1
+		WHERE BOARD_NO = #{board_no}
+	
+	</update>
 
 
 

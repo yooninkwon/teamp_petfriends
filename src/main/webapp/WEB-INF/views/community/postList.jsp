@@ -51,6 +51,9 @@ $(document).ready(function() {
 
 
 <body>
+	<input type="hidden" id="totalPages" value="${totalPages}">
+	<input type="hidden" id="currentPage" value="${currentPage}">
+	
 	<div id="postContainer">
 
 		<c:forEach items="${postList }" var="post">
@@ -80,29 +83,38 @@ $(document).ready(function() {
 		src="${pageContext.request.contextPath}/static/images/community_img/${post.chrepfile}"
 		alt="포스트 1 이미지" class="post-image" />
 	</a>
-	<div class="post-footer">
-		<span class="like-button">❤️ ${post.board_likes}</span> <span
-			class="comment-button">💬 ${post.board_comment_count}</span>
-		<div class="button-container">
-			<c:if test="${sessionScope.loginUser ne null}">
-				<c:if test="${sessionScope.loginUser.mem_code eq post.mem_code}">
-					<a href="/community/modifyView?board_no=${post.board_no}"
-						class="edit-button">수정</a>
-					<a href="/community/contentView?board_no=${post.board_no}"
-						class="delete-button">삭제</a>
-				</c:if>
-			</c:if>
-		</div>
-	</div>
+<div class="post-footer">
+    <span class="like-button">❤️ ${post.board_likes}</span>
+    <span class="comment-button">💬 ${post.board_comment_count}</span>
+    <div class="button-container">
+        <c:if test="${sessionScope.loginUser ne null}">
+            <c:if test="${sessionScope.loginUser.mem_code eq post.mem_code}">
+                <!-- 수정 버튼 -->
+                <a href="/community/modifyView?board_no=${post.board_no}" class="edit-button">수정</a>
+
+                <!-- 삭제 버튼 -->
+                <form action="/community/delete" method="post" class="delete-form" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+                    <input type="hidden" name="board_no" value="${post.board_no}">
+                    <button type="submit" class="delete-button">삭제</button>
+                </form>
+            </c:if>
+        </c:if>
+    </div>
+</div>
+	
+	
 	
 	</article>
 	</c:forEach>
 	
 	<div class="pagination">
+
+   
     <c:forEach var="i" begin="1" end="${totalPages}">
         <a href="#" class="pagination-link" data-page="${i}">${i}</a>
     </c:forEach>
+	</div>
 
-</div>
+
 </body>
 </html>
