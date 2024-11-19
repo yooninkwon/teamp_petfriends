@@ -2,6 +2,7 @@ package com.tech.petfriends.mypage.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -113,5 +114,11 @@ public interface MypageDao {
 	PethotelMemDataDto pethotelReserveMypageMemNo(String reserveNo);
 	ArrayList<PethotelFormDataDto> pethotelReserveMypagePets(String reserveNo);
 	void pethotelReserveMyPageCancel(String reserveNo);
+
+	MyReviewDto existingReview(String review_code);
+
+	void deleteImageUpdate();
+	
+	
 
 }

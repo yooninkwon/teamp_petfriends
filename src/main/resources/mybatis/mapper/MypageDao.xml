@@ -447,6 +447,23 @@
 	        REVIEW_DATE = SYSDATE
 	    WHERE REVIEW_CODE = #{review_code}
 	</update>
+	<select id="existingReview" resultType="com.tech.petfriends.mypage.dto.MyReviewDto">
+	    SELECT * FROM 
+	    PRODUCT_REVIEW
+	    WHERE REVIEW_CODE = #{review_code}
+	</select>
+	
+	<update id="deleteImageUpdate">
+	    UPDATE PRODUCT_REVIEW
+	    <set>
+            REVIEW_IMG1 = NULL,
+            REVIEW_IMG2 = NULL,
+            REVIEW_IMG3 = NULL,
+            REVIEW_IMG4 = NULL,
+            REVIEW_IMG5 = NULL
+	    </set>
+	    WHERE REVIEW_CODE = #{review_code}
+	</update>
 	
 	<!-- 즐겨찾는 상품 -->
 	<select id="getAllWishInfoByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyWishDto">
