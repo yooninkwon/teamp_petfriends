@@ -105,7 +105,10 @@ public class JoinService {
                 }
             } else {
                 member.setMem_invite("");
+                memberMapper.insertMember(member);
             }
+        } else {
+        	memberMapper.insertMember(member);        	
         }
     }
 }

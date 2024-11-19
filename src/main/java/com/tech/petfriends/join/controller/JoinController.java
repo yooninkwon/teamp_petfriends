@@ -24,6 +24,7 @@ public class JoinController {
 	@Autowired
 	ApikeyConfig apikeyConfig;
 	
+	// 회원가입 페이지
 	@GetMapping("/joinPage")
 	public String JoinPage(Model model) {
 		String kakaoApiKey = apikeyConfig.getKakaoApikey();
@@ -31,6 +32,7 @@ public class JoinController {
 		return "/join/joinPage";
 	}
 	
+	// 주소 팝업
 	@GetMapping("/addressMap")
 	public String AddrMap(Model model) {
 		String kakaoApiKey = apikeyConfig.getKakaoApikey();
@@ -38,6 +40,7 @@ public class JoinController {
 		return "/join/addressMap";
 	}
 	
+	// 회원가입 서비스
 	@PostMapping("/joinService")
 	public String joinService(HttpServletRequest request, HttpSession session, Model model, 
 			RedirectAttributes redirectAttributes) {
