@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -21,6 +22,12 @@
             </a>
         </div>
         
+        <c:if test="${message != null}">
+		    <script>
+		        alert("${message}");
+		    </script>
+		</c:if>
+        
         <%
 	    // URL에서 email 파라미터 가져오기
 	    String email = request.getParameter("email");
@@ -28,10 +35,18 @@
 
         <form action="changePw" method="post" class="find-form" id="findPwForm">       	
         	<div class="form-group">
-                <label for="email">아이디(Email)</label>
-                <input type="email" id="email" name="email" value="<%= email != null ? email : "" %>" placeholder="이메일을 입력해주세요">
-                
-            </div>
+		        <label for="email">아이디(Email)</label>
+		        <input type="email" id="email" name="email" 
+		               value="<c:choose>
+		                         <c:when test='${not empty mem_email}'>
+		                             ${mem_email}
+		                         </c:when>
+		                         <c:otherwise>
+		                             <%= email != null ? email : "" %>
+		                         </c:otherwise>
+		                      </c:choose>" 
+		               placeholder="이메일을 입력해주세요">
+		    </div> 
         
             <div class="form-group">
                 <label for="name">이름</label>

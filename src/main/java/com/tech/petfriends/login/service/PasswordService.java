@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.login.util.PasswordEncryptionService;
 
@@ -24,6 +25,14 @@ public class PasswordService {
         try {
             // 비밀번호 암호화
             String encryptedPassword = passwordEncryptionService.encryptPassword(newPassword);
+            MemberLoginDto user = new MemberLoginDto();
+            user = memberMapper.getMemberByEmail(email);
+            // 휴면계정 복구
+            if (user.getMem_type().equals("휴면")) {
+            	String mem_code = user.getMem_code();
+            	String mem_type = "일반";
+				memberMapper.updateDormant(mem_code, mem_type);
+			}
             // 비밀번호 업데이트
             memberMapper.updatePassword(email, encryptedPassword);
             re.addFlashAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");

@@ -49,6 +49,11 @@ public class LoginService {
                     request.setAttribute("member", member);
                     return "/login/loginPage";
                 }
+                if ("휴면".equals(member.getMem_type())) {
+					rs.addFlashAttribute("message","휴면회원 입니다. 로그인 하시려면 비밀번호를 변경 해주세요.");
+					rs.addFlashAttribute("mem_email",member.getMem_email());
+					return "redirect:/login/findPw";
+				}
 
                 // 로그인 성공 처리
                 memberMapper.updatelogdate(member.getMem_code());
