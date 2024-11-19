@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +30,7 @@ public class SmsController {
     }
 
     @PostMapping("/send-sms")
-    public HashMap<String, String> sendSms(@RequestParam("phoneNumber") String phoneNumber) {   
+    public HashMap<String, String> sendSms(@RequestParam String phoneNumber) {   
         // API Key 
         String coolApi = apikeyConfig.getCoolApikey();
         String coolSecret = apikeyConfig.getCoolSecretkey();
@@ -55,7 +54,8 @@ public class SmsController {
         return response;
     }
     
-    @PostMapping("/send-sms-admin")
+    @SuppressWarnings("unchecked")
+	@PostMapping("/send-sms-admin")
     public ResponseEntity<String> sendSmsAdmin(@RequestBody Map<String, Object> request) {
         List<String> phoneNumbers = (List<String>) request.get("phoneNumbers");
         String messageText = (String) request.get("message");
