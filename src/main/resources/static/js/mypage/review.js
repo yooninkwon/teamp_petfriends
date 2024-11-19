@@ -13,7 +13,7 @@ document.querySelectorAll('.tab-btn').forEach(function(tabBtn) {
 });
 
 let selectedFiles = []; // 선택한 파일을 저장할 배열
-
+let deleteFiles = [];
 function writeReview(cartCode) {
 	// 후기 작성 탭으로 전환
     $('.tab-btn').removeClass('active');
@@ -55,7 +55,7 @@ function writeReview(cartCode) {
                     .map((img, index) => `
 						<div id="preview-container" style="position: relative; display: inline-block;">
 		                    <img src="/static/Images/ProductImg/ReviewImg/${img}" alt="첨부 이미지" class="product-image"/>
-		                    <button class="remove-btn">×</button>
+		                    <button class="remove-btn" data-img="${img}" data-index="${index}">×</button>
 		                </div>
                     `)
                     .join('');
@@ -65,14 +65,15 @@ function writeReview(cartCode) {
 					}
 					
 					
-					console.log(selectedFiles);
-					
-					
                 $('#image-preview').html(imgContainer);
 
                 // 삭제 버튼 이벤트 추가
                 $('#image-preview .remove-btn').on('click', function () {
                     $(this).parent('#preview-container').remove();
+					let imgName = $(this).data('img');
+					let indexNo = $(this).data('index');
+					removeImage(imgName);
+					
                 });
             } else {
                 // 폼 초기화
@@ -86,6 +87,23 @@ function writeReview(cartCode) {
             alert('상품 정보를 불러오는 데 실패했습니다.');
         }
     });
+}
+
+function removeImage(imgName) {
+    console.log('imgName', imgName);
+    
+    // 삭제할 파일을 deleteFiles 배열에 추가
+    deleteFiles.push(imgName);
+    
+    console.log('deleteFiles', deleteFiles);
+    
+    // selectedFiles 배열에서 해당 파일 이름을 가진 항목을 삭제
+    const indexToRemove = selectedFiles.findIndex(file => file.name === imgName);
+    if (indexToRemove !== -1) {
+        selectedFiles.splice(indexToRemove, 1);  // 해당 항목을 삭제
+    }
+
+    console.log('selectedFiles', selectedFiles);
 }
 
 async function addServerFileToFilesArray(url, filename) {
@@ -167,13 +185,20 @@ $('#review-form').on('submit', function (e) {
     e.preventDefault(); // 기본 폼 제출 방지
 
     const formData = new FormData(this); // 기존 폼 데이터를 포함하는 FormData 객체 생성
-
-    // 선택한 파일 배열 추가
-    selectedFiles.forEach((file, index) => {
-        formData.append('reviewImages', file); // 'reviewImages'는 서버에서 받을 파라미터 이름
-    });
+	formData.delete('reviewImages');
 	
+    // 선택한 파일 배열 추가
 	console.log(selectedFiles);
+	if (deleteFiles.length != 0) {
+		deleteFiles.forEach(file => formData.append('deleteFiles', file));
+	} else {
+		formData.append('deleteFiles', null);
+	}
+    selectedFiles.forEach((file, index) => {
+		if (file && file.size > 0) {
+		    formData.append('reviewImages', file);
+		}
+	});
 	
     // AJAX 요청으로 서버에 전송
     $.ajax({
