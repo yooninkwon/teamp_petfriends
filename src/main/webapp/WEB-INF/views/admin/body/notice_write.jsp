@@ -59,18 +59,9 @@
         </div>
         
 
-        <input type="button" id="submitBtn" value="내용 미리보기">
         <input type="submit" id="submitBtn" value="작성 완료">
     </form>
-
-    <!-- 미리보기 팝업 -->
-    <div id="previewPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center;">
-        <div class="popup-content" style="background: white; padding: 20px; border-radius: 5px;">
-            <h4>미리보기</h4>
-            <div id="preview" class="preview-area"></div>
-            <input type="button" id="closePreview" class="btn" value="닫기">
-        </div>
-    </div>
+   
 </div>
 
 <script>
