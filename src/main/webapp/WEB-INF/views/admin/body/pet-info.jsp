@@ -59,8 +59,8 @@
 		<div class="search-group" style="float: right;">
 			<div class="filter-title">펫 타입</div>
 			<input type="radio" name="type" value="전체" checked />전체
-			<input type="radio" name="type" value="강아지" />강아지 
-			<input type="radio" name="type" value="고양이" />고양이
+			<input type="radio" name="type" value="D" />강아지 
+			<input type="radio" name="type" value="C" />고양이
 		</div>
 		<div class="search-group" style="float: left;">
 			<div class="filter-title">생일</div>
