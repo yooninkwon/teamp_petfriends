@@ -16,6 +16,7 @@ import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.login.dto.MemberPointsDto;
 import com.tech.petfriends.login.mapper.MemberMapper;
 import com.tech.petfriends.login.util.PasswordEncryptionService;
+import com.tech.petfriends.mypage.dto.GradeDto;
 
 @Service
 public class JoinService {
@@ -30,11 +31,11 @@ public class JoinService {
         MemberLoginDto member = new MemberLoginDto();
         MemberAddressDto address = new MemberAddressDto();    
         String phoneNumber = request.getParameter("phoneNumber");
-//        int duplicateCount = memberMapper.isPhoneNumberDuplicate(phoneNumber);
-//        if (duplicateCount > 0) {
-//            redirectAttributes.addFlashAttribute("error", "이미 가입된 정보입니다.");
-//            return "redirect:/login/loginPage";
-//        }
+        int duplicateCount = memberMapper.isPhoneNumberDuplicate(phoneNumber);
+        if (duplicateCount > 0) {
+            redirectAttributes.addFlashAttribute("error", "이미 가입된 정보입니다.");
+            return "redirect:/login/loginPage";
+        }
         // UUID로 mem_code 생성
         String uniqueID = UUID.randomUUID().toString();
         member.setMem_code(uniqueID);
@@ -75,6 +76,8 @@ public class JoinService {
         
         // 회원가입 후 로그인 처리
         session.setAttribute("loginUser", member);
+        GradeDto userGrade = memberMapper.getGradeByMemberCode(member.getMem_code());
+        session.setAttribute("userGrade", userGrade);
         redirectAttributes.addFlashAttribute("fromJoin", member.getMem_nick() + "님 회원가입이 완료 되었습니다.");      
         return "redirect:/mypet/myPetRegistPage1";
     }
