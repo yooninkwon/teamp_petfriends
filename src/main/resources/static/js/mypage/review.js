@@ -187,10 +187,10 @@ $('#review-form').on('submit', function (e) {
     e.preventDefault(); // 기본 폼 제출 방지
 
     const formData = new FormData(this); // 기존 폼 데이터를 포함하는 FormData 객체 생성
-	console.log([...formData.entries()]);
 	formData.delete('reviewImages');
 	
     // 선택한 파일 배열 추가
+	console.log(selectedFiles);
 	if (deleteFiles.length != 0) {
 		deleteFiles.forEach(file => formData.append('deleteFiles', file));
 	} else {
@@ -289,7 +289,7 @@ $(document).ready(function() {
 					// 후기 작성 버튼 또는 작성 완료 표시
 		            const reviewButton = myOrder.review_code
 		                ? `<button class="done-review-btn">후기 작성 완료</button>`
-		                : `${pointMessage} <button class="write-review-btn" onclick="writeReview('${myOrder.cart_code}','${savingPoint}')">후기작성</button>`;
+		                : `${pointMessage} <button class="write-review-btn" onclick="writeReview('${myOrder.cart_code}',savingPoint)">후기작성</button>`;
 										
 		            lists += `
 		                <div class="wishlist-item">

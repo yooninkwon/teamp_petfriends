@@ -104,7 +104,6 @@ public interface MypageDao {
 	MyReviewDto getReviewInfoByCartCode(String cartCode);
 	void updateReview(MyReviewDto reviewDto);
 	void insertReview(MyReviewDto reviewDto);
-	void updateAmountByReview(String memCode, int savingPoint);
 	MyReviewDto existingReview(String review_code);
 	void deleteImageUpdate();
   
@@ -125,5 +124,4 @@ public interface MypageDao {
 	void modifyCS(String cs_no, String cs_caregory, String cs_contect);
 	MyServiceHistoryDto getMyServiceByNo(String cs_no);
 	void deleteCS(String cs_no);
-
 }

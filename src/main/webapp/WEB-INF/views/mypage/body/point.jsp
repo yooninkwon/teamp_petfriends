@@ -22,16 +22,14 @@
 	<c:forEach items="${pointLogs }" var="pointLog">
 	    <div class="point-list">
 	        <div style="display: flex; align-items: center;">
-	        	<div style="width: 100px; text-align: center;">
-		        	<c:choose>
-	                    <c:when test="${pointLog.point_info eq '사용'}">
-				            <div class="point-info">${pointLog.point_info }</div>
-	                    </c:when>
-	                    <c:otherwise>
-				            <div class="point-info plus">${pointLog.point_info }</div>
-	                    </c:otherwise>
-	                </c:choose>
-	        	</div>
+	        	<c:choose>
+                    <c:when test="${pointLog.point_info eq '사용'}">
+			            <div class="point-info">${pointLog.point_info }</div>
+                    </c:when>
+                    <c:otherwise>
+			            <div class="point-info plus">${pointLog.point_info }</div>
+                    </c:otherwise>
+                </c:choose>
 	            <div style="margin-left: 20px;">
 	                <div class="point-date">${pointLog.point_date }</div>
 	                <div class="point-title">${pointLog.point_memo }</div>
