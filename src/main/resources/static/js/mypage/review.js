@@ -289,7 +289,7 @@ $(document).ready(function() {
 					// 후기 작성 버튼 또는 작성 완료 표시
 		            const reviewButton = myOrder.review_code
 		                ? `<button class="done-review-btn">후기 작성 완료</button>`
-		                : `${pointMessage} <button class="write-review-btn" onclick="writeReview('${myOrder.cart_code}',savingPoint)">후기작성</button>`;
+		                : `${pointMessage} <button class="write-review-btn" onclick="writeReview('${myOrder.cart_code}','${savingPoint}')">후기작성</button>`;
 										
 		            lists += `
 		                <div class="wishlist-item">

@@ -478,10 +478,10 @@ h2 {
 	padding: 20px 10px;
 }
 .point-info {
+	display: inline-block;
 	font-size: 13px;
 	font-weight: bold;
-	height: 20px;
-	padding: 5px 20px;
+	padding: 6px 20px;
 	border: 2px solid;
 	border-radius: 20px;
 	align-items: center;

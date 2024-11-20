@@ -1,7 +1,5 @@
 package com.tech.petfriends.mypage.dto;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 
 import lombok.Getter;
