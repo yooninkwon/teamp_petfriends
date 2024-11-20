@@ -31,7 +31,7 @@
 	                    <p><a href="/mypage/cart">장바구니</a></p>
 						<p><a href="/community/main">나의 집사생활</a></p>
 	                    <hr>
-	                    <p><a href="https://petfriends.notion.site/FAQ-0d3f18312bf24878a0095423ddbc3691">자주 묻는 질문(FAQ)</a></p>
+	                    <p><a href="https://petfriends.notion.site/FAQ-0d3f18312bf24878a0095423ddbc3691" target="_blank">자주 묻는 질문(FAQ)</a></p>
 	                    <p><a href="/mypage/cscenter">고객센터</a></p>
 	                    <hr>
 	                    <p><a href="/mypage/logout">로그아웃</a></p>
@@ -41,14 +41,14 @@
 	        
 	        <!-- 어드민 페이지 아이콘 -->
 	        <c:if test="${sessionScope.loginUser.mem_name eq '관리자'}">
-	    		<a href="<c:url value='/admin/sales' />">
+	    		<a href="<c:url value='/admin/sales' />" target="_blank">
 	        	<img src="<c:url value='/static/Images/MainImg/admin_icon.png'/>" id="admin_icon" alt="관리자 아이콘">
 	   			</a>
 			</c:if>
 			
 			<!-- 관리자아이콘 보이기 추가 : 민석 -->
 	        <c:if test="${sessionScope.loginUser.mem_nick eq 'dpoowa'}">
-	    		<a href="<c:url value='/admin/sales' />">
+	    		<a href="<c:url value='/admin/sales' />" target="_blank">
 	        	<img src="<c:url value='/static/Images/MainImg/admin_icon.png'/>" id="admin_icon" alt="관리자 아이콘">
 	   			</a>
 			</c:if>

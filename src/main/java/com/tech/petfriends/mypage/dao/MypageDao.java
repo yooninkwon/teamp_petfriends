@@ -104,7 +104,7 @@ public interface MypageDao {
 	MyReviewDto getReviewInfoByCartCode(String cartCode);
 	void updateReview(MyReviewDto reviewDto);
 	void insertReview(MyReviewDto reviewDto);
-  MyReviewDto existingReview(String review_code);
+	MyReviewDto existingReview(String review_code);
 	void deleteImageUpdate();
   
 	// 즐겨찾는 상품

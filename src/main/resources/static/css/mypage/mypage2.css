@@ -350,6 +350,8 @@ h2 {
     font-size: 14px;
 	padding: 10px;
 	text-align: left;
+	word-wrap: break-word;
+    white-space: normal;
 }
 .submit-btn {
 	width: 100px;

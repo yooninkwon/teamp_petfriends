@@ -23,28 +23,17 @@
 	    <div class="point-list">
 	        <div style="display: flex; align-items: center;">
 	        	<c:choose>
-                    <c:when test="${pointLog.point_info eq '적립'}">
-			            <div class="point-info plus">${pointLog.point_info }</div>
+                    <c:when test="${pointLog.point_info eq '사용'}">
+			            <div class="point-info">${pointLog.point_info }</div>
                     </c:when>
                     <c:otherwise>
-			            <div class="point-info">${pointLog.point_info }</div>
+			            <div class="point-info plus">${pointLog.point_info }</div>
                     </c:otherwise>
                 </c:choose>
 	            <div style="margin-left: 20px;">
 	                <div class="point-date">${pointLog.point_date }</div>
-	                <c:choose>
-	                    <c:when test="${pointLog.point_info eq '사용'}">
-	                        <div class="point-title">주문시 사용</div>
-	                        <div class="point-code">주문번호 ${pointLog.o_code }</div>
-	                    </c:when>
-	                    <c:when test="${pointLog.point_info eq '적립' and pointLog.o_code.length() > 20}">
-	                        <div class="point-title">구매확정</div>
-	                        <div class="point-code">주문번호 ${pointLog.o_code }</div>
-	                    </c:when>
-	                    <c:otherwise>
-	                        <div class="point-title">${pointLog.o_code }</div>
-	                    </c:otherwise>
-	                </c:choose>
+	                <div class="point-title">${pointLog.point_memo }</div>
+	                <div class="point-code">${pointLog.o_code }</div>
 	            </div>
 	        </div>
 	        <div class="point-amount">

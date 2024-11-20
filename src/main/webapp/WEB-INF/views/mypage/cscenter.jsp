@@ -13,7 +13,7 @@
 <jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
 <h2>고객센터</h2>
-<h2><a href="https://petfriends.notion.site/FAQ-0d3f18312bf24878a0095423ddbc3691" class="go-faq">자주묻는 질문 확인하기</a></h2>
+<h2><a href="https://petfriends.notion.site/FAQ-0d3f18312bf24878a0095423ddbc3691" target="_blank" class="go-faq">자주묻는 질문 확인하기</a></h2>
 
 <div class="container">
     <!-- 탭 메뉴 -->

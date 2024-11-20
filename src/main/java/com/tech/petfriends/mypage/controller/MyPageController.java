@@ -631,6 +631,7 @@ public class MyPageController {
 			memberPoints.setPoints(orderData.getO_point());
 			memberPoints.setPoint_type('-');
 			memberPoints.setPoint_info("사용");
+			memberPoints.setPoint_memo("주문시 사용");
 			memberMapper.insertPoints(memberPoints);
 		}
 		
@@ -712,6 +713,7 @@ public class MyPageController {
 		memberPoints.setPoints(Integer.parseInt(payload.get("oSaving")));
 		memberPoints.setPoint_type('+');
 		memberPoints.setPoint_info("적립");
+		memberPoints.setPoint_memo("구매확정");
 		memberMapper.insertPoints(memberPoints);
 		
 		mypageDao.insertComfirmStatus(payload.get("orderCode"));
@@ -749,6 +751,7 @@ public class MyPageController {
  		memberPoints.setPoints(order.getO_point());
  		memberPoints.setPoint_type('+');
  		memberPoints.setPoint_info("사용취소");
+ 		memberPoints.setPoint_memo("주문취소");
  		memberMapper.insertPoints(memberPoints);
  		
  		mypageDao.updateCancelByOrderCode(o_code, o_cancel, o_cancel_detail);
@@ -800,12 +803,17 @@ public class MyPageController {
 	@Transactional
 	@PostMapping("/review/writeReview")
 	public String writeReview(HttpServletRequest request, HttpSession session,
-							@RequestParam MultipartFile[] reviewImages,
-							@RequestParam String[] deleteFiles) { 
+							@RequestParam(required = false) MultipartFile[] reviewImages,
+							@RequestParam(required = false) String[] deleteFiles) { 
+		
+		// 파일 배열이 null 또는 비어 있으면 빈 배열로 초기화
+	    reviewImages = reviewImages == null ? new MultipartFile[0] : reviewImages;
+	    
 	    String memCode = ((MemberLoginDto) session.getAttribute("loginUser")).getMem_code();
 	    String cartCode = request.getParameter("cart_code");
 	    String proCode = request.getParameter("pro_code");
 	    String reviewCode = request.getParameter("review_code");
+	    int savingPoint = Integer.parseInt(request.getParameter("savingPoint"));
 	    int reviewRating = Integer.parseInt(request.getParameter("review_rating"));
 	    String reviewText = request.getParameter("review_text");
 	    
@@ -840,6 +848,15 @@ public class MyPageController {
 	        // 신규 등록
 	        reviewDto.setReview_code(UUID.randomUUID().toString());
 	        mypageDao.insertReview(reviewDto);
+	        
+	        MemberPointsDto memberPoints = new MemberPointsDto();
+			memberPoints.setMem_code(memCode);
+			memberPoints.setO_code(proCode);
+			memberPoints.setPoints(savingPoint);
+			memberPoints.setPoint_type('+');
+			memberPoints.setPoint_info("적립");
+			memberPoints.setPoint_memo("구매후기 작성");
+			memberMapper.insertPoints(memberPoints);
 	    }
 	    
 	    
