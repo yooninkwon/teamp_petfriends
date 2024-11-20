@@ -848,6 +848,7 @@ public class MyPageController {
 	        // 신규 등록
 	        reviewDto.setReview_code(UUID.randomUUID().toString());
 	        mypageDao.insertReview(reviewDto);
+	        mypageDao.updateAmountByReview(memCode, savingPoint);
 	        
 	        MemberPointsDto memberPoints = new MemberPointsDto();
 			memberPoints.setMem_code(memCode);

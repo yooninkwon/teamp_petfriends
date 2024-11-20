@@ -104,6 +104,7 @@ public interface MypageDao {
 	MyReviewDto getReviewInfoByCartCode(String cartCode);
 	void updateReview(MyReviewDto reviewDto);
 	void insertReview(MyReviewDto reviewDto);
+	void updateAmountByReview(String memCode, int savingPoint);
 	MyReviewDto existingReview(String review_code);
 	void deleteImageUpdate();
   
