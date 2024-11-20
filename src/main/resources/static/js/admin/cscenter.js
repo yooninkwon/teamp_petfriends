@@ -42,6 +42,8 @@ $(document).ready(function() {
         let lists = '';
         $.each(sliceList, function (index, contact) {
 			
+	        const formattedDate = formatDate(new Date(contact.cs_regdate));
+			
 			// 상태에 따른 CSS 클래스 적용
 			const contactStatus = contact.cs_delete ? '삭제' :
 	                              contact.cs_answer ? '처리완료' : '처리중';
@@ -51,9 +53,9 @@ $(document).ready(function() {
             lists += '<tr onclick="showDetail(' + contact.cs_no + ')" style="cursor: pointer;">';
             lists += '<td>' + contact.cs_no + '</td>';
             lists += '<td>' + contact.cs_caregory + '</td>';
-            lists += '<td>' + contact.cs_contect + '</td>';
+            lists += '<td class="wrap">' + contact.cs_contect + '</td>';
             lists += '<td><a href="/admin/customer_info?memCode=' + contact.mem_code + '">' + contact.mem_name + '</a></td>';
-            lists += '<td>' + contact.cs_regdate + '</td>';
+            lists += '<td>' + formattedDate + '</td>';
             lists += '<td><span class="' + statusClass + '">' + contactStatus + '</span></td>';
         });
 
@@ -129,4 +131,14 @@ function showDetail(csNo) {
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         }
     });
+}
+
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }

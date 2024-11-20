@@ -375,7 +375,7 @@
 
 	<update id="updateAmountByCancel" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
 	    UPDATE MEMBER
-	    SET MEM_POINT = MEM_POINT + #{o_point}
+	    SET MEM_POINT = MEM_POINT + #{o_point},
 	    	MEM_PAY_AMOUNT = MEM_PAY_AMOUNT - #{o_amount}
 	    WHERE MEM_CODE = #{mem_code}
 	</update>

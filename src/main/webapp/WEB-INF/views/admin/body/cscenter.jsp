@@ -58,7 +58,7 @@
 	        <tr>
 	            <th>번호</th>
 	            <th>제목</th>
-	            <th style="max-width: 60%;">내용</th>
+	            <th>내용</th>
 	            <th>회원명</th>
 	            <th>문의일시</th>
 	            <th>처리상태</th>

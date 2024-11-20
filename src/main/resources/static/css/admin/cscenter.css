@@ -63,6 +63,12 @@ label {
     text-align: center;
     font-size: 14px;
 }
+.wrap {
+	max-width: 500px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 .pending {
 	background-color: #7df18e;
 	padding: 3px 7px;

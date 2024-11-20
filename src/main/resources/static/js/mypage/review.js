@@ -14,7 +14,7 @@ document.querySelectorAll('.tab-btn').forEach(function(tabBtn) {
 
 let selectedFiles = []; // 선택한 파일을 저장할 배열
 let deleteFiles = [];
-function writeReview(cartCode) {
+function writeReview(cartCode, savingPoint) {
 	// 후기 작성 탭으로 전환
     $('.tab-btn').removeClass('active');
     $('button[data-tab="write-review"]').addClass('active');
@@ -76,6 +76,8 @@ function writeReview(cartCode) {
 					
                 });
             } else {
+				// 적립금
+                $('#savingPoint').val(savingPoint);
                 // 폼 초기화
                 $('#review-rating').val(0);
                 $('#review-text').val('');
@@ -277,16 +279,17 @@ $(document).ready(function() {
 		            const regDate = new Date(myOrder.os_regdate); // 구매확정 날짜
 		            const today = new Date(); // 현재 날짜
 		            const diffDays = Math.floor((today - regDate) / (1000 * 60 * 60 * 24)); // 날짜 차이 계산
-
+		
 		            // 조건에 따라 포인트 메시지 결정
+					const savingPoint = new Intl.NumberFormat().format(Math.floor(myOrder.proopt_finalprice * myOrder.cart_cnt * 0.01))
 		            const pointMessage = diffDays > 7
 		                ? '<span style="color: gray;">포인트 지급 유효기간 만료</span>'
-		                : `<span style="color: #ff4081;">${new Intl.NumberFormat().format(Math.floor(myOrder.proopt_finalprice * myOrder.cart_cnt * 0.01))}P 지급예정</span>`;
+		                : `<span style="color: #ff4081;">${savingPoint}P 지급예정</span>`;
 				
 					// 후기 작성 버튼 또는 작성 완료 표시
 		            const reviewButton = myOrder.review_code
 		                ? `<button class="done-review-btn">후기 작성 완료</button>`
-		                : `${pointMessage} <button class="write-review-btn" onclick="writeReview('${myOrder.cart_code}')">후기작성</button>`;
+		                : `${pointMessage} <button class="write-review-btn" onclick="writeReview('${myOrder.cart_code}',savingPoint)">후기작성</button>`;
 										
 		            lists += `
 		                <div class="wishlist-item">
@@ -410,7 +413,7 @@ $(document).ready(function() {
 					const imagesHtml = [review.review_img1, review.review_img2, review.review_img3, review.review_img4, review.review_img5]
 		                .filter(img => img).map(img => `<img src="/static/Images/ProductImg/ReviewImg/${img}" class="product-image" />`)
 		                .join('');
-
+						
 					lists += `
 		                <div class="wishlist-item">
 							<div class="review-view">
@@ -427,7 +430,7 @@ $(document).ready(function() {
 							</div>
 							<div class="review-modify">
 	                            <div class="review-info">${review.review_date.split('T')[0]}</div>
-								<div><button class="write-review-btn" onclick="writeReview('${review.cart_code}')">수정하기</button></div>
+								<div><button class="write-review-btn" onclick="writeReview('${review.cart_code}',0)">수정하기</button></div>
 							</div>
 		                </div>
 		            `;

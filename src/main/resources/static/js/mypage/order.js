@@ -344,6 +344,7 @@ function submitCancelRequest(orderCode) {
         },
         success: function(response) {
             window.close();
+			window.opener.alert('주문이 취소되었습니다.');
             window.opener.location.reload();
         }
     });
