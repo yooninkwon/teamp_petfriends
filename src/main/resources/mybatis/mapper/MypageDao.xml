@@ -435,6 +435,12 @@
 		        SYSDATE, #{cart_code})
 	</insert>
 	
+	<update id="updateAmountByReview">
+	    UPDATE MEMBER
+	    SET MEM_POINT = MEM_POINT + #{savingPoint}
+	    WHERE MEM_CODE = #{memCode}
+	</update>
+	
 	<update id="updateReview" parameterType="com.tech.petfriends.mypage.dto.MyReviewDto">
 	    UPDATE PRODUCT_REVIEW
 	    SET REVIEW_RATING = #{review_rating},

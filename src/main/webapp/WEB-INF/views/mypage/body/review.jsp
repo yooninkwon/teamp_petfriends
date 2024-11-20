@@ -61,7 +61,7 @@
 	        <input type="hidden" id="review-cart-code" name="cart_code" />
 	        <input type="hidden" id="review-pro-code" name="pro_code" />
 	        <input type="hidden" id="review-code" name="review_code" />
-	        <input type="hidden" id="savingPoint" name="savingPoint" />
+	        <input type="hidden" id="savingPoint" name="savingPoint" value="0" />
 			
 			<div class="review-write-info">
 		        <label for="rating-stars">상품은 어떠셨나요?</label>
