@@ -181,6 +181,24 @@ label, .report-label {
     table-layout: fixed;
 }
 
+.community-list a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; /* 부모 요소의 색상 상속 */
+}
+
+/* 링크 클릭 후 색상 유지 */
+.community-list a:visited {
+    color: inherit; /* 클릭 후에도 원래 색상 유지 */
+}
+
+/* 마우스 오버 시 스타일 추가 (선택 사항) */
+.community-list a:hover {
+    text-decoration: underline; /* 마우스 오버 시 밑줄 표시 */
+    color: #007BFF; /* 원하는 색상 지정 */
+}
+
+
+
 .community-list th, .community-list td, .report-list th, .report-list td {
     text-align: center;
     padding: 10px;

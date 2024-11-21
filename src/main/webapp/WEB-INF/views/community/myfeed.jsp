@@ -23,6 +23,10 @@
 	var receiver = "${myFeedName.mem_nick}";
 	var currentRoomId = null;
 	var socket;
+
+	
+
+	
 	// 페이지 로드 시 채팅방 목록을 불러오기
 	   document.addEventListener('DOMContentLoaded', function() {
 	       fetchChatRooms(sender);  // 로그인 여부와 상관없이 채팅방 목록을 불러옴
@@ -55,9 +59,12 @@
 	           socket.close(); // 기존 소켓 연결을 닫음
 	       }
 	       currentRoomId = roomId;  // 현재 채팅방 ID 저장
-	       socket = new WebSocket("ws://localhost:9002/ws/chat/" + roomId); // WebSocket 연결
-
-	    // 메시지를 WebSocket으로 받은 후
+	      	 socket = new WebSocket("ws://localhost:9002/ws/chat/" + roomId); // WebSocket 연결
+	       //socket = new WebSocket("ws://25.0.125.242:9002/ws/chat/" + currentRoomId); // WebSocket 연결
+	       //socket = new WebSocket("ws://25.2.226.173:9002/ws/chat/" + currentRoomId); // WebSocket 연결
+			console.log("socket",socket);
+	   
+	       // 메시지를 WebSocket으로 받은 후
 	       socket.onmessage = function(event) {
 	           var chatMessages = document.getElementById("chatMessages");
 	           var messageData = JSON.parse(event.data);
@@ -93,6 +100,7 @@
 	               message_content: message,
 	               roomId: currentRoomId
 	           }));
+	         	console.log("currentRoomId",currentRoomId);
 	           document.getElementById("chatInput").value = "";
 	       }
 	   }
@@ -107,6 +115,7 @@
 	                message_content: message,
 	                roomId: currentRoomId
 	            }));
+	        	console.log("currentRoomId",currentRoomId);
 	            document.getElementById("chatInput").value = ""; // 입력창 초기화
 	        }
 	    }
@@ -130,7 +139,8 @@
         success: function(messages) {
             var chatMessages = document.getElementById("chatMessages");
             chatMessages.innerHTML = ""; // 기존 메시지 초기화
-
+        	console.log("roomId",roomId);
+           
             messages.forEach(function(message) {
                 var newMessage = document.createElement("div");
 
@@ -153,7 +163,7 @@
 
 	   // 채팅방 목록을 불러오는 함수
 	function fetchChatRooms(sender) {
-    fetch(`/community/getChatRooms?sender=${sender}&receiver=\${receiver}`)
+    fetch(`/community/getChatRooms?sender=\${sender}&receiver=\${receiver}`)
         .then(response => response.json())
         .then(data => {
             var chatRoomsList = document.getElementById("chatRoomsList");
@@ -174,6 +184,8 @@
                 roomLink.onclick = function() {
                     openChat(chatRoom.room_id, chatRoom.receiver);  // 클릭 시 채팅방 열기
                     document.getElementById("chatContainer").style.display = "flex"; // 채팅창 표시
+              		console.log("chatRoom.room_id",chatRoom.room_id);
+              	
                 };
 
                 var roomItem = document.createElement("div");
@@ -184,11 +196,22 @@
         .catch(error => console.error('Error fetching chat rooms:', error));
 }
 
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
 </script>
 
 <body>
-<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
-	
+	<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+
 	<!-- 이웃 목록 모달 -->
 	<div id="neighborListModal" class="modal">
 		<div class="modal-content">
@@ -209,44 +232,50 @@
 
 
 
-<!-- 마이피드 이미지 -->
-<div class="feed-image">
-    <c:choose>
-        <c:when test="${empty getMyfeedVisit.myfeed_img}">
-            <img src="<c:url value='/static/Images/communityorign_img/myfeed.jpg'/>" alt="Event 1" class="feed-main-image">
-        </c:when>
-        <c:otherwise>
-            <img src="<c:url value='/static/Images/communityorign_img/${getMyfeedVisit.myfeed_img}'/>" alt="Event 1" class="feed-main-image">
-        </c:otherwise>
-    </c:choose>
-</div>
+	<!-- 마이피드 이미지 -->
+	<div class="feed-image">
+		<c:choose>
+			<c:when test="${empty getMyfeedVisit.myfeed_img}">
+				<img
+					src="<c:url value='/static/Images/communityorign_img/myfeed.jpg'/>"
+					alt="Event 1" class="feed-main-image">
+			</c:when>
+			<c:otherwise>
+				<img
+					src="<c:url value='/static/Images/communityorign_img/${getMyfeedVisit.myfeed_img}'/>"
+					alt="Event 1" class="feed-main-image">
+			</c:otherwise>
+		</c:choose>
+	</div>
 
 
 
 
 	<!-- 상단 프로필 영역 -->
 	<div class="profile-section">
-		
-		   <div class="visit-stats">
-        <span>전체: ${getMyfeedVisit.total_visits}</span>
-        <span>오늘: ${getMyfeedVisit.daily_visits}</span>
-   		
-	   		<!-- 수정 버튼을 표시할지 여부 결정 -->
 
-<!-- 이미지 수정 폼 -->
-<c:if test="${getMyfeedVisit.mem_code == sessionScope.loginUser.mem_code}">
-    <form action="/community/upload/${getMyfeedVisit.mem_code}" method="post" enctype="multipart/form-data" class="upload-form">
-        <label for="feedImage" class="custom-file-button">파일 선택</label>
-        <input type="file" id="feedImage" name="feedImage" class="file-input">
-        <button type="submit" class="upload-button">업로드</button>
-    </form>
-</c:if>
-   		
-   		
-   		
-   		 </div>
-		
-		
+		<div class="visit-stats">
+			<span>전체: ${getMyfeedVisit.total_visits}</span> <span>오늘:
+				${getMyfeedVisit.daily_visits}</span>
+
+			<!-- 수정 버튼을 표시할지 여부 결정 -->
+
+			<!-- 이미지 수정 폼 -->
+			<c:if
+				test="${getMyfeedVisit.mem_code == sessionScope.loginUser.mem_code}">
+				<form action="/community/upload/${getMyfeedVisit.mem_code}"
+					method="post" enctype="multipart/form-data" class="upload-form">
+					<label for="feedImage" class="custom-file-button">파일 선택</label> <input
+						type="file" id="feedImage" name="feedImage" class="file-input">
+					<button type="submit" class="upload-button">업로드</button>
+				</form>
+			</c:if>
+
+
+
+		</div>
+
+
 		<div class="profile-info">
 			<c:choose>
 				<c:when test="${empty getpetimg.pet_img}">
@@ -258,10 +287,10 @@
 						class="main-profile-image">
 				</c:otherwise>
 			</c:choose>
-			<h2>${myFeedName.mem_nick}</h2>	
+			<h2>${myFeedName.mem_nick}</h2>
 		</div>
-		
-		
+
+
 		<div class="profile-menu">
 
 			<c:if
@@ -359,13 +388,20 @@
 
 			<div class="feed-images">
 				<c:forEach items="${myFeedList}" var="myFeedList">
-
 					<div class="feed-item">
 						<!-- 이미지와 정보를 감싸는 div 추가 -->
 						<a
 							href="<c:url value='/community/contentView/?board_no=${myFeedList.board_no}'/>">
-							<!-- 이미지 클릭 시 이동할 링크 추가 --> <img
-							src="/static/images/community_img/${myFeedList.chrepfile}" alt="" style="width: 200px; height: 200px;">
+							<!-- 이미지 클릭 시 이동할 링크 추가 --> <c:choose>
+								<c:when test="${not empty myFeedList.chrepfile}">
+									<img src="/static/images/community_img/${myFeedList.chrepfile}"
+										alt="피드 이미지" style="width: 200px; height: 200px;">
+								</c:when>
+								<c:otherwise>
+									<img src="/static/Images/pet/noPetImg.jpg" alt="기본 이미지"
+										style="width: 200px; height: 200px;">
+								</c:otherwise>
+							</c:choose>
 						</a>
 						<div class="feed-info">
 							<!-- 제목과 날짜를 감싸는 div 추가 -->

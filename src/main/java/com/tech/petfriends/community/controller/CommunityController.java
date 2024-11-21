@@ -1,6 +1,7 @@
 package com.tech.petfriends.community.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.OnMessage;
 import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -436,6 +438,8 @@ public class CommunityController {
     	return getChatHistory;
     }
 	
+    
+    
     @GetMapping("/getChatRooms")
     @ResponseBody
     public List<CChatDto> getChatRooms(HttpSession session) {

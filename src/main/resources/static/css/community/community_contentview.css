@@ -367,7 +367,7 @@ a {
 }
 
 .report-comment-button {
-    font-size: 12px  !important; /* 텍스트 크기를 줄입니다 */
+    afont-size: 12px  !important; /* 텍스트 크기를 줄입니다 */
     padding: 4px 8px !important;; /* 버튼 내부 여백을 줄입니다 */
     line-height: 1 !important;; /* 버튼 텍스트의 줄 높이를 조절합니다 */
     border: none !important;; /* 버튼의 테두리를 제거합니다 */

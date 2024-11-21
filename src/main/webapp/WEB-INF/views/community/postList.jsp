@@ -78,11 +78,22 @@ $(document).ready(function() {
 				</div>
 	</div>
 	
-	<a href="/community/myfeed/${post.mem_code}" class="profile-link">
-	<img
-		src="${pageContext.request.contextPath}/static/images/community_img/${post.chrepfile}"
-		alt="포스트 1 이미지" class="post-image" />
-	</a>
+		<a href="/community/myfeed/${post.mem_code}" class="profile-link">
+		    <c:choose>
+		        <c:when test="${not empty post.chrepfile}">
+		            <img
+		                src="${pageContext.request.contextPath}/static/images/community_img/${post.chrepfile}"
+		                alt="포스트 1 이미지" class="post-image" />
+		        </c:when>
+		        <c:otherwise>
+		            <img
+		                src="/static/Images/pet/noPetImg.jpg"
+		                alt="기본 이미지" class="post-image" />
+		        </c:otherwise>
+		    </c:choose>
+		</a>
+
+
 <div class="post-footer">
     <span class="like-button">❤️ ${post.board_likes}</span>
     <span class="comment-button">💬 ${post.board_comment_count}</span>
