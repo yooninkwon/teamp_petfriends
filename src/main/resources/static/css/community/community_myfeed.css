@@ -156,6 +156,7 @@ a:hover  {
 	display: flex; /* 수평 정렬을 위해 Flexbox 사용 */
 	align-items: center; /* 수직 중앙 정렬 */
 	justify-content: flex-start; /* 왼쪽 정렬 */
+	margin-bottom: 20px;
 	gap: 10px; /* 이미지와 이름 사이의 간격 */
 }
 
