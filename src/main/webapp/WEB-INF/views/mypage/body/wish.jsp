@@ -61,7 +61,7 @@
 	    <div id="buyoften-pagination" class="pagination"></div>
 	    
 	    <!-- 리스트가 비어있을 때 보여줄 기본 이미지 -->
-        <div id="empty-list" style="display: none;">
+        <div id="empty-list2" style="display: none;">
             <img src="/static/Images/mypage/wish_empty.png" />
             <div><strong>앗! 구매한 상품이 없어요</strong><br />마음에 드는 상품을 둘러보세요!</div>
             <a href="/product/productlist" class="emptyBtn">쇼핑하러 가기</a>

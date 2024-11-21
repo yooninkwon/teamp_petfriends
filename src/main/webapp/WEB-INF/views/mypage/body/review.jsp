@@ -46,7 +46,7 @@
 	    <div id="myreview-pagination" class="pagination"></div>
 	    
 	    <!-- 리스트가 비어있을 때 보여줄 기본 이미지 -->
-        <div id="empty-list" style="display: none;">
+        <div id="empty-list2" style="display: none;">
             <img src="/static/Images/mypage/review_empty.png" />
             <div><strong>상품 구매하시고 후기를 남겨주세요!</strong></div>
             <a href="/product/productlist" class="emptyBtn">쇼핑하러 가기</a>
@@ -62,6 +62,7 @@
 	        <input type="hidden" id="review-pro-code" name="pro_code" />
 	        <input type="hidden" id="review-code" name="review_code" />
 	        <input type="hidden" id="savingPoint" name="savingPoint" value="0" />
+	        <input type="hidden" id="diffDays" name="diffDays" value="0" />
 			
 			<div class="review-write-info">
 		        <label for="rating-stars">상품은 어떠셨나요?</label>

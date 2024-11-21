@@ -122,7 +122,7 @@
      });
    });
 
-	// 쿠폰 검색 AJAX
+   // 쿠폰 검색 AJAX
    $('#coupon-search-btn').click(function () {
        var keyword = $('#coupon-keyword').val();
        $.ajax({

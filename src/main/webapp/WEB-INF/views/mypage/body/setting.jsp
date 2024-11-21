@@ -66,6 +66,11 @@
 </div>
 
 <script>
+const loginUser = {
+    memNick: "${loginUser.mem_nick}",
+    memEmail: "${loginUser.mem_email}"
+};
+
 document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll(".form-row input").forEach(input => {
         input.addEventListener("input", () => {

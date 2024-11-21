@@ -193,7 +193,7 @@ public class MyPageController {
 
 		myPetDto.setPet_code(request.getParameter("petCode"));
 		myPetDto.setPet_name(request.getParameter("petName"));
-
+		
 		String fileName = null;
 		try {
 			if (petImgFile != null && !petImgFile.isEmpty()) {
@@ -213,7 +213,7 @@ public class MyPageController {
 				}
 				petImgFile.transferTo(saveFile);
 			} else {
-				fileName = "noPetImg.jpg";
+				fileName = request.getParameter("existingImg");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -813,6 +813,7 @@ public class MyPageController {
 	    String cartCode = request.getParameter("cart_code");
 	    String proCode = request.getParameter("pro_code");
 	    String reviewCode = request.getParameter("review_code");
+	    int diffDays = Integer.parseInt(request.getParameter("diffDays"));
 	    int savingPoint = Integer.parseInt(request.getParameter("savingPoint"));
 	    int reviewRating = Integer.parseInt(request.getParameter("review_rating"));
 	    String reviewText = request.getParameter("review_text");
@@ -834,7 +835,6 @@ public class MyPageController {
 	    
 	    if (reviewCode != null && !reviewCode.isEmpty()) {
 	        // 기존 리뷰 수정
-	    	System.out.println("기존 리뷰 수정");
 	    	reviewDto.setReview_code(reviewCode);
 
 		    deleteImage(deleteFiles); // DB, 파일 디렉토리에서 삭제한 이미지 제거
@@ -844,20 +844,25 @@ public class MyPageController {
 	    	deleteExistingImages(existingReview);
 	    	
 	        mypageDao.updateReview(reviewDto);
+	        
 	    } else {
 	        // 신규 등록
 	        reviewDto.setReview_code(UUID.randomUUID().toString());
 	        mypageDao.insertReview(reviewDto);
-	        mypageDao.updateAmountByReview(memCode, savingPoint);
 	        
-	        MemberPointsDto memberPoints = new MemberPointsDto();
-			memberPoints.setMem_code(memCode);
-			memberPoints.setO_code(proCode);
-			memberPoints.setPoints(savingPoint);
-			memberPoints.setPoint_type('+');
-			memberPoints.setPoint_info("적립");
-			memberPoints.setPoint_memo("구매후기 작성");
-			memberMapper.insertPoints(memberPoints);
+	        if(diffDays <= 7) {
+	        	mypageDao.updateAmountByReview(memCode, savingPoint);	  
+	        	
+	        	MemberPointsDto memberPoints = new MemberPointsDto();
+	        	memberPoints.setMem_code(memCode);
+	        	memberPoints.setO_code(proCode);
+	        	memberPoints.setPoints(savingPoint);
+	        	memberPoints.setPoint_type('+');
+	        	memberPoints.setPoint_info("적립");
+	        	memberPoints.setPoint_memo("구매후기 작성");
+	        	memberMapper.insertPoints(memberPoints);
+	        }
+	        
 	    }
 	    
 	    
@@ -936,7 +941,7 @@ public class MyPageController {
 
 		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
 		String orderable = request.getParameter("orderable");
-
+		
 		List<MyWishDto> buyoften = mypageDao.getAllOrderInfoByMemberCode(loginUser.getMem_code(), orderable);
 
 		return buyoften;
@@ -983,8 +988,6 @@ public class MyPageController {
 	        String mem_code = formData.get("mem_code");
 	        String cs_caregory = formData.get("cs_caregory");
 	        String cs_contect = formData.get("cs_contect");
-
-	        System.out.println("cs_no: " + cs_no);
 
 	        if (cs_no != null && !cs_no.trim().isEmpty()) {
 	            mypageDao.modifyCS(cs_no, cs_caregory, cs_contect);

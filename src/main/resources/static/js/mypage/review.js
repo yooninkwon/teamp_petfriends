@@ -14,7 +14,7 @@ document.querySelectorAll('.tab-btn').forEach(function(tabBtn) {
 
 let selectedFiles = []; // 선택한 파일을 저장할 배열
 let deleteFiles = [];
-function writeReview(cartCode, savingPoint) {
+function writeReview(cartCode, savingPoint, diffDays) {
 	// 후기 작성 탭으로 전환
     $('.tab-btn').removeClass('active');
     $('button[data-tab="write-review"]').addClass('active');
@@ -78,6 +78,7 @@ function writeReview(cartCode, savingPoint) {
             } else {
 				// 적립금
                 $('#savingPoint').val(savingPoint);
+                $('#diffDays').val(diffDays);
                 // 폼 초기화
                 $('#review-rating').val(0);
                 $('#review-text').val('');
@@ -289,7 +290,7 @@ $(document).ready(function() {
 					// 후기 작성 버튼 또는 작성 완료 표시
 		            const reviewButton = myOrder.review_code
 		                ? `<button class="done-review-btn">후기 작성 완료</button>`
-		                : `${pointMessage} <button class="write-review-btn" onclick="writeReview('${myOrder.cart_code}','${savingPoint}')">후기작성</button>`;
+		                : `${pointMessage} <button class="write-review-btn" onclick="writeReview('${myOrder.cart_code}','${savingPoint}','${diffDays}')">후기작성</button>`;
 										
 		            lists += `
 		                <div class="wishlist-item">
@@ -399,10 +400,10 @@ $(document).ready(function() {
 		    if (sliceList.length === 0) {
 		        // 목록이 비어 있을 때 빈 리스트 이미지를 표시
 		        $('#myreview-list').hide();
-		        $('#empty-list').show();
+		        $('#empty-list2').show();
 		    } else {
 		        $('#myreview-list').show();
-		        $('#empty-list').hide();
+		        $('#empty-list2').hide();
 
 		        $.each(sliceList, function (index, review) {
 		            let starHtml = '';
@@ -430,7 +431,7 @@ $(document).ready(function() {
 							</div>
 							<div class="review-modify">
 	                            <div class="review-info">${review.review_date.split('T')[0]}</div>
-								<div><button class="write-review-btn" onclick="writeReview('${review.cart_code}',0)">수정하기</button></div>
+								<div><button class="write-review-btn" onclick="writeReview('${review.cart_code}',0,0)">수정하기</button></div>
 							</div>
 		                </div>
 		            `;

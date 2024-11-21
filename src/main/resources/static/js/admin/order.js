@@ -46,8 +46,8 @@ $(document).ready(function() {
         let lists = '';
         $.each(sliceList, function (index, order) {
 	        
-			const orderAmount = (order.o_coupon + order.o_point + order.o_amount + 3000).toLocaleString('ko-KR');
-		    const disAmount = (order.o_coupon + order.o_point).toLocaleString('ko-KR');
+			const orderAmount = order.o_coupon + order.o_point + order.o_amount + 3000;
+		    const disAmount = order.o_coupon + order.o_point;
 			
 	        const osRegdateFormatted = order.orderDate
 	            ? new Date(order.orderDate).toISOString().replace('T', ' ').split('.')[0]
@@ -63,9 +63,9 @@ $(document).ready(function() {
             lists += '<td><input type="checkbox" name="select-item"></td>';
             lists += '<td><a href="/admin/orderDetail?orderCode=' + order.o_code + '">' + order.o_code + '</a></td>';
             lists += '<td><span class="' + statusClass + '">' + order.currStatus + '</span></td>';
-            lists += '<td>' + orderAmount + '</td>';
+            lists += '<td>' + (orderAmount).toLocaleString('ko-KR') + '</td>';
             lists += '<td>' + (disAmount).toLocaleString('ko-KR') + '</td>';
-            lists += '<td>' + order.o_amount + '</td>';
+            lists += '<td>' + (order.o_amount).toLocaleString('ko-KR') + '</td>';
             lists += '<td><a href="/admin/customer_info?memCode=' + order.mem_code + '">' + order.mem_name + '</a></td>';
             lists += '<td>' + osRegdateFormatted + '</td>';
             lists += '</tr>';

@@ -512,7 +512,7 @@
 		LEFT JOIN PRODUCT_IMAGE PI ON P.PRO_CODE = PI.PRO_CODE
 		LEFT JOIN PRODUCT_REVIEW PR ON P.PRO_CODE = PR.PRO_CODE
 		<choose>
-			<when test="orderable == '판매'">AND P.PRO_ONOFF = '판매'</when>
+			<when test="orderable == '판매'">WHERE P.PRO_ONOFF = '판매'</when>
 		</choose>
 		GROUP BY P.PRO_CODE, P.PRO_NAME, PI.MAIN_IMG1, PC.BUY_COUNT
 	</select>
