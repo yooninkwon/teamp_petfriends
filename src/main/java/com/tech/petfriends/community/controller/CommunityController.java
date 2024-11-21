@@ -1,5 +1,7 @@
 package com.tech.petfriends.community.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.OnMessage;
+import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tech.petfriends.community.dto.CCategoryDto;
@@ -61,6 +66,7 @@ public class CommunityController {
 	@GetMapping("/main")
 	public String communityMain(HttpSession session, HttpServletRequest request, Model model) {
 		System.out.println("community_main() ctr");
+		
 		model.addAttribute("session", session);
 		model.addAttribute("request", request);
 
@@ -70,6 +76,7 @@ public class CommunityController {
 		return "/community/main";
 	}
 
+		
 	@GetMapping("/writeView")
 	public String writeView(HttpSession session, HttpServletRequest request, Model model) {
 		model.addAttribute("session", session);
@@ -188,17 +195,27 @@ public class CommunityController {
 
 	@PostMapping("/replyDelete")
 	public String replyDelete(HttpServletRequest request, Model model) {
-		System.out.println("replyDelete");
+	
 		model.addAttribute("request", request);
-
+		
+		String mem_nick = request.getParameter("mem_nick");	
+		String mem_code = request.getParameter("mem_code");	
 		String board_no = request.getParameter("board_no");
 		String comment_no = request.getParameter("comment_no");
-//	String user_id = request.getParameter("user_id");
-//	String comment_content = request.getParameter("comment_content");
 		String parent_comment_no = request.getParameter("parent_comment_no");
 		String comment_level = request.getParameter("comment_level");
 		String comment_order_no = request.getParameter("comment_order_no");
-
+		
+		System.out.println("mem_nick:"+ mem_nick);
+		
+		//만약 로그인 닉네임이 구트아카데미 라면 관리자 삭제로 진행 그게 아니라면 댓글삭제
+		if(mem_nick.equals("구트아카데미")) {
+			iDao.managerReplyUpdate(mem_nick, mem_code, comment_no);
+			model.addAttribute("msg", "관리자 댓글 삭제 성공");
+			model.addAttribute("url", "/community/contentView?board_no=" + board_no);
+			return"/community/alert";
+			
+		} else {
 		// 댓글 삭제 시도
 		int rn = iDao.replyDelete(comment_no, parent_comment_no, comment_level, comment_order_no);
 		if (rn == 0) {
@@ -215,6 +232,7 @@ public class CommunityController {
 			model.addAttribute("msg", "댓글이 삭제됐습니다.");
 			model.addAttribute("url", "/community/contentView?board_no=" + board_no);
 			return "/community/alert";
+		}
 		}
 	}
 
@@ -235,18 +253,56 @@ public class CommunityController {
 
 	@GetMapping("/myfeed/{mem_code}")
 	public String myfeed(@PathVariable String mem_code, HttpSession session, HttpServletRequest request, Model model) {
+		CDto getMyfeedVisit = (CDto) iDao.getMyfeedVisit(mem_code);
+		
+		model.addAttribute("getMyfeedVisit", getMyfeedVisit);
 		model.addAttribute("request", request);
 		model.addAttribute("mem_code", mem_code);
 		model.addAttribute("session", session);
 		System.out.println(mem_code);
-
-		serviceInterface = new CMyFeedService(iDao);
-		serviceInterface.execute(model);
+		iDao.totalVisits(mem_code);
+		iDao.dailyVisits(mem_code);
+	    
 		
+	    serviceInterface = new CMyFeedService(iDao);
+		serviceInterface.execute(model);
+			
 		
 		return "/community/myfeed";
 	}
 
+	
+	@PostMapping("/upload/{mem_code}")
+	public String uploadFeedImage(@PathVariable String mem_code, MultipartHttpServletRequest multipartRequest, Model model) {
+	    // 파일 처리
+		System.out.println("mem_code:");
+		MultipartFile feedImage = multipartRequest.getFile("feedImage");
+	    if (feedImage != null && !feedImage.isEmpty()) {
+	        // 파일 이름 생성 (고유 파일 이름 사용 가능)
+	        String originalFileName = feedImage.getOriginalFilename();
+	        String newFileName = System.currentTimeMillis() + "_" + originalFileName;
+
+	        String workPath = System.getProperty("user.dir");
+	        String root = workPath + "\\src\\main\\resources\\static\\images\\communityorign_img";
+
+	        File file = new File(root, newFileName);
+	        try {
+	            feedImage.transferTo(file); // 파일 저장
+	            // 이미지 파일 경로 저장
+	            iDao.myFeedImgWrite(mem_code, newFileName); // 파일 이름을 DB에 저장
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    model.addAttribute("msg", "이미지 수정이 완료됐습니다.");
+		model.addAttribute("url", "/community/myfeed/" + mem_code);
+	    
+	    
+	    return "/community/alert";  // 업로드 후 피드 페이지로 리다이렉트
+	}
+	
+	
+	
 	
 	@GetMapping("/neighborList/{mem_code}")
 	@ResponseBody
@@ -336,6 +392,8 @@ public class CommunityController {
 	    serviceInterface = new CFriendService(iDao);
 	    serviceInterface.execute(model);
 	    System.out.println("mem_code: " + mem_code);
+	  
+	   
 	    
 	    System.out.println("isFriendBool: " + model.getAttribute("isFriendBool")); // 디버깅용
 	    return "redirect:/community/myfeed/" + mem_code;
@@ -380,13 +438,19 @@ public class CommunityController {
     	return getChatHistory;
     }
 	
+    
+    
     @GetMapping("/getChatRooms")
     @ResponseBody
     public List<CChatDto> getChatRooms(HttpSession session) {
-    	String sender = ((MemberLoginDto) session.getAttribute("loginUser")).getMem_nick();
-    	System.out.println("sender:"+ sender);
-    
-              
+        MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            throw new RuntimeException("로그인 정보가 없습니다."); // 혹은 적절한 응답 반환
+        }
+
+        String sender = loginUser.getMem_nick();
+        System.out.println("sender:" + sender);
+
         List<CChatDto> getChatRooms = iDao.getChatRooms(sender);
         return getChatRooms;
     }

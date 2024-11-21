@@ -1,9 +1,18 @@
 @charset "UTF-8";
 
+
 html, body {
 	height: 100%; /* 전체 높이를 100%로 설정 */
 	margin: 0; /* 기본 여백 제거 */
 }
+
+#community {
+	text-decoration: none; /* 기존 언더라인 제거 */
+	color: rgb(251, 0, 88) !important;
+	box-shadow: 0 3px 0 rgb(251, 0, 88); /* 밑에 그림자를 이용한 언더라인 */
+	padding-bottom: 10px;
+}
+
 
 main {
 	display: grid;
@@ -12,6 +21,7 @@ main {
 	gap: 10px; /* 열 사이의 간격 */
 	padding: 20px;
 }
+
 
 body {
 	margin: 0; /* 기본 마진 제거 */
@@ -34,6 +44,7 @@ a:hover {
 .container {
 	width: 80%; /* 전체 화면의 50%를 사용 */
 	margin: 0 auto; /* 가운데 정렬 */
+	
 }
 
 /* 핫이슈 */
@@ -396,6 +407,7 @@ a:hover {
 }
 
 .post-footer {
+	display: flex;
 	margin-top: 3px; /* 좋아요 및 댓글과의 간격 줄이기 */
 	position: absolute;
 	bottom: 20px; /* 하단에 배치 */
@@ -405,30 +417,50 @@ a:hover {
 	align-self: flex-start; /* 부모 요소의 왼쪽 하단에 위치 */
 }
 
+.edit-button {
+    text-decoration: none; /* 밑줄 제거 */
+    color: black; /* 수정 버튼 색상 */
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    text-decoration: underline; /* 호버 시 밑줄 */
+}
+
+.delete-form {
+    margin: 0; /* 기본 마진 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+    display: inline; /* form을 인라인으로 표시 */
+}
+
+.delete-button {
+    all: unset; /* 모든 기본 버튼 스타일 제거 */
+    color: black; /* 텍스트 색상 */
+    cursor: pointer; /* 클릭 가능한 링크 스타일 */
+}
+
+.delete-button:hover {
+    text-decoration: underline; /* 호버 시 밑줄 */
+	color: #ff4081;
+}
+
+
+
+
 /* 사이드바 */
 .sidebar {
 	position: absolute; /* 절대 위치 설정 */
 	top: 182px; /* 헤더의 높이에 따라 조정 */
-	right: 180px; /* 오른쪽 정렬 */
+	right: 240px; /* 오른쪽 정렬 */
 	width: 280px; /* 화면 비율에 따라 사이드바 너비를 설정 */
 	background-color: #fff; /* 배경색 */
 	padding: 20px; /* 내부 여백 */
 	border-radius: 5px; /* 모서리 둥글게 */
 	border: 2px solid #ffe5ee;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+	
 }
 
-.sidebar-header {
-	display: flex;
-	justify-content: flex-start; /* 제목을 왼쪽 정렬 */
-	align-items: center; /* 중앙 정렬 */
-	width: 100%; /* 사이드바의 너비를 100%로 설정 */
-}
-
-.sidebar-header h2 {
-	font-size: 20px; /* 제목 크기 */
-	padding: 10px; /* 기본 여백 제거 */
-}
 
 .login-button {
 	background-color: #ff4081 !important; /* 버튼 배경색 */
@@ -611,4 +643,29 @@ a:hover {
 .notice-text {
 	color: #828282; /* 원하는 색상 코드로 변경 */
 	margin-top: 10px;
+}
+
+.pagination {
+    display: flex; /* 숫자들을 가로로 정렬 */
+    justify-content: center; /* 중앙 정렬 */
+    gap: 10px; /* 숫자 간의 간격 */
+}
+
+.pagination-link {
+    text-decoration: none; /* 밑줄 제거 */
+    color: #007bff; /* 링크 색상 */
+    padding: 5px 10px; /* 내부 여백 */
+    border: 1px solid #ddd; /* 테두리 */
+    border-radius: 5px; /* 둥근 모서리 */
+    transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+}
+
+.pagination-link:hover {
+    background-color: #f0f0f0; /* 호버 시 배경색 */
+}
+
+.pagination-link.active {
+    background-color: #007bff;
+    color: #fff; /* 활성화된 페이지는 흰색 텍스트 */
+    border-color: #007bff; /* 활성화된 페이지의 테두리 */
 }

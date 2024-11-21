@@ -25,7 +25,6 @@ public class MainController {
 	
 	IndexService indexService;
 	
-	
 	@GetMapping("/")
 	public String index(Model model) {
 		//제품 best10 가져오기
@@ -36,6 +35,5 @@ public class MainController {
 		NoticeDto notice = noticeDao.newNotice();
 		model.addAttribute("notice",notice);
 		return "index";
-	}
-		
+	}	
 }

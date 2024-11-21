@@ -147,8 +147,9 @@
 		        return response.json();
 		    })
 		    .then(data => {
-		        alert("신고가 제출되었습니다.");
+		        alert("신고가 제출되었습니다.");	        
 		        closeReportPopup(); // 팝업 닫기
+		        document.getElementById("report-text").value = ''; // 텍스트박스 초기화
 		    })
 		    .catch(error => {
 		        alert("신고 제출 중 오류가 발생했습니다: " + error.message);
@@ -191,7 +192,8 @@
 
 				<!-- 좋아요 버튼 -->
 				<button id="like-button" onclick="updateLike()">
-				<input type="hidden" name="parent_user_nick" value="${contentView.user_id}">
+					<input type="hidden" name="parent_user_nick"
+						value="${contentView.user_id}">
 					<c:choose>
 						<c:when test="${isliked == 1}">
 					                        ❤️ <!-- 채워진 하트: 이미 좋아요를 누른 경우 -->
@@ -210,9 +212,9 @@
 			</div>
 			<div class="edit-delete-buttons">
 				<c:if test="${sessionScope.loginUser ne null}">
+					<!-- 본인 게시물일 때 수정 및 삭제 버튼 표시 -->
 					<c:if
 						test="${sessionScope.loginUser.mem_code eq contentView.mem_code}">
-						<!-- 오른쪽 끝에 위치할 수정 및 삭제 버튼 -->
 						<form action="/community/modifyView" method="get">
 							<input type="hidden" name="board_no"
 								value="${contentView.board_no}">
@@ -226,7 +228,18 @@
 							<button type="submit" class="main_delete-button">삭제</button>
 						</form>
 					</c:if>
+
+					<!-- 관리자는 삭제 버튼만 표시 -->
+					<c:if test="${sessionScope.loginUser.mem_nick eq '구트아카데미'}">
+						<form action="/community/delete" method="post"
+							onsubmit="return confirm('정말 삭제하시겠습니까?')">
+							<input type="hidden" name="board_no"
+								value="${contentView.board_no}">
+							<button type="submit" class="main_delete-button">삭제</button>
+						</form>
+					</c:if>
 				</c:if>
+
 				<button onclick="openReportPopup(null, '게시판')" class="report-button">🚨
 					신고</button>
 			</div>
@@ -259,8 +272,8 @@
 
 
 			<c:forEach var="comment" items="${commentList}">
-			
-				
+
+
 				<div class="comment"
 					style="padding-left: ${comment.comment_order_no * 20}px;">
 					<a href="/community/myfeed/${comment.mem_code}"
@@ -277,23 +290,29 @@
 						class="comment-content preformatted-text">${fn:escapeXml(comment.comment_content)}</span>
 						<span class="comment-time">${comment.created_date}</span></a>
 					<button onclick="openReportPopup(${comment.comment_no},'댓글')"
-						class="report-comment-button">🚨 신고</button> </a>
+						class="report-comment-button">🚨 신고</button>
+					</a>
 					<div class="button-group">
 						<button onclick="toggleReplyForm(${comment.comment_no})">답글</button>
 
 
 						<form action="/community/replyDelete" method="post"
 							onsubmit="return confirm('정말 삭제하시겠습니까?')">
-							<input type="hidden" name="comment_no"
-								value="${comment.comment_no}"> <input type="hidden"
-								name="board_no" value="${contentView.board_no}"> <input
-								type="hidden" name="parent_comment_no"
-								value="${comment.parent_comment_no}"> <input
-								type="hidden" name="comment_level"
+							<input type="hidden" name="mem_nick"
+								value="${sessionScope.loginUser.mem_nick}"> <input
+								type="hidden" name="mem_code"
+								value="${sessionScope.loginUser.mem_code}"> <input
+								type="hidden" name="comment_no" value="${comment.comment_no}">
+							<input type="hidden" name="board_no"
+								value="${contentView.board_no}"> <input type="hidden"
+								name="parent_comment_no" value="${comment.parent_comment_no}">
+							<input type="hidden" name="comment_level"
 								value="${comment.comment_level}"> <input type="hidden"
 								name="comment_order_no" value="${comment.comment_order_no}">
+
+							<!-- 댓글 작성자 또는 관리자가 삭제 버튼을 볼 수 있음 -->
 							<c:if
-								test="${sessionScope.loginUser.mem_nick eq comment.user_id}">
+								test="${sessionScope.loginUser.mem_nick eq comment.user_id or sessionScope.loginUser.mem_nick eq '구트아카데미'}">
 								<button type="submit" class="delete-button">삭제</button>
 							</c:if>
 						</form>
@@ -308,10 +327,10 @@
 					<div id="replyForm-${comment.comment_no}" class="reply-section"
 						style="display: none;">
 						<form action="/community/commentReply" method="post">
-							<input type="hidden" name="parent_user_nick" value="${comment.user_id}">
-							<input type="hidden" name="mem_code"
-								value="${sessionScope.loginUser.mem_code}"> <input
-								type="hidden" name="mem_nick"
+							<input type="hidden" name="parent_user_nick"
+								value="${comment.user_id}"> <input type="hidden"
+								name="mem_code" value="${sessionScope.loginUser.mem_code}">
+							<input type="hidden" name="mem_nick"
 								value="${sessionScope.loginUser.mem_nick}"> <input
 								type="hidden" name="board_no" value="${contentView.board_no}">
 							<input type="hidden" name="comment_no"
@@ -320,7 +339,7 @@
 							<input type="hidden" name="comment_level"
 								value="${comment.comment_level}"> <input type="hidden"
 								name="comment_order_no" value="${comment.comment_order_no}">
-						
+
 							<textarea name="comment_content" placeholder="대댓글을 입력하세요..."
 								required></textarea>
 							<button type="submit">답글 달기</button>
@@ -334,7 +353,7 @@
 							test="${commentReply.parent_comment_no == comment.comment_no}">
 							<div class="commentReply"
 								style="padding-left: ${(commentReply.comment_order_no) * 50}px;">
-								<a href="/community/myfeed/${commentReply.mem_code}" 
+								<a href="/community/myfeed/${commentReply.mem_code}"
 									class="profile-link"> <img
 									src="<c:choose>
 		                            <c:when test="${empty commentReply.pet_img}">
@@ -347,16 +366,17 @@
 									alt="Profile Image" class="profile-image"> <span
 									class="user-name">${commentReply.user_id}</span>:&nbsp;&nbsp; <span
 									class="commentReply-content preformatted-text">${fn:escapeXml(commentReply.comment_content)}</span>
-								<span class="commentReply-time">${commentReply.created_date}</span></a>
-								<button onclick="openReportPopup(${commentReply.comment_no})"
+									<span class="commentReply-time">${commentReply.created_date}</span></a>
+								<button onclick="openReportPopup(${commentReply.comment_no}, '댓글')"
 									class="report-comment-button">🚨 신고</button>
 								<div class="button-group">
 									<button
-										onclick="toggleReplyForm(${commentReply.comment_no},'댓글')">답글</button>
+										onclick="toggleReplyForm(${commentReply.comment_no})">답글</button>
 
 									<!-- 대댓글 삭제 버튼: 현재 로그인한 사용자와 대댓글 작성자가 같을 경우만 보이기 -->
 									<c:if
-										test="${sessionScope.loginUser.mem_nick == commentReply.user_id}">
+										test="${sessionScope.loginUser.mem_nick eq commentReply.user_id or sessionScope.loginUser.mem_nick eq '구트아카데미'}">
+
 										<form action="/community/replyDelete" method="post"
 											onsubmit="return confirm('정말 삭제하시겠습니까?')">
 											<input type="hidden" name="mem_nick"
@@ -380,10 +400,10 @@
 								<div id="replyForm-${commentReply.comment_no}"
 									class="reply-section" style="display: none;">
 									<form action="/community/commentReply" method="post">
-										<input type="hidden" name="parent_user_nick" value="${commentReply.user_id}">
-										<input type="hidden" name="mem_nick"
-											value="${sessionScope.loginUser.mem_nick}"> <input
-											type="hidden" name="mem_code"
+										<input type="hidden" name="parent_user_nick"
+											value="${commentReply.user_id}"> <input type="hidden"
+											name="mem_nick" value="${sessionScope.loginUser.mem_nick}">
+										<input type="hidden" name="mem_code"
 											value="${sessionScope.loginUser.mem_code}"> <input
 											type="hidden" name="board_no" value="${contentView.board_no}">
 										<input type="hidden" name="comment_no"
@@ -408,10 +428,10 @@
 			<!-- 댓글 작성 폼 -->
 			<div class="comment-input">
 				<form action="/community/comment" method="post">
-				<input type="hidden" name="parent_user_nick" value="${contentView.user_id}">
-					<input type="hidden" name="mem_code"
-						value="${sessionScope.loginUser.mem_code}"> <input
-						type="hidden" name="mem_nick"
+					<input type="hidden" name="parent_user_nick"
+						value="${contentView.user_id}"> <input type="hidden"
+						name="mem_code" value="${sessionScope.loginUser.mem_code}">
+					<input type="hidden" name="mem_nick"
 						value="${sessionScope.loginUser.mem_nick}"> <input
 						type="hidden" name="board_no" value="${contentView.board_no}">
 

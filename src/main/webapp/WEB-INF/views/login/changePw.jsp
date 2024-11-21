@@ -28,7 +28,7 @@
 			<!-- 비밀번호 양식 -->	
 			<pre style='font:bold; font-size:15px; float: left; margin-top: 20px; margin-left: -155px;'>
 			* 비밀번호는 영문, 숫자, 특수문자 포함 8~20자 이내로 설정 가능합니다.
-		   * 직전에 사용한 비밀번호와 동일한 비밀번호는 사용 불가능 합니다.
+		   
 			</pre> <br />
 			
 			

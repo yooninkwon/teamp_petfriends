@@ -37,7 +37,7 @@
 
 <body>
     <div class="title">
-        <h3>전체 게시글</h3>
+        <h3>COMMUNITY</h3>
     </div>
 
     <!-- 탭 영역 -->

@@ -92,6 +92,21 @@
 	    WHERE PET_CODE=#{petCode}
 	</delete>
 	
+	<!-- 포인트 -->
+	<select id="getAllPointLogByMemCode" resultType="com.tech.petfriends.login.dto.MemberPointsDto">
+		SELECT *
+		FROM MEMBER_POINT
+		WHERE MEM_CODE = #{mem_code}
+		ORDER BY POINT_DATE DESC
+	</select>
+	
+	<select id="getExsavingAmountByMemCode" resultType="Integer">
+		SELECT SUM(O.O_SAVING) AS EX_SAVING
+		FROM "ORDER" O
+		WHERE O.MEM_CODE = #{mem_code}
+			  AND NOT EXISTS (SELECT 1 FROM ORDER_STATUS OS WHERE OS.O_CODE = O.O_CODE AND OS.OS_NAME IN ('구매확정', '주문취소'))
+	</select>
+	
 	<!-- 쿠폰 -->
 	<select id="getAllCoupon" resultType="com.tech.petfriends.admin.dto.CouponDto">
 		SELECT *
@@ -277,7 +292,7 @@
 
 	<update id="updateAmountByOrder" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
 	    UPDATE MEMBER
-	    SET MEM_POINT = MEM_POINT - #{o_point}
+	    SET MEM_POINT = MEM_POINT - #{o_point},
 	    	MEM_PAY_AMOUNT = MEM_PAY_AMOUNT + #{o_amount}
 	    WHERE MEM_CODE = #{mem_code}
 	</update>
@@ -360,7 +375,7 @@
 
 	<update id="updateAmountByCancel" parameterType="com.tech.petfriends.mypage.dto.MyOrderDto">
 	    UPDATE MEMBER
-	    SET MEM_POINT = MEM_POINT + #{o_point}
+	    SET MEM_POINT = MEM_POINT + #{o_point},
 	    	MEM_PAY_AMOUNT = MEM_PAY_AMOUNT - #{o_amount}
 	    WHERE MEM_CODE = #{mem_code}
 	</update>
@@ -376,6 +391,84 @@
 	    UPDATE PRODUCT P
 		SET P.PRO_ONOFF = '판매'
 		WHERE P.PRO_CODE IN (SELECT PO.PRO_CODE FROM PRODUCT_OPTION PO WHERE PO.PROOPT_STOCK > 0) AND P.PRO_ONOFF = '품절'
+	</update>
+	
+	<!-- 구매후기 -->
+	<select id="getConfirmedItemByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyCartDto">
+		SELECT PC.CART_CODE, PC.PRO_CODE, P.PRO_NAME, PO.PROOPT_NAME, OS.OS_REGDATE, PI.MAIN_IMG1, PO.PROOPT_FINALPRICE, PC.CART_CNT, PR.REVIEW_CODE
+		FROM PRODUCT_CART PC
+		JOIN ORDER_STATUS OS ON PC.O_CODE = OS.O_CODE
+		JOIN PRODUCT P ON PC.PRO_CODE = P.PRO_CODE
+		JOIN PRODUCT_OPTION PO ON PC.PROOPT_CODE = PO.PROOPT_CODE
+		LEFT JOIN PRODUCT_IMAGE PI ON P.PRO_CODE = PI.PRO_CODE
+		LEFT JOIN PRODUCT_REVIEW PR ON PC.CART_CODE = PR.CART_CODE
+		WHERE PC.MEM_CODE = #{mem_code} AND PC.O_CODE IS NOT NULL AND OS.OS_NAME = '구매확정'
+		ORDER BY OS.OS_REGDATE DESC
+	</select>
+	
+	<select id="getReviewByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyReviewDto">
+		SELECT DISTINCT PC.CART_CODE, PC.PRO_CODE, P.PRO_NAME, PO.PROOPT_NAME, PI.MAIN_IMG1, PR.REVIEW_CODE, PR.REVIEW_RATING, PR.REVIEW_TEXT, PR.REVIEW_IMG1, PR.REVIEW_IMG2, PR.REVIEW_IMG3, PR.REVIEW_IMG4, PR.REVIEW_IMG5, PR.REVIEW_DATE
+		FROM PRODUCT_CART PC
+		JOIN ORDER_STATUS OS ON PC.O_CODE = OS.O_CODE
+		JOIN PRODUCT P ON PC.PRO_CODE = P.PRO_CODE
+		JOIN PRODUCT_OPTION PO ON PC.PROOPT_CODE = PO.PROOPT_CODE
+		LEFT JOIN PRODUCT_IMAGE PI ON P.PRO_CODE = PI.PRO_CODE
+        LEFT JOIN PRODUCT_REVIEW PR ON PC.CART_CODE = PR.CART_CODE
+		WHERE PC.MEM_CODE = #{mem_code} AND PR.REVIEW_CODE IS NOT NULL
+		ORDER BY PR.REVIEW_DATE DESC
+	</select>
+	
+	<select id="getReviewInfoByCartCode" resultType="com.tech.petfriends.mypage.dto.MyReviewDto">
+		SELECT PC.CART_CODE, PC.PRO_CODE, P.PRO_NAME, PO.PROOPT_NAME, PI.MAIN_IMG1, PR.REVIEW_CODE, PR.REVIEW_RATING, PR.REVIEW_TEXT, PR.REVIEW_IMG1, PR.REVIEW_IMG2, PR.REVIEW_IMG3, PR.REVIEW_IMG4, PR.REVIEW_IMG5
+		FROM PRODUCT_CART PC
+		JOIN PRODUCT P ON PC.PRO_CODE = P.PRO_CODE
+		JOIN PRODUCT_OPTION PO ON PC.PROOPT_CODE = PO.PROOPT_CODE
+		LEFT JOIN PRODUCT_IMAGE PI ON P.PRO_CODE = PI.PRO_CODE
+		LEFT JOIN PRODUCT_REVIEW PR ON PC.CART_CODE = PR.CART_CODE
+		WHERE PC.CART_CODE = #{cartCode}
+	</select>
+	
+	<insert id="insertReview" parameterType="com.tech.petfriends.mypage.dto.MyReviewDto">
+	    INSERT INTO PRODUCT_REVIEW
+	    VALUES (#{review_code}, #{pro_code}, #{mem_code}, #{review_rating}, #{review_text},
+		        #{review_img1}, #{review_img2}, #{review_img3}, #{review_img4}, #{review_img5},
+		        SYSDATE, #{cart_code})
+	</insert>
+	
+	<update id="updateAmountByReview">
+	    UPDATE MEMBER
+	    SET MEM_POINT = MEM_POINT - #{savingPoint}
+	    WHERE MEM_CODE = #{memCode}
+	</update>
+	
+	<update id="updateReview" parameterType="com.tech.petfriends.mypage.dto.MyReviewDto">
+	    UPDATE PRODUCT_REVIEW
+	    SET REVIEW_RATING = #{review_rating},
+	        REVIEW_TEXT = #{review_text},
+	        REVIEW_IMG1 = <choose><when test="review_img1 != null">#{review_img1}</when><otherwise>NULL</otherwise></choose>,
+	        REVIEW_IMG2 = <choose><when test="review_img2 != null">#{review_img2}</when><otherwise>NULL</otherwise></choose>,
+	        REVIEW_IMG3 = <choose><when test="review_img3 != null">#{review_img3}</when><otherwise>NULL</otherwise></choose>,
+	        REVIEW_IMG4 = <choose><when test="review_img4 != null">#{review_img4}</when><otherwise>NULL</otherwise></choose>,
+	        REVIEW_IMG5 = <choose><when test="review_img5 != null">#{review_img5}</when><otherwise>NULL</otherwise></choose>,
+	        REVIEW_DATE = SYSDATE
+	    WHERE REVIEW_CODE = #{review_code}
+	</update>
+	<select id="existingReview" resultType="com.tech.petfriends.mypage.dto.MyReviewDto">
+	    SELECT * FROM 
+	    PRODUCT_REVIEW
+	    WHERE REVIEW_CODE = #{review_code}
+	</select>
+	
+	<update id="deleteImageUpdate">
+	    UPDATE PRODUCT_REVIEW
+	    <set>
+            REVIEW_IMG1 = NULL,
+            REVIEW_IMG2 = NULL,
+            REVIEW_IMG3 = NULL,
+            REVIEW_IMG4 = NULL,
+            REVIEW_IMG5 = NULL
+	    </set>
+	    WHERE REVIEW_CODE = #{review_code}
 	</update>
 	
 	<!-- 즐겨찾는 상품 -->
@@ -403,23 +496,25 @@
 	</select>
 	
 	<select id="getAllOrderInfoByMemberCode" resultType="com.tech.petfriends.mypage.dto.MyWishDto">
-		SELECT COUNT(DISTINCT P.PRO_CODE) AS BUY_COUNT,
-       		   P.PRO_CODE,
-			   P.PRO_NAME,
-		       MIN(PO.PROOPT_FINALPRICE) AS MIN_PRICE,
-		       COALESCE(AVG(PR.REVIEW_RATING), 0) AS REVIEW_AVG,
-		       COUNT(PR.REVIEW_CODE) AS REVIEW_COUNT,
-		       PI.MAIN_IMG1
-		FROM PRODUCT_CART PC
+		WITH ProductCounts AS (
+		    SELECT COUNT(PC.PRO_CODE) AS BUY_COUNT, PC.PRO_CODE
+		    FROM PRODUCT_CART PC
+		    WHERE PC.MEM_CODE = #{mem_code} AND PC.O_CODE IS NOT NULL
+		    GROUP BY PC.PRO_CODE)
+		SELECT PC.BUY_COUNT, P.PRO_CODE, P.PRO_NAME,
+		    MIN(PO.PROOPT_FINALPRICE) AS MIN_PRICE,
+		    COALESCE(AVG(PR.REVIEW_RATING), 0) AS REVIEW_AVG,
+		    COUNT(DISTINCT PR.REVIEW_CODE) AS REVIEW_COUNT,
+		    PI.MAIN_IMG1
+		FROM ProductCounts PC
 		JOIN PRODUCT P ON PC.PRO_CODE = P.PRO_CODE
 		LEFT JOIN PRODUCT_OPTION PO ON P.PRO_CODE = PO.PRO_CODE
 		LEFT JOIN PRODUCT_IMAGE PI ON P.PRO_CODE = PI.PRO_CODE
 		LEFT JOIN PRODUCT_REVIEW PR ON P.PRO_CODE = PR.PRO_CODE
-		WHERE PC.MEM_CODE = #{mem_code} AND PC.O_CODE IS NOT NULL
 		<choose>
-			<when test="orderable == '판매'">AND P.PRO_ONOFF = '판매'</when>
+			<when test="orderable == '판매'">WHERE P.PRO_ONOFF = '판매'</when>
 		</choose>
-		GROUP BY P.PRO_CODE, P.PRO_NAME, PI.MAIN_IMG1
+		GROUP BY P.PRO_CODE, P.PRO_NAME, PI.MAIN_IMG1, PC.BUY_COUNT
 	</select>
 	
 	<delete id="deleteWishByProCode">
@@ -454,5 +549,38 @@
 		SET HPH_STATUS = '취소됨' 
 		WHERE HPH_RESERVE_NO = #{reserveNo}
 	</update>
-
+	
+	<!-- 고객센터 -->
+	<select id="getMyServiceHistory" resultType="com.tech.petfriends.mypage.dto.MyServiceHistoryDto">
+		SELECT CS.*,M.MEM_NAME
+		FROM SERVICECENTER CS
+		JOIN MEMBER M ON M.MEM_CODE = CS.MEM_CODE
+		WHERE CS.MEM_CODE = #{mem_code} AND CS.CS_DELETE IS NULL
+		ORDER BY CS_REGDATE DESC
+	</select>
+	
+	<insert id="writeCS">
+		INSERT INTO SERVICECENTER
+		VALUES (SERVICECENTER_SEQ.NEXTVAL,#{mem_code},#{cs_caregory},#{cs_contect},SYSDATE,NULL,NULL)
+	</insert>
+	
+	<update id="modifyCS">
+	    UPDATE SERVICECENTER
+	    SET CS_CAREGORY = #{cs_caregory},
+	        CS_CONTECT = #{cs_contect}
+	    WHERE CS_NO = #{cs_no}
+	</update>
+	
+	<select id="getMyServiceByNo" resultType="com.tech.petfriends.mypage.dto.MyServiceHistoryDto">
+		SELECT CS.*,M.MEM_NAME
+		FROM SERVICECENTER CS
+		JOIN MEMBER M ON M.MEM_CODE = CS.MEM_CODE
+		WHERE CS.CS_NO = #{cs_no}
+	</select>
+	
+	<update id="deleteCS">
+	    UPDATE SERVICECENTER
+	    SET CS_DELETE = 'delete'
+	    WHERE CS_NO = #{cs_no}
+	</update>
 </mapper>

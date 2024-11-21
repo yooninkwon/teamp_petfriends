@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -45,6 +48,8 @@ import com.tech.petfriends.mypage.dto.GradeDto;
 import com.tech.petfriends.mypage.dto.MyCartDto;
 import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
+import com.tech.petfriends.mypage.dto.MyReviewDto;
+import com.tech.petfriends.mypage.dto.MyServiceHistoryDto;
 import com.tech.petfriends.mypage.dto.MyWishDto;
 
 @Controller
@@ -188,7 +193,7 @@ public class MyPageController {
 
 		myPetDto.setPet_code(request.getParameter("petCode"));
 		myPetDto.setPet_name(request.getParameter("petName"));
-
+		
 		String fileName = null;
 		try {
 			if (petImgFile != null && !petImgFile.isEmpty()) {
@@ -208,7 +213,7 @@ public class MyPageController {
 				}
 				petImgFile.transferTo(saveFile);
 			} else {
-				fileName = "noPetImg.jpg";
+				fileName = request.getParameter("existingImg");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -252,7 +257,17 @@ public class MyPageController {
 	
 	// 포인트
 	@GetMapping("/point")
-	public String point() {
+	public String point(Model model, HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		
+		ArrayList<MemberPointsDto> pointLogs = mypageDao.getAllPointLogByMemCode(loginUser.getMem_code());
+		Integer ex_saving = mypageDao.getExsavingAmountByMemCode(loginUser.getMem_code());
+		
+		model.addAttribute("loginUser", loginUser);
+		model.addAttribute("pointLogs", pointLogs);
+		model.addAttribute("ex_saving", ex_saving != null ? ex_saving : 0);
+		
 		return "mypage/point";
 	}
 
@@ -477,11 +492,6 @@ public class MyPageController {
 		return "redirect:/mypage/setting";
 	}
 
-	@GetMapping("/withdrawal")
-	public String withdrawal() {
-		return "/mypage/withdrawal";
-	}
-
 	// 장바구니
 	@GetMapping("/cart")
 	public String cart(Model model, HttpSession session) {
@@ -621,6 +631,7 @@ public class MyPageController {
 			memberPoints.setPoints(orderData.getO_point());
 			memberPoints.setPoint_type('-');
 			memberPoints.setPoint_info("사용");
+			memberPoints.setPoint_memo("주문시 사용");
 			memberMapper.insertPoints(memberPoints);
 		}
 		
@@ -702,6 +713,7 @@ public class MyPageController {
 		memberPoints.setPoints(Integer.parseInt(payload.get("oSaving")));
 		memberPoints.setPoint_type('+');
 		memberPoints.setPoint_info("적립");
+		memberPoints.setPoint_memo("구매확정");
 		memberMapper.insertPoints(memberPoints);
 		
 		mypageDao.insertComfirmStatus(payload.get("orderCode"));
@@ -739,6 +751,7 @@ public class MyPageController {
  		memberPoints.setPoints(order.getO_point());
  		memberPoints.setPoint_type('+');
  		memberPoints.setPoint_info("사용취소");
+ 		memberPoints.setPoint_memo("주문취소");
  		memberMapper.insertPoints(memberPoints);
  		
  		mypageDao.updateCancelByOrderCode(o_code, o_cancel, o_cancel_detail);
@@ -757,6 +770,151 @@ public class MyPageController {
 	@GetMapping("/review")
 	public String review() {
 		return "mypage/review";
+	}
+	
+	@GetMapping("/myOrder/data")
+	@ResponseBody
+	public List<MyCartDto> myOrderData(HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		
+		List<MyCartDto> myOrder = mypageDao.getConfirmedItemByMemberCode(loginUser.getMem_code());
+		
+		return myOrder;
+	}
+	
+	@GetMapping("/review/data")
+	@ResponseBody
+	public List<MyReviewDto> reviewData(HttpSession session) {
+		
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+		
+		List<MyReviewDto> review = mypageDao.getReviewByMemberCode(loginUser.getMem_code());
+		
+		return review;
+	}
+	
+	@GetMapping("/review/getReviewInfo")
+	@ResponseBody
+	public MyReviewDto getReviewInfo(HttpServletRequest request) {
+	    return mypageDao.getReviewInfoByCartCode(request.getParameter("cartCode"));
+	}
+	
+	@Transactional
+	@PostMapping("/review/writeReview")
+	public String writeReview(HttpServletRequest request, HttpSession session,
+							@RequestParam(required = false) MultipartFile[] reviewImages,
+							@RequestParam(required = false) String[] deleteFiles) { 
+		
+		// 파일 배열이 null 또는 비어 있으면 빈 배열로 초기화
+	    reviewImages = reviewImages == null ? new MultipartFile[0] : reviewImages;
+	    
+	    String memCode = ((MemberLoginDto) session.getAttribute("loginUser")).getMem_code();
+	    String cartCode = request.getParameter("cart_code");
+	    String proCode = request.getParameter("pro_code");
+	    String reviewCode = request.getParameter("review_code");
+	    int diffDays = Integer.parseInt(request.getParameter("diffDays"));
+	    int savingPoint = Integer.parseInt(request.getParameter("savingPoint"));
+	    int reviewRating = Integer.parseInt(request.getParameter("review_rating"));
+	    String reviewText = request.getParameter("review_text");
+	    
+	    MyReviewDto reviewDto = new MyReviewDto();
+	    reviewDto.setMem_code(memCode);
+	    reviewDto.setPro_code(proCode);
+	    reviewDto.setCart_code(cartCode);
+	    reviewDto.setReview_rating(reviewRating);
+	    reviewDto.setReview_text(reviewText);
+	    
+	    String[] uploadedImages = saveUploadedFiles(reviewImages); // 파일 저장 메서드 호출
+
+	    reviewDto.setReview_img1(uploadedImages[0]);
+	    reviewDto.setReview_img2(uploadedImages[1]);
+	    reviewDto.setReview_img3(uploadedImages[2]);
+	    reviewDto.setReview_img4(uploadedImages[3]);
+	    reviewDto.setReview_img5(uploadedImages[4]);
+	    
+	    if (reviewCode != null && !reviewCode.isEmpty()) {
+	        // 기존 리뷰 수정
+	    	reviewDto.setReview_code(reviewCode);
+
+		    deleteImage(deleteFiles); // DB, 파일 디렉토리에서 삭제한 이미지 제거
+		    
+	    	MyReviewDto existingReview = mypageDao.existingReview(reviewCode);
+	    	
+	    	deleteExistingImages(existingReview);
+	    	
+	        mypageDao.updateReview(reviewDto);
+	        
+	    } else {
+	        // 신규 등록
+	        reviewDto.setReview_code(UUID.randomUUID().toString());
+	        mypageDao.insertReview(reviewDto);
+	        
+	        if(diffDays <= 7) {
+	        	mypageDao.updateAmountByReview(memCode, savingPoint);	  
+	        	
+	        	MemberPointsDto memberPoints = new MemberPointsDto();
+	        	memberPoints.setMem_code(memCode);
+	        	memberPoints.setO_code(proCode);
+	        	memberPoints.setPoints(savingPoint);
+	        	memberPoints.setPoint_type('+');
+	        	memberPoints.setPoint_info("적립");
+	        	memberPoints.setPoint_memo("구매후기 작성");
+	        	memberMapper.insertPoints(memberPoints);
+	        }
+	        
+	    }
+	    
+	    
+
+	    return "redirect:/mypage/review";
+	}
+	
+	private void deleteImage(String[] deleteFiles) {
+	    String imagesDir = new File("src/main/resources/static/Images/ProductImg/ReviewImg").getAbsolutePath();
+
+	    for (String image : deleteFiles) {
+	        if (image != null) {
+	            File file = new File(imagesDir, image);
+	            if (file.exists()) {
+	                file.delete(); // 파일 삭제
+	            }
+	        }
+	    }
+
+	    mypageDao.deleteImageUpdate();
+	}
+
+	private String[] saveUploadedFiles(MultipartFile[] files) {
+	    String[] uploadedImages = new String[5];
+	    String imagesDir = new File("src/main/resources/static/Images/ProductImg/ReviewImg").getAbsolutePath();
+
+	    try {
+	        for (int i = 0; i < files.length && i < 5; i++) {
+	            MultipartFile file = files[i];
+	            if (file != null && !file.isEmpty()) {
+	                String fileName = file.getOriginalFilename();
+	                File saveFile = new File(imagesDir, fileName);
+
+	                // 파일 중복 처리
+	                int count = 1;
+	                String nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
+	                String ext = fileName.substring(fileName.lastIndexOf('.'));
+	                while (saveFile.exists()) {
+	                    fileName = nameWithoutExt + "(" + count + ")" + ext;
+	                    saveFile = new File(imagesDir, fileName);
+	                    count++;
+	                }
+	                
+	                file.transferTo(saveFile);
+	                uploadedImages[i] = fileName;
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return uploadedImages;
 	}
 	
 	// 즐겨찾는 상품
@@ -783,7 +941,7 @@ public class MyPageController {
 
 		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
 		String orderable = request.getParameter("orderable");
-
+		
 		List<MyWishDto> buyoften = mypageDao.getAllOrderInfoByMemberCode(loginUser.getMem_code(), orderable);
 
 		return buyoften;
@@ -804,7 +962,52 @@ public class MyPageController {
 	public String cscenter() {
 		return "/mypage/cscenter";
 	}
+	
+	@GetMapping("/cscenter/data")
+	@ResponseBody
+	public List<MyServiceHistoryDto> csData(HttpSession session) {
 
+		MemberLoginDto loginUser = (MemberLoginDto) session.getAttribute("loginUser");
+
+		List<MyServiceHistoryDto> myHistory = mypageDao.getMyServiceHistory(loginUser.getMem_code());
+
+		return myHistory;
+	}
+	
+	@GetMapping("/cscenter/csDetail")
+	@ResponseBody
+	public MyServiceHistoryDto csDetail(HttpServletRequest request) {
+	    return mypageDao.getMyServiceByNo(request.getParameter("csNo"));
+	}
+	
+	@PostMapping("/cscenter/writeCS")
+	@ResponseBody
+	public ResponseEntity<String> writeCS(@RequestParam Map<String, String> formData) {
+	    try {
+	        String cs_no = formData.get("cs_no");
+	        String mem_code = formData.get("mem_code");
+	        String cs_caregory = formData.get("cs_caregory");
+	        String cs_contect = formData.get("cs_contect");
+
+	        if (cs_no != null && !cs_no.trim().isEmpty()) {
+	            mypageDao.modifyCS(cs_no, cs_caregory, cs_contect);
+	        } else {
+	            mypageDao.writeCS(mem_code, cs_caregory, cs_contect);
+	        }
+	        return ResponseEntity.ok("success");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error");
+	    }
+	}
+
+	@PostMapping("/cscenter/deleteCS")
+	@ResponseBody
+	public String deleteCS(HttpServletRequest request) {
+	    mypageDao.deleteCS(request.getParameter("csNo"));
+	    return "success";
+	}
+	
 	@GetMapping("/pethotel")
 	public String myPethotel() {
 		return "mypage/pethotel";
@@ -849,5 +1052,25 @@ public class MyPageController {
 
 		return "redirect:/";
 	}
+	
+	// 이미지 수정 시 기존 이미지 삭제
+	private void deleteExistingImages(MyReviewDto existingReviewDto) {
+		String imagesDir = new File("src/main/resources/static/Images/ProductImg/ReviewImg").getAbsolutePath();
+	    String[] images = {
+	        existingReviewDto.getReview_img1(),
+	        existingReviewDto.getReview_img2(),
+	        existingReviewDto.getReview_img3(),
+	        existingReviewDto.getReview_img4(),
+	        existingReviewDto.getReview_img5()
+	    };
 
+	    for (String image : images) {
+	        if (image != null) {
+	            File file = new File(imagesDir, image);
+	            if (file.exists()) {
+	                file.delete(); // 파일 삭제
+	            }
+	        }
+	    }
+	}
 }

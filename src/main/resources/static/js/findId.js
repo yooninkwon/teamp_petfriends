@@ -43,7 +43,6 @@ window.addEventListener('DOMContentLoaded', function () {
     sendCodeBtn.addEventListener("click", function(event) {
         event.preventDefault(); // 폼 제출 방지
         const phoneNumber = phoneNumberInput.value;
-        console.log("입력된 휴대폰 번호:", phoneNumber);  // 디버깅용 로그
 
         // 인증 요청 AJAX 호출
         fetch('/send-sms', {
@@ -98,7 +97,6 @@ window.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             if (data.userId) {
                 popup.style.display = 'block';
                 popupBackground.style.display = 'block';

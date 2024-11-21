@@ -49,6 +49,9 @@
 	<definition name="admin/notice" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/notice.jsp" />
 	</definition>
+	<definition name="admin/cscenter" extends="admin_baselayout">
+		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/cscenter.jsp" />
+	</definition>
 	<definition name="admin/sales" extends="admin_baselayout">
 		<put-attribute name="admin_body" value="/WEB-INF/views/admin/body/sales.jsp" />
 	</definition>

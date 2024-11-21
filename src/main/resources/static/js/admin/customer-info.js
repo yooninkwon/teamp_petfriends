@@ -118,7 +118,6 @@ $(document).ready(function() {
 	                    break;
 	            }
 	        }
-			console.log(matchesSearch);
 
 	        // 회원 등급 필터링
 	        let matchesGrade = selectedGrade === "0" || (item.g_no && item.g_no.toString() === selectedGrade);
@@ -207,7 +206,6 @@ $(document).ready(function() {
 		
 		$(document).on('click', '.btn', function () {
 		    const memcode = $(this).data('memcode');
-			console.log(memcode);
 		    // 고객 정보 필터링
 		    const customerData = customerList.find(customer => customer.mem_code === memcode);
 
@@ -230,14 +228,22 @@ $(document).ready(function() {
 		    if (filteredPoints.length > 0) {
 		        // 적립금 내역이 있는 경우
 		        filteredPoints.forEach(point => {
+					
+					let o_code = '';
+					if(point.o_code == null) {
+						o_code = '-'
+					} else {
+						o_code = point.o_code
+					}
+					
 		            const row = `
 		                <tr>
 		                    <td>${point.point_date}</td>
-		                    <td>${point.mem_code}</td>
-		                    <td>${point.o_code}</td>
+		                    <td>${o_code}</td>
 		                    <td>${point.point_type}</td>
 		                    <td>${point.points.toLocaleString('ko-KR')}원</td>
 		                    <td>${point.point_info}</td>
+		                    <td>${point.point_memo}</td>
 		                </tr>
 		            `;
 		            pointTable.append(row);

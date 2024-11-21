@@ -46,6 +46,7 @@
                     <li><a href="community" id="community">커뮤니티</a></li>
                     <li><a href="petteacher" id="petteacher">펫 티쳐</a></li>
                     <li><a href="notice" id="notice">공지사항/이벤트</a></li>
+                    <li><a href="cscenter" id="cscenter">고객센터</a></li>
                 </ul>
             </li>
             <li class="menu-item">

@@ -456,6 +456,58 @@ h2 {
     font-size: 13px;
 }
 
+/* 포인트 */
+.point {
+    color: #ff4081;
+    font-weight: bold;
+	margin: 15px;
+}
+.ex-point {
+	font-size: 14px;
+    font-weight: bold;
+    padding: 20px 40px;
+    background-color: #f0f0f0;
+    color: gray;
+    border-radius: 20px;
+}
+.point-list {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid #ddd;
+	padding: 20px 10px;
+}
+.point-info {
+	display: inline-block;
+	font-size: 13px;
+	font-weight: bold;
+	padding: 6px 20px;
+	border: 2px solid;
+	border-radius: 20px;
+	align-items: center;
+}
+.plus {
+	color: #ff4081;
+	border: 2px solid #ff4081;
+}
+.point-date {
+	color: #ddd;
+	font-size: 12px;
+}
+.point-title {
+	font-size: 18px;
+	font-weight: bold;
+}
+.point-code {
+	color: gray;
+	font-size: 14px;
+}
+.point-amount {
+	display: flex;
+	font-size: 18px;
+	font-weight: bold;
+}
+
 /* 쿠폰함 */
 .coupon-container {
 	width: 100%;
@@ -1107,6 +1159,115 @@ h2 {
     border-bottom: 1px solid #ddd;
 }
 
+/* 구매후기 */
+.review-info {
+	color: gray;
+	font-size: 17px;
+	font-weight: normal;
+}
+.review-write {
+	font-weight: bold;
+}
+.write-review-btn {
+	background-color: white;
+	color: #ff4081;
+	border: 1px solid #ff4081;
+	border-radius: 3px;
+	padding: 5px 10px;
+	font-size: 14px;
+	cursor: pointer;
+}
+.done-review-btn {
+	background-color: white;
+	color: gray;
+	border: 1px solid gray;
+	border-radius: 3px;
+	padding: 5px 10px;
+	font-size: 14px;
+}
+.review-view {
+	display: flex;
+	flex-direction: column;
+}
+.review-text {
+	padding: 15px 0;
+}
+.review-modify {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	text-align: right;
+	height: 200px;
+}
+#write-review-container label {
+	font-weight: bold;
+	font-size: 14px;
+}
+.review-write-info {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding-top: 15px;
+}
+#rating-stars span {
+	font-size: 40px;
+	cursor: pointer;
+}
+#review-text {
+	width: 100%;
+	margin-top: 10px;
+	height: 100px;
+	padding: 15px;
+	font-size: 16px;
+}
+#image-container {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: 10px;
+}
+#image-preview {
+	display: flex;
+	gap: 10px;
+}
+.remove-btn {
+    position: absolute;
+    top: -5px;
+    right: 8px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    font-size: 20px;
+}
+.reviewSubmit {
+	background-color: #ff4081;
+    color: #fff;
+    padding: 5px;
+    width: 170px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.reviewCancel {
+	display: inline-block;
+	width: 160px;
+	text-decoration: none;
+    color: #ff4081;
+    padding: 5px;
+    border: 2px solid #ff4081;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+}
+
 /* 즐겨찾는 상품 */
 .sort-section {
     text-align: right;
@@ -1143,6 +1304,7 @@ h2 {
     display: flex;
     flex-direction: column;
     font-weight: bold;
+    justify-content: center;
 }
 .wish-btn {
     cursor: pointer;
@@ -1180,11 +1342,34 @@ h2 {
 	text-align: center;
 	margin-bottom: 30px;
 }
+#empty-list2 {
+	display: flex;
+    flex-direction: column;
+	align-items: center;
+	text-align: center;
+	margin-bottom: 30px;
+}
 #empty-list img{
 	width: 150px;
 	padding: 25px;
 }
+#empty-list2 img{
+	width: 150px;
+	padding: 25px;
+}
 #empty-list a {
+	background-color: #ff4081;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    text-decoration: none;
+    margin-top: 20px;
+}
+#empty-list2 a {
 	background-color: #ff4081;
     color: #fff;
     padding: 10px 20px;

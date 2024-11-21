@@ -18,7 +18,7 @@
 					<th style="width: 25%;">신규회원</th>
 					<th style="width: 25%;">방문회원</th>
 					<th style="width: 25%;">탈퇴회원</th>
-					<th style="width: 25%;">TOTAL</th>
+					<th style="width: 25%;">TOTAL(탈퇴 포함)</th>
 				</tr>
 				<tr>
 					<td>${newMember }명</td>

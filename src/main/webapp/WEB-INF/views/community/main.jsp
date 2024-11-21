@@ -29,13 +29,13 @@
 
 
 
-	<div class="container">
-		<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
+	<main>
+		<div class="container">
+			<jsp:include page="/WEB-INF/views/include_jsp/header.jsp" />
 
-		<main>
 			<!-- 핫토픽 섹션 -->
 			<section class="hot-topics">
-				<h3>오늘의 핫이슈!</h3>
+				<h3>펫프렌즈 핫이슈!</h3>
 				<hr>
 				<ul>
 					<c:forEach var="hottopic" items="${getHotTopicList}"
@@ -45,8 +45,16 @@
 							<li><a
 								href="/community/contentView?board_no=${hottopic.board_no}">
 									<div class="image-container">
-										<img src="/static/images/community_img/${hottopic.chrepfile}"
-											alt="핫토픽 이미지" />
+										<c:choose>
+											<c:when test="${not empty hottopic.chrepfile}">
+												<img
+													src="/static/images/community_img/${hottopic.chrepfile}"
+													alt="핫토픽 이미지" />
+											</c:when>
+											<c:otherwise>
+												<img src="/static/Images/pet/noPetImg.jpg" alt="기본 이미지" />
+											</c:otherwise>
+										</c:choose>
 										<div class="overlay">
 											<p>${hottopic.board_title}</p>
 										</div>
@@ -57,73 +65,7 @@
 				</ul>
 			</section>
 
-			<!-- 사이드바 -->
 
-
-			<div class="sidebar">
-				<div class="ad-banner">
-					<a href="http://localhost:9002/notice/eventView?id=49"> <img
-						src="/static/Images/thumbnail/페스룸포토리뷰썸네일.gif" alt="광고 배너" />
-					</a>
-				</div>
-
-				<div class="post-header">
-					<div class="profile-info">
-
-						<c:if test="${sessionScope.loginUser ne null}">
-							<c:choose>
-								<c:when test="${empty getpetimg.pet_img}">
-									<img src="/static/Images/pet/noPetImg.jpg" alt="프로필 이미지"
-										class="profile-image">
-								</c:when>
-								<c:otherwise>
-									<img src="/static/Images/pet/${getpetimg.pet_img}"
-										alt="프로필 이미지" class="profile-image">
-								</c:otherwise>
-							</c:choose>
-							<span class="user-name">${sessionScope.loginUser.mem_nick}</span>
-							<a href="/mypage/logout" class="logout-button">로그아웃</a>
-						</c:if>
-
-						<c:if test="${sessionScope.loginUser eq null}">
-							<a href="/login/loginPage" class="login-button">로그인</a>
-						</c:if>
-
-					</div>
-				</div>
-
-
-
-
-				<ul class="sidebar-menu">
-
-
-					<c:if test="${sessionScope.loginUser ne null}">
-						<li><a
-							href="/community/myfeed/${sessionScope.loginUser.mem_code}">내
-								피드</a></li>
-
-						<li><a href="/community/writeView">글쓰기</a></li>
-						
-					    <li><a href="javascript:void(0);" onclick="fetchUserActivity()">내 소식</a></li>
-						<li><a href="javascript:void(0);" onclick="fetchMyActivity()">내 활동</a></li>
-						<a href="#" onclick="fetchMyNeighborList()">내 이웃 목록</a>
-				</ul>
-				<div class="sidebar-notice">
-					<h3>소식상자</h3>
-					<p class="notice-text">내 소식을 눌러보세요!</p>
-				</div>
-				
-				
-				
-				</c:if>
-	
-				<div class="ad-banner">
-					<a href="http://localhost:9002/notice/eventView?id=50"> <img
-						src="/static/Images/thumbnail/페스룸카카오친추썸네일.gif" alt="광고 배너" />
-					</a>
-				</div>
-			</div>
 
 
 
@@ -224,10 +166,86 @@
 
 
 			</section>
+		</div>
+		<!-- 사이드바 -->
 
-		</main>
 
-	</div>
+		<div class="sidebar">
+			<div class="ad-banner">
+				<a href="http://localhost:9002/notice/eventView?id=49&active=N">
+					<img src="/static/Images/thumbnail/페스룸포토리뷰썸네일.gif" alt="광고 배너" />
+				</a>
+			</div>
+
+			<div class="post-header">
+				<div class="profile-info">
+
+					<c:if test="${sessionScope.loginUser ne null}">
+						<c:choose>
+							<c:when test="${empty getpetimg.pet_img}">
+								<img src="/static/Images/pet/noPetImg.jpg" alt="프로필 이미지"
+									class="profile-image">
+							</c:when>
+							<c:otherwise>
+								<img src="/static/Images/pet/${getpetimg.pet_img}" alt="프로필 이미지"
+									class="profile-image">
+							</c:otherwise>
+						</c:choose>
+						<span class="user-name">${sessionScope.loginUser.mem_nick}</span>
+						<a href="/mypage/logout" class="logout-button">로그아웃</a>
+					</c:if>
+
+					<c:if test="${sessionScope.loginUser eq null}">
+						<a href="/login/loginPage" class="login-button">로그인</a>
+					</c:if>
+
+				</div>
+			</div>
+
+
+
+
+			<ul class="sidebar-menu">
+
+
+				<c:if test="${sessionScope.loginUser ne null}">
+					<li><a
+						href="/community/myfeed/${sessionScope.loginUser.mem_code}">내
+							피드</a></li>
+
+					<li><a href="/community/writeView">글쓰기</a></li>
+
+					<li><a href="javascript:void(0);"
+						onclick="fetchUserActivity()">내 소식</a></li>
+					<li><a href="javascript:void(0);" onclick="fetchMyActivity()">내
+							활동</a></li>
+					<a href="javascript:void(0);" onclick="fetchMyNeighborList()">내
+						이웃 목록</a>
+			</ul>
+			<div class="sidebar-notice">
+				<h3>소식상자</h3>
+				<p class="notice-text">내 소식을 눌러보세요!</p>
+			</div>
+
+
+
+			</c:if>
+
+			<div class="ad-banner">
+				<a href="http://localhost:9002/notice/eventView?id=50&active=N">
+					<img src="/static/Images/thumbnail/페스룸카카오친추썸네일.gif" alt="광고 배너" />
+				</a>
+			</div>
+		</div>
+
+
+	</main>
+
+
+
+
+
+
 </body>
 <jsp:include page="/WEB-INF/views/include_jsp/footer.jsp" />
 </html>

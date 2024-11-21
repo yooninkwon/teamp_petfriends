@@ -26,13 +26,13 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @Service
 public class HelppetfServiceGroup {
-	final PethotelSelectPetService pethotelSelectPetService;
-	final PethotelReserveService pethotelReserveDataService;
-	final PethotelMainService pethotelMainService;
-	final AdoptionGetJson adoptionGetJson;
-	final PetteacherMainService petteacherMainService;
-	final PetteacherDetailService petteacherDetailService;
-	final FindAddrMapService findAddrMapService;
+	private final PethotelSelectPetService pethotelSelectPetService;
+	private final PethotelReserveService pethotelReserveDataService;
+	private final PethotelMainService pethotelMainService;
+	private final AdoptionGetJson adoptionGetJson;
+	private final PetteacherMainService petteacherMainService;
+	private final PetteacherDetailService petteacherDetailService;
+	private final FindAddrMapService findAddrMapService;
 	
 	public ResponseEntity<ArrayList<MyPetDto>> executePethotelSelectPetService(HttpSession session) {
 		return pethotelSelectPetService.execute(session);

@@ -81,12 +81,12 @@ public class AdminRestController {
 		try {
 			int isDeleted = noticeDao.deleteNotice(noticeNo);
 			if (isDeleted > 0) {
-				return ResponseEntity.ok("Notice deleted successfully.");
+				return ResponseEntity.ok("삭제에 성공했습니다.");
 			} else {
-				return ResponseEntity.status(404).body("Notice not found.");
+				return ResponseEntity.status(404).body("공지사항을 찾을 수 없습니다.");
 			}
 		} catch (Exception e) {
-			return ResponseEntity.status(500).body("An error occurred while deleting the notice.");
+			return ResponseEntity.status(500).body("공지사항 삭제에 실패했습니다.");
 		}
 	}
 
@@ -200,12 +200,12 @@ public class AdminRestController {
 		try {
 			int isDeleted = noticeDao.deleteEvent(eventNo);
 			if (isDeleted > 0) {
-				return ResponseEntity.ok("Event deleted successfully.");
+				return ResponseEntity.ok("삭제에 성공했습니다.");
 			} else {
-				return ResponseEntity.status(404).body("Event not found.");
+				return ResponseEntity.status(404).body("이벤트를 찾을 수 없습니다.");
 			}
 		} catch (Exception e) {
-			return ResponseEntity.status(500).body("An error occurred while deleting the Event.");
+			return ResponseEntity.status(500).body("이벤트 삭제에 실패했습니다.");
 		}
 	}
 	
@@ -213,7 +213,6 @@ public class AdminRestController {
     public ResponseEntity<?> setVisibilityForNotices(@RequestBody Map<String, Object> request) {
         List<Long> ids = (List<Long>) request.get("ids");
         String visibility = (String) request.get("visibility");
-
         if (ids != null && !ids.isEmpty()) {
             boolean isVisible = "show".equals(visibility);
             noticeDao.updateVisibilityNotice(ids, isVisible); // MyBatis 매퍼에서 공개 여부 업데이트
@@ -227,7 +226,6 @@ public class AdminRestController {
     public ResponseEntity<?> setVisibilityForEvents(@RequestBody Map<String, Object> request) {
         List<Long> ids = (List<Long>) request.get("ids");
         String visibility = (String) request.get("visibility");
-
         if (ids != null && !ids.isEmpty()) {
             boolean isVisible = "show".equals(visibility);
             noticeDao.updateVisibilityEvent(ids, isVisible); // MyBatis 매퍼에서 공개 여부 업데이트
@@ -259,13 +257,11 @@ public class AdminRestController {
 	public ResponseEntity<Map<String, String>> updateCustomerType(@RequestBody Map<String, Object> request) {
 	    List<Long> ids = (List<Long>) request.get("ids");
 	    String newType = (String) request.get("newType");
-
 	    if (ids == null || ids.isEmpty() || newType == null || newType.isEmpty()) {
 	        return ResponseEntity.badRequest().body(Map.of("message", "유효하지 않은 요청입니다."));
 	    }
-
 	    try {
-	        memberMapper.updateCustomerType(ids, newType); // MyBatis 매퍼 호출
+	        memberMapper.updateCustomerType(ids, newType); 
 	        return ResponseEntity.ok(Map.of("message", "회원 유형이 성공적으로 변경되었습니다."));
 	    } catch (Exception e) {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "회원 유형 변경 중 오류가 발생했습니다."));
@@ -278,7 +274,6 @@ public class AdminRestController {
 	    if (petCodes == null || petCodes.isEmpty()) {
 	        return ResponseEntity.badRequest().body("유효하지 않은 요청입니다.");
 	    }
-
 	    try {
 	        petCodes.forEach(petCode -> {
 	            String petImg = mypageDao.getPetImgForPetCode(petCode); // petCode로 이미지 파일명 조회
@@ -286,18 +281,7 @@ public class AdminRestController {
 	                // 파일 경로 설정 (서버의 실제 경로를 절대 경로로 사용)
 	            	String imagesDir = new File("src/main/resources/static/Images/pet/").getAbsolutePath();
 	                File file = new File(imagesDir, petImg);
-	                
-	                // 파일 존재 여부 확인 및 삭제 처리
-	                if (file.exists()) {
-	                    boolean deleted = file.delete();
-	                    if (!deleted) {
-	                        System.err.println("이미지 삭제에 실패했습니다: " + file.getAbsolutePath());
-	                    } else {
-	                        System.out.println("이미지 삭제 성공: " + file.getAbsolutePath());
-	                    }
-	                } else {
-	                    System.out.println("이미지가 존재하지 않습니다: " + file.getAbsolutePath());
-	                }
+	                file.delete();
 	            }
 	            mypageDao.deletePetImgForPetCode(petCode);
 	        });

@@ -23,11 +23,17 @@ public interface MemberMapper {
 	// 포인트 테이블 인서트
 	void insertPoints(MemberPointsDto memberPoints);
 	
+	// 회원가입 적립금
+	void invitePoints(MemberPointsDto memberPoints);
+	
 	// 주문 결제시 총 구매금액 업데이트
 	void updatePayAmount(String mem_code, int order_amount);
 	
 	// 회원 유형 변경
 	void updateCustomerType(@Param("ids") List<Long> ids, @Param("newType") String newType);
+	
+	// 휴면계정 복구
+	void updateDormant(String mem_code, String mem_type);
 	
 	// 회원 리스트
 	ArrayList<MemberLoginDto> memberList();
@@ -94,4 +100,6 @@ public interface MemberMapper {
 	// 탈퇴회원 복구
 	void deleteRestoration(String mem_code);
 
+	// 커뮤니티 피드 생성
+	void setMyFeed (String mem_code);
 }

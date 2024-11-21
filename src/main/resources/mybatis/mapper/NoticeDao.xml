@@ -76,7 +76,8 @@
 	<!--진행중 이벤트 표시여부가 Y인 리스트 가져오기 -->
 	<select id="eventList"
 		resultType="com.tech.petfriends.notice.dto.EventDto">
-		SELECT * FROM EVENT WHERE EVENT_SHOW = 'Y' AND
+		SELECT EVENT_NO, EVENT_TITLE, EVENT_HIT, EVENT_LEGDATE, EVENT_STARTDATE, EVENT_ENDDATE, EVENT_THUMBNAIL, EVENT_SLIDEIMG
+		FROM EVENT WHERE EVENT_SHOW = 'Y' AND
 		EVENT_ENDDATE >= SYSDATE ORDER BY
 		EVENT_NO DESC
 	</select>
@@ -84,7 +85,8 @@
 	<!--종료된 이벤트 표시여부가 Y인 리스트 가져오기 -->
 	<select id="endEventList"
 		resultType="com.tech.petfriends.notice.dto.EventDto">
-		SELECT * FROM EVENT WHERE EVENT_SHOW = 'Y' AND
+		SELECT EVENT_NO, EVENT_TITLE, EVENT_HIT, EVENT_LEGDATE, EVENT_STARTDATE, EVENT_ENDDATE, EVENT_THUMBNAIL, EVENT_SLIDEIMG 
+		FROM EVENT WHERE EVENT_SHOW = 'Y' AND
 		EVENT_ENDDATE &lt; SYSDATE ORDER BY
 		EVENT_NO DESC
 	</select>
@@ -101,13 +103,15 @@
 	<!-- 이벤트 전체 리스트 -->
 	<select id="eventAdminList"
 		resultType="com.tech.petfriends.notice.dto.EventDto">
-		SELECT * FROM EVENT ORDER BY EVENT_NO DESC
+		SELECT EVENT_NO, EVENT_TITLE, EVENT_HIT, EVENT_LEGDATE, EVENT_STARTDATE, EVENT_ENDDATE, EVENT_THUMBNAIL, EVENT_SHOW
+		FROM EVENT ORDER BY EVENT_NO DESC
 	</select>
 
 	<!-- 공지사항 전체 리스트 -->
 	<select id="noticeAdminList"
 		resultType="com.tech.petfriends.notice.dto.NoticeDto">
-		SELECT * FROM NOTICE ORDER BY NOTICE_NO DESC
+		SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_DATE, NOTICE_HIT, NOTICE_SHOW
+		FROM NOTICE ORDER BY NOTICE_NO DESC
 	</select>
 
 	<!-- 공지사항 작성 -->

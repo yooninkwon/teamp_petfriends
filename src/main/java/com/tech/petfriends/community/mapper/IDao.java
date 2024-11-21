@@ -60,7 +60,9 @@ public interface IDao {
 	public int stepInit(String comment_no, String parent_comment_no, String comment_level);
 
 	public int replyDelete(String comment_no, String parent_comment_no, String comment_level, String comment_order_no);
-	
+
+	public int managerReplyUpdate (String user_id,  String mem_code, String comment_no);
+		
 	public void addLike (String board_no,String mem_nick, String mem_code);
 	
 	public void removeLike (String board_no,String mem_nick, String mem_code);
@@ -83,7 +85,7 @@ public interface IDao {
 
 	public void addFriend(String mem_nick, String friend_mem_nick);
 
-	public void deleteFriend(String mem_nick);
+	public void deleteFriend(String mem_nick, String friend_mem_nick);
 
 	public int isFriend(String mem_nick, String friend_mem_nick);
 
@@ -109,5 +111,17 @@ public interface IDao {
 
 	public List<CChatDto> getChatRooms(String sender);
 
+	public int getTotalPostCount(); // 전체 게시글 개수
+
+	public void totalVisits(String mem_code);
+	
+	public void dailyVisits(String mem_code);
+
+	public CDto getMyfeedVisit (String mem_code);
+
+	public void myFeedImgWrite(String mem_code, String myfeed_img);
+	
+
+	
 }
 

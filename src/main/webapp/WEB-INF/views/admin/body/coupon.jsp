@@ -167,13 +167,8 @@
         
         <!-- 쿠폰 정보 입력 -->
         <div class="input-group">
-            <label for="cpName">쿠폰명</label>
+            <label for="cpName">쿠폰명*</label>
             <input type="text" id="cpName">
-        </div>
-        
-        <div class="input-group">
-            <label for="cpKeyword">쿠폰 키워드</label>
-            <input type="text" id="cpKeyword">
         </div>
         
         <!-- 일반 쿠폰/등급 쿠폰 라디오 버튼 -->
@@ -184,7 +179,7 @@
         
         <!-- 등급 쿠폰 드롭다운 -->
         <div class="input-group" id="gradeSelect" style="display: none;">
-            <label for="grade">기준 등급</label>
+            <label for="grade">기준 등급*</label>
             <select id="grade">
                 <option value="1">설렘시작</option>
                 <option value="2">몽글몽글</option>
@@ -197,26 +192,31 @@
 
         <!-- 발급 시작일, 종료일, 만료 예정일 입력 -->
         <div id="periodSelect">
+        	<div class="input-group">
+	            <label for="cpKeyword">쿠폰 키워드</label>
+	            <input type="text" id="cpKeyword">
+	        </div>
+        	
 	        <div class="input-group">
-	            <label for="startDate">발급 시작일</label>
+	            <label for="startDate">발급 시작일*</label>
 	            <input type="date" id="startDate">
 	        </div>
 	
 	        <div class="input-group">
-	            <label for="endDate">발급 종료일</label>
-	            <input type="date" id="endDate">
+	            <label for="endDate">발급 종료일*</label>
+	            <input type="date" id="endDate" onchange="unchecked()">
 	        </div>
 	
 	        <div class="input-group">
-	            <label for="deadDate">만료 예정일</label>
-	            <input type="date" id="deadDate">
+	            <label for="deadDate">만료 예정일*</label>
+	            <input type="date" id="deadDate" onchange="unchecked()">
 	            <input type="checkbox" id="sameAsEndDate"> 발급 종료일과 동일
 	        </div>
         </div>
 
         <!-- 할인액/할인율 선택 -->
         <div class="input-group">
-            <label for="discountType">할인 타입</label>
+            <label for="discountType">할인 타입*</label>
             <select id="discountType" onchange="updateDiscountLabel()">
                 <option value="A">할인액</option>
                 <option value="R">할인율</option>

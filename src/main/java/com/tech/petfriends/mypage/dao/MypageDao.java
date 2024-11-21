@@ -2,6 +2,7 @@ package com.tech.petfriends.mypage.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,9 +12,12 @@ import com.tech.petfriends.helppetf.dto.PethotelFormDataDto;
 import com.tech.petfriends.helppetf.dto.PethotelMemDataDto;
 import com.tech.petfriends.login.dto.MemberAddressDto;
 import com.tech.petfriends.login.dto.MemberLoginDto;
+import com.tech.petfriends.login.dto.MemberPointsDto;
 import com.tech.petfriends.mypage.dto.MyCartDto;
 import com.tech.petfriends.mypage.dto.MyOrderDto;
 import com.tech.petfriends.mypage.dto.MyPetDto;
+import com.tech.petfriends.mypage.dto.MyReviewDto;
+import com.tech.petfriends.mypage.dto.MyServiceHistoryDto;
 import com.tech.petfriends.mypage.dto.MyWishDto;
 
 @Mapper
@@ -40,6 +44,10 @@ public interface MypageDao {
 	MyPetDto getInfoByPetCode(String petCode);
 	void modifyPetByPetCode(MyPetDto myPetDto);
 	void deletePetByPetCode(String petCode);
+	
+	// 포인트
+	ArrayList<MemberPointsDto> getAllPointLogByMemCode(String mem_code);
+	Integer getExsavingAmountByMemCode(String mem_code);
 	
 	// 쿠폰
 	ArrayList<CouponDto> getAllCoupon();
@@ -90,15 +98,31 @@ public interface MypageDao {
 	void updateStrockByCancel(String cart_code);
 	void setOnByStock();
 	
+	// 구매후기
+	List<MyCartDto> getConfirmedItemByMemberCode(String mem_code);
+	List<MyReviewDto> getReviewByMemberCode(String mem_code);
+	MyReviewDto getReviewInfoByCartCode(String cartCode);
+	void updateReview(MyReviewDto reviewDto);
+	void insertReview(MyReviewDto reviewDto);
+	void updateAmountByReview(String memCode, int savingPoint);
+	MyReviewDto existingReview(String review_code);
+	void deleteImageUpdate();
+  
 	// 즐겨찾는 상품
 	ArrayList<MyWishDto> getAllWishInfoByMemberCode(String mem_code, String sortType);
 	List<MyWishDto> getAllOrderInfoByMemberCode(String mem_code, String orderable);
 	void deleteWishByProCode(String mem_code, String pro_code);
 
-  // 펫호텔 예약내역
+    // 펫호텔 예약내역
 	ArrayList<PethotelMemDataDto> pethotelReserveMypageMem(String mem_code);
 	PethotelMemDataDto pethotelReserveMypageMemNo(String reserveNo);
 	ArrayList<PethotelFormDataDto> pethotelReserveMypagePets(String reserveNo);
 	void pethotelReserveMyPageCancel(String reserveNo);
 
+	// 고객센터
+	List<MyServiceHistoryDto> getMyServiceHistory(String mem_code);
+	void writeCS(String mem_code, String cs_caregory, String cs_contect);
+	void modifyCS(String cs_no, String cs_caregory, String cs_contect);
+	MyServiceHistoryDto getMyServiceByNo(String cs_no);
+	void deleteCS(String cs_no);
 }

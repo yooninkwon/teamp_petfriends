@@ -16,6 +16,10 @@
 		ORDER BY CD.BOARD_NO DESC
 	</select>
 
+    <!-- 전체 게시글 개수 조회 -->
+    <select id="getTotalPostCount" resultType="int">
+        SELECT COUNT(*) FROM COMMUNITY_BOARD
+    </select>
 
 	<select id="getPetIMG"
 		resultType="com.tech.petfriends.community.dto.CDto">
@@ -35,9 +39,11 @@
 		BOARD_CREATED,
 		BOARD_MODIFIED,
 		BOARD_VIEWS, BOARD_LIKES,
-		BOARD_COMMENT_COUNT, BOARD_CONTENT_INPUT)
+		BOARD_COMMENT_COUNT,
+		BOARD_CONTENT_INPUT)
 		VALUES
-		(COMMUNITY_BOARD_SEQ.NEXTVAL, #{b_cate_no},#{mem_code}, #{mem_nick},
+		(COMMUNITY_BOARD_SEQ.NEXTVAL,
+		#{b_cate_no},#{mem_code}, #{mem_nick},
 		#{board_title},
 		#{board_content},SYSDATE, null, 0, 0,
 		0,#{board_content_input} )
@@ -82,15 +88,20 @@
 
 
 	<select id="getPostsByCategory" parameterType="int"
-		resultType="com.tech.petfriends.community.dto.CDto"> SELECT CB.*,
-		RCI.CHREPFILE, NVL(MP.PET_IMG, 'NOPETIMG.JPG') AS PET_IMG FROM
+		resultType="com.tech.petfriends.community.dto.CDto">
+		SELECT CB.*,
+		RCI.CHREPFILE, NVL(MP.PET_IMG, 'NOPETIMG.JPG') AS PET_IMG
+		FROM
 		COMMUNITY_BOARD CB LEFT JOIN RE_CBOARD_IMAGE RCI ON CB.BOARD_NO =
 		RCI.BOARD_NO LEFT JOIN MEMBER_PET MP ON CB.MEM_CODE = MP.MEM_CODE AND
-		MP.PET_MAIN = 'Y' <if test="b_cate_no != 0">
+		MP.PET_MAIN = 'Y'
+		<if test="b_cate_no != 0">
 			WHERE CB.B_CATE_NO = #{b_cate_no}
 		</if>
 		<if test="b_cate_no == 0">
-		</if> ORDER BY CB.BOARD_NO DESC </select>
+		</if>
+		ORDER BY CB.BOARD_NO DESC
+	</select>
 
 
 	<select id="getAllPosts"
@@ -219,6 +230,18 @@
 	</delete>
 
 
+	<update id="managerReplyUpdate">
+		UPDATE COMMUNITY_COMMENT
+		SET 
+		    USER_ID = #{user_id}, 
+		    COMMENT_CONTENT = '관리자에 의해 댓글이 삭제됐습니다.', 
+		    MEM_CODE = #{mem_code}
+		WHERE COMMENT_NO = #{comment_no}
+	</update>
+
+
+
+
 	<update id="stepInit">
 		UPDATE COMMUNITY_COMMENT SET
 		COMMENT_LEVEL=COMMENT_LEVEL-1
@@ -305,10 +328,13 @@
 	<insert id="report">
 		INSERT INTO COMMUNITY_REPORT (REPORT_ID, BOARD_NO,
 		REPORTER_ID,
-		REASON, REPORT_DATE, STATUS, COMMENT_NO, REPORT_TYPE, MEM_CODE)
+		REASON, REPORT_DATE, STATUS, COMMENT_NO, REPORT_TYPE,
+		MEM_CODE)
 		VALUES
-		(COMMUNITY_REPORT_SEQ.NEXTVAL, #{board_no}, #{reporter_id},
-		#{reason}, SYSDATE, DEFAULT, #{comment_no}, #{report_type}, #{mem_code})
+		(COMMUNITY_REPORT_SEQ.NEXTVAL, #{board_no},
+		#{reporter_id},
+		#{reason}, SYSDATE, DEFAULT, #{comment_no},
+		#{report_type}, #{mem_code})
 	</insert>
 
 	<update id="incrementViews" parameterType="String">
@@ -335,8 +361,8 @@
 
 
 	<delete id="deleteFriend">
-		DELETE FROM COMMUNITY_FRIEND WHERE MEM_NICK =
-		#{mem_nick}
+		DELETE FROM COMMUNITY_FRIEND WHERE MEM_NICK = #{mem_nick}
+		AND FRIEND_MEM_NICK = #{friend_mem_nick}
 	</delete>
 
 	<select id="getNeighborList"
@@ -348,9 +374,11 @@
 		FROM
 		COMMUNITY_FRIEND CF
 		LEFT JOIN
-		MEMBER M ON M.MEM_NICK = CF.FRIEND_MEM_NICK
+		MEMBER M ON M.MEM_NICK =
+		CF.FRIEND_MEM_NICK
 		LEFT JOIN
-		MEMBER_PET MP ON MP.MEM_CODE = M.MEM_CODE AND MP.PET_MAIN = 'Y'
+		MEMBER_PET MP ON MP.MEM_CODE = M.MEM_CODE
+		AND MP.PET_MAIN = 'Y'
 		WHERE
 		CF.MEM_NICK = #{mem_nick}
 	</select>
@@ -359,23 +387,17 @@
 		resultType="com.tech.petfriends.community.dto.CDto">
 		SELECT * FROM (
 		SELECT B.*,
-		NVL(P.PET_IMG, 'NOPETIMG.JPG') AS
-		PET_IMG,
+		NVL(P.PET_IMG, 'nopetimg.jpg') AS PET_IMG,
 		F.FRIEND_MEM_NICK,
-		ROW_NUMBER() OVER (PARTITION BY B.USER_ID
-		ORDER BY B.BOARD_CREATED DESC) AS rn
+		ROW_NUMBER() OVER (PARTITION BY B.USER_ID ORDER BY B.BOARD_CREATED DESC) AS rn
 		FROM COMMUNITY_BOARD B
-		LEFT JOIN
-		MEMBER_PET P ON B.MEM_CODE = P.MEM_CODE AND P.PET_MAIN = 'Y'
-		LEFT JOIN
-		COMMUNITY_FRIEND F ON B.USER_ID = F.MEM_NICK
-		WHERE B.BOARD_CREATED >=
-		SYSDATE - INTERVAL '1' DAY
-		AND F.FRIEND_MEM_NICK = #{mem_nick}
+		LEFT JOIN MEMBER_PET P ON B.MEM_CODE = P.MEM_CODE AND P.PET_MAIN = 'Y'
+		INNER JOIN COMMUNITY_FRIEND F ON B.USER_ID = F.FRIEND_MEM_NICK
+		WHERE B.BOARD_CREATED >= SYSDATE - INTERVAL '1' DAY
+		AND F.MEM_NICK = #{mem_nick}
 		) story
 		WHERE story.rn = 1
-		ORDER BY
-		story.BOARD_CREATED DESC
+		ORDER BY story.BOARD_CREATED DESC
 	</select>
 
 
@@ -462,9 +484,11 @@
 
 	<insert id="insertMessage"
 		parameterType="com.tech.petfriends.community.dto.CDto">
-		INSERT INTO COMMUNITY_CHAT (MESSAGE_ID, SENDER, RECEIVER,
+		INSERT INTO COMMUNITY_CHAT (MESSAGE_ID, SENDER,
+		RECEIVER,
 		MESSAGE_CONTENT, MESSAGE_DATE, ROOM_ID)
-		VALUES (COMMUNITY_CHAT_SEQ.NEXTVAL,#{sender}, #{receiver},
+		VALUES
+		(COMMUNITY_CHAT_SEQ.NEXTVAL,#{sender}, #{receiver},
 		#{message_content}, SYSDATE, #{room_id})
 	</insert>
 
@@ -481,11 +505,41 @@
 
 		SELECT ROOM_ID,
 		MIN(sender) AS sender,
-		MIN(receiver) AS receiver
+		MIN(receiver) AS
+		receiver
 		FROM COMMUNITY_CHAT
 		WHERE ROOM_ID LIKE '%' || #{sender} || '%'
 		GROUP BY ROOM_ID
 	</select>
+
+
+	<update id="totalVisits" parameterType="String" >
+		UPDATE COMMUNITY_MYFEED
+		SET TOTAL_VISITS = TOTAL_VISITS + 1
+		WHERE MEM_CODE = #{mem_code}
+	</update>
+
+	
+	<update id="dailyVisits" parameterType="String" >
+		UPDATE COMMUNITY_MYFEED
+		SET DAILY_VISITS = DAILY_VISITS + 1
+		WHERE MEM_CODE = #{mem_code}
+	</update>
+	
+	<select id="getMyfeedVisit"
+		resultType="com.tech.petfriends.community.dto.CDto">
+		SELECT *
+		FROM COMMUNITY_MYFEED
+		WHERE MEM_CODE = #{mem_code}
+	</select>
+
+
+	<update id="myFeedImgWrite">
+	    UPDATE COMMUNITY_MYFEED
+	    SET MYFEED_IMG = #{myfeed_img}
+	    WHERE MEM_CODE = #{mem_code}
+	</update>
+
 
 
 </mapper>

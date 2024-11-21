@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             if (data.userId) {
                 if (data.userId === emailInputValue) {
-					console.log(data.userId)
 					alert('비밀번호 변경 화면으로 이동합니다.');
 					document.getElementById('findPwForm').submit(); // 폼 제출
 				} else {
