@@ -114,14 +114,21 @@ $(document).ready(function() {
 
                 lists += '<td>' + coupon.issueCount || 0 + '</td>';
                 lists += '<td>' + (coupon.totalUsage).toLocaleString('ko-KR') || 0 + '</td>';
-		        if (coupon.issueCount > 0 || coupon.totalUsage > 0) {
-		            lists += `<td style="color: red;">수정불가</td>`;
-		        } else {
-		            lists += `<td>
+				if(coupon.cp_kind === 'P'){
+			        if (coupon.issueCount > 0 || coupon.totalUsage > 0) {
+			            lists += `<td style="color: red;">수정불가</td>`;
+			        } else {
+			            lists += `<td>
+			                          <button class="btn-style modify-coupon-btn" data-coupon-id="${coupon.cp_no}">수정</button>
+			                          <button class="btn-style delete-coupon-btn" data-coupon-id="${coupon.cp_no}">삭제</button>
+			                      </td>`;
+			        }
+				} else if (coupon.cp_kind === 'G') {
+					lists += `<td>
 		                          <button class="btn-style modify-coupon-btn" data-coupon-id="${coupon.cp_no}">수정</button>
 		                          <button class="btn-style delete-coupon-btn" data-coupon-id="${coupon.cp_no}">삭제</button>
 		                      </td>`;
-		        }
+				}
 			    lists += '</tr>';
             });
 
@@ -418,19 +425,50 @@ document.getElementById('sameAsEndDate').addEventListener('change', function () 
     }
 });
 
+function unchecked() {
+	if (document.getElementById('deadDate').value != document.getElementById('endDate').value) {
+        document.getElementById('sameAsEndDate').checked = false;
+    }
+}
+
 // 쿠폰 등록 데이터 전송
 function submitCoupon() {
-    const couponData = {
-        cp_name: document.getElementById('cpName').value,
-        cp_keyword: document.getElementById('cpKeyword').value || null,
-        cp_kind: document.querySelector('input[name="couponType"]:checked').value,
-        g_no: document.getElementById('grade').value || null,
-        cp_start: document.getElementById('startDate').value || null,
-        cp_end: document.getElementById('endDate').value || null,
-        cp_dead: document.getElementById('deadDate').value || null,
-        cp_type: document.getElementById('discountType').value,
-        cp_amount: document.getElementById('discountAmount').value
-    };
+	
+	const cp_name = document.getElementById('cpName').value.trim();
+    const cp_keyword = document.getElementById('cpKeyword').value.trim();
+    const cp_kind = document.querySelector('input[name="couponType"]:checked').value;
+    const cp_type = document.getElementById('discountType').value;
+    const cp_amount = document.getElementById('discountAmount').value.trim();
+    const cp_start = document.getElementById('startDate').value || null;
+    const cp_end = document.getElementById('endDate').value || null;
+    const cp_dead = document.getElementById('deadDate').value || null;
+    const g_no = document.getElementById('grade').value || null;
+	
+	// 필수 값 검증
+    if (!cp_name) {
+        document.getElementById('cpName').focus();
+        return;
+    }
+    if (cp_kind === 'P') {
+        if (!cp_start) {
+            document.getElementById('startDate').focus();
+            return;
+        }
+        if (!cp_end) {
+            document.getElementById('startDate').focus();
+            return;
+        }
+        if (!cp_dead) {
+            document.getElementById('startDate').focus();
+            return;
+        }
+    }
+    if (!cp_amount || isNaN(cp_amount) || parseFloat(cp_amount) <= 0) {
+        document.getElementById('discountAmount').focus();
+        return;
+    }
+	
+    const couponData = {cp_name,cp_keyword,cp_kind,g_no,cp_start,cp_end,cp_dead,cp_type,cp_amount};
 	
 	// 버튼의 텍스트로 신규 등록과 수정 구분
     const actionType = document.getElementById('registerCouponBtn').innerText;
@@ -500,10 +538,11 @@ function resetModal() {
     document.getElementById('cpKeyword').value = '';
     document.querySelector('input[name="couponType"][value="P"]').checked = true;
 	toggleCouponType('P');
-    document.getElementById('grade').value = '';
+    document.getElementById('grade').value = '1';
     document.getElementById('startDate').value = '';
     document.getElementById('endDate').value = '';
     document.getElementById('deadDate').value = '';
+    document.getElementById('sameAsEndDate').checked = false;
     document.getElementById('discountType').value = 'A';
     document.getElementById('discountAmount').value = '';
 }

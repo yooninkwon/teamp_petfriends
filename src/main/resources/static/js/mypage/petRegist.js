@@ -51,12 +51,20 @@ function validatePetName() {
 function previewImage(event) {
     const preview = document.getElementById("previewImg");
     const cameraIcon = document.getElementById("cameraIcon");
+    const exImg = document.getElementById("exImg");
 
     const file = event.target.files[0];
     if (file) {
+		
+		if (cameraIcon) {
+        	cameraIcon.style.display = "none"; // 카메라 아이콘 숨김
+		}
+		if (exImg) {
+        	exImg.style.display = "none"; // 기존 이미지 숨김
+		}
+		
 		preview.src = URL.createObjectURL(file);
         preview.style.display = "block"; // 미리 보기 이미지 표시
-        cameraIcon.style.display = "none"; // 카메라 아이콘 숨김
     }
 }
 

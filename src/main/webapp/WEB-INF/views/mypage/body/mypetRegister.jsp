@@ -59,7 +59,7 @@
 		
         <div class="input-section">
             <label for="petBirth">생일을 입력해주세요*</label><br />
-            <input id="petBirth" name="petBirth" type="date" oninput="checkAllInputsFilled()"/>
+            <input id="petBirth" name="petBirth" type="date" onchange="checkAllInputsFilled()"/>
         </div>
 		
     </div>

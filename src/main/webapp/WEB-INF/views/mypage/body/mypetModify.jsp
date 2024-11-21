@@ -16,16 +16,18 @@
 	<div id="pet-modify-container">
         <div class="pet-image" style="margin: 0 auto;" onclick="document.getElementById('uploadInput').click()">
  			<c:choose>
-	    		<c:when test="${info.pet_img ne null }">
-			        <img id="previewImg" src="<c:url value='/static/Images/pet/${info.pet_img }' />" />
+	    		<c:when test="${info.pet_img eq 'noPetImg.jpg' }">
+	    			<i id="cameraIcon" class="fa-solid fa-camera" style="color: #ffffff; font-size: 90px"></i>
 	    		</c:when>
-	    		<c:when test="${info.pet_img eq null }">
-	    			<i class="fa-solid fa-camera" style="color: #ffffff; font-size: 90px"></i>
+	    		<c:when test="${info.pet_img ne null }">
+			        <img id="exImg" src="<c:url value='/static/Images/pet/${info.pet_img }' />" />
 	    		</c:when>
 	    	</c:choose>
+	        <img id="previewImg" style="display: none;" />
  			<i class="fa-solid fa-arrow-up-from-bracket mark" style="color: #ffffff;"></i>
 	    </div>
 	    <input type="file" name="petImgFile" accept="image/*" id="uploadInput" style="display:none;" onchange="previewImage(event)" />
+		<input type="hidden" name="existingImg" value="${info.pet_img}" />
 		
 		<div class="input-section">
             <input id="petName" name="petName" type="text" value="${info.pet_name }" placeholder="1~8 이내로 입력해 주세요" oninput="validatePetName()" />

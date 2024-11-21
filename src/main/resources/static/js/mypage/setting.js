@@ -4,6 +4,12 @@ function validateEmail() {
     const emailError = document.getElementById("emailError");
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     
+	// 본인 이메일인지 확인
+    if (email === loginUser.memEmail) {
+        emailError.style.display = "none";
+        return;
+    }
+	
     if (!emailPattern.test(email)) {
         emailError.innerText = "올바른 이메일 형식을 입력해주세요.";
         emailError.style.display = "block";
@@ -24,6 +30,11 @@ function checkNickname() {
     const nickname = document.getElementById("nickname").value;
     const nicknameError = document.getElementById("nicknameError");
 
+	if (nickname === loginUser.memNick) {
+	    nicknameError.style.display = "none";
+	    return;
+	}
+	
     if (nickname.length < 2 || nickname.length > 16) {
         nicknameError.innerText = "2~16자 이내로 입력해주세요.";
         nicknameError.style.display = "block";

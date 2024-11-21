@@ -172,7 +172,7 @@ $(document).ready(function() {
                     buyoftenList = buyoften;
                     totalItems = buyoftenList.length;
                     totalPages = Math.ceil(totalItems / itemsPerPage);
-
+					
                     displayItems(currentPage);
                     setupPagination(currentPage, currPageGroup);
                 },
@@ -185,16 +185,16 @@ $(document).ready(function() {
 		function displayItems(currentPage) {
 		    const start = (currentPage - 1) * itemsPerPage;
 		    const end = start + itemsPerPage;
-		    const sliceList = buyoftenList.slice(start, end);
+		    const sliceList = buyoftenList ? buyoftenList.slice(start, end) : [];
 
 		    let lists = '';
 		    if (sliceList.length === 0) {
 		        // 목록이 비어 있을 때 빈 리스트 이미지를 표시
 		        $('#buyoften-list').hide();
-		        $('#empty-list').show();
+		        $('#empty-list2').show();
 		    } else {
 		        $('#buyoften-list').show();
-		        $('#empty-list').hide();
+		        $('#empty-list2').hide();
 
 		        $.each(sliceList, function (index, buyoften) {
 		            let starHtml = '';
@@ -265,7 +265,7 @@ $(document).ready(function() {
 			} else {
 				filterParam = {orderable: ''};
 			}
-	
+			
 	        fetchData(currentPage, currPageGroup, filterParam);
 	    });
     }
