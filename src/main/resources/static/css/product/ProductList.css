@@ -1,3 +1,55 @@
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+#sub-categories, #sub-sub-categories {
+    margin-top: 20px;
+}
+
+.product-item {
+    text-align: center;
+    margin: 20px;
+}
+
+.product-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .menubar {
 	display: grid;
 	grid-template-columns: repeat(1, 1400px); /* 4개씩 나열 */

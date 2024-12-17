@@ -5,6 +5,89 @@
 
 <mapper namespace="com.tech.petfriends.admin.mapper.AdminProductDao">
    
+   <select id="findFirst"
+   			resultType="String">
+   		SELECT
+   			NAME
+   		FROM
+   			PRODUCT_CATEGORY
+   		WHERE
+   			NAME=#{first}
+   		AND
+   			DEPTH=0
+   </select>
+   
+   <insert id="insertFirst">
+   		INSERT INTO
+   			PRODUCT_CATEGORY(ID, NAME)
+   		VALUES (PRODUCT_CATEGORY_SEQ.NEXTVAL, #{first})
+   </insert>
+   
+   <select id="findSecond"
+   			resultType="String">
+   		SELECT
+   			NAME
+   		FROM
+   			PRODUCT_CATEGORY
+   		WHERE
+   			NAME=#{second}
+   		AND
+   			DEPTH=1
+   		AND
+   			PARENT_ID = (SELECT ID FROM PRODUCT_CATEGORY WHERE NAME = #{first} AND DEPTH=0)
+   </select>
+   
+   <insert id="insertSecond">
+   		INSERT INTO
+   			PRODUCT_CATEGORY(ID, NAME, PARENT_ID, DEPTH)
+   		VALUES (PRODUCT_CATEGORY_SEQ.NEXTVAL, #{second}, (SELECT ID FROM PRODUCT_CATEGORY WHERE NAME = #{first} AND DEPTH=0), 1)
+   </insert>
+   
+   <select id="findThird"
+   			resultType="String">
+	   SELECT NAME
+	   FROM PRODUCT_CATEGORY
+	   WHERE NAME = #{third}
+	   AND DEPTH = 2
+	   AND PARENT_ID = (
+	       SELECT ID 
+	       FROM PRODUCT_CATEGORY 
+	       WHERE NAME = #{second} 
+	       AND DEPTH = 1
+	       AND PARENT_ID = (
+	           SELECT ID
+	           FROM PRODUCT_CATEGORY
+	           WHERE NAME = #{first}
+	           AND DEPTH = 0
+	       )
+	   )
+   </select>
+   
+   <insert id="insertThird">
+   		    INSERT INTO
+        PRODUCT_CATEGORY(ID, NAME, PARENT_ID, DEPTH)
+    VALUES (
+        PRODUCT_CATEGORY_SEQ.NEXTVAL, 
+        #{third}, 
+        (SELECT ID 
+         FROM PRODUCT_CATEGORY 
+         WHERE NAME = #{second} 
+         AND DEPTH = 1 
+         AND PARENT_ID = (
+             SELECT ID 
+             FROM PRODUCT_CATEGORY 
+             WHERE NAME = #{first} 
+             AND DEPTH = 0
+         )), 
+        2
+    )
+   </insert>
+   
+   
+   
+   
+   
+   
    <select id="adminProductList" 
       resultType="com.tech.petfriends.admin.dto.ProductListDto">
       SELECT 

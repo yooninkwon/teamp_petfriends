@@ -1,6 +1,5 @@
 package com.tech.petfriends.product.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,10 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tech.petfriends.login.dto.MemberLoginDto;
 import com.tech.petfriends.product.dao.ProductDao;
+import com.tech.petfriends.product.domain.ProductCategory;
 import com.tech.petfriends.product.dto.ProductDetailReviewListDto;
 import com.tech.petfriends.product.dto.ProductDetailWishListDto;
 import com.tech.petfriends.product.dto.ProductListViewDto;
 import com.tech.petfriends.product.service.ProductAddWindowService;
+import com.tech.petfriends.product.service.ProductCategoryService;
 import com.tech.petfriends.product.service.ProductDetailCartCheckService;
 import com.tech.petfriends.product.service.ProductDetailCartService;
 import com.tech.petfriends.product.service.ProductDetailReviewListService;
@@ -40,15 +41,44 @@ public class ProductController {
 	@Autowired
 	ProductDao productDao;
 
+	@Autowired
+	private ProductCategoryService productCategoryService; 
+	
 	ProductService productService;
 
 	// 제품리스트 페이지 _ productlist.jsp
 	@GetMapping("/productlist")
 	public String productlist(Model model) {
 
+		
+		
+		
 		return "/product/productlist";
 	}
 
+	//펫타입 필터목록 가져오기 ajax
+	@ResponseBody
+	@GetMapping("/opt")
+	public List<ProductCategory> opt() {
+		
+		
+		return productCategoryService.getCategory(); 
+	}
+	
+	@ResponseBody
+	@GetMapping("/list")
+	public List<ProductListViewDto> list (@RequestParam String first,
+			@RequestParam String second,
+			@RequestParam String third) {
+		
+		
+		
+		return productDao.productList(first,second,third); 
+	}
+
+
+	
+	
 	// 제품리스트 비동기 불러오기 ajax용 _ productlist.jsp
 	@PostMapping("/productlistview")
 	@ResponseBody

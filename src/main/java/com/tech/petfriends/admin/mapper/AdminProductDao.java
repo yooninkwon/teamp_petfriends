@@ -37,5 +37,17 @@ public interface AdminProductDao {
 
 	void adminProductImgDelete(String proCode);
 
+	String findFirst(String first);
+
+	void insertFirst(String first);
+
+	String findSecond(String first, String second);
+
+	void insertSecond(String first, String second);
+
+	String findThird(String first, String second, String third);
+
+	void insertThird(String first, String second, String third);
+
 	
 }
