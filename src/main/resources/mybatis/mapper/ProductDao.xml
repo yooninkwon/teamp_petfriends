@@ -5,6 +5,27 @@
 
 
 <mapper namespace="com.tech.petfriends.product.dao.ProductDao">
+
+	<select id="productList"
+		resultType="com.tech.petfriends.product.dto.ProductListViewDto">
+        SELECT 
+            PRO_NAME, MAIN_IMG1
+        FROM PRODUCT P
+        INNER JOIN PRODUCT_IMAGE IMG ON P.PRO_CODE=IMG.PRO_CODE
+        WHERE P.PRO_PETS=#{first}
+        AND P.PRO_TYPE=#{second}
+        AND P.PRO_CATEGORY=#{third}
+	</select>
+	
+
+
+
+
+
+
+
+
+
 	<!-- product list 쿼리문 -->
 	<select id="productListView"
 		resultType="com.tech.petfriends.product.dto.ProductListViewDto">

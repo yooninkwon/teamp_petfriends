@@ -42,6 +42,11 @@ public class AdminProductAddService implements AdminExecute {
 		String options = (String)model.getAttribute("options");
 		String proCode = UUID.randomUUID().toString();
 
+		first(petType);
+		second(petType, proType);
+		third(petType, proType, proDetailType);
+		
+		
 		filterType1 = ifNull(filterType1);
 		filterType2 = ifNull(filterType2);
 		
@@ -149,6 +154,26 @@ public class AdminProductAddService implements AdminExecute {
 		}
 		
 		return filter;
+	}
+	
+	//상품 카테고리 확인후 넣기 대분류
+	public void first(String first) {
+		if(adminProductDao.findFirst(first) == null) {
+			adminProductDao.insertFirst(first);
+		}
+	}
+	
+	//상품 카테고리 확인후 넣기 중분류
+	public void second(String first, String second) {
+		if(adminProductDao.findSecond(first,second) == null) {
+			adminProductDao.insertSecond(first,second);
+		}
+	}
+	
+	public void third(String first,String second, String third) {
+		if(adminProductDao.findThird(first,second,third) == null) {
+			adminProductDao.insertThird(first,second,third);
+		}
 	}
 	
 }

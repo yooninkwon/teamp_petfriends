@@ -68,6 +68,11 @@ public interface ProductDao {
 
 	//둘러본상품 불러오기
 	public List<ProductListViewDto> productWindowList(String mem_code);
+
+	public List<ProductListViewDto> productList(String first, String second, String third);
+
+
+
 	
 
 
