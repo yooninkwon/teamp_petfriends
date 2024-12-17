@@ -24,9 +24,9 @@
 	<jsp:include page="/WEB-INF/views/include_jsp/product_sub_navbar.jsp" />
 	
 	<div class="radioBox">
-	<div id="main-categories"></div>
-	<div id="sub-categories"></div>
-	<div id="sub-sub-categories"></div>
+	<div id="main-categories"></div> <!-- 펫타입 카테고리 -->
+	<div id="sub-categories"></div>  <!-- 상품타입 카테고리 -->
+	<div id="sub-sub-categories"></div>  <!-- 상품상세타입 카테고리 -->
 	</div>
 	<br /><br />
 	
