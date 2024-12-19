@@ -18,24 +18,9 @@ public class ProductCategoryService {
 	public List<ProductCategory> getCategory(){
 		
 		List<ProductCategory> rootCategories = categoryRepository.findByParentIsNull();
-	    
-		for (ProductCategory rootCategory : rootCategories) {
-			findCategory(rootCategory);
-		}
 		
 		return rootCategories;
 		
 	}
-
-	private void findCategory(ProductCategory parentCategory) {
-		List<ProductCategory> subCategories = categoryRepository.findByParent(parentCategory);
-		parentCategory.setChildren(subCategories);
-		
-		for (ProductCategory subCategory : subCategories ) {
-			findCategory(subCategory);
-		}
-		
-	}
-	
 	
 }
