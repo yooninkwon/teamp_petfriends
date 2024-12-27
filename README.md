@@ -16,7 +16,7 @@ Result : 동적 카테고리 로딩, 신상품 등록의 유연성
 ****개발 인원**** : 5명 (팀장)   
 ****언어**** : Java 11, HTML/CSS, JavaScript   
 ****프레임워크**** : Spring Boot, MyBatis 2.2.2   
-****DB**** : Oracle 11g
+****DB**** : Oracle 11g XE    
 
 
 
