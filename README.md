@@ -7,6 +7,8 @@ Problem : 고정적인 카테고리, 제한된 상품등록
 Solution : JPA 계층형 카테고리 기능 적용    
 Result : 동적 카테고리 로딩, 신상품 등록의 유연성    
 상세내용 링크 : https://yooninkwon.tistory.com/8    
+</br>
+<img src="https://github.com/user-attachments/assets/063fdfce-d347-4271-9b4a-a216a616deea" width="450" height="250">
 
 
 ---
