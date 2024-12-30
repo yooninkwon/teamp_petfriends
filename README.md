@@ -28,10 +28,13 @@ Result : 동적 카테고리 로딩, 신상품 등록의 유연성
 [상품]   
 1.고양이, 강아지 관련 상품(사료,장난감,용품) 리스트 페이지
 + AJAX와 MyBatis를 활용하여 카테고리 클릭 시 실시간으로 상품 리스트를 동적으로 불러오는 기능   
-
+<img src="https://github.com/user-attachments/assets/c2f0cf6c-24e3-4cc5-bd75-ad1624fe639f" width="450" height="250">
+</br>
+</br>
 2.상품 검색 및 방금 본 상품 리스트
-+ AJAX와 MyBatis를 활용하여 상품 검색 시 검색 결과를 실시간으로 표시하고, 상세페이지에서 상품 클릭 시 해당 상품을 '방금 본 상품' 목록에 자동으로 추가하여 리스트로 제공(DB 활용)      
-<img src="https://github.com/user-attachments/assets/b1123fe6-cacd-4ec8-929b-e267545d3120">
++ AJAX와 MyBatis를 활용하여 상품 검색 시 검색 결과를 실시간으로 표시하고, 상세페이지에서 상품 클릭 시 해당 상품을 '방금 본 상품' 목록에 자동으로 추가하여 리스트로 제공(DB 활용)
+</br>
+<img src="https://github.com/user-attachments/assets/b1123fe6-cacd-4ec8-929b-e267545d3120" width="450" height="250">
 </br>
 </br>
 
