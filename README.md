@@ -62,7 +62,12 @@ Result : 동적 카테고리 로딩, 신상품 등록의 유연성
 
 1.매출통계
 </br>
-+ 일별, 월별, 기간별 매출 관련 데이터를 MyBatis로 조회한 후, Chart.js를 사용하여 시각화하여 제공   
++ 일별, 월별, 기간별 매출 관련 데이터를 MyBatis로 조회한 후, Chart.js를 사용하여 시각화하여 제공
+
+<img src="https://github.com/user-attachments/assets/a37fc44f-9330-424f-97fb-ac72037ffd5f" width="450" height="250">
+
+</br>
+</br>
 
 ---
 
